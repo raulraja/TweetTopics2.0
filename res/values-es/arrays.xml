@@ -1,0 +1,459 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="entries_prf_max_download"><!-- 1.71 -->
+        <item>60</item>
+        <item>80</item>
+        <item>100</item>
+        <item>150</item>
+        <item>Todos</item>
+    </string-array>
+
+    <string-array name="entries_prf_max_download_values"><!-- 1.71 -->
+        <item>60</item>
+        <item>80</item>
+        <item>100</item>
+        <item>150</item>
+        <item>0</item>
+    </string-array>
+
+	<string-array name="actions_users_facebook"><!-- 1.63 -->
+    	<item>Eliminar</item>
+    </string-array>
+
+    <string-array name="values_tweetprogrammed"><!-- 1.61 -->
+    	<item>En 5 minutos</item>
+    	<item>En 15 minutos</item>
+    	<item>En 30 minutos</item>
+    	<item>En 1 hora</item>
+    	<item>En 2 horas</item>
+    	<item>En 6 horas</item>
+    	<item>En 12 horas</item>
+    	<item>En 24 horas</item>
+    	<item>En 7 días</item>
+    </string-array>
+
+    <string-array name="entries_prf_date_format"><!-- 1.55 -->
+    	<item>Tiempo transcurrido</item>
+    	<item>Hora del tweet</item>
+    </string-array>
+    
+    <string-array name="entries_prf_date_format_values"><!-- 1.55 -->
+    	<item>1</item>
+    	<item>2</item>
+    </string-array>
+
+    <string-array name="entries_prf_show_links"><!-- 1.55 -->
+    	<item>Enlaces originales</item>
+    	<item>Igual que en la web de Twitter</item>
+    	<item>Enlace completo</item>
+    </string-array>
+    
+    <string-array name="entries_prf_show_links_values"><!-- 1.55 -->
+    	<item>1</item>
+    	<item>2</item>
+    	<item>3</item>
+    </string-array>
+
+    <string-array name="items_err_send"><!-- 1.50 -->
+    	<item>Volver a enviar</item>
+    	<item>Guardar en borradores</item>
+    </string-array>
+
+    <string-array name="items_manager_theme"><!-- 1.43 -->
+    	<item>Cambiar colores del tema</item>
+    	<item>Cargar tema guardado</item>
+    	<item>Importar tema QR</item>
+    	<item>Compatir este tema</item>  
+    </string-array>
+
+    <string-array name="entries_prf_positions_links"><!-- 1.39 -->
+    	<item>Abajo del texto</item>
+    	<item>A la derecha</item>   	
+    </string-array>
+    
+    <string-array name="entries_prf_positions_links_values"> <!-- 1.39 -->
+    	<item>1</item>
+    	<item>2</item>
+    </string-array>
+
+    <string-array name="languages">
+    	<item>Cualquiera</item>
+        <item>Inglés</item>
+        <item>Español</item>
+        <item>Francés</item>
+        <item>Alemán</item>
+        <item>Japonés</item>
+        <item>Portugués</item>
+        <item>Italiano</item>
+        <item>Ruso</item>
+        <item>Indonesia</item>
+    </string-array>
+    
+    <string-array name="languages_values">
+    	<item>all</item>
+        <item>en</item>
+        <item>es</item>
+        <item>fr</item>
+        <item>de</item>
+        <item>ja</item>
+        <item>pt</item>
+        <item>it</item>
+        <item>ru</item>
+        <item>id</item>
+    </string-array>
+    
+    <string-array name="languages_translates">
+        <item>Inglés</item>
+        <item>Español</item>
+        <item>Francés</item>
+        <item>Alemán</item>
+        <item>Japonés</item>
+        <item>Portugués</item>
+        <item>Italiano</item>
+        <item>Ruso</item>
+    </string-array>
+    
+    <string-array name="languages_translates_values">
+        <item>en</item>
+        <item>es</item>
+        <item>fr</item>
+        <item>de</item>
+        <item>ja</item>
+        <item>pt</item>
+        <item>it</item>
+        <item>ru</item>
+    </string-array>
+    
+    <string-array name="select_dialog_download_msg_timeline">
+        <item>Todos los mensajes</item>
+        <item>100 últimos</item>
+        <item>60 últimos</item>
+        <item>40 últimos</item>
+        <item>20 últimos</item>
+    </string-array>
+    
+    <string-array name="items_tweetprogrammed">
+    	<item>Editar</item>
+        <item>Eliminar</item>
+    </string-array>
+    
+    <string-array name="items_tweetdraft">
+    	<item>Editar</item>
+        <item>Eliminar</item>
+    </string-array>
+    
+    <string-array name="led_colors">
+    	<item>Rojo</item>
+        <item>Amarillo</item>
+        <item>Azul</item>
+        <item>Verde</item>
+        <item>Naranja</item>
+        <item>Violeta</item>
+    </string-array>
+    
+    <string-array name="led_colors_values">
+    	<item>#FFFF0000</item>
+        <item>#FFf0ff00</item>
+        <item>#FF0000ff</item>
+        <item>#FF00ff00</item>
+        <item>#FFffc207</item>
+        <item>#FFd013b3</item>
+    </string-array>
+    
+    <string-array name="items_show_tweets">
+    	<item>Ver timeline</item>
+        <item>Ver menciones</item>
+    </string-array>
+    
+    <string-array name="items_user_actions">
+    	<item>Ver amigos</item>
+    	<item>Ver seguidores</item>
+    	<item>Ver listas</item>
+    	<item>Colorear tweets</item> <!-- v 1.20  -->
+    	<item>Incluir en lista</item>
+    	<item>Mencionar</item>
+        <item>Ocultar</item>
+        <item>Crear tema</item>
+        <item>Enviar mensaje directo</item> <!-- v 1.37  -->
+    </string-array>
+    
+    <string-array name="items_hashtag_actions">
+    	<item>Ver tweets</item>
+        <item>Ocultar</item>
+        <item>Crear tema</item>
+        <item>Twittear</item>
+        <item>Escribir por defecto</item>
+    </string-array>
+    
+    <string-array name="items_tweetquick">
+    	<item>Editar</item>
+        <item>Reiniciar contador</item>
+        <item>Eliminar</item>
+    </string-array>
+    
+    <string-array name="items_quietwords">
+        <item>Eliminar</item>
+    </string-array>
+    
+    <string-array name="items_colors"> <!-- v 1.20  -->
+    	<item>Editar</item>
+        <item>Eliminar</item>
+    </string-array>
+    
+    <string-array name="items_actions_image"> <!-- v 1.37  -->
+    	<item>Twittear</item>
+        <item>Guardar imagen en SD</item>
+        <item>Compartir imagen</item>
+        <item>Compartir enlace</item>
+        <item>Establecer como fondo</item> <!-- v 1.43  -->
+        <item>Crear código QR</item>
+        <item>Guardar en portapapeles</item>
+    </string-array>
+    
+    <string-array name="items_actions_links"> <!-- v 1.37  -->
+    	<item>Twittear</item>
+        <item>Compartir enlace</item>
+        <item>Crear código QR</item>
+        <item>Guardar en portapapeles</item>
+    </string-array>
+    
+    <string-array name="select_type_image">
+        <item>Usar cámara</item>
+        <item>Ver Galería</item>
+    </string-array>
+    
+    <string-array name="actions_import">
+    	<item>Desde portapapeles</item>
+        <item>Escanear código QR</item>
+    </string-array>
+    
+    <string-array name="actions_export">
+    	<item>Escribir tweet</item>
+        <item>Aplicación externa</item>
+    </string-array>
+    
+    <string-array name="actions_search">
+    	<item>Ver</item>
+        <item>Editar</item>
+        <item>Compartir</item>
+        <item>Eliminar</item>
+    </string-array>
+    
+    <string-array name="actions_search_temp">
+    	<item>Ver</item>
+        <item>Convertir a búsqueda</item>
+        <item>Eliminar</item>
+    </string-array>
+    
+    <string-array name="actions_users">
+    	<item>Editar usuario</item>
+        <item>Cambiar avatar</item> <!-- v 1.70  -->
+    	<item>Actualizar avatar</item>
+    	<item>Guardar timeline en el teléfono</item>
+    	<item>Eliminar</item>
+    </string-array>
+        
+    <string-array name="actions_samples_search">
+    	<item>Android: General</item>
+    	<item>Android: Juegos</item>
+        <item>Android: Aplicaciones</item>
+        <item>Foto: Tilt Shift</item>
+        <item>Foto: HDR</item>
+        <item>Series: True Blood</item>
+        <item>Series: The Walking Dead</item>
+        <item>Series: Número de Lost</item>
+        <item>Noticias Geek</item>
+        <item>Noticias Receta Cocina</item>
+        <item>Vídeos: Slow motion</item>
+        <item>Vídeos: Stop motion</item>
+    </string-array>
+    
+    <string-array name="actions_retweet">
+    	<item>Retwittear ahora</item>
+        <item>Editar mensaje</item>
+    </string-array>
+    
+    <string-array name="actions_reply">
+    	<item>Responder a todos</item>
+    	<item>Responder a todos (cc)</item>
+        <item>Sólo a creador del tweet</item>
+    </string-array>
+    
+    <string-array name="actions_retweets_options">        
+        <item>Mis tweets, retwitteados</item>
+        <item>Mis retweets</item>
+        <item>Retweets de otros</item>
+    </string-array>
+    
+    <string-array name="actions_list_options">        
+        <item>Mis listas</item>
+        <item>Listas que me siguen</item>
+    </string-array>
+    
+    <string-array name="attitude">
+    	<item>Normal</item>
+        <item>Actitud positiva</item>
+        <item>Actitud negativa</item>
+    </string-array>
+    
+    <string-array name="filter">
+    	<item>No filtrar</item>
+        <item>Sólo tweets con enlaces</item>
+        <item>Sólo tweets con imágenes</item>
+        <item>Sólo tweets con vídeos</item>
+        <item>Sólo tweets con vídeos e imágenes</item>
+        <item>Sólo noticias de RSS</item>
+        <item>Sólo preguntas</item>
+        <item>Aplicaciones Android</item>
+    </string-array>
+    
+    <string-array name="entries_prf_orientation"> <!-- v 1.30  -->
+    	<item>Vertical</item>
+    	<item>Sensor (labs)</item>
+    </string-array>
+    
+    <string-array name="entries_prf_orientation_values">
+    	<item>1</item>
+    	<item>2</item>
+    </string-array>
+    
+    <string-array name="entries_prf_n_result">
+    	<item>20</item>
+        <item>40</item>
+        <item>60</item>
+        <item>80</item>
+        <item>100</item>
+    </string-array>
+    
+    <string-array name="entries_prf_time_refresh">
+    	<item>Nunca</item>
+    	<item>Cada 5 minutos</item>
+    	<item>Cada 10 minutos</item>
+    	<item>Cada 15 minutos</item>
+    	<item>Cada 30 minutos</item>
+        <item>Cada hora</item>
+    </string-array>
+    
+    <string-array name="entries_prf_time_refresh_values">
+    	<item>0</item>
+    	<item>5</item>
+    	<item>10</item>
+    	<item>15</item>
+    	<item>30</item>
+    	<item>60</item>
+    </string-array>
+    
+    <string-array name="entries_prf_notifications">
+    	<item>Nunca</item>
+    	<item>Cada minuto</item>
+    	<item>Cada 5 minutos</item>
+    	<item>Cada 10 minutos</item>
+    	<item>Cada 15 minutos</item>
+    	<item>Cada 30 minutos</item>
+        <item>Cada hora</item>
+        <item>Cada 2 horas</item>
+        <item>Cada 6 horas</item>
+        <item>Cada 12 horas</item>
+        <item>Cada día</item>
+    </string-array>
+    
+    <string-array name="entries_prf_notifications_values">
+    	<item>0</item>
+    	<item>2</item>
+    	<item>5</item>
+    	<item>10</item>
+    	<item>15</item>
+    	<item>30</item>
+    	<item>60</item>
+        <item>120</item>
+        <item>360</item>
+        <item>720</item>
+        <item>1440</item>
+    </string-array>
+    
+    <string-array name="entries_prf_username_right">
+    	<item>Nada</item>
+    	<item>Fuente del tweet</item>
+    	<item>Nombre del usuario</item>
+    </string-array>
+    
+    <string-array name="entries_prf_username_right_values">
+    	<item>1</item>
+    	<item>2</item>
+    	<item>3</item>
+    </string-array>
+    
+    <string-array name="entries_prf_links">
+    	<item>No mostrar enlaces en los tweets</item>
+    	<item>Mostrar sólo imágenes y vídeos</item>
+    	<item>Mostrar todos los enlaces</item>
+    </string-array>
+    
+    <string-array name="entries_prf_links_values">
+    	<item>1</item>
+    	<item>2</item>
+    	<item>3</item>
+    </string-array>
+    
+    <string-array name="entries_prf_vibrate">
+    	<item>Durante medio segundo</item>
+    	<item>Durante 1 segundo</item>
+    	<item>Dos de medio segundo</item>
+    	<item>Cuatro de 1/4 segundo</item> <!-- v 1.50  -->
+    </string-array>
+    
+    <string-array name="entries_prf_vibrate_values">
+    	<item>1</item>
+    	<item>2</item>
+    	<item>3</item>
+    	<item>4</item> <!-- v 1.50  -->
+    </string-array>
+    
+    <string-array name="entries_prf_order_list">
+    	<item>Orden de creación</item>
+    	<item>Orden de creación inverso</item>
+    	<item>Primero los más usados</item>
+    	<item>Primero los últimos que he usado</item>
+    </string-array>
+    
+    <string-array name="entries_prf_order_list_values">
+    	<item>1</item>
+    	<item>2</item>
+    	<item>3</item>
+    	<item>4</item>
+    </string-array>
+    
+    <string-array name="entries_prf_size_photos">
+    	<item>Pequeña (640x480)</item>
+    	<item>Mediana (1024x768)</item>
+    	<item>Tamaño original</item>    	
+    </string-array>
+    
+    <string-array name="entries_prf_size_photos_values">
+    	<item>1</item>
+    	<item>2</item>
+    	<item>3</item>
+    </string-array>
+    
+    <string-array name="entries_prf_save_avatars">
+    	<item>En SDCard</item>
+    	<item>En cache del teléfono</item>   	
+    </string-array>
+    
+    <string-array name="entries_prf_save_avatars_values">
+    	<item>1</item>
+    	<item>2</item>
+    </string-array>
+    
+    <string-array name="entries_prf_themes"><!-- 1.32 -->
+    	<item>Blanco</item>
+    	<item>Oscuro</item>   	
+    </string-array>
+    
+    <string-array name="entries_prf_themes_values"> 
+    	<item>1</item>
+    	<item>2</item>
+    </string-array>
+    
+</resources>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+          
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+   android:orientation="vertical" android:layout_width="fill_parent"
+   android:padding="6dip"
+   android:gravity="center"
+   android:layout_height="fill_parent">
+   
+	<LinearLayout 
+	   android:orientation="vertical" android:layout_width="fill_parent"
+	   android:gravity="center"
+	   android:padding="6dip"
+	   android:layout_height="wrap_content">
+	   
+		<ProgressBar
+			android:id="@+id/load_progress"
+			android:layout_width="16sp"
+			android:layout_height="16sp"
+			android:layout_toLeftOf="@id/load_more_text"
+			android:indeterminate="true"
+			android:layout_marginRight="6sp"
+			/>
+			
+		<ImageView android:gravity="center_horizontal"  android:id="@+id/image_gal" android:layout_width="wrap_content" android:layout_height="wrap_content"></ImageView>
+ 		<TextView style="@style/TextTitle" android:gravity="center_horizontal" android:text="titulo" android:id="@+id/text_gal" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
+ 		
+	</LinearLayout>
+	
+	<LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content"
+			android:id="@+id/data_gal"
+			android:layout_marginTop="5dip"
+			android:layout_marginBottom="10dip"
+			android:orientation="horizontal" android:gravity="center_horizontal">
+			<LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content"
+					android:layout_marginLeft="10dip"
+					android:layout_marginRight="10dip"
+					android:layout_weight="1"
+					android:orientation="vertical" android:gravity="center_horizontal">
+				<TextView style="@style/TweetUserNumbers" android:text="1000" android:id="@+id/text_n_tweets" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
+				<TextView style="@style/TweetUserNumbersSubtitle" android:text="@string/tweets" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
+			</LinearLayout>
+			<LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content"
+					android:layout_marginLeft="10dip"
+					android:layout_marginRight="10dip"
+					android:layout_weight="1"
+					android:orientation="vertical" android:gravity="center_horizontal">
+				<TextView style="@style/TweetUserNumbers" android:text="10" android:id="@+id/text_followers" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
+				<TextView style="@style/TweetUserNumbersSubtitle" android:text="@string/followers" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
+			</LinearLayout>
+			<LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content"
+					android:layout_marginLeft="10dip"
+					android:layout_marginRight="10dip"
+					android:layout_weight="1"
+					android:orientation="vertical" android:gravity="center_horizontal">
+				<TextView style="@style/TweetUserNumbers" android:text="1000" android:id="@+id/text_following" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
+				<TextView style="@style/TweetUserNumbersSubtitle" android:text="@string/friends" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
+			</LinearLayout>
+	</LinearLayout>
+</LinearLayout>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+	<ScrollView android:id="@+id/ScrollView01" android:layout_width="fill_parent" android:layout_height="0dip" android:layout_weight="1">
+		<LinearLayout android:orientation="vertical" android:layout_height="fill_parent" android:layout_width="fill_parent" android:padding="10sp">
+			
+			<LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_marginTop="5dip">
+				<ImageButton android:background="@drawable/bg_push_button" android:src="@drawable/letter_az" android:id="@+id/bt_avatar" android:layout_width="70dip" android:layout_height="wrap_content"></ImageButton>
+				<TextView style="@style/SearchTitle" android:layout_height="wrap_content" android:id="@+id/et_username" android:layout_margin="3sp" android:layout_width="fill_parent"></TextView>	
+			</LinearLayout>
+			
+			<LinearLayout android:id="@+id/LinearLayout02" android:layout_height="wrap_content" android:layout_width="fill_parent">
+				<TextView style="@style/SearchTitle" android:layout_height="wrap_content" android:layout_margin="3sp" android:layout_width="90dip" android:text="@string/name"></TextView>
+				<EditText android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_margin="3sp" android:id="@+id/et_name"></EditText>
+			</LinearLayout>
+			<LinearLayout android:id="@+id/LinearLayout03" android:layout_height="wrap_content" android:layout_width="fill_parent">
+				<TextView style="@style/SearchTitle" android:layout_height="wrap_content" android:text="@string/location" android:layout_margin="3sp" android:layout_width="90dip"></TextView>
+				<EditText android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_margin="3sp" android:id="@+id/et_location"></EditText>
+			</LinearLayout>
+			<LinearLayout android:id="@+id/LinearLayout03" android:layout_height="wrap_content" android:layout_width="fill_parent">
+				<TextView style="@style/SearchTitle" android:layout_height="wrap_content" android:text="@string/web" android:layout_margin="3sp" android:layout_width="90dip"></TextView>
+				<EditText android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_margin="3sp" android:id="@+id/et_web"></EditText>
+			</LinearLayout>
+			
+			<TextView style="@style/SearchTitle" android:layout_height="wrap_content" android:text="@string/biography" android:layout_margin="3sp" android:layout_width="fill_parent"></TextView>
+			
+			<EditText android:layout_height="wrap_content" android:lines="4" android:layout_width="fill_parent" android:layout_margin="3sp" android:id="@+id/et_biography"></EditText>
+		
+		</LinearLayout>	
+	</ScrollView>
+	
+	<LinearLayout android:orientation="horizontal"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:background="?attr/bottom_bar_background"
+		android:id="@+id/buttons_foot"
+		>
+		
+		<Button 
+			style="@style/ButtonFootSidebar"
+			android:gravity="center"
+			android:text="@string/save"
+			android:layout_weight="1"
+			android:id="@+id/bt_save" android:layout_width="0dip" 
+			android:layout_height="fill_parent"></Button>
+			
+	    <ImageView
+	    	android:background="@drawable/action_bar_divider"
+	        android:layout_width="wrap_content" android:layout_height="wrap_content"
+	        ></ImageView>
+			
+	    <Button 
+			style="@style/ButtonFootSidebar"
+			android:gravity="center"
+			android:text="@string/cancel"
+			android:layout_weight="1"
+			android:id="@+id/bt_cancel" android:layout_width="0dip" 
+			android:layout_height="fill_parent"></Button>
+	</LinearLayout>
+	
+</LinearLayout>

@@ -1,0 +1,426 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+	<string-array name="items_err_send"><!-- 1.50 -->
+    	<item>Resend</item>
+    	<item>Save to Draftss</item>
+    </string-array>
+    
+    <string-array name="items_manager_theme"><!-- 1.43 -->
+    	<item>Ändern Themen Fabe</item>
+    	<item>Gespeicherte Thema</item>
+    	<item>Import Theme QR</item>   	
+    	<item>Verteile Theme</item>
+    </string-array>
+    
+    <string-array name="entries_prf_positions_links"><!-- 1.39 -->
+    	<item>Unter dem Text</item>
+    	<item>Rechts</item>   	
+    </string-array>
+    
+    <string-array name="entries_prf_positions_links_values"> <!-- 1.39 -->
+    	<item>1</item>
+    	<item>2</item>
+    </string-array>
+    
+    <string-array name="items_actions_image"> <!-- v 1.37  -->
+    	<item>Erstelle tweet</item>
+        <item>Speicher Bild auf SD</item>
+        <item>Teilen Bild</item>
+        <item>Teilen Link</item>
+        <item>Setze Hintergrund</item> <!-- v 1.43  -->
+        <item>Erstelle QR Code</item>
+        <item>Kopieren in Ablage</item>
+    </string-array>
+    
+    <string-array name="items_actions_links"> <!-- v 1.37  -->
+    	<item>Erstelle tweet</item>
+        <item>Teilen Link</item>
+        <item>Erstelle QR Code</item>
+        <item>Kopieren in Ablage</item>
+    </string-array>
+
+    <string-array name="languages">
+    	<item>All</item>
+        <item>English</item>
+        <item>Spanish</item>
+        <item>French</item>
+        <item>German</item>
+        <item>Japanese</item>
+        <item>Portuguese</item>
+        <item>Italian</item>
+        <item>Russian</item>
+    </string-array>
+    
+    <string-array name="languages_values">
+    	<item>all</item>
+        <item>en</item>
+        <item>es</item>
+        <item>fr</item>
+        <item>de</item>
+        <item>ja</item>
+        <item>pt</item>
+        <item>it</item>
+        <item>ru</item>
+    </string-array>
+    
+    <string-array name="languages_translates">
+        <item>English</item>
+        <item>Spanish</item>
+        <item>French</item>
+        <item>German</item>
+        <item>Japanese</item>
+        <item>Portuguese</item>
+        <item>Italian</item>
+        <item>Russian</item>
+        <item>Indonesia</item>
+    </string-array>
+    
+    <string-array name="languages_translates_values">
+        <item>en</item>
+        <item>es</item>
+        <item>fr</item>
+        <item>de</item>
+        <item>ja</item>
+        <item>pt</item>
+        <item>it</item>
+        <item>ru</item>
+        <item>id</item>
+    </string-array>
+    
+    <string-array name="select_dialog_download_msg_timeline">
+        <item>Alle Nachrichten</item>
+        <item>100</item>
+        <item>60</item>
+        <item>40</item>
+        <item>20</item>
+    </string-array>
+    
+    <string-array name="items_tweetprogrammed">
+    	<item>Bearbeiten</item>
+        <item>Abbrechen</item>
+    </string-array>
+    
+    <string-array name="items_tweetdraft">
+    	<item>Bearbeiten</item>
+        <item>Abbrechen</item>
+    </string-array>
+    
+    <string-array name="led_colors">
+    	<item>Rot</item>
+        <item>Gelb</item>
+        <item>Blau</item>
+        <item>Grün</item>
+        <item>Orange</item>
+        <item>Violet</item>
+    </string-array>
+    
+    <string-array name="led_colors_values">
+    	<item>#FFFF0000</item>
+        <item>#FFf0ff00</item>
+        <item>#FF0000ff</item>
+        <item>#FF00ff00</item>
+        <item>#FFffc207</item>
+        <item>#FFd013b3</item>
+    </string-array>
+    
+    <string-array name="items_show_tweets">
+    	<item>Timeline</item>
+        <item>Antworten</item>
+    </string-array>
+    
+    <string-array name="items_user_actions">
+    	<item>Freunde</item>
+    	<item>Folgen</item>
+    	<item>User Liste</item>
+    	<item>Farbe tweets</item> <!-- v 1.20  -->
+    	<item>Meine Listen</item>
+    	<item>Erwähnt</item>
+        <item>Verbergen</item>
+        <item>Erstelle topic</item>
+        <item>Sende direkt Nachricht</item> <!-- v 1.37  -->
+    </string-array>
+    
+    <string-array name="items_hashtag_actions">
+    	<item>Zeige tweets</item>
+        <item>Verbergen</item>
+        <item>Erstelle topic</item>
+        <item>Erstelle tweet</item> <!-- v 1.37  -->
+        <item>Schreibe Standard</item>
+    </string-array>
+    
+    <string-array name="items_tweetquick">
+    	<item>Bearbeiten</item>
+        <item>Zähler Zurücksetzen</item>
+        <item>Abbrechen</item>
+    </string-array>
+    
+    <string-array name="items_colors"> <!-- v 1.20  -->
+    	<item>Bearbeiten</item>
+        <item>Abbrechen</item>
+    </string-array>
+    
+    <string-array name="items_quietwords">
+        <item>Abbrechen</item>
+    </string-array>
+    
+    <string-array name="select_type_image">
+        <item>Kamera</item>
+        <item>Bild aus Gallery</item>
+    </string-array>
+    
+    <string-array name="actions_import">
+    	<item>von Zwischenablage</item>
+        <item>Scan QR code</item>
+    </string-array>
+    
+    <string-array name="actions_export">
+    	<item>Schreib tweet</item>
+        <item>externen Anwendung</item>
+    </string-array>
+    
+    <string-array name="actions_search">
+    	<item>Zeigen</item>
+        <item>Bearbeiten</item>
+        <item>Teilen</item>
+        <item>Abbrechen</item>
+    </string-array>
+    
+    <string-array name="actions_search_temp">
+    	<item>Zeigen</item>
+        <item>Konvertieren Suche</item>
+        <item>Abbrechen</item>
+    </string-array>
+    
+    <string-array name="actions_users">
+    	<item>Bearbeiten User</item> <!-- 1.55 -->
+    	<item>Neu laden Avatar</item>
+    	<item>Sichere Timeline auf Smartphone</item>
+    	<item>Löschen</item>
+    </string-array>
+    
+    <string-array name="actions_samples_search">
+    	<item>Android: General</item>
+    	<item>Android: Games</item>
+        <item>Android: Aplications</item>
+        <item>Photo: Tilt Shift</item>
+        <item>Photo: HDR</item>
+        <item>Series: True Blood</item>
+        <item>Series: The Walking Dead</item>
+        <item>Series: Lost Number</item>
+        <item>News Geek</item>
+        <item>News Recipe</item>
+        <item>Videos: Slow motion</item>
+        <item>Videos: Stop motion</item>
+    </string-array>
+    
+    <string-array name="actions_retweet">
+    	<item>Antworten</item>
+        <item>Bearbeiten Nachricht</item>
+    </string-array>
+    
+    <string-array name="actions_reply">
+    	<item>Antwort alle</item>
+    	<item>Antwort alle (Kopie)</item>
+        <item>Antwort</item>
+    </string-array>
+    
+    <string-array name="actions_retweets_options">        
+        <item>Mein tweets, Rückantworten</item>
+        <item>Rückantwort von mir</item>
+        <item>Rückantwort von anderen</item>
+    </string-array>
+    
+    <string-array name="actions_list_options">        
+        <item>Meine Liste</item>
+        <item>Liste die ich Folge</item>
+    </string-array>
+    
+    <string-array name="attitude">
+    	<item>Normal</item>
+        <item>Positive Verhältnis</item>
+        <item>Negative Verhältnis</item>
+    </string-array>
+    
+    <string-array name="filter">
+    	<item>ohne Filter</item>
+        <item>tweets mit links</item>
+        <item>tweets mit images</item>
+        <item>tweets mit videos</item>
+        <item>tweets mit videos und images</item>
+        <item>tweets RSS News</item>
+        <item>nur Fragen</item>
+        <item>Android Anwendungen</item>
+    </string-array>
+    
+    <string-array name="entries_prf_orientation"> <!-- v 1.30  -->
+    	<item>Senkrechte</item>
+    	<item>Automatisch Drehen</item>
+    </string-array>
+    
+    <string-array name="entries_prf_orientation_values">
+    	<item>1</item>
+    	<item>2</item>
+    </string-array>
+    
+    <string-array name="entries_prf_n_result">
+    	<item>20</item>
+        <item>40</item>
+        <item>60</item>
+        <item>80</item>
+        <item>100</item>
+    </string-array>
+    
+    <string-array name="entries_prf_time_refresh">
+    	<item>Nie</item>
+    	<item>5 Minuten</item>
+    	<item>10 Minuten</item>
+    	<item>15 Minuten</item>
+    	<item>30 Minuten</item>
+        <item>jede Stunde</item>
+    </string-array>
+    
+    <string-array name="entries_prf_time_refresh_values">
+    	<item>0</item>
+    	<item>5</item>
+    	<item>10</item>
+    	<item>15</item>
+    	<item>30</item>
+    	<item>60</item>
+    </string-array>
+    
+    <string-array name="entries_prf_notifications">
+    	<item>Nie</item>
+    	<item>jede Minute</item>
+    	<item>5 Minuten</item>
+    	<item>10 Minuten</item>
+    	<item>15 Minuten</item>
+    	<item>30 Minuten</item>
+        <item>1 Stunde</item>
+        <item>2 Stunden</item>
+        <item>6 Stunden</item>
+        <item>12 Stunden</item>
+        <item>einmal Täglich</item>
+    </string-array>
+    
+    <string-array name="entries_prf_notifications_values">
+    	<item>0</item>
+    	<item>2</item>
+    	<item>5</item>
+    	<item>10</item>
+    	<item>15</item>
+    	<item>30</item>
+    	<item>60</item>
+        <item>120</item>
+        <item>360</item>
+        <item>720</item>
+        <item>1440</item>
+    </string-array>
+    
+    <string-array name="entries_prf_username_right">
+    	<item>Keine Namen</item>
+    	<item>Tweet Name</item>
+    	<item>Voller Name</item>
+    </string-array>
+    
+    <string-array name="entries_prf_username_right_values">
+    	<item>1</item>
+    	<item>2</item>
+    	<item>3</item>
+    </string-array>
+    
+    <string-array name="entries_prf_links">
+    	<item>Keine links Anzeigen im tweets</item>
+    	<item>Zeige nur Bider und Videos</item>
+    	<item>Zeige alle links</item>
+    </string-array>
+    
+    <string-array name="entries_prf_links_values">
+    	<item>1</item>
+    	<item>2</item>
+    	<item>3</item>
+    </string-array>
+    
+    <string-array name="entries_prf_vibrate">
+    	<item>Halbe Sekunde</item>
+    	<item>1 Sekunde</item>
+    	<item>2 mal eine halbe Sekunde</item>
+    	<item>Four 1/4 sec</item> <!-- v 1.50  -->
+    </string-array>
+    
+    <string-array name="entries_prf_vibrate_values">
+    	<item>1</item>
+    	<item>2</item>
+    	<item>3</item>
+    	<item>4</item> <!-- v 1.50  -->
+    </string-array>
+    
+    <string-array name="entries_prf_order_list">
+    	<item>Erstelle Ordner</item>
+    	<item>Ablegen in Ordner</item>
+    	<item>Zuerst die am häufigsten verwendete</item>
+    	<item>Zuletzt verwendeten Ordner</item>
+    </string-array>
+    
+    <string-array name="entries_prf_order_list_values">
+    	<item>1</item>
+    	<item>2</item>
+    	<item>3</item>
+    	<item>4</item>
+    </string-array>
+    
+    <string-array name="entries_prf_size_photos">
+    	<item>Klein (640x480)</item>
+    	<item>Mittel (1024x768)</item>
+    	<item>Original größe</item>    	
+    </string-array>
+    
+    <string-array name="entries_prf_size_photos_values">
+    	<item>1</item>
+    	<item>2</item>
+    	<item>3</item>
+    </string-array>
+    
+    <string-array name="entries_prf_service_image">
+    	<item>YFROG</item>
+    	<item>TWITPIC</item>
+    	<item>LOCKERZ</item>
+    </string-array>
+    
+    <string-array name="entries_prf_service_image_values">
+    	<item>1</item>
+    	<item>2</item>
+    	<item>3</item>
+    </string-array>
+    
+    <string-array name="entries_prf_service_shorter">
+    	<item>Bit.ly</item>
+    	<item>Karmacracy</item>
+    </string-array>
+    
+    <string-array name="entries_prf_service_shorter_values">
+    	<item>1</item>
+    	<item>2</item>
+    </string-array>
+    
+    <string-array name="entries_prf_save_avatars">
+    	<item>auf SDCard</item>
+    	<item>auf Smartphone</item>   	
+    </string-array>
+    
+    <string-array name="entries_prf_save_avatars_values">
+    	<item>1</item>
+    	<item>2</item>
+    </string-array>
+    
+    <string-array name="entries_prf_themes"><!-- 1.32 -->
+    	<item>Hell</item>
+    	<item>Dunkel</item>   	
+    </string-array>
+    
+    <string-array name="entries_prf_themes_values"> 
+    	<item>1</item>
+    	<item>2</item>
+    </string-array>
+    
+</resources>

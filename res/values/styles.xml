@@ -1,0 +1,565 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="TextAppearance" parent="android:style/TextAppearance">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColorLink">#FFEE0000</item>
+    </style>
+    
+    <style name="LoadMore">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">?color_title_general</item>
+    </style>
+    
+    <style name="TextAppearance.Title">
+        <item name="android:textStyle">bold</item>
+    </style>
+ 
+    <style name="TextAppearance.Button">
+        <item name="android:textStyle">bold</item>
+    </style>
+ 
+    <style name="TextAppearance.EditText">
+        <item name="android:textSize">14sp</item>
+    </style>
+    
+    <style name="TextAutoCompleteTextView">
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">#FF000000</item>
+    </style>
+    
+    <style name="link_like_text">
+    	<item name="android:textColor">#00f</item>
+    </style>
+     
+    <style name="TextAppearance.Title.WindowTitle">
+        <item name="android:textColor">#ffffff</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+ 
+    <style name="WindowTitleBackground">
+        <item name="android:background">@drawable/window_title_background</item>
+    </style>
+
+    <style name="WindowTitle">
+        <item name="android:singleLine">true</item>
+        <item name="android:textAppearance">@style/TextAppearance.Title.WindowTitle</item>
+        <item name="android:shadowColor">#BB000000</item>
+        <item name="android:shadowRadius">2</item>
+        <item name="android:paddingLeft">4dip</item>
+    </style>
+    
+    <style name="WindowMainTitle">
+        <item name="android:singleLine">true</item>
+        <item name="android:textAppearance">@style/TextAppearance.Title.WindowTitle</item>
+        <item name="android:shadowColor">#99ffffff</item>
+        <item name="android:shadowRadius">2</item>
+        <item name="android:paddingLeft">4dip</item>
+        <item name="android:textColor">#4f7590</item>
+    </style>
+    
+    <style name="SlideTitle">
+        <item name="android:singleLine">true</item>
+        <item name="android:textAppearance">@style/TextAppearance.Title.WindowTitle</item>
+        <item name="android:shadowColor">#BB000000</item>
+        <item name="android:shadowRadius">2</item>
+        <item name="android:paddingLeft">4dip</item>
+        <item name="android:textSize">13sp</item>
+        <item name="android:textColor">?color_textbutton_general</item>
+    </style>
+     
+    <style name="Widget" parent="android:Widget">
+        <item name="android:textAppearance">@style/TextAppearance</item>
+    </style>
+    
+    <style name="Widget.Button" parent="android:Widget.Button">
+        <item name="android:textAppearance">@style/TextAppearance.Button</item>
+        <item name="android:background">@drawable/button_background</item>
+        <item name="android:textColor">?color_textbutton_general</item>
+        <item name="android:padding">5dip</item>
+     </style>
+
+    <style name="Widget.EditText" parent="android:Widget.EditText">
+        <item name="android:textAppearance">@style/TextAppearance.EditText</item>
+        <item name="android:background">@drawable/edit_text</item>
+        <item name="android:gravity">top</item>
+     </style>
+     
+    <style name="Widget.ListView" parent="android:Widget.ListView">
+        <item name="android:cacheColorHint">@color/color_foreground</item>
+    </style>
+    
+    <style name="ButtonSidebar" parent="android:Widget.Button">
+        <item name="android:textColor">?color_textbutton_sidebar</item>
+        <item name="android:textSize">11sp</item>
+        <item name="android:paddingTop">5dip</item>
+        <item name="android:paddingBottom">5dip</item>
+     </style>
+     
+    <style name="ButtonFootSidebar" parent="android:Widget.Button">
+        <item name="android:background">@android:drawable/menuitem_background</item>
+        <item name="android:textColor">?color_textbutton_general</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:paddingTop">5dip</item>
+        <item name="android:paddingBottom">5dip</item>
+     </style>
+
+    <style name="TextFootSidebar" parent="android:Widget.TextView">
+        <item name="android:textColor">?color_textbutton_general</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:paddingTop">5dip</item>
+        <item name="android:paddingBottom">5dip</item>
+    </style>
+     
+    <style name="ButtonImageFootSidebar" parent="android:Widget.Button">
+        <item name="android:background">@android:drawable/menuitem_background</item>
+        <item name="android:textColor">?color_textbutton_general</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:paddingTop">3dip</item>
+        <item name="android:paddingBottom">3dip</item>
+     </style>
+     
+    <style name="ButtonSmallFootSidebar" parent="android:Widget.Button">
+        <item name="android:background">@android:drawable/menuitem_background</item>
+        <item name="android:paddingLeft">5dip</item>
+        <item name="android:paddingRight">5dip</item>
+     </style>
+     
+    <style name="ButtonMain" parent="android:Widget.Button">
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:textColor">#FFd2dbe5</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:paddingLeft">15dip</item>
+     </style>
+     
+    <style name="ButtonQuickActionLinkText">
+        <item name="android:textColor">#FF000000</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:paddingTop">2dip</item>
+        <item name="android:paddingBottom">5dip</item>
+     </style>
+     
+    <style name="ButtonQuickActionLink" parent="android:Widget.Button">
+        <item name="android:background">@drawable/button_background</item>
+        <item name="android:textColor">#FFFFFFFF</item>
+        <item name="android:textSize">11sp</item>
+        <item name="android:paddingTop">2dip</item>
+        <item name="android:paddingLeft">2dip</item>
+        <item name="android:layout_marginLeft">8dip</item>
+     </style>
+     
+    <style name="TweetFrAvatar">
+        <item name="android:layout_width">48dip</item>
+        <item name="android:layout_height">48dip</item>
+        <item name="android:layout_marginTop">6dip</item>
+        <item name="android:layout_marginLeft">6dip</item>
+        <item name="android:layout_marginRight">9dip</item>
+     </style>
+     
+    <style name="TweetAvatar">
+        <item name="android:layout_width">48dip</item>
+        <item name="android:layout_height">48dip</item>
+        <item name="android:adjustViewBounds">true</item>
+        <item name="android:layout_marginTop">6dip</item>
+        <item name="android:layout_marginLeft">6dip</item>
+        <item name="android:layout_marginRight">9dip</item>
+     </style>
+     
+    <style name="TweetBigAvatar">
+        <item name="android:layout_width">60dip</item>
+        <item name="android:layout_height">60dip</item>
+        <item name="android:adjustViewBounds">true</item>
+        <item name="android:layout_marginTop">6dip</item>
+        <item name="android:layout_marginLeft">6dip</item>
+        <item name="android:layout_marginRight">9dip</item>
+     </style>
+     
+    <style name="TweetAvatarMedium">
+        <item name="android:layout_width">36dip</item>
+        <item name="android:layout_height">36dip</item>
+        <item name="android:adjustViewBounds">true</item>
+        <item name="android:layout_marginTop">6dip</item>
+        <item name="android:layout_marginLeft">6dip</item>
+        <item name="android:layout_marginRight">9dip</item>
+     </style>
+     
+    <style name="TweetAvatarSmall">
+        <item name="android:layout_width">30dip</item>
+        <item name="android:layout_height">30dip</item>
+        <item name="android:adjustViewBounds">true</item>
+        <item name="android:layout_marginTop">6dip</item>
+        <item name="android:layout_marginLeft">6dip</item>
+        <item name="android:layout_marginRight">9dip</item>
+     </style>
+     
+    <style name="RetweetAvatar">
+        <item name="android:layout_width">20dip</item>
+        <item name="android:layout_height">20dip</item>
+        <item name="android:adjustViewBounds">true</item>
+     </style>
+     
+    <!-- Widget -->
+     
+    <style name="WidgetTopicTitle">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">#e3f3ff</item>
+    </style>
+         
+    <style name="WidgetTweetTitle">
+        <item name="android:layout_marginTop">5dip</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">#6cd4ef</item>
+     </style>
+     
+    <style name="WidgetTweetText">
+        <item name="android:layout_marginBottom">2dip</item>
+        <item name="android:textColor">#ffffff</item>
+        <item name="android:textSize">14sp</item>
+     </style>
+          
+    <style name="WidgetTweetDate">
+    	<item name="android:layout_marginTop">5dip</item>
+    	<item name="android:layout_marginRight">5dip</item>
+    	<item name="android:textSize">12sp</item>
+        <item name="android:textColor">#aaaaaa</item>
+     </style>
+     
+    <style name="WidgetTweetLink">
+        <item name="android:layout_width">35dip</item>
+        <item name="android:layout_height">35dip</item>
+        <item name="android:adjustViewBounds">true</item>
+        <item name="android:layout_marginRight">3dip</item>
+    </style>
+     
+    <!-- Widget -->
+    
+    <style name="QuickActionText">
+       <item name="android:textSize">16sp</item>
+       <item name="android:textColor">#000000</item>
+    </style>
+    
+    <style name="BackgroundText">
+        <item name="android:textColor">?color_tweet_text</item>
+        <item name="android:textSize">10sp</item>
+     </style>
+     
+    <style name="TweetTitle">
+        <item name="android:layout_marginTop">5dip</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">?color_tweet_usename</item>
+     </style>
+     
+    <style name="TweetText">
+        <item name="android:layout_marginBottom">2dip</item>
+        <item name="android:textColor">?color_tweet_text</item>
+     </style>
+     
+    <style name="TweetTextSidebar">
+        <item name="android:layout_margin">5dip</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">?color_tweet_text</item>
+     </style>
+     
+    <style name="TweetTextSmall">
+    	<item name="android:textSize">11sp</item>
+        <item name="android:layout_marginBottom">2dip</item>
+     </style>
+     
+    <style name="RetweetText">
+        <item name="android:textSize">11sp</item>
+        <item name="android:textColor">?color_tweet_retweet</item>
+     </style>
+     
+    <style name="TweetTextStatus">
+        <item name="android:layout_marginLeft">15dip</item>
+        <item name="android:textSize">13sp</item>
+        <item name="android:layout_marginRight">5dip</item>
+     </style>
+
+    <style name="TweetSource">
+    	<item name="android:layout_marginTop">5dip</item>
+    	<item name="android:layout_marginLeft">5dip</item>
+    	<item name="android:textSize">12sp</item>
+        <item name="android:textColorLink">?color_tweet_source</item>
+        <item name="android:textColor">?color_tweet_source</item>
+     </style>
+     
+    <style name="TweetDate">
+    	<item name="android:layout_marginTop">5dip</item>
+    	<item name="android:layout_marginRight">5dip</item>
+    	<item name="android:textSize">10sp</item>
+        <item name="android:textColor">?color_tweet_date</item>
+     </style>
+     
+    <style name="TweetDateSidebar">
+    	<item name="android:layout_marginRight">5dip</item>
+    	<item name="android:textSize">10sp</item>
+        <item name="android:textColor">?color_tweet_date</item>
+     </style>
+     
+    <!-- Animations -->
+     
+	<style name="Animations" />
+
+	<style name="Animations.GrowFromBottom">
+		<item name="@android:windowEnterAnimation">@anim/grow_from_bottom</item>
+		<item name="@android:windowExitAnimation">@anim/shrink_from_top</item>
+	</style>
+	
+	<style name="Animations.GrowFromTop">
+		<item name="@android:windowEnterAnimation">@anim/grow_from_top</item>
+		<item name="@android:windowExitAnimation">@anim/shrink_from_bottom</item>
+	</style>
+	
+	<style name="Animations.PopDownMenu">
+		<item name="@android:windowEnterAnimation">@anim/grow_from_topleft_to_bottomright</item>
+		<item name="@android:windowExitAnimation">@anim/shrink_from_bottomright_to_topleft</item>
+	</style>
+    
+    <style name="CountChars">
+        <item name="android:textColor">@color/count_chars_normal</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    
+    <style name="QuickActionUser">
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">#FF333333</item>
+    </style>
+    
+    <style name="QuickActionNumberNoread">
+        <item name="android:textSize">13sp</item>
+        <item name="android:textColor">#FF8a8a8a</item>
+    </style>
+    
+    <style name="UserTitle">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">?color_title_general</item>
+        <item name="android:textStyle">bold</item>
+     </style>
+     
+
+    <style name="UserDesc">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">?color_desc_general</item>
+     </style>
+
+     
+	<style name="TabIndicatorText">
+		<item name="android:textColor">#ffffff</item>
+		<item name="android:textStyle">bold</item>
+	</style>
+	
+    <style name="TextGridSearch">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">?attr/color_grid_search</item>
+    </style>
+    
+    <style name="TextGridSearchWidget">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">#ffffff</item>
+    </style>
+	
+    <style name="TextLink">
+        <item name="android:textSize">10sp</item>
+        <item name="android:textColor">?attr/color_link_general</item>
+        <item name="android:layout_marginTop">10dip</item>
+        <item name="android:layout_marginBottom">3dip</item>
+    </style>
+	
+    <style name="TextTitle">
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">?attr/color_title_general</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:layout_marginBottom">5dip</item>
+    </style>
+    
+    <style name="TextSubTitle">
+        <item name="android:textSize">10sp</item>
+        <item name="android:textColor">?attr/color_desc_general</item>
+        <item name="android:layout_marginBottom">10dip</item>
+    </style>
+    
+    <style name="TextDescription">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">?attr/color_desc_general</item>
+        <item name="android:layout_marginBottom">10dip</item>
+        <item name="android:layout_marginLeft">15dip</item>
+    </style>
+    
+    <style name="TextTitleQR">
+        <item name="android:textSize">21sp</item>
+        <item name="android:textColor">#000000</item>
+    </style>
+    
+    <style name="TextURLQR">
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">#000000</item>
+    </style>
+    
+    <!-- Busquedas -->
+    
+    <style name="SearchTitle">
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">?color_title_search</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    
+    <style name="SearchText">
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">?color_title_search</item>
+    </style>
+    
+    <style name="SearchShort">
+        <item name="android:textSize">11sp</item>
+        <item name="android:textColor">?color_title_search_short</item>
+        <item name="android:gravity">right</item>
+    </style>
+<!-- 
+    <style name="TextHead">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">#FF333333</item>
+        <item name="android:padding">5dip</item>
+    </style>
+     -->
+     <!-- 
+    <style name="TweetUserName">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">#FF475a68</item>
+     </style>
+    -->
+    
+    <style name="NewTweetUserName">
+        <item name="android:textSize">9sp</item>
+        <item name="android:lines">1</item>
+     </style>
+     
+    <style name="NewTweetMsg">
+        <item name="android:textSize">11sp</item>
+        <item name="android:textColor">?color_desc_general</item>
+     </style>
+    
+    <style name="TweetUserNumbers">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">?color_title_general</item>
+     </style>
+     
+    <style name="TweetUserNumbersSubtitle">
+        <item name="android:textSize">11sp</item>
+        <item name="android:textColor">?color_title_general</item>
+     </style>
+      
+     
+    <style name="TweetUserDescription">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">?color_desc_general</item>
+        <item name="android:paddingLeft">15dip</item>
+     </style>
+     
+    <style name="TextUsernameNewStatus">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">?color_title_general</item>
+    </style>
+     
+    <style name="TextTypeNewStatus">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">?color_title_general</item>
+    </style>
+    
+    <!-- actionBarTitle -->
+    
+    <style name="actionBarTitle">
+        <item name="android:textColor">?attr/gdActionBarTitleColor</item>
+        <item name="android:background">@null</item>
+    </style>
+    
+    <style name="actionBarButtonNewStatus">
+        <item name="android:textSize">8sp</item>
+        <item name="android:textColor">#ffffff</item>
+    </style>
+    
+    <style name="TitleAlert">
+        <item name="android:textSize">23sp</item>
+        <item name="android:textColor">#000000</item>
+    </style>
+    
+    <style name="TextAlert">
+        <item name="android:textSize">19sp</item>
+        <item name="android:textColor">#333333</item>
+    </style>
+    
+    <style name="DescAlert">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">#333333</item>
+    </style>
+    
+     
+     <!-- Preferencias -->
+
+    <style name="TitlePreferenceBlack">
+        <item name="android:textSize">23sp</item>
+        <item name="android:textColor">#222222</item>
+    </style>
+
+    <style name="DescPreferenceBlack">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">#555555</item>
+    </style>
+     
+    <style name="TitlePreference">
+        <item name="android:textSize">23sp</item>
+        <item name="android:textColor">#eeeeee</item>
+    </style>
+    
+    <style name="DescPreference">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">#bbbbbb</item>
+    </style>
+    
+    <style name="TextPreference">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">#333333</item>
+    </style>
+    
+    <style name="AutoCompleteTextUsername1">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">#333333</item>
+    </style>
+    
+    <style name="AutoCompleteTextUsername2">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">#bbbbbb</item>
+    </style>
+    
+	<!-- GreenDroid -->
+
+    <style name="GreenDroid.Widget.QuickAction.Grid.Tree.Title">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">#000000</item>
+    </style>
+    
+	<style name="GreenDroid.Widget.QuickAction.Grid.Tree">
+		<item name="android:padding">7dp</item>
+		<item name="android:listSelector">@drawable/gd_quick_action_grid_selector</item>
+		<item name="android:background">@android:color/transparent</item>
+		<item name="android:gravity">center</item>
+		<item name="android:fadingEdgeLength">0dp</item>
+		<item name="android:stretchMode">columnWidth</item>
+		<item name="android:verticalSpacing">7dp</item>
+		<item name="android:numColumns">3</item>
+	</style>
+	
+	<style name="GreenDroid.Widget.QuickAction.Grid.Tree.Item" parent="@style/GreenDroid.Widget.QuickAction.Item">
+		<item name="android:layout_width">fill_parent</item>
+		<item name="android:layout_height">wrap_content</item>
+		<item name="android:lines">2</item>
+		<item name="android:textSize">12sp</item>
+	</style>
+
+</resources>

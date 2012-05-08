@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/appwidget_bg"
+    android:orientation="horizontal" android:gravity="center">
+
+    <ImageButton android:layout_width="45dip" android:layout_height="45dip"
+    		android:background="@android:drawable/menuitem_background"
+    		android:src="@drawable/avatar_small" android:id="@+id/img_avatar"></ImageButton>
+    		
+    <ImageView
+    	android:background="@drawable/action_bar_divider"
+        android:layout_width="wrap_content" android:layout_height="wrap_content"
+        ></ImageView>
+    		
+   	<FrameLayout android:id="@+id/FrameLayout01" android:layout_width="wrap_content" android:layout_height="wrap_content">
+	    <ImageButton 
+	    	android:id="@+id/timeline"
+	    	android:background="@android:drawable/menuitem_background"
+	    	android:src="@drawable/action_bar_timeline"
+	        android:gravity="center"
+	        android:layout_width="45dip" android:layout_height="45dip"
+	        ></ImageButton>
+	    <ImageView android:id="@+id/count_timeline" 
+	    	android:layout_height="wrap_content" 
+	    	android:layout_gravity="right" android:layout_width="fill_parent"></ImageView>
+    </FrameLayout>
+        
+    <FrameLayout android:id="@+id/FrameLayout02" android:layout_width="wrap_content" android:layout_height="wrap_content">
+	    <ImageButton 
+	    	android:id="@+id/mentions"
+	    	android:background="@android:drawable/menuitem_background"
+	    	android:src="@drawable/action_bar_mentions"
+	        android:gravity="center"
+	        android:layout_width="45dip" android:layout_height="45dip"
+	        ></ImageButton>
+	    <ImageView android:id="@+id/count_mentions" 
+	    	android:layout_height="wrap_content" 
+	    	android:layout_gravity="right" android:layout_width="fill_parent"></ImageView>
+    </FrameLayout>
+    
+    <FrameLayout android:id="@+id/FrameLayout03" android:layout_width="wrap_content" android:layout_height="wrap_content">
+	    <ImageButton 
+	    	android:id="@+id/direct_messages"
+	    	android:background="@android:drawable/menuitem_background"
+	    	android:src="@drawable/action_bar_dm"
+	        android:gravity="center"
+	        android:layout_width="45dip" android:layout_height="45dip"
+	        ></ImageButton>
+	    <ImageView android:id="@+id/count_directmessages" 
+	    	android:layout_height="wrap_content" 
+	    	android:layout_gravity="right" android:layout_width="fill_parent"></ImageView>
+    </FrameLayout>
+    
+    <FrameLayout android:id="@+id/FrameLayout03" android:layout_width="wrap_content" android:layout_height="wrap_content">
+	    <ImageButton 
+	    	android:id="@+id/searches"
+	    	android:background="@android:drawable/menuitem_background"
+	    	android:src="@drawable/action_bar_search"
+	        android:gravity="center"
+	        android:layout_width="45dip" android:layout_height="45dip"
+	        ></ImageButton>
+	    <ImageView android:id="@+id/count_searches" 
+	    	android:layout_height="wrap_content" 
+	    	android:layout_gravity="right" android:layout_width="fill_parent"></ImageView>
+    </FrameLayout>
+        
+    <ImageView
+    	android:background="@drawable/action_bar_divider"
+        android:layout_width="wrap_content" android:layout_height="wrap_content"
+        ></ImageView>
+        
+    <ImageButton android:layout_width="45dip" android:layout_height="45dip"
+    		android:background="@android:drawable/menuitem_background"
+    		android:src="@drawable/gd_action_bar_compose" android:id="@+id/new_status"></ImageButton>
+        
+</LinearLayout>

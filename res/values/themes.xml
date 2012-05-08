@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<style name="Theme.Twitter" parent="@style/Theme.GreenDroid.NoTitleBar">
+	
+		<item name="color_tweet_usename">#ff000000</item>
+		<item name="color_tweet_source">#ffaaaaaa</item>
+		<item name="color_tweet_date">#ffaaaaaa</item>
+		<item name="color_tweet_text">#ff000000</item>
+		<item name="color_tweet_retweet">#ffaaaaaa</item>
+		
+		<item name="color_title_general">#ff333333</item>
+		<item name="color_desc_general">#ff666666</item>
+		
+		<item name="color_link_general">#FF0000FF</item>
+		
+		<item name="color_textbutton_general">#FFFFFFFF</item>
+		
+		<item name="color_textbutton_sidebar">#FF000000</item>
+		
+		<item name="color_title_search">#FF000000</item>
+		
+		<item name="color_title_search_short">#FF333333</item>
+				
+		<item name="bottom_bar_background">@drawable/bottom_bar_background</item>
+		
+		<item name="color_shadow_listview">#FFdddddd</item>
+		
+		<item name="bg_sidebar">@drawable/bg_sidebar</item>
+		
+		<item name="color_grid_search">#ff000000</item>
+
+		<item name="color_background_solid">#ffbbbbbb</item>
+		
+		<item name="background_app">@drawable/background</item>
+		<item name="background_user">@drawable/background_user</item>
+		
+		<item name="background_reply">@drawable/background_reply</item>
+		
+		<item name="color_background_text_info_background">#ccFFFFFF</item>
+			 
+		<!-- Colors -->
+        <item name="android:windowBackground">@color/color_foreground</item>
+        <item name="android:colorForeground">@color/color_foreground</item>
+        <item name="android:colorForegroundInverse">@color/color_foreground_inverse</item>
+		<item name="android:colorBackground">@color/color_background</item>
+		<!-- Text -->
+        <item name="android:textAppearance">@style/TextAppearance</item>
+		<!-- Window -->
+        <item name="android:windowTitleSize">38dip</item>
+        <item name="android:windowTitleStyle">@style/WindowTitle</item>
+        <item name="android:windowTitleBackgroundStyle">@style/WindowTitleBackground</item>
+		<!-- Components -->
+        <item name="android:buttonStyle">@style/Widget.Button</item>
+        <item name="android:editTextStyle">@style/Widget.EditText</item>
+        <item name="android:listViewStyle">@style/Widget.ListView</item>
+        <!-- GreenDroid -->
+        <item name="gdActionBarTitleColor">@android:color/white</item>
+		<item name="gdActionBarBackground">@drawable/action_bar_background</item>
+		<item name="gdActionBarDividerDrawable">@drawable/action_bar_divider</item>
+		<item name="gdActionBarDividerWidth">2px</item>
+		<item name="gdActionBarTitleStyle">@style/actionBarTitle</item>		
+	</style>
+	
+	<style name="Theme.TwitterBlack" parent="@style/Theme.GreenDroidDark.NoTitleBar">
+	
+		<item name="color_tweet_usename">#ffffffff</item>
+		<item name="color_tweet_source">#ffbfbfbf</item>
+		<item name="color_tweet_date">#ffbfbfbf</item>
+		<item name="color_tweet_text">#ffffffff</item>
+		<item name="color_tweet_retweet">#ffbfbfbf</item>
+		
+		<item name="color_title_general">#ffeeeeee</item>
+		<item name="color_desc_general">#ffcccccc</item>
+		
+		<item name="color_link_general">#FF67c7f4</item>
+		
+		<item name="color_textbutton_general">#FFFFFFFF</item>
+		
+		<item name="color_textbutton_sidebar">#FFffffff</item>
+		
+		<item name="color_title_search">#FF000000</item>
+		
+		<item name="color_title_search_short">#FF333333</item>
+		
+		<item name="bottom_bar_background">@drawable/bottom_bar_background_dark</item>
+		
+		<item name="color_shadow_listview">#FF222222</item>
+		
+		<item name="bg_sidebar">@drawable/bg_sidebar_dark</item>
+		
+		<item name="color_grid_search">#ffffffff</item>
+		
+		<item name="color_background_solid">#ff777777</item>
+		
+		<item name="background_app">@drawable/background_dark</item>
+		<item name="background_user">@drawable/background_user_dark</item>
+		
+		<item name="background_reply">@drawable/background_reply_dark</item>
+		
+		<item name="color_background_text_info_background">#99000000</item>
+			 
+		<!-- Colors -->
+        <item name="android:windowBackground">@color/color_foreground</item>
+        <item name="android:colorForeground">@color/color_foreground</item>
+        <item name="android:colorForegroundInverse">@color/color_foreground_inverse</item>
+		<item name="android:colorBackground">@color/color_background</item>
+		<!-- Text -->
+        <item name="android:textAppearance">@style/TextAppearance</item>
+		<!-- Window -->
+        <item name="android:windowTitleSize">38dip</item>
+        <item name="android:windowTitleStyle">@style/WindowTitle</item>
+        <item name="android:windowTitleBackgroundStyle">@style/WindowTitleBackground</item>
+		<!-- Components -->
+        <item name="android:buttonStyle">@style/Widget.Button</item>
+        <item name="android:editTextStyle">@style/Widget.EditText</item>
+        <item name="android:listViewStyle">@style/Widget.ListView</item>
+        <!-- GreenDroid -->
+        <item name="gdActionBarTitleColor">@android:color/white</item>
+		<item name="gdActionBarBackground">@drawable/action_bar_background_dark</item>
+		<item name="gdActionBarDividerDrawable">@drawable/action_bar_divider</item>
+		<item name="gdActionBarDividerWidth">2px</item>
+		<item name="gdActionBarTitleStyle">@style/actionBarTitle</item>	
+	
+	</style>
+	
+</resources>

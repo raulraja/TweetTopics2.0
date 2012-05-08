@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+      package="com.javielinux.tweettopics"
+      android:versionCode="1"
+      android:versionName="1.0" android:installLocation="auto">
+    <application android:icon="@drawable/icon" android:label="@string/app_name"
+   		android:name="com.javielinux.twitter.TwitterApplication" android:theme="@style/Theme.Twitter">
+		<uses-library android:name="com.google.android.maps" />
+        <activity android:name=".TweetTopics"
+                  android:label="@string/app_name" android:screenOrientation="nosensor" android:windowSoftInputMode="adjustPan">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    	<activity android:name="com.javielinux.twitter.AuthorizationActivity"></activity>
+		<activity android:name="TabNewEditSearch"></activity>
+
+		<activity android:name="Users"></activity>
+		<activity android:name="TabGeneral"></activity>
+		<activity android:name="TabGeo"></activity>
+		<activity android:name="MapSearch"></activity>
+		<activity android:name="TabAvanced"></activity>
+		<activity android:name="preferences.Preferences" android:theme="@android:style/Theme.Black"></activity>
+		<activity android:name="preferences.IntegrationADW" android:theme="@android:style/Theme.Black"></activity>
+		<activity android:name="preferences.TweetQuick" android:theme="@android:style/Theme.Black"></activity>
+		<activity android:name="preferences.QuietWords" android:theme="@android:style/Theme.Black"></activity>
+		<activity android:name="preferences.NewEditTweetQuick" android:theme="@android:style/Theme.Black"></activity>
+		<activity android:name="preferences.RetweetsTypes" android:theme="@android:style/Theme.Black"></activity>
+		<activity android:name="preferences.Colors" android:theme="@android:style/Theme.Black"></activity>
+		<activity android:name="preferences.TweetDraft" android:theme="@android:style/Theme.Black"></activity>
+		<activity android:name="preferences.TweetProgrammed" android:theme="@android:style/Theme.Black"></activity>
+		<activity android:name="preferences.NewEditTweetProgrammed" android:theme="@android:style/Theme.Black"></activity>
+		<activity android:name="preferences.ColorsApp" android:theme="@android:style/Theme.Black"></activity>
+		<activity android:name="ShowImage" android:theme="@android:style/Theme.Translucent"></activity>
+		<activity android:name="QRCode"></activity>
+		<activity android:name="AdjustImage"></activity>
+		<activity android:name="preferences.SubMenuTweet" android:theme="@android:style/Theme.Black"></activity>
+		<activity android:name="updatestatus.LaunchServiceUpdateStatus" android:theme="@android:style/Theme.Translucent"></activity>
+		<activity android:name="EditUserTwitter"></activity>
+		
+		<receiver android:name="tweetprogrammed.OnAlarmReceiverTweetProgrammed" android:process=":remote" ></receiver>
+		
+		<receiver android:name="notifications.Alarm1" android:process=":remote" ></receiver>
+		<receiver android:name="notifications.Alarm2" android:process=":remote" ></receiver>
+
+		<receiver android:name="notifications.OnBootReceiver">
+           <intent-filter>
+               <action android:name="android.intent.action.BOOT_COMPLETED" />
+               <category android:name="android.intent.category.LAUNCHER" />
+           </intent-filter>
+       </receiver>
+       
+		<activity android:name="NewStatus">
+			<intent-filter android:label="@string/app_name" android:icon="@drawable/icon">
+				<action android:name="android.intent.action.SEND" />
+				<category android:name="android.intent.category.DEFAULT" />
+				<data android:mimeType="image/*" />
+			</intent-filter>
+            <intent-filter android:label="@string/app_name" android:icon="@drawable/icon">
+                 <action android:name="android.intent.action.SEND" />
+                 <category android:name="android.intent.category.DEFAULT" />
+                 <data android:mimeType="text/plain" />
+            </intent-filter>
+		</activity>
+		
+		<activity android:name="UploadTweetQuick" android:theme="@android:style/Theme.Translucent">
+			<intent-filter android:label="TweetQuick" android:icon="@drawable/icon_tweetquick">
+				<action android:name="android.intent.action.SEND" />
+				<category android:name="android.intent.category.DEFAULT" />
+				<data android:mimeType="image/*" />
+			</intent-filter>
+		</activity>
+
+        <receiver android:name="widget.WidgetCounters2x1" android:label="@string/name_widget_counter_2x1">
+            <intent-filter>
+	        	<action android:name="com.javielinux.tweettopics.WIDGET_CONTROL" />
+	        	<data android:scheme="tweettopics_widget_tweets" />
+     		</intent-filter>
+			<intent-filter>
+				<action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+				<action android:name="com.javielinux.WIDGET_UPDATE_TWEETTOPICS_2x1" />
+				<!--
+				<category
+					android:name="android.intent.category.ALTERNATIVE" />
+				 -->
+			</intent-filter>
+			<meta-data android:name="android.appwidget.provider" android:resource="@xml/widget_data_counter_2x1" />
+		</receiver>
+
+		<activity android:name="widget.WidgetCountersConf2x1" android:theme="@android:style/Theme.Translucent">
+		</activity>
+
+        <receiver android:name="widget.WidgetCounters4x1" android:label="@string/name_widget_counter_4x1">
+            <intent-filter>
+	        	<action android:name="com.javielinux.tweettopics.WIDGET_CONTROL" />
+	        	<data android:scheme="tweettopics_widget_tweets" />
+     		</intent-filter>
+			<intent-filter>
+				<action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+				<action android:name="com.javielinux.WIDGET_UPDATE_TWEETTOPICS" />
+				<!-- 
+				<category
+					android:name="android.intent.category.ALTERNATIVE" />
+				 -->
+			</intent-filter>
+			<meta-data android:name="android.appwidget.provider" android:resource="@xml/widget_data_counter_4x1" />
+		</receiver>
+		
+		<activity android:name="widget.WidgetCountersConf4x1" android:theme="@android:style/Theme.Translucent">
+		</activity>
+		
+		
+        <receiver android:name="widget.WidgetTweets4x2" android:label="@string/name_widget_tweets_4x2">
+            <intent-filter>
+	        	<action android:name="com.javielinux.tweettopics.WIDGET_CONTROL" />
+	        	<data android:scheme="tweettopics_widget_tweets" />
+     		</intent-filter>
+			<intent-filter>
+				<action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+			</intent-filter>
+			<meta-data android:name="android.appwidget.provider" android:resource="@xml/widget_data" />
+		</receiver>
+		
+		<service android:name="widget.ServiceWidgetTweets4x2" />
+
+		<activity android:name="widget.WidgetTweetsConf4x2" android:theme="@android:style/Theme.Translucent">
+		</activity>
+		
+		<service android:name="preferences.ServiceTweetQuick"/>
+		<service android:name="updatestatus.ServiceUpdateStatus"/>
+		
+		<!-- AdMob -->
+		<activity android:name="com.google.ads.AdActivity"
+              android:configChanges="keyboard|keyboardHidden|orientation"/> 
+        <!--<activity android:name="com.google.ads.AdActivity"
+              android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"/>-->
+		
+		
+</application>
+
+	<uses-sdk android:minSdkVersion="4" android:targetSdkVersion="8" />
+	<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+	<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"></uses-permission>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /> 
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+	<uses-permission android:name="android.permission.INTERNET" />
+	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"></uses-permission>
+	<supports-screens android:anyDensity="true" android:largeScreens="true" android:normalScreens="true" android:smallScreens="true" />
+	<uses-permission android:name="android.permission.VIBRATE"></uses-permission>
+</manifest> 

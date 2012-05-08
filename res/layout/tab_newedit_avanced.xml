@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+<ScrollView android:id="@+id/ScrollView01" android:layout_width="fill_parent" android:layout_height="fill_parent">
+<LinearLayout android:orientation="vertical" android:layout_height="fill_parent" android:layout_width="fill_parent" android:padding="10sp">
+	<LinearLayout android:id="@+id/LinearLayout04" android:layout_height="wrap_content" android:layout_width="fill_parent">
+		<TextView style="@style/SearchTitle" android:layout_height="wrap_content" android:text="@string/languages" android:layout_margin="3sp" android:layout_width="80dip" android:layout_gravity="center"></TextView>
+		<Spinner android:layout_height="wrap_content" android:layout_margin="3sp" android:layout_width="fill_parent" android:id="@+id/sp_languages"></Spinner>
+	</LinearLayout>
+	<LinearLayout android:id="@+id/LinearLayout05" android:layout_height="wrap_content" android:layout_width="fill_parent">
+		<TextView style="@style/SearchTitle" android:layout_height="wrap_content" android:text="@string/attitude" android:layout_margin="3sp" android:layout_width="80dip" android:layout_gravity="center"></TextView>
+		<Spinner android:layout_height="wrap_content" android:layout_margin="3sp" android:layout_width="fill_parent" android:id="@+id/sp_attitude"></Spinner>
+	</LinearLayout>
+	<LinearLayout android:id="@+id/LinearLayout06" android:layout_height="wrap_content" android:layout_width="fill_parent">
+		<TextView style="@style/SearchTitle" android:layout_height="wrap_content" android:text="@string/filter" android:layout_margin="3sp" android:layout_width="80dip" android:layout_gravity="center"></TextView>
+		<Spinner android:layout_height="wrap_content" android:layout_margin="3sp" android:layout_width="fill_parent" android:id="@+id/sp_filter"></Spinner>
+	</LinearLayout>
+	<LinearLayout android:id="@+id/LinearLayout07" android:layout_height="wrap_content" android:layout_width="fill_parent">
+		<TextView style="@style/SearchTitle" android:layout_height="wrap_content" android:text="@string/search_source_short" android:layout_margin="3sp" android:layout_width="80dip"></TextView>
+		<EditText android:hint="@string/search_source" android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_margin="3sp" android:id="@+id/et_source"></EditText>
+	</LinearLayout>
+	
+	<CheckBox style="@style/SearchText" android:text="@string/no_retweet" android:id="@+id/cb_no_retweet" android:layout_width="wrap_content" android:layout_height="wrap_content"></CheckBox>
+	
+	<LinearLayout android:id="@+id/LinearLayout07" android:layout_height="wrap_content" android:layout_width="fill_parent">
+		<CheckBox style="@style/SearchText" android:layout_weight="1" android:text="@string/notifications" android:id="@+id/cb_notifications" android:layout_width="wrap_content" android:layout_height="wrap_content"></CheckBox>
+		<Button android:text="@string/how_notifications" android:id="@+id/bt_info_notifications" android:layout_width="wrap_content" android:layout_height="wrap_content"></Button>
+	</LinearLayout>
+	
+	<LinearLayout android:orientation="vertical" android:id="@+id/ll_notifications" android:layout_height="fill_parent" android:layout_width="fill_parent" android:padding="10sp">
+		<CheckBox style="@style/SearchText" android:text="@string/notifications_bar" android:id="@+id/cb_notifications_bar" android:layout_width="wrap_content" android:layout_height="wrap_content"></CheckBox>
+	</LinearLayout>
+</LinearLayout>	
+</ScrollView>
+</LinearLayout>

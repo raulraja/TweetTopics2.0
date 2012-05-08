@@ -1,0 +1,340 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string-array name="entries_prf_positions_links"><!-- 1.39 -->
+   	<item>Внизу текста</item>
+  	<item>Справа</item>   	
+  </string-array>
+
+  <string-array name="languages">
+    <item>All</item>
+    <item>English</item>
+    <item>Spanish</item>
+    <item>French</item>
+    <item>German</item>
+    <item>Japanese</item>
+    <item>Portuguese</item>
+    <item>Italian</item>
+    <item>Русский</item>
+  </string-array>
+  <string-array name="languages_values">
+    <item>all</item>
+    <item>en</item>
+    <item>es</item>
+    <item>fr</item>
+    <item>de</item>
+    <item>ja</item>
+    <item>pt</item>
+    <item>it</item>
+    <item>ru</item>
+  </string-array>
+  <string-array name="languages_translates">
+    <item>English</item>
+    <item>Spanish</item>
+    <item>French</item>
+    <item>German</item>
+    <item>Japanese</item>
+    <item>Portuguese</item>
+    <item>Italian</item>
+    <item>Русский</item>
+    <item>Indonesia</item>
+  </string-array>
+  <string-array name="languages_translates_values">
+    <item>en</item>
+    <item>es</item>
+    <item>fr</item>
+    <item>de</item>
+    <item>ja</item>
+    <item>pt</item>
+    <item>it</item>
+    <item>ru</item>
+    <item>id</item>
+  </string-array>
+  <string-array name="select_dialog_download_msg_timeline">
+    <item>Все сообщения</item>
+    <item>Last 100</item>
+    <item>Last 60</item>
+    <item>Last 40</item>
+    <item>Last 20</item>
+  </string-array>
+  <string-array name="items_tweetprogrammed">
+    <item>Редактировать</item>
+    <item>Удалить</item>
+  </string-array>
+  <string-array name="items_tweetdraft">
+    <item>Редактировать</item>
+    <item>Удалить</item>
+  </string-array>
+  <string-array name="led_colors">
+    <item>Красный</item>
+    <item>Желтый</item>
+    <item>Голубой</item>
+    <item>Зеленый</item>
+    <item>Оранжевый</item>
+    <item>Фиолетовый</item>
+  </string-array>
+  <string-array name="led_colors_values">
+    <item>#FFFF0000</item>
+    <item>#FFf0ff00</item>
+    <item>#FF0000ff</item>
+    <item>#FF00ff00</item>
+    <item>#FFffc207</item>
+    <item>#FFd013b3</item>
+  </string-array>
+  <string-array name="items_show_tweets">
+    <item>Показать дату</item>
+    <item>Показать упоминания</item>
+  </string-array>
+  <string-array name="items_user_actions">
+    <item>Просмотр друзей</item>
+    <item>Просмотр подписчиков</item>
+    <item>Просмотр списка</item>
+    <item>Окраска твитов</item>
+    <!-- v 1.20  -->
+    <item>Включить в список</item>
+    <item>Упомянуть</item>
+    <item>Скрыть</item>
+    <item>Создать сообщение</item>
+  </string-array>
+  <string-array name="items_hashtag_actions">
+    <item>Показать сообщения</item>
+    <item>Скрыть</item>
+    <item>Создать сообщение</item>
+    <item>Создать по умолчанию</item>
+  </string-array>
+  <string-array name="items_tweetquick">
+    <item>Редактировать</item>
+    <item>Сброить счетчик</item>
+    <item>Удалить</item>
+  </string-array>
+  <string-array name="items_colors">
+    <!-- v 1.20  -->
+    <item>Редактировать</item>
+    <item>Удалить</item>
+  </string-array>
+  <string-array name="items_quietwords">
+    <item>Удалить</item>
+  </string-array>
+  <string-array name="select_type_image">
+    <item>Сделать снимок</item>
+    <item>Выбрать из Галереи</item>
+  </string-array>
+  <string-array name="actions_import">
+    <item>Из буфера обмена</item>
+    <item>Сканирование QR кода</item>
+  </string-array>
+  <string-array name="actions_export">
+    <item>Написать сообщение</item>
+    <item>Внешнее приложение</item>
+  </string-array>
+  <string-array name="actions_search">
+    <item>Посмотреть</item>
+    <item>Редактировать</item>
+    <item>Поделиться</item>
+    <item>Удалить</item>
+  </string-array>
+  <string-array name="actions_search_temp">
+    <item>Посмотреть</item>
+    <item>Преобразовать в поиске</item>
+    <item>Удалить</item>
+  </string-array>
+  <string-array name="actions_users">
+    <item>Редактировать пользователя</item>
+    <item>Обновить аватар</item>
+    <item>Сохранить по дате на телефоне</item>
+    <item>Удалить</item>
+  </string-array>
+  <string-array name="actions_samples_search">
+    <item>Android: General</item>
+    <item>Android: Games</item>
+    <item>Android: Aplications</item>
+    <item>Photo: Tilt Shift</item>
+    <item>Photo: HDR</item>
+    <item>Series: True Blood</item>
+    <item>Series: The Walking Dead</item>
+    <item>Series: Lost Number</item>
+    <item>News Geek</item>
+    <item>News Recipe</item>
+    <item>Videos: Slow motion</item>
+    <item>Videos: Stop motion</item>
+  </string-array>
+  <string-array name="actions_retweet">
+    <item>Ретвитнуть</item>
+    <item>Редактировать сообщение</item>
+  </string-array>
+  <string-array name="actions_reply">
+    <item>Ответить всем</item>
+    <item>Ответить всем (копия)</item>
+    <item>Ответить</item>
+  </string-array>
+  <string-array name="actions_retweets_options">
+    <item>Ваше сообщение, ретвитнули</item>
+    <item>Ваши ретвиты</item>
+    <item>Ретвитнули другие</item>
+  </string-array>
+  <string-array name="actions_list_options">
+    <item>Мои списки</item>
+    <item>Списки подписчиков</item>
+  </string-array>
+  <string-array name="attitude">
+    <item>Нормально</item>
+    <item>Позитивный настрой</item>
+    <item>Негативный настрой</item>
+  </string-array>
+  <string-array name="filter">
+    <item>Без фильтров</item>
+    <item>Только сообщения со ссылками</item>
+    <item>Только сообщения с изображениями</item>
+    <item>Только сообщения с видео</item>
+    <item>Только сообщения с видео и изображениями</item>
+    <item>Только сообщения с RSS новостями</item>
+    <item>Только вопросы</item>
+    <item>Android приложения</item>
+  </string-array>
+  <string-array name="entries_prf_orientation">
+    <!-- v 1.30  -->
+    <item>Портретный</item>
+    <item>Авто</item>
+  </string-array>
+  <string-array name="entries_prf_orientation_values">
+    <item>1</item>
+    <item>2</item>
+  </string-array>
+  <string-array name="entries_prf_n_result">
+    <item>20</item>
+    <item>40</item>
+    <item>60</item>
+    <item>80</item>
+    <item>100</item>
+  </string-array>
+  <string-array name="entries_prf_time_refresh">
+    <item>Никогда</item>
+    <item>Каждые 5 минут</item>
+    <item>Каждые 10 минут</item>
+    <item>Каждые 15 минут</item>
+    <item>Каждые 30 минут</item>
+    <item>Каждый час</item>
+  </string-array>
+  <string-array name="entries_prf_time_refresh_values">
+    <item>0</item>
+    <item>5</item>
+    <item>10</item>
+    <item>15</item>
+    <item>30</item>
+    <item>60</item>
+  </string-array>
+  <string-array name="entries_prf_notifications">
+    <item>Никогда</item>
+    <item>Каждые минуту</item>
+    <item>Каждые 5 минут</item>
+    <item>Каждые 10 минут</item>
+    <item>Каждые 15 минут</item>
+    <item>Каждые 30 минут</item>
+    <item>Каждый час</item>
+    <item>Каждые 2 часа</item>
+    <item>Каждые 6 часов</item>
+    <item>Каждые 12 часов</item>
+    <item>Каждый день</item>
+  </string-array>
+  <string-array name="entries_prf_notifications_values">
+    <item>0</item>
+    <item>2</item>
+    <item>5</item>
+    <item>10</item>
+    <item>15</item>
+    <item>30</item>
+    <item>60</item>
+    <item>120</item>
+    <item>360</item>
+    <item>720</item>
+    <item>1440</item>
+  </string-array>
+  <string-array name="entries_prf_username_right">
+    <item>Ничего</item>
+    <item>Источник сообщения</item>
+    <item>Полное имя пользователя</item>
+  </string-array>
+  <string-array name="entries_prf_username_right_values">
+    <item>1</item>
+    <item>2</item>
+    <item>3</item>
+  </string-array>
+  <string-array name="entries_prf_links">
+    <item>Не показывать ссылки в сообщении</item>
+    <item>Показать только изображения и видео</item>
+    <item>Показать все ссылки</item>
+  </string-array>
+  <string-array name="entries_prf_links_values">
+    <item>1</item>
+    <item>2</item>
+    <item>3</item>
+  </string-array>
+  <string-array name="entries_prf_vibrate">
+    <item>Посекунды</item>
+    <item>одну секунду</item>
+    <item>Полторы секунды</item>
+    <item>Four 1/4 sec</item> <!-- v 1.46  -->
+  </string-array>
+  <string-array name="entries_prf_vibrate_values">
+    <item>1</item>
+    <item>2</item>
+    <item>3</item>
+    <item>4</item> <!-- v 1.46  -->
+  </string-array>
+  <string-array name="entries_prf_order_list">
+    <item>Порядок создания</item>
+    <item>Обратный порядок создания</item>
+    <item>Сначала, часто используемое</item>
+    <item>Сначала, последнее использованное</item>
+  </string-array>
+  <string-array name="entries_prf_order_list_values">
+    <item>1</item>
+    <item>2</item>
+    <item>3</item>
+    <item>4</item>
+  </string-array>
+  <string-array name="entries_prf_size_photos">
+    <item>Маленькие (640x480)</item>
+    <item>Средние (1024x768)</item>
+    <item>Оригинальный размер</item>
+  </string-array>
+  <string-array name="entries_prf_size_photos_values">
+    <item>1</item>
+    <item>2</item>
+    <item>3</item>
+  </string-array>
+  <string-array name="entries_prf_service_image">
+    <item>YFROG</item>
+    <item>TWITPIC</item>
+    <item>LOCKERZ</item>
+  </string-array>
+  <string-array name="entries_prf_service_image_values">
+    <item>1</item>
+    <item>2</item>
+    <item>3</item>
+  </string-array>
+  <string-array name="entries_prf_service_shorter">
+    <item>Bit.ly</item>
+    <item>Karmacracy</item>
+  </string-array>
+  <string-array name="entries_prf_service_shorter_values">
+    <item>1</item>
+    <item>2</item>
+  </string-array>
+  <string-array name="entries_prf_save_avatars">
+    <item>На карте SD</item>
+    <item>В памяти телефона</item>
+  </string-array>
+  <string-array name="entries_prf_save_avatars_values">
+    <item>1</item>
+    <item>2</item>
+  </string-array>
+  <string-array name="entries_prf_themes">
+    <!-- 1.32 -->
+    <item>Светлая</item>
+    <item>Темная</item>
+  </string-array>
+  <string-array name="entries_prf_themes_values">
+    <item>1</item>
+    <item>2</item>
+  </string-array>
+</resources>

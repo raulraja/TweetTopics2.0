@@ -1,0 +1,25 @@
+TweetQuick es un servicio de TweetTopics mediante el cual podremos publicar fotografías rápidamente en Twitter. 
+
+Para poder hacerlo tenemos que preparar los mensajes previamente y desde la galería de Android podremos enviar a TweetQuick las fotografías seleccionando el mensaje que deseemos publicar.
+
+Para que todos los mensajes no sean idénticos podremos usar modificadores que harán que cada mensaje sea distinto. Los modificadores son:
+
+* %COUNTER% Un contador que se autoincrementará cada vez que enviemos una fotografía
+* %ADDRESS% Publicará la dirección (calle y CP) en la que nos encontremos en ese momento
+* %PHOTO% Lugar del texto donde queremos que aparezca nuestra imagen
+
+Así cada mensaje podrá ser distinto. Imaginemos que vamos hacer una ruta en bicicleta por la montana. Podemos preparar un texto como el siguiente:
+
+"%PHOTO% Ruta en bicicleta por la montaña (Foto %COUNTER%)"
+
+O pensemos que nos encontramos en un evento importante y no podemos estar continuamente escribiendo tweets. Para no perder tiempo podemos preparar varios mensajes:
+
+"En el evento de Samgsung en el #mwc %PHOTO%"
+
+"En la charla de HTC en el #mwc %PHOTO%"
+
+"Comiendo por %ADDRESS% en #mwc %PHOTO%"
+
+Y por si fuera poco también podrás enviar mensajes directos a usuarios que sigues
+
+La manera más fácil y rápida de publicar fotografías en Twitter

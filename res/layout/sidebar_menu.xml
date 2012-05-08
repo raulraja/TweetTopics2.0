@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+          
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+      android:orientation="vertical" android:layout_width="fill_parent"
+      android:layout_weight="1"
+      android:layout_height="wrap_content">
+    
+	    <LinearLayout 
+	    	android:gravity="center_horizontal"
+	    	android:paddingLeft="5dip"
+	    	android:paddingRight="5dip"
+	    	android:orientation="horizontal"
+		    android:layout_width="fill_parent"
+		    android:layout_height="wrap_content">
+			    
+			<Button 
+				style="@style/ButtonSidebar"
+				android:layout_weight="1"
+				android:gravity="center_horizontal"
+				android:minWidth="80dip"
+				android:id="@+id/bt_sidebar_1" android:layout_width="wrap_content" 
+				android:layout_height="wrap_content"></Button>
+			<Button 
+				style="@style/ButtonSidebar"
+				android:layout_weight="1"
+				android:gravity="center_horizontal"
+				android:minWidth="80dip"
+				android:id="@+id/bt_sidebar_2" android:layout_width="wrap_content" 
+				android:layout_height="wrap_content"></Button>
+			<Button 
+				style="@style/ButtonSidebar"
+				android:layout_weight="1"
+				android:gravity="center_horizontal"
+				android:minWidth="80dip"
+				android:id="@+id/bt_sidebar_3" android:layout_width="wrap_content" 
+				android:layout_height="wrap_content"></Button>
+				
+		</LinearLayout>
+				
+	    <LinearLayout 
+	    	android:gravity="center_horizontal"
+	    	android:paddingLeft="5dip"
+	    	android:paddingRight="5dip"
+	    	android:orientation="horizontal"
+		    android:layout_width="fill_parent"
+		    android:layout_height="wrap_content">
+		    
+			<Button 
+				style="@style/ButtonSidebar"
+				android:layout_weight="1"
+				android:gravity="center_horizontal"
+				android:minWidth="80dip"
+				android:id="@+id/bt_sidebar_4" android:layout_width="wrap_content" 
+				android:layout_height="wrap_content"></Button>
+			<Button 
+				style="@style/ButtonSidebar"
+				android:layout_weight="1"
+				android:gravity="center_horizontal"
+				android:minWidth="80dip"
+				android:id="@+id/bt_sidebar_5" android:layout_width="wrap_content" 
+				android:layout_height="wrap_content"></Button>
+				
+			<Button 
+				style="@style/ButtonSidebar"
+				android:layout_weight="1"
+				android:gravity="center_horizontal"
+				android:minWidth="80dip"
+				android:id="@+id/bt_sidebar_6" android:layout_width="wrap_content" 
+				android:layout_height="wrap_content"></Button>
+				
+		</LinearLayout>
+
+</LinearLayout>

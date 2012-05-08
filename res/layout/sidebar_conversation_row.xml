@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layouts.TweetConversationItem xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="wrap_content"
+    android:layout_width="fill_parent"
+    android:paddingLeft="10dip"
+    android:paddingTop="10dip">
+
+    <ImageView
+        android:id="@+id/user_avatar_sidebar"
+        android:layout_below="@+id/txt_type"
+		android:src="@drawable/avatar"
+		style="@style/TweetAvatarMedium" />
+
+    <LinearLayout
+        android:id="@+id/tweet_user_name_layout_sidebar"
+        android:layout_below="@+id/txt_type"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/user_avatar_sidebar"
+        android:layout_width="fill_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tweet_user_name_text_sidebar"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:lines="1"
+            style="@style/TweetTitle" />
+        <TextView
+            android:id="@+id/tweet_date_sidebar"
+            android:layout_height="wrap_content"
+		   	android:layout_width="wrap_content"
+            android:text="1h"
+            style="@style/TweetDateSidebar" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tweet_text_sidebar"
+        android:layout_below="@+id/user_avatar_sidebar"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        style="@style/TweetTextSidebar" />
+
+</layouts.TweetConversationItem>

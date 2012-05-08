@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+
+    <declare-styleable name="PullToRefresh">
+        <attr name="adapterViewBackground" format="reference|color" />
+        <attr name="headerBackground" format="reference|color" />
+        <attr name="headerTextColor" format="color" />
+        <attr name="mode">
+            <flag name="pullDownFromTop" value="0x1" />
+            <flag name="pullUpFromBottom" value="0x2" />
+        </attr>
+    </declare-styleable>
+  
+  <attr name="color_tweet_usename" format="color" />
+  <attr name="color_tweet_source" format="color" />
+  <attr name="color_tweet_date" format="color" />
+  <attr name="color_tweet_text" format="color" />
+  <attr name="color_tweet_retweet" format="color" />
+  
+  <attr name="color_title_general" format="color" />
+  <attr name="color_desc_general" format="color" />
+  
+  <attr name="color_link_general" format="color" />
+  
+  <attr name="color_textbutton_general" format="color" />
+  
+  <attr name="color_textbutton_sidebar" format="color" />
+  
+  <attr name="color_title_search" format="color" />
+  <attr name="color_title_search_short" format="color" />
+  
+  <attr name="color_grid_search" format="color" />
+    
+  <attr name="bottom_bar_background" format="string" />
+  
+  <attr name="bg_sidebar" format="string" />
+  
+  <attr name="color_shadow_listview" format="color" />
+  
+  <attr name="color_background_solid" format="color" />
+  
+  <attr name="color_background_text_info_background" format="color" />
+  
+  <attr name="background_app" format="string" />
+  <attr name="background_user" format="string" />
+  
+  <attr name="background_reply" format="string" />
+
+    
+</resources>

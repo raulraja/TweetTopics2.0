@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<values>
+	
+	<row table="type_colors" id="1">
+		<field name="name" value="color_family" />
+		<field name="pos" value="2" />
+	</row>
+	
+	<row table="type_colors" id="2">
+		<field name="name" value="color_friends" />
+		<field name="pos" value="3" />
+	</row>
+
+</values>

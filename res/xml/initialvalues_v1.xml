@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<values>
+	
+	<row table="icons" id="1">
+		<field name="icon" value="letter_az" />
+		<field name="icon_small" value="letter_az_small" />
+		<field name="for_user" value="1" />
+	</row>
+	
+	<row table="icons" id="2">
+		<field name="icon" value="icon_android" />
+		<field name="icon_small" value="icon_android_small" />
+		<field name="for_user" value="1" />
+	</row>
+	
+	<row table="icons" id="3">
+		<field name="icon" value="icon_cinema" />
+		<field name="icon_small" value="icon_cinema_small" />
+		<field name="for_user" value="1" />
+	</row>
+	
+	<row table="icons" id="4">
+		<field name="icon" value="icon_cinema2" />
+		<field name="icon_small" value="icon_cinema2_small" />
+		<field name="for_user" value="1" />
+	</row>
+	
+	<row table="icons" id="5">
+		<field name="icon" value="icon_games" />
+		<field name="icon_small" value="icon_games_small" />
+		<field name="for_user" value="1" />
+	</row>
+	
+	<row table="icons" id="6">
+		<field name="icon" value="icon_mobile" />
+		<field name="icon_small" value="icon_mobile_small" />
+		<field name="for_user" value="1" />
+	</row>
+	
+	<row table="icons" id="7">
+		<field name="icon" value="icon_mobile2" />
+		<field name="icon_small" value="icon_mobile2_small" />
+		<field name="for_user" value="1" />
+	</row>
+	
+	<row table="icons" id="8">
+		<field name="icon" value="icon_mp3" />
+		<field name="icon_small" value="icon_mp3_small" />
+		<field name="for_user" value="1" />
+	</row>
+	
+	<row table="icons" id="9">
+		<field name="icon" value="icon_music" />
+		<field name="icon_small" value="icon_music_small" />
+		<field name="for_user" value="1" />
+	</row>
+	
+	<row table="icons" id="10">
+		<field name="icon" value="icon_music2" />
+		<field name="icon_small" value="icon_music2_small" />
+		<field name="for_user" value="1" />
+	</row>
+	
+	<row table="icons" id="11">
+		<field name="icon" value="icon_guitar" />
+		<field name="icon_small" value="icon_guitar_small" />
+		<field name="for_user" value="1" />
+	</row>
+	
+	<row table="icons" id="12">
+		<field name="icon" value="icon_guitar2" />
+		<field name="icon_small" value="icon_guitar2_small" />
+		<field name="for_user" value="1" />
+	</row>
+	
+	<row table="icons" id="13">
+		<field name="icon" value="icon_saxo" />
+		<field name="icon_small" value="icon_saxo_small" />
+		<field name="for_user" value="1" />
+	</row>
+	
+	<row table="icons" id="14">
+		<field name="icon" value="icon_news" />
+		<field name="icon_small" value="icon_news_small" />
+		<field name="for_user" value="1" />
+	</row>
+
+	<row table="icons" id="15">
+		<field name="icon" value="icon_laptop" />
+		<field name="icon_small" value="icon_laptop_small" />
+		<field name="for_user" value="1" />
+	</row>
+	
+	<row table="icons" id="16">
+		<field name="icon" value="icon_pc" />
+		<field name="icon_small" value="icon_pc_small" />
+		<field name="for_user" value="1" />
+	</row>
+	
+	<row table="icons" id="17">
+		<field name="icon" value="icon_photo" />
+		<field name="icon_small" value="icon_photo_small" />
+		<field name="for_user" value="1" />
+	</row>
+	
+	<row table="icons" id="18">
+		<field name="icon" value="icon_photo2" />
+		<field name="icon_small" value="icon_photo2_small" />
+		<field name="for_user" value="1" />
+	</row>
+	
+	<row table="icons" id="19">
+		<field name="icon" value="icon_photo3" />
+		<field name="icon_small" value="icon_photo3_small" />
+		<field name="for_user" value="1" />
+	</row>
+	
+	<row table="icons" id="20">
+		<field name="icon" value="icon_tv" />
+		<field name="icon_small" value="icon_tv_small" />
+		<field name="for_user" value="1" />
+	</row>
+	
+	<row table="icons" id="21">
+		<field name="icon" value="icon_web" />
+		<field name="icon_small" value="icon_web_small" />
+		<field name="for_user" value="1" />
+	</row>
+	
+	<row table="icons" id="22">
+		<field name="icon" value="icon_gps" />
+		<field name="icon_small" value="icon_gps_small" />
+		<field name="for_user" value="1" />
+	</row>
+
+</values>

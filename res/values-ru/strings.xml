@@ -1,0 +1,726 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+	<!-- v 1.55  -->
+
+	<string name="my_tweets">Ваше сообщение, ретвитнули</string>
+	<string name="my_retweets">Ваши ретвиты</string>
+	<string name="retweet_others">Ретвитнули другие</string>
+	
+	<string name="my_lists">Мои списки</string>
+	<string name="list_follow_me">Списки подписчиков</string>
+
+	<!-- v 1.39  -->
+	
+	<string name="size_title">Размер заголовков</string>
+	<string name="size_text">Размер текста</string>
+	
+	<string name="discard">Сброс</string>
+	<string name="save_draft">Сохранить проект</string>
+	<string name="quit_newstatus">Сообщение не было отправлено. Что вы хотите сделать?</string>
+	
+	<string name="retweet_url">Ретвит URL Twitter</string>
+	
+	<string name="title_prf_positions_links">Позиция ссылки</string>
+    <string name="summary_prf_positions_links">Размещение ссылки.</string>
+
+	<!-- v 1.37  -->
+	
+	<string name="problem_image">Проблема с изображением. Пожалуйста, повторите попытку позже</string>
+	
+	<string name="title_prf_notif_in_timeline">О новых сообщениях</string>
+    <string name="summary_prf_notif_in_timeline">Уведомлять о новых сообщениях</string>
+	
+	<string name="tweettopics_searches">TweetTopics поиск</string>
+	<string name="messages_in">в сообщениях</string>
+	<string name="notif_timeline">в хронологии</string>
+
+	<!-- v 1.35  -->
+	
+	<string name="quit_user">Пользователь</string>
+	<string name="quit_word">Слово</string>
+	<string name="quit_source">Источник твита</string>
+
+	<!-- v 1.33  -->
+	
+	<string name="dialog_exit">Выйти из TweetTopics</string>
+	<string name="dialog_exit_msg">Фоновые службы авто-обновления будут отключены. Хотите отключить службу авто-обновления сообщений?</string>
+	
+	<string name="download_msg">Количество сообщений для загрузки</string>
+	
+	<string name="thanks">Спасибо</string>
+	<string name="follow_tweettopics">Подписаться @tweettopics_app</string>
+	<string name="follow_tweettopics_msg">Вы можете следить за обновлениями приложения. Подписаться на @tweettopics_app?</string>
+	
+	<string name="sent">Отправлено</string>
+	<string name="to_send">Отправитель</string>
+	<string name="error_sending">Ошибка отправки</string>
+	
+	<string name="txt_download_mentions_directs">Загрузка упоминаний и сообщений</string>
+	
+	<string name="draft_save">Проект был сохранен</string>
+	<string name="programmed_save">Расписание сохранено</string>
+	
+	<string name="need_text">Вам нужно написать текст</string>
+	
+	<string name="new_draft">Создать проект</string>
+	<string name="view_draft">Проекты</string>
+	<string name="new_programmed">График сообщений</string>
+	
+	<string name="title_prf_draft">Проекты</string>
+    <string name="summary_prf_draft">Подготовить шаблоны сообщений, чтобы использовать после</string>
+    
+	<string name="title_prf_tweetprogrammed">Планируйте свои сообщения</string>
+    <string name="summary_prf_tweetprogrammed">Подготовить сообщение, для отправки в заданое время</string>
+
+	<string name="draft">Проект</string>
+
+	<string name="title_no_geo">Географическое положение</string>
+	<string name="text_no_geo">Не удалось найти положение мобильного телефона. Хотите отправить сообщение в любом случае?</string>
+
+	<!-- v 1.32  -->
+	
+	<string name="pull_to_refresh_pull_label">Потяните для обновления...</string>
+    <string name="pull_to_refresh_release_label">Отпустить для обновления...</string>
+    <string name="pull_to_refresh_refreshing_label">Загрузка...</string>
+    <string name="pull_to_refresh_tap_label">Нажать для обновления...</string>
+	
+	<string name="title_prf_theme">Тема</string>
+    <string name="summary_prf_theme">Выбрать тему оформления</string>
+    
+    <string name="title_prf_time_refresh">Авто обновление</string>
+    <string name="summary_prf_time_refresh">Протокол последнего сообщения, чтобы обнвить график в программе</string>
+    
+    <string name="refresh_theme">Если вы не видите тему попробуйте перезапустить приложение</string>
+    
+    <string name="problem_twitter_auth">Невозможно пройти авторизацию. Пожалуйста, повторите попытку позже</string>
+
+	<!-- v 1.3  -->
+	
+	<string name="title_prf_orientation">Ориентация экрана</string>
+    <string name="summary_prf_orientation">Выберите тип ориентации экрана</string>
+	
+	<string name="send_twitlonger">Отправить TwitLonger</string>
+	
+	<string name="changelog">Изменения</string>
+	
+	<string name="preparing_link">Подготовка ссылки. Подождите</string>
+	
+	<string name="no_more_links">Нет больше ссылок</string>
+	
+	<string name="no_more_tweets">Нет больше сообщений</string>
+	
+	<string name="change_country">Изменить страну</string>
+	
+	<string name="translating">Перевести</string>
+	
+	<string name="back_to_menu">Назад в меню</string>
+
+	<string name="delete_tweet_correct">Сообщение успешно удалено</string>
+	<string name="delete_tweet_problem">Ошибка при удалении сообщения. Пожалуйста, повторите попытку позже</string>
+	<string name="delete_tweet">Удалить сообщение</string>
+
+	<string name="seconds">секунд</string>
+	<string name="minutes">минут</string>
+	<string name="hours">часов</string>
+	<string name="days">дней</string>
+	<string name="and">и</string>
+		
+	<string name="date_long"> %1$s назад</string>
+
+	<string name="tweets_hidden">Скрытых сообщений</string>
+	<string name="sidebar_image">%1$s изображений</string>
+	<string name="sidebar_video">%1$s видео</string>
+	<string name="sidebar_link">ссылок</string>
+
+	<!-- v 1.20  -->
+	
+	<string name="error_view_url">Не удается получить доступ к следующему URL:</string>
+	
+	<string name="dialog_default_text">Текст по умолчанию</string>
+    <string name="dialog_default_text_msg">Напишите текст здесь и установите его по умолчанию для всех новых твитов</string>  
+    
+	<string name="default_text">Текст по умолчанию</string>
+	<string name="clean">Очистить</string>
+	
+	<string name="view_map">Показать на карте</string>
+	<string name="no_tweet_map">Сообщение без локации</string>
+	
+	<string name="color_add_user">Цвет был установлен для пользователей</string>
+	<string name="color_delete_user">Цвет был удален для пользователей</string>
+	
+	<string name="color_family">Близкие</string>
+	<string name="color_friends">Друзья</string>
+	
+	<string name="title_dialog_color">Новый цвет</string>
+	<string name="desc_dialog_color">Выберите имя и цвет, чтобы выделять сообщения</string>
+	
+	<string name="title_prf_color_tweets">Окраска сообщений</string>
+	<string name="summary_prf_color_tweets">Выберите цвет твитов для пользователя и hastags</string>
+	
+	<string name="title_prf_color_mentions">Окраска упоминаний</string>
+	<string name="summary_prf_color_mentions">Выберите цвет упоминаний</string>
+	
+	<string name="title_prf_color_favorite">Окраска избранного</string>
+	<string name="summary_prf_color_favorite">Выберите цвет для избранного</string>
+
+	<!-- v 1.19  -->
+	
+	<string name="version">1.04</string>
+    <string name="hello">Привет МИР, TweetTopics!</string>
+    <string name="app_name">TweetTopics</string>
+    <string name="no_users">Нет пользователей. Для того чтобы использовать TweetTopics, нужно добавить хотя бы одного пользователя Twitter</string>
+    <string name="search">Поиск</string>
+    <string name="alert_dialog_ok">Принять</string>
+    <string name="alert_dialog_cancel">Отменить</string>
+    <string name="alert_dialog_close">Закрыть</string>
+    <string name="loading_fromweb">Подключение к сети</string>
+    <string name="loading_title">Загрузка сообщений</string>
+    <string name="loading_conversation">Загрузка бесед</string>
+    <string name="loading_users">Загрузка пользователей</string>
+    <string name="loading_favorites">Загрузка избранного</string>
+    <string name="loading_imagen">Загрузка изображения</string>
+    <string name="loading_info_web">Загрузка информации из сети</string>
+    <string name="loading_description">Подключение к Twitter</string>
+    <string name="loading">Загрузка</string>
+    <string name="connecting">Соединение</string>
+    <string name="uploading">Отправка...</string>
+    
+    <string name="no_is_follower">Вы не можете отправить сообщение пользователю, который не читает вас.</string>
+    
+    <string name="karmacracy_key">Karmacracy key</string>
+    <string name="bitly_key">Bit.ly key</string>
+    
+    <string name="goto_web">Перейти на веб</string>
+    
+    <string name="suscribers">подписки</string>
+    <string name="members">members</string>
+    
+    <string name="use_default">По умолчанию</string>
+    <string name="delete_default">Удалить значение по умолчанию</string>
+    
+    <string name="loading_title_lists">Списки пользователей</string>
+    <string name="loading_description_lists">Загрузка списка пользователей</string>
+    
+    <string name="no_list">Этот пользователь не в списоке</string>
+    
+    <string name="user_in_list">Пользователь добавлен в список</string>
+    
+    <string name="list">Список</string>
+    <string name="show_lists">Показать списки</string>
+    <string name="show_profile">Показать профиль</string>
+    
+    <string name="show_retweets">Показать ретвиты</string>
+    <string name="retweets_ofme">Ваши твиты, ретвиты</string>
+    <string name="retweets_byme">Ретвитнули вы</string>
+    <string name="retweets_tome">Ретвитнули другие</string>
+    
+    <string name="friends">друзья</string>
+    <string name="friends_of">Друзья</string>
+    <string name="followers_of">Последователи</string>
+    
+    <string name="search_users">Поиск пользователей</string>
+    
+    <string name="view_conversation">Посмотреть разговор</string>
+    
+    <string name="retweet_now">Новый ретвит</string>
+    <string name="retweet">Ретвит</string>
+    <string name="now">сейчас</string>
+    <string name="edit_message">Редактировать сообщение</string>
+    <string name="show_retweets">Показать ретвит</string>
+    
+    <string name="user">Пользователь</string>
+    <string name="word">Слово</string>
+    <string name="title_quiet_words">Пользователь и слово</string>
+    <string name="desc_quiet_words">Введите пользователя или слово, чтобы скрыть</string>
+    
+    <string name="title_new_retweet">Новый ретвит</string>
+    <string name="desc_new_retweet">Напишите слово, которое вы хотите предстать перед перечириканье</string>
+    
+    <string name="photo_upload_correct">Изображение отправлено</string>
+    <string name="photo_upload_problem">Ошибка при отправке изображения</string>
+    <string name="howto_use">Как использовать</string>
+    
+    <string name="photo_only">Только фото</string>
+    
+    <string name="upload_photo">Загрузка изображений в Twitter</string>
+    
+    <string name="no_elements">Нет пунктов на данный момент</string>
+    <string name="counter">Счетчик</string>
+    <string name="address">Адрес</string>
+    <string name="photo">Фото</string>
+    <string name="text">Текст</string>
+    <string name="send_dm_to">Отправить прямое сообщение</string>
+    <string name="username">Username</string>
+    
+    <string name="add">Добавить</string>
+    <string name="convert_search">Преобразование поиска</string>
+    <string name="convert_search_correct">Успешно конвертированы</string>
+    
+    <string name="hashtag_hidden_correct">Hashtag был скрыт в вашем графике</string>
+    <string name="user_hidden_correct">Пользователь был скрыт в вашем графике</string>
+    
+    <string name="font_size">Размер шрифта</string>
+    <string name="size">Размер</string>
+    
+    <string name="error_general">Ошибка. Попробуйте еще ​​раз позже</string>
+    
+    <string name="activate">Активировать</string>
+    <string name="deactivate">Деактивировать</string>
+    <string name="yes">Да</string>
+    <string name="no">Нет</string>
+    <string name="title_no_save_timeline">Сохранить график</string>
+    
+    <string name="text_no_save_timeline">If you enable this option saves the user\'s timeline in your database. Can be used if you don\'t want to follow an user but you want to write tweets and have notifications of mentions and direct messages, thereby improving battery performance. The TimeLine will be downloaded directly. Want to save your TimeLine on the phone?</string>
+	<string name="save_timeline">Сохранить график</string>
+	<string name="no_save_timeline">Не сохранять график</string>
+    
+    <string name="notif_mentions">Упоминания</string>
+    <string name="notif_directs">Прямые сообщения</string>
+    <string name="notif_searches">Поисковые запросы</string>
+    
+    <string name="load_data_first">Загрузка данных в первый раз. Этот процесс может занять немного больше времени, чем обычно</string>
+    <string name="mark_last_noread">Помечено в качестве последнего непрочитанного</string>
+    <string name="configure_widget">Настройка виджетов</string>
+    
+    <string name="alarm_longtime_title">Превышено время</string>
+    <string name="alarm_longtime_desc">обновления в фоновом режиме не обнаружены или все зависло ¿Вы хотите остановить это?</string>
+    <string name="alarm_longtime_stop">Остановить</string>
+    <string name="alarm_longtime_wait">Подождать</string>
+    
+    <string name="adw_integration_priority">Выберите приоритет и цвет желаемого сообщений, которые будут показаны на ADW Launcher запуска приложений. В случае, если Есть нет сообщений, она передаст следующему, будучи первым один с более высокий приоритет</string>
+    
+    <string name="adw_integration_search_title">Поисковые запросы</string>
+    <string name="adw_integration_search_desc">Общая сумма новых сообщений из уведомление поисков.</string>
+    
+    <string name="adw_integration_timeline_title">Главная лента</string>
+    <string name="adw_integration_timeline_desc">Новые сообщения в указанное время для пользователей</string>
+    
+    <string name="adw_integration_mentions_title">Упоминания</string>
+    <string name="adw_integration_mentions_desc">Новые упоминания отправленные пользователям</string>
+    
+    <string name="adw_integration_directs_title">Прямые сообщения</string>
+    <string name="adw_integration_directs_desc">Прямые сообщения, полученные пользователями</string>
+    
+    <string name="txt_shorter_0">Нет ссылки, чтобы сократить</string>
+    <string name="txt_shorter_n">сократить ссылки</string>
+    
+    <string name="txt_geoloc_on">Географическое положение активировано</string>
+    <string name="txt_geoloc_off">Географическое положение отключено</string>
+    
+    <string name="geoloc">Географическое положение</string>
+    <string name="shorter">Сокращать</string>
+    
+    <string name="txt_type_reply">Ответить на</string>
+    <string name="txt_type_retweet">Оригинал ретвита</string>
+    <string name="txt_type_dm">Прямое сообщение к</string>
+    
+    <string name="wait_moment">Обновление. Пожалуйста, подождите минуту</string>
+    <string name="wait_moment_background">Обновление в фоне. Пожалуйста, подождите минуту</string>
+    
+    <string name="select_action">Выберите действие</string>
+    
+    <string name="retweet_by">Ретвит на</string>
+    
+    <string name="send_direct_message">Отправить прямое сообщение</string>
+    
+    <string name="direct_messages">Личное</string>
+    <string name="new_search">Новый поиск</string>
+    <string name="goto_lastread">К последнему прочитанному</string>
+    
+    <string name="new_status">Что происходит?</string>
+    <string name="reply_to">Ответить на</string>
+    <string name="retweet_to">Ретвит</string>
+    
+    <string name="new_mentions">Упоминания в Twitter</string>
+    <string name="new_dm">Прямые сообщения в Twitter</string>
+    
+    <string name="topic">Тема:</string>
+    <string name="description">Описание</string>
+    <string name="mention">Упомянуть</string>
+    
+    <string name="edit_search">Изменить поиск</string>
+    
+    <string name="max_users_lite">Вы можете иметь только одну учетную запись в версии Lite. Обновите до версии Pro и у вас будет все, что нужно</string>
+    
+    <string name="widget_lite">Виджет не доступен в версии Lite</string>
+    <string name="widget_no_user">Авторизуйтесь в приложении для использования виджета.</string>
+    <string name="btn_widget_lite">Купить Pro версию</string>
+    
+    <string name="loading_title_trends">Тенденции темы</string>
+    <string name="loading_description_trends">Загрузка тенденции Темы</string>
+    
+    <string name="saved_tweet">Сохранение сообщений</string>
+    <string name="saved_tweet_description">Сохранение в сообщений в базу данных</string>
+    
+    <string name="no_saved_tweet">Нет сообщений сохраненых на данный момент. Помните, что вы можете сохранить твиты и "прочесть позже"</string>
+    
+    <string name="take_photo">Сделать фото</string>
+    
+    <string name="upload_image_title">загрузка изображения</string>
+    <string name="upload_image_description">Сервис загрузки изображений</string>
+    <string name="upload_image_error">Ошибка загрузки изображения. Проверьте подключение и повторите попытку позже</string>
+    <string name="upload_image_finish">Изображение успешно загружено</string>
+    <string name="upload_image_wait">Изображение еще не загружено</string>
+    
+    <string name="sending_title">Отправка</string>
+    <string name="sending_description">Изменение статуса Twitter</string>
+    <string name="sending_finish">Twitter статус успешно обновлен</string>
+    
+    <string name="sending_dm_title">Отправка</string>
+    <string name="sending_dm_description">Отправка прямого сообщения</string>
+    <string name="sending_dm_finish">Сообщение было успешно отправлено</string>
+    
+    <string name="manager_user">Управление пользователями</string>
+    <string name="search_avatar_twitter">Использование Twitter аватар</string>
+    
+    <string name="msg_new_in">новые сообщения</string>
+    <string name="searchs">поиск</string>
+    
+    <string name="original_tweet">Оригинал сообщения</string>
+    <string name="translate_tweet">Перевести сообщение</string>
+    
+    <string name="no_links">Нет никаких связей с сообщением</string>
+    
+    <string name="refresh_avatar_correct">Аватар успешно изменен</string>
+    <string name="refresh_avatar_no_correct">Ошибка при обновлении аватара. Пожалуйста, повторите попытку позже</string>
+        
+    <string name="name_and_icon">Имя и иконка</string>
+    <string name="users">Пользователь</string>
+    
+    <string name="txt_follow_user">следующий пользователь</string> <!-- XXX ya sigue al usuario YYYY  -->
+    <string name="txt_unfollow_user">нет подписчиков</string> <!-- XXX ya sigue al usuario YYYY  -->
+    
+    <string name="view">Вид</string>
+    <string name="tweets">твиты</string>
+    <string name="followers">подписчики</string>
+    <string name="following">читаю</string>
+    <string name="last_tweet">ПОСЛЕДНЕЕ СООБЩЕНИЕ</string>
+    
+    <string name="search_avatar">Имя пользователя</string>
+    <string name="search_avatar_msg">Имя пользователя, чтобы использовать ваш аватар в виде иконки для поиска</string>     
+	<string name="search_user">Имя пользователя</string>
+    <string name="search_user_msg">Имя пользователя которого вы хотите найти</string>  
+    <string name="cancel">Отменить</string>
+       
+    <string name="other_actions">Другие действия</string>
+    
+    <string name="max_notifications">Вы не можете иметь более чем на 5 уведомлений ищет в</string>
+    <string name="max_notifications_lite">Вы можете иметь только один уведомление поиск в версии Lite. Обновление до версии Pro и вы можете иметь до 5</string>
+    <string name="how_notifications">Как это работает</string>
+    
+    <string name="search_words">Поиск</string>
+    <string name="search_words_user">Фильтр по пользователю</string>
+    
+    <string name="top_list">Перейти к началу</string>
+    
+    <string name="no_result">Нет результатов</string>
+    <string name="search_no_found_change_lang">Ничего не найдено на языке: </string>
+    <string name="search_no_found_change_lang2">. Вы сможете найти результаты, если вы удалите этот фильтр. Хотите повторить поиск без указания языка?</string>
+    
+    <string name="samples_search">Примеры поиска</string>
+    <string name="samples_search_lang">Load issues with the language used on the phone if they are not photos nor videos</string>
+    <string name="msg_no_search">Нет поисков на данный момент. Если вы хотите, мы можем показать вам несколько примеров, чтобы вы ознакомились с программным обеспечением.</string>
+    
+    <string name="search_words_and">Слова, которые должны появиться</string>
+    <string name="search_words_and_short">(Да)</string>
+    <string name="search_words_or">Слова, которые могут появиться</string>
+    <string name="search_words_or_short">(может быть)</string>
+    <string name="search_words_not">Слова, которые я не хочу</string>
+    <string name="search_words_not_short">(Нет)</string>
+    <string name="search_from_user">Сообщения от этого пользователя</string>
+    <string name="search_from_user_short">(твиты)</string>
+    <string name="search_to_user">Ответы этому пользователя</string>
+    <string name="search_to_user_short">(ответы)</string>
+    <string name="search_source">Только одно применение Twitter</string>
+    <string name="search_source_short">Источник</string>
+    <string name="languages">Языки</string>
+    <string name="attitude">Позиция</string>
+    <string name="filter">Фильтр</string>
+    <string name="close">Закрыть</string>
+    <string name="no_retweet">Не показывать ретвиты</string>
+    <string name="save">Сохранить</string>
+    <string name="save_and_view">Сохранить и запустить</string>
+    <string name="name">Имя</string>
+    <string name="new_item">Новый</string>
+    <string name="back">Назад</string>
+    <string name="initiation">Домой</string>
+    <string name="actions">Действие</string>
+    <string name="delete">Удалить</string>
+    <string name="title_question_delete">Удалить</string>
+    <string name="question_delete">Вы действительно хотите удалить эту тему?</string>
+    
+    <string name="question_delete_generic">Вы действительно хотите удалить?</string>
+    <string name="delete_correct_generic">Успешно удалено</string>
+    
+    <string name="title_question_backup">Резервное копирование</string>
+    <string name="question_backup">Вы хотите удалять старые копии. Вы уверены?</string>
+    <string name="backup_correct">Успешное резервное копирование</string>
+    
+    <string name="title_question_restore">Востановить</string>
+    <string name="question_restore">Стереть все текущие поиски. Вы уверены?</string>
+    <string name="restore_correct">Успешно восстановлено</string>
+    <string name="restore_nofile">Файл резервного копирования не существует</string>
+    
+    <string name="delete_correct">Пункт успешно удален</string>
+    <string name="refresh_search">Обновить поиск</string>
+    <string name="language">Язык</string>
+    <string name="range">Диапазон</string>
+    <string name="map">Карта</string>
+    <string name="reply">Ответ</string>
+    <string name="retweet">Ретвит</string>
+    <string name="links">Ссылки</string>
+    <string name="readafter">Сохранить, чтобы прочитать позже</string>
+    <string name="more">Еще</string>
+    <string name="send">Отправить</string>
+    <string name="add_user">Добавить пользователя</string>
+    <string name="refresh_avatar">Обновить аватар</string>
+    <string name="delete_user">Удалить</string>
+    <string name="user_list">Список пользователей</string>
+    <string name="more_140">Сообщение имеет более 140 символов</string>
+    <string name="in_response">В ответ на @</string>
+    <string name="in_response_final"> - Посмотреть беседу</string>
+    <string name="copied_to_clipboard">Скопировать в буфер обмена</string>
+    <string name="copy_to_clipboard">Скопировать в буфер обмена</string>
+    <string name="copy">Копировать</string>
+    <string name="visit">Посетить</string>
+    <string name="follow">Читать</string>
+    <string name="unfollow">Перестать читать</string>
+    <string name="show_tweets">Пок-ть сообщ-я</string>
+    <string name="create_topic">Создать сообщение</string>
+    <string name="preferences">Настройки</string>
+    <string name="exit">Выход</string>
+    <string name="about">О программе...</string>
+    <string name="conversation">Беседа</string>
+    <string name="no_server">Не удается связаться с сервером. Проверьте подключение и повторите попытку позже</string>
+    <string name="limit_server">Вы превысили лимит в 350 запросов каждый час в Twitter. Вы можете искать снова в </string>
+    <string name="use_geo">Использование геолокации</string>
+    <string name="use_geo_gps">Получить GPS позиции</string>
+    <string name="use_geo_map">Найти место на карте</string>
+    <string name="latitude">Широта</string>
+    <string name="longitude">Долгота</string>
+    <string name="position">Позиция</string>
+    <string name="miles">Мили</string>
+    <string name="km">Км</string>
+    <string name="distance">Дистанция</string>
+    
+    <string name="tweets_saved">Сохраненные сообщения</string>
+    <string name="order">Назначить</string>
+    <string name="view_trending_topics">Посмотреть Тенденции Темы</string>
+    
+    <string name="create_tweet">Напишите сообщение</string>
+    <string name="error_search_name">Вам нужно сохранить имя поиска</string>
+    <string name="error_search_coord">Не допустимые значения широты и долготы</string>
+    <string name="error_search_distance">Расстояние должно быть больше 0</string>
+    <string name="error_search_text">Для того, чтобы найти что-то мы должны прежде всего знать, что вы хотите найти</string>
+    
+    <string name="error_load_link">Не удалось загрузить информацию, вы будете перенаправлены на веб</string>
+    
+    <string name="no_found_tweets">Не нашлось сообщений</string>
+    <string name="no_location">Не удалось получить позицию GPS. Попробйте поискать без этого критерия</string>
+    
+    <string name="msg_finger_map">Нажмите на месте, где вы хотите найти сообщения</string>
+    
+    <string name="duration">Продолжительность</string>
+    
+    <string name="timeline">Главная лента</string>
+    <string name="mentions">Упоминания</string>
+    
+    <string name="load_more_header">Обновить поиск</string>
+    <string name="load_more_header_conversation">Вернуться к поиску</string>
+    <string name="load_more_footer">Подробнее</string>
+    
+    <string name="favorite_save">Сообщени было успешно сохранено</string>
+    <string name="favorite_no_save">Сообщение не может быть сохранено. Пожалуйста, повторите попытку позже</string>
+    <string name="favorite_delete">Сообщение успешно удалено</string>
+    
+    
+    
+    <string name="gotoweb">Перейти на Web Сайт</string>
+    
+    <string name="txt_head_user">Выберите нужного пользователя из списка или добавьте нового из меню.</string>
+    
+    <string name="create_favorite_twitter">В избранное Twitter</string>
+    <string name="delete_favorite_twitter">Удалить из избранного</string>
+    <string name="create_read_after">Подробнее</string>
+    <string name="delete_read_after">Удалить сообщение</string>
+    
+    <string name="share">Отправить</string>
+    <string name="translate">Перевести</string>
+    <string name="colors">Цвета</string>
+    
+    <string name="favorites">Избранное</string>
+    <string name="favorite">Избранное</string>
+    <string name="msg_about_read">Что вы хотите читать?</string>
+    <string name="msg_more_search">Поиск</string>
+    
+    <string name="bt_new_search">Новый</string>
+    <string name="bt_import">Импортировать поиск</string>
+    <string name="bt_more">Еще</string>
+    
+    <string name="import_correct">Успешный импорт</string>
+    <string name="import_no_correct">Ошибка при импорте</string>
+    
+    <string name="shorter">Сокращения</string>
+    
+    <string name="tab_general">Общее</string>
+    <string name="tab_avanced">Продвинутый</string>
+    <string name="tab_geo">Местоположение</string>
+    <string name="tab_notifications">Уведомления</string>
+    
+    <string name="notifications">Использование уведомлений</string>
+    <string name="notifications_bar">Показывать в статус-баре</string>
+        
+    <string name="title_prf_result">Результаты</string>
+    <string name="summary_prf_result">Установить результатов поиска и сообщений</string>
+    
+    <string name="title_prf_n_result">Количество результатов</string>
+    <string name="summary_prf_n_result">Количество сообщений для отображения в каждом поиске</string>
+    
+    <string name="title_prf_links">Ссылки в сообщениях</string>
+    <string name="summary_prf_links">Выберите вид ссылок, которые будут показаны.</string>
+    
+    <string name="title_prf_accounts">Учетные записи</string>
+    
+    <string name="title_prf_manage_accounts">Управление учетными записями</string>
+    <string name="summary_prf_manage_accounts">Управление Twitter аккаунтами</string>
+    
+    <string name="title_prf_preferences">Настройки</string>
+    
+    <string name="title_prf_type_notifications">Тип уведомлений</string>
+    <string name="title_prf_configure_notifications">Настройка уведомлений</string>
+    <string name="title_prf_adw_launcher">Интеграция в ADW Launcher</string>
+    
+    <string name="title_prf_notifications">Уведомления</string>
+    <string name="summary_prf_notifications">Настройки для уведомлений в фоновом режиме</string>
+    
+    <string name="title_prf_notif_in_mentions">О новых упоминаниях</string>
+    <string name="summary_prf_notif_in_mentions">Уведомлять о новых ответах и ​​упоминаниях</string>
+    
+    <string name="title_prf_notif_in_direct">О новых сообщениях</string>
+    <string name="summary_prf_notif_in_direct">Уведомлять о прямых сообщениях</string>
+    
+    <string name="title_prf_adw_launcher_configure">Конфигурация ADW Launcher</string>
+    <string name="summary_prf_adw_launcher_configure">Настройка порядка и интеграции предпочтения</string>
+    
+    <string name="title_prf_time_notifications">Обновление в фоне</string>
+    <string name="summary_prf_time_notifications">Короткий промежуток времени может привести к перерасходу батареи</string>
+    
+    <string name="title_prf_vibrate_notifications">Вибрация</string>
+    <string name="summary_prf_vibrate_notifications">Вибрировать если есть уведомление</string>
+    
+    <string name="title_prf_vibrate_time">Режим вибрации</string>
+    <string name="summary_prf_vibrate_time">Выберите длительность вибрации</string>
+    
+    <string name="title_prf_sound_notifications">Аудио</string>
+    <string name="summary_prf_sound_notifications">Установите аудиорежим если есть уведомление</string>
+    
+    <string name="title_prf_audio">Рингтон</string>
+    <string name="summary_prf_audio">Выберите звук, который вы хотите услышать при уведомлении</string>
+    
+    <string name="title_prf_led_notifications">Светодиод LED</string>
+    <string name="summary_prf_led_notifications">Установите LED уведомление (если поддерживается телефоном)</string>
+    
+    <string name="title_prf_led_color">LED цвет</string>
+    <string name="summary_prf_led_color">Выберите LED цвет</string>
+    
+    <string name="title_prf_retweet_via">Ретвит "через"</string>
+    <string name="summary_prf_retweet_via">Если вы предпочитаете (через @) вместо RT:</string>
+    
+    <string name="title_prf_show_window_in_links">Предварительный просмотр ссылки</string>
+    <string name="summary_prf_show_window_in_links">Предварительный просмотр ссылки перед переходом</string>
+    
+    <string name="title_prf_content">Содержание</string>
+    <string name="summary_prf_content">Настройка содержание твитов</string>
+    
+    <string name="title_prf_translate">Перевод</string>
+    <string name="summary_prf_translate">Выбрать язык на который переводить</string>
+    
+    <string name="title_prf_clean">Очистка</string>
+    <string name="title_prf_delete_cache">Удалить КЭШ</string>
+    <string name="summary_prf_delete_cache">Удалить аватары пользователей хранящихся в памяти телефона</string>
+    
+    <string name="title_prf_delete_tweets">Удалить сообщения</string>
+    <string name="summary_prf_delete_tweets">Удалить из базы данных сообщения по дате</string>
+    
+    <string name="title_prf_info">Информация</string>
+    
+    <string name="title_prf_about">О программе...</string>
+    <string name="summary_prf_about">Узнать больше </string>
+    
+    <string name="title_prf_backup">Резервное копирование</string>
+    <string name="title_prf_create_backup">Резервная копия</string>
+    <string name="summary_prf_create_backup">Создать резервную копию  /sdcard/backup_tweettopics.xml</string>
+    
+    <string name="title_prf_create_restore">Восстановить</string>
+    <string name="summary_prf_create_restore">Восстановить из резервной копии /sdcard/backup_tweettopics.xml</string>
+    
+    <string name="title_prf_no_read_adw">Непрочитанные в ADW Launcher</string>
+    <string name="summary_prf_no_read_adw">Отображает количество непрочитанных сообщений в ADW Launcher</string>
+    
+    <string name="title_prf_no_read_adw_all_users">Добавить всех пользователей</string>
+    <string name="summary_prf_no_read_adw_all_users">Если не активирован будет рассматривать только активные сообщения пользователя</string>
+    
+    <string name="title_prf_refresh_in_last_read">Обновить режиме</string>
+    <string name="summary_prf_refresh_in_last_read">Когда обновляется, поиск позиционирует себя в последний раз читал сообщение</string>
+    
+    <string name="title_prf_list">Список поиска</string>
+    <string name="summary_prf_list">Настройка списка поиска</string>
+    
+    <string name="title_prf_order_list">Режим</string>
+    <string name="summary_prf_order_list">Выбор элементов в режим в списке</string>
+    
+    <string name="title_prf_size_photo">Размер Фото</string>
+	<string name="summary_prf_size_photo">Выберите размер, который Вы хотите отправить в сообщении</string>
+	
+	<string name="title_prf_service_image">Сервисы Изображений</string>
+	<string name="summary_prf_service_image">Выберите службу, которую нужно использовать, чтобы загружать изображения в Twitter</string>
+    
+	<string name="title_prf_quiet">Скрытие слов и пользователей</string>
+	<string name="summary_prf_quiet">Добавить ключевые слова, hashtags и пользователей, которые вы не хотите оказаться в ваших твитов</string>
+	
+	<string name="title_prf_quiet_show_msg">Показывать число скрытых элементов</string>
+	<string name="summary_prf_quiet_show_msg">Выдает сообщение при загрузке список твитов с числом скрытые сообщения</string>
+	
+	<string name="title_prf_save_avatars">Сохранять аватары</string>
+    <string name="summary_prf_save_avatars">Определите где хранить аватары пользователей</string>
+    
+    <string name="title_prf_tweetquick">TweetQuick службы</string>
+    <string name="summary_prf_tweetquick">Отправка изображений в Twitter за несколько секунд</string>
+    
+    <string name="title_prf_types_retweet">Тип ретвитов</string>
+    <string name="summary_prf_types_retweet">Создайте свой собственный ретвит и отправьте в твиттер в один клик</string>
+    
+    <string name="title_prf_dev">Разработка</string>
+    <string name="title_prf_force_lite">Версия Lite</string>
+    <string name="summary_prf_force_lite">Force to use the Lite version</string>
+    
+    <string name="title_prf_interface_services">Интерфейс и сервисы</string>
+    <string name="summary_prf_interface_services">Настройки интерфейса, сервисов изображений и сокращения ссылок</string>
+    
+    <string name="title_prf_animations">Анимация</string>
+    <string name="summary_prf_animations">Использование анимации в приложении</string>
+    
+    <string name="title_prf_images">Сервис изображений</string>
+    <string name="title_prf_shorter">Сокращение ссылок</string>
+    <string name="title_prf_interface">Интерфейс</string>
+    
+    <string name="title_prf_service_shorter">Выбрать сервис</string>
+    <string name="summary_prf_service_shorter">Выберите сервис сокращения ссылок</string>
+    
+    <string name="title_prf_service_bitly">Key Bit.ly</string>
+    <string name="summary_prf_service_bitly">Введите key для сервиса Bit.ly</string>
+    
+    <string name="title_prf_service_karmacracy">Key Karmacracy</string>
+    <string name="summary_prf_service_karmacracy">Введите key для сервиса Karmacracy</string>
+    
+    <string name="title_prf_username_right">Информация пользователя</string>
+    <string name="summary_prf_username_right">Выберите информацию, которую вы хотите видеть справа от имени пользователя</string>
+    
+    <string name="title_tweettopics_qr">Импорт поиска</string>
+    <string name="msg_tweettopics_qr">Эта ссылка содержит поиск TweetTopics. Вы хотите импортировать её?</string>
+    
+    <string name="title_download_scan">Сканер штрих-кода</string>
+    <string name="msg_download_scan">Для этого приложения требуется сканер штрих-кода. Вы хотели бы его установить?</string>
+
+</resources>

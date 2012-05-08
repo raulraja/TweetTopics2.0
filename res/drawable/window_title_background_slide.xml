@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape android:shape="rectangle" xmlns:android="http://schemas.android.com/apk/res/android">
+    <gradient
+       android:angle="270"
+       android:startColor="@color/title_slide_color_dark"
+       android:centerColor="@color/title_slide_color_light"
+       android:endColor="@color/title_slide_color_dark"
+    />
+	<stroke android:color="@color/title_slide_border" android:width="1dip" />
+</shape>

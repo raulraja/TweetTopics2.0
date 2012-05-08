@@ -1,0 +1,546 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+        xmlns:android="http://schemas.android.com/apk/res/android">
+        
+    <PreferenceCategory
+            android:title="@string/title_prf_accounts"
+            >
+            
+        <Preference
+                android:key="prf_manage_accounts"
+                android:title="@string/title_prf_manage_accounts"
+                android:summary="@string/summary_prf_manage_accounts"
+                android:dialogTitle="@string/title_prf_manage_accounts" />
+        
+	</PreferenceCategory>  
+        
+    <PreferenceCategory
+            android:title="@string/title_prf_preferences"
+            >
+	
+	    <PreferenceScreen
+	            android:title="@string/title_prf_result"
+	            android:summary="@string/summary_prf_result">
+	            
+		    <PreferenceCategory
+		            android:title="@string/title_prf_result"
+		            >
+
+                <ListPreference
+                        android:defaultValue="60"
+                        android:key="prf_n_max_download"
+                        android:title="@string/title_prf_max_download"
+                        android:summary="@string/summary_prf_max_download"
+                        android:entries="@array/entries_prf_max_download"
+                        android:entryValues="@array/entries_prf_max_download_values"
+                        android:dialogTitle="@string/title_prf_result" />
+
+			        <ListPreference
+			        		android:defaultValue="40"
+			                android:key="prf_n_result"
+			                android:title="@string/title_prf_n_result"
+			                android:summary="@string/summary_prf_n_result"
+			                android:entries="@array/entries_prf_n_result"
+			                android:entryValues="@array/entries_prf_n_result"
+			                android:dialogTitle="@string/title_prf_result" />
+			
+			        <ListPreference
+			        		android:defaultValue="3"
+			                android:key="prf_links"
+			                android:title="@string/title_prf_links"
+			                android:summary="@string/summary_prf_links"
+			                android:entries="@array/entries_prf_links"
+			                android:entryValues="@array/entries_prf_links_values"
+			                android:dialogTitle="@string/title_prf_links" />
+			                
+			        <ListPreference
+			        		android:defaultValue="2"
+			                android:key="prf_show_links"
+			                android:title="@string/title_prf_show_links"
+			                android:summary="@string/summary_prf_show_links"
+			                android:entries="@array/entries_prf_show_links"
+			                android:entryValues="@array/entries_prf_show_links_values"
+			                android:dialogTitle="@string/title_prf_show_links" />
+			                
+			        <ListPreference
+			        		android:defaultValue="2"
+			                android:key="prf_username_right"
+			                android:title="@string/title_prf_username_right"
+			                android:summary="@string/summary_prf_username_right"
+			                android:entries="@array/entries_prf_username_right"
+			                android:entryValues="@array/entries_prf_username_right_values"
+			                android:dialogTitle="@string/title_prf_username_right" />
+			                
+			        <ListPreference
+			        		android:defaultValue="10"
+			                android:key="prf_time_refresh"
+			                android:title="@string/title_prf_time_refresh"
+			                android:summary="@string/summary_prf_time_refresh"
+			                android:entries="@array/entries_prf_time_refresh"
+			                android:entryValues="@array/entries_prf_time_refresh_values"
+			                android:dialogTitle="@string/title_prf_time_refresh" />
+			                
+			        <ListPreference
+			        		android:defaultValue="1"
+			                android:key="prf_date_format"
+			                android:title="@string/title_prf_date_format"
+			                android:summary="@string/summary_prf_date_format"
+			                android:entries="@array/entries_prf_date_format"
+			                android:entryValues="@array/entries_prf_date_format_values"
+			                android:dialogTitle="@string/title_prf_date_format" />
+			                
+			        <CheckBoxPreference
+			                android:defaultValue="false"
+			                android:key="prf_retweet_via"
+			                android:title="@string/title_prf_retweet_via"
+			                android:summary="@string/summary_prf_retweet_via" />
+			                
+			        <CheckBoxPreference
+			                android:defaultValue="true"
+			                android:key="prf_show_window_in_links"
+			                android:title="@string/title_prf_show_window_in_links"
+			                android:summary="@string/summary_prf_show_window_in_links" />
+			                
+			        <CheckBoxPreference
+			                android:defaultValue="true"
+			                android:key="prf_refresh_in_last_read"
+			                android:title="@string/title_prf_refresh_in_last_read"
+			                android:summary="@string/summary_prf_refresh_in_last_read" />
+			                
+			</PreferenceCategory>
+			
+	    </PreferenceScreen>
+	    
+	    <PreferenceScreen
+	            android:title="@string/title_prf_notifications"
+	            android:summary="@string/summary_prf_notifications">
+	            
+		    <PreferenceCategory
+		            android:title="@string/title_prf_type_notifications"
+		            >
+		            
+		        <CheckBoxPreference
+		                android:defaultValue="false"
+		                android:key="prf_notif_in_timeline"
+		                android:title="@string/title_prf_notif_in_timeline"
+		                android:summary="@string/summary_prf_notif_in_timeline" />
+		            
+		        <CheckBoxPreference
+		                android:defaultValue="true"
+		                android:key="prf_notif_in_mentions"
+		                android:title="@string/title_prf_notif_in_mentions"
+		                android:summary="@string/summary_prf_notif_in_mentions" />
+		                
+		        <CheckBoxPreference
+		                android:defaultValue="true"
+		                android:key="prf_notif_in_direct"
+		                android:title="@string/title_prf_notif_in_direct"
+		                android:summary="@string/summary_prf_notif_in_direct" />
+	        
+	        </PreferenceCategory>  
+	        
+		    <PreferenceCategory
+		            android:title="@string/title_prf_configure_notifications"
+		            >
+		            
+		        <ListPreference
+		        		android:defaultValue="15"
+		                android:key="prf_time_notifications"
+		                android:title="@string/title_prf_time_notifications"
+		                android:summary="@string/summary_prf_time_notifications"
+		                android:entries="@array/entries_prf_notifications"
+		                android:entryValues="@array/entries_prf_notifications_values"
+		                android:dialogTitle="@string/title_prf_notifications" />
+		                
+		        <ListPreference
+		        		android:defaultValue="15"
+		                android:key="prf_time_notifications_mentions_dm"
+		                android:title="@string/title_prf_time_notifications_mentions_dm"
+		                android:summary="@string/summary_prf_time_notifications_mentions_dm"
+		                android:entries="@array/entries_prf_notifications"
+		                android:entryValues="@array/entries_prf_notifications_values"
+		                android:dialogTitle="@string/title_prf_notifications" />
+		                
+		        <CheckBoxPreference
+		                android:defaultValue="false"
+		                android:key="prf_notif_type_one_notification"
+		                android:title="@string/title_prf_notif_type_one_notification"
+		                android:summary="@string/summary_prf_notif_type_one_notification" />
+		        
+		        <CheckBoxPreference
+		                android:defaultValue="true"
+		                android:key="prf_notif_delete_notifications_inside"
+		                android:title="@string/title_prf_notif_delete_notifications_inside"
+		                android:summary="@string/summary_prf_notif_delete_notifications_inside" />
+		                
+		        <CheckBoxPreference
+		                android:defaultValue="true"
+		                android:key="prf_vibrate_notifications"
+		                android:title="@string/title_prf_vibrate_notifications"
+		                android:summary="@string/summary_prf_vibrate_notifications" />
+		                
+		        <ListPreference
+		        		android:defaultValue="3"
+		                android:key="prf_time_vibrate"
+		                android:title="@string/title_prf_vibrate_time"
+		                android:summary="@string/summary_prf_vibrate_time"
+		                android:entries="@array/entries_prf_vibrate"
+		                android:entryValues="@array/entries_prf_vibrate_values"
+		                android:dialogTitle="@string/title_prf_vibrate_time" />
+		                
+		        <CheckBoxPreference
+		                android:defaultValue="true"
+		                android:key="prf_sound_notifications"
+		                android:title="@string/title_prf_sound_notifications"
+		                android:summary="@string/summary_prf_sound_notifications" />
+		                
+				<RingtonePreference
+						android:ringtoneType="notification"
+						android:key="prf_ringtone"
+						android:showSilent="false"
+						android:showDefault="true"
+						android:summary="@string/summary_prf_audio"
+						android:title="@string/title_prf_audio"
+						/>
+		                
+		        <CheckBoxPreference
+		                android:defaultValue="true"
+		                android:key="prf_led_notifications"
+		                android:title="@string/title_prf_led_notifications"
+		                android:summary="@string/summary_prf_led_notifications" />
+		                
+		        <ListPreference
+		        		android:defaultValue="#FFFF0000"
+		                android:key="prf_led_color"
+		                android:title="@string/title_prf_led_color"
+		                android:summary="@string/summary_prf_led_color"
+		                android:entries="@array/led_colors"
+		                android:entryValues="@array/led_colors_values"
+		                android:dialogTitle="@string/colors" />
+		                
+	        </PreferenceCategory>   
+	         
+		    <PreferenceCategory
+		            android:title="@string/title_prf_adw_launcher"
+		            >
+		            
+		        <CheckBoxPreference
+		                android:defaultValue="true"
+		                android:key="prf_no_read_adw"
+		                android:title="@string/title_prf_no_read_adw"
+		                android:summary="@string/summary_prf_no_read_adw" />
+		                
+		        <CheckBoxPreference
+		                android:defaultValue="false"
+		                android:key="prf_no_read_adw_all_users"
+		                android:title="@string/title_prf_no_read_adw_all_users"
+		                android:summary="@string/summary_prf_no_read_adw_all_users" />
+		                
+			    <Preference
+			            android:key="prf_adw_launcher_configure"
+			            android:title="@string/title_prf_adw_launcher_configure"
+			            android:summary="@string/summary_prf_adw_launcher_configure"
+			            android:dialogTitle="@string/title_prf_adw_launcher_configure" />
+		                
+	        </PreferenceCategory>
+	                  
+	    </PreferenceScreen>
+	    	    
+	    <PreferenceScreen
+	            android:title="@string/title_prf_content"
+	            android:summary="@string/summary_prf_content">
+	            
+		    <PreferenceCategory
+		            android:title="@string/title_prf_content"
+		            >
+		            
+		        <ListPreference
+		        		android:defaultValue="es"
+		                android:key="prf_translate"
+		                android:title="@string/title_prf_translate"
+		                android:summary="@string/summary_prf_translate"
+		                android:entries="@array/languages_translates"
+		                android:entryValues="@array/languages_translates_values"
+		                android:dialogTitle="@string/language" />
+		           
+		        <Preference
+		                android:key="prf_quiet"
+		                android:title="@string/title_prf_quiet"
+		                android:summary="@string/summary_prf_quiet"
+		                android:dialogTitle="@string/title_prf_quiet" />
+		                
+		        <CheckBoxPreference
+		                android:defaultValue="true"
+		                android:key="prf_quiet_show_msg"
+		                android:title="@string/title_prf_quiet_show_msg"
+		                android:summary="@string/summary_prf_quiet_show_msg" />
+		                
+		        <ListPreference
+		        		android:defaultValue="1"
+		                android:key="prf_order_list"
+		                android:title="@string/title_prf_order_list"
+		                android:summary="@string/summary_prf_order_list"
+		                android:entries="@array/entries_prf_order_list"
+		                android:entryValues="@array/entries_prf_order_list_values"
+		                android:dialogTitle="@string/title_prf_order_list" />
+		        <!-- 
+		        <ListPreference
+		        		android:defaultValue="1"
+		                android:key="prf_save_avatars"
+		                android:title="@string/title_prf_save_avatars"
+		                android:summary="@string/summary_prf_save_avatars"
+		                android:entries="@array/entries_prf_save_avatars"
+		                android:entryValues="@array/entries_prf_save_avatars_values"
+		                android:dialogTitle="@string/title_prf_save_avatars" />
+		            -->
+	         </PreferenceCategory> 
+	         
+		    <PreferenceCategory
+		            android:title="@string/title_prf_backup"
+		            >
+		           
+		        <Preference
+		                android:key="prf_create_backup"
+		                android:title="@string/title_prf_create_backup"
+		                android:summary="@string/summary_prf_create_backup"
+		                android:dialogTitle="@string/title_prf_create_backup" />
+		                
+		        <Preference
+		                android:key="prf_create_restore"
+		                android:title="@string/title_prf_create_restore"
+		                android:summary="@string/summary_prf_create_restore"
+		                android:dialogTitle="@string/title_prf_create_restore" />
+		                
+	         </PreferenceCategory>  
+	         
+		    <PreferenceCategory
+		            android:title="@string/title_prf_clean"
+		            >
+		        <!--
+		        <Preference
+		                android:key="prf_delete_cache"
+		                android:title="@string/title_prf_delete_cache"
+		                android:summary="@string/summary_prf_delete_cache"
+		                android:dialogTitle="@string/title_prf_delete_cache" />
+		        -->
+		        <Preference
+		                android:key="prf_delete_tweets"
+		                android:title="@string/title_prf_delete_tweets"
+		                android:summary="@string/summary_prf_delete_tweets"
+		                android:dialogTitle="@string/title_prf_delete_tweets" />
+		                
+	         </PreferenceCategory>   
+	         
+		    <PreferenceCategory
+		            android:title="@string/title_prf_dev"
+		            >
+		           
+		        <CheckBoxPreference
+		                android:defaultValue="false"
+		                android:key="prf_force_lite"
+		                android:title="@string/title_prf_force_lite"
+		                android:summary="@string/summary_prf_force_lite" />
+		                
+	         </PreferenceCategory> 
+	         
+		</PreferenceScreen>
+		
+	    <PreferenceScreen
+	            android:title="@string/title_prf_interface_services"
+	            android:summary="@string/summary_prf_interface_services">
+	            
+		    <PreferenceCategory
+		            android:title="@string/title_prf_interface"
+		            >
+		            
+				<ListPreference
+		        		android:defaultValue="2"
+		                android:key="prf_theme"
+		                android:title="@string/title_prf_theme"
+		                android:summary="@string/summary_prf_theme"
+		                android:entries="@array/entries_prf_themes"
+		                android:entryValues="@array/entries_prf_themes_values"
+		                android:dialogTitle="@string/title_prf_theme" />
+		            
+				<ListPreference
+		        		android:defaultValue="1"
+		                android:key="prf_orientation"
+		                android:title="@string/title_prf_orientation"
+		                android:summary="@string/summary_prf_orientation"
+		                android:entries="@array/entries_prf_orientation"
+		                android:entryValues="@array/entries_prf_orientation_values"
+		                android:dialogTitle="@string/title_prf_orientation" />
+		                
+		        <CheckBoxPreference
+		                android:defaultValue="false"
+		                android:key="prf_use_pulltorefresh"
+		                android:title="@string/title_prf_use_pulltorefresh"
+		                android:summary="@string/summary_prf_use_pulltorefresh" />
+		                
+		        <ListPreference
+		        		android:defaultValue="1"
+		                android:key="prf_positions_links"
+		                android:title="@string/title_prf_positions_links"
+		                android:summary="@string/summary_prf_positions_links"
+		                android:entries="@array/entries_prf_positions_links"
+		                android:entryValues="@array/entries_prf_positions_links_values"
+		                android:dialogTitle="@string/title_prf_positions_links" />
+		                
+		        <Preference
+		                android:key="prf_colors_app"
+		                android:title="@string/title_prf_colors_app"
+		                android:summary="@string/summary_prf_colors_app"
+		                android:dialogTitle="@string/title_prf_colors_app" />
+		                
+		        <Preference
+		                android:key="prf_image_background"
+		                android:title="@string/title_prf_image_background"
+		                android:summary="@string/summary_prf_image_background"
+		                android:dialogTitle="@string/title_prf_image_background" />
+		                
+		        <CheckBoxPreference
+		                android:defaultValue="true"
+		                android:key="prf_use_gradient"
+		                android:title="@string/title_prf_use_gradient"
+		                android:summary="@string/summary_prf_use_gradient" />
+		                
+		        <CheckBoxPreference
+		                android:defaultValue="true"
+		                android:key="prf_use_divider_tweet"
+		                android:title="@string/title_prf_use_divider_tweet"
+		                android:summary="@string/summary_prf_use_divider_tweet" />
+		                
+		        <CheckBoxPreference
+		                android:defaultValue="true"
+		                android:key="prf_use_no_read"
+		                android:title="@string/title_prf_use_no_read"
+		                android:summary="@string/summary_prf_use_no_read" />
+
+		        <Preference
+		                android:key="prf_color_tweets"
+		                android:title="@string/title_prf_color_tweets"
+		                android:summary="@string/summary_prf_color_tweets"
+		                android:dialogTitle="@string/title_prf_color_tweets" />
+
+		        <Preference
+		                android:key="prf_color_mentions"
+		                android:title="@string/title_prf_color_mentions"
+		                android:summary="@string/summary_prf_color_mentions"
+		                android:dialogTitle="@string/title_prf_color_mentions" />
+
+		        <Preference
+		                android:key="prf_color_favorite"
+		                android:title="@string/title_prf_color_favorite"
+		                android:summary="@string/summary_prf_color_favorite"
+		                android:dialogTitle="@string/title_prf_color_favorite" />
+		            
+		        <CheckBoxPreference
+		                android:defaultValue="true"
+		                android:key="prf_animations"
+		                android:title="@string/title_prf_animations"
+		                android:summary="@string/summary_prf_animations" />
+		                
+	        </PreferenceCategory> 
+	         
+		    <PreferenceCategory
+		            android:title="@string/title_prf_images">
+	         
+				<ListPreference
+		        		android:defaultValue="2"
+		                android:key="prf_size_photo"
+		                android:title="@string/title_prf_size_photo"
+		                android:summary="@string/summary_prf_size_photo"
+		                android:entries="@array/entries_prf_size_photos"
+		                android:entryValues="@array/entries_prf_size_photos_values"
+		                android:dialogTitle="@string/title_prf_size_photo" />
+				
+		        <ListPreference
+		        		android:defaultValue="1"
+		                android:key="prf_service_image"
+		                android:title="@string/title_prf_service_image"
+		                android:summary="@string/summary_prf_service_image"
+		                android:entries="@array/entries_prf_service_image"
+		                android:entryValues="@array/entries_prf_service_image_values"
+		                android:dialogTitle="@string/title_prf_service_image" />
+		                
+	         </PreferenceCategory>
+	         
+		    <PreferenceCategory
+		            android:title="@string/title_prf_shorter"
+		            >
+	         
+		        <ListPreference
+		        		android:defaultValue="1"
+		                android:key="prf_service_shorter"
+		                android:title="@string/title_prf_service_shorter"
+		                android:summary="@string/summary_prf_service_shorter"
+		                android:entries="@array/entries_prf_service_shorter"
+		                android:entryValues="@array/entries_prf_service_shorter_values"
+		                android:dialogTitle="@string/title_prf_service_shorter" />
+		                
+		        <Preference
+		                android:key="prf_service_bitly"
+		                android:title="@string/title_prf_service_bitly"
+		                android:summary="@string/summary_prf_service_bitly"
+		                android:dialogTitle="@string/title_prf_service_bitly" />
+		                
+		        <Preference
+		                android:key="prf_service_karmacracy"
+		                android:title="@string/title_prf_service_karmacracy"
+		                android:summary="@string/summary_prf_service_karmacracy"
+		                android:dialogTitle="@string/title_prf_service_karmacracy" />
+		                
+	        </PreferenceCategory>  
+	         
+		</PreferenceScreen>
+	    
+	    <Preference
+	            android:key="prf_tweetquick"
+	            android:title="@string/title_prf_tweetquick"
+	            android:summary="@string/summary_prf_tweetquick"
+	            android:dialogTitle="@string/title_prf_tweetquick" />
+	            
+	    <Preference
+	            android:key="prf_types_retweet"
+	            android:title="@string/title_prf_types_retweet"
+	            android:summary="@string/summary_prf_types_retweet"
+	            android:dialogTitle="@string/title_prf_types_retweet" />
+	            
+	    <Preference
+	            android:key="prf_draft"
+	            android:title="@string/title_prf_draft"
+	            android:summary="@string/summary_prf_draft"
+	            android:dialogTitle="@string/title_prf_draft" />
+	            
+	    <Preference
+	            android:key="prf_tweetprogrammed"
+	            android:title="@string/title_prf_tweetprogrammed"
+	            android:summary="@string/summary_prf_tweetprogrammed"
+	            android:dialogTitle="@string/title_prf_tweetprogrammed" />
+	            
+	    <Preference
+	            android:key="prf_submenutweet"
+	            android:title="@string/title_prf_submenutweet"
+	            android:summary="@string/summary_prf_submenutweet"
+	            android:dialogTitle="@string/title_prf_submenutweet" />
+	
+	</PreferenceCategory>  
+		
+    <PreferenceCategory
+            android:title="@string/title_prf_info"
+            >
+	
+	    <Preference
+	            android:key="prf_about"
+	            android:title="@string/title_prf_about"
+	            android:summary="@string/summary_prf_about"
+	            android:dialogTitle="@string/about" />
+	            
+	    <Preference
+	            android:key="prf_changelog"
+	            android:title="@string/changelog"
+	            android:dialogTitle="@string/changelog" />
+	            
+	</PreferenceCategory>  
+	
+</PreferenceScreen>

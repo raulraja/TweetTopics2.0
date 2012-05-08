@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+      android:orientation="vertical" android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="10dip"
+        android:paddingTop="5dip"
+        android:paddingRight="5dip"
+        android:paddingBottom="5dip">
+	<LinearLayout 
+	      android:orientation="vertical" android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:paddingBottom="5dip"
+	        android:layout_weight="1">
+		<TextView android:text="title" style="@style/TitlePreference" android:id="@+id/adw_title" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
+		<TextView android:text="description" style="@style/DescPreference" android:id="@+id/adw_description" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
+	</LinearLayout>
+	<LinearLayout 
+	      android:orientation="horizontal" android:layout_width="fill_parent"
+	      android:layout_height="wrap_content"
+	      android:gravity="center_vertical"
+	      >
+	    <ImageView android:gravity="left" android:id="@+id/image_color" android:layout_width="wrap_content" android:layout_height="wrap_content"></ImageView>
+	    
+	    <ImageView android:layout_weight="1" android:layout_width="wrap_content" android:layout_height="wrap_content"></ImageView>
+		
+		<ImageView android:id="@+id/bt_up" android:layout_width="wrap_content" android:src="@drawable/arrow_up" android:layout_height="wrap_content" android:layout_marginRight="10dip"></ImageView>
+		<ImageView android:id="@+id/bt_down" android:layout_width="wrap_content" android:src="@drawable/arrow_down" android:layout_height="wrap_content"></ImageView>
+	</LinearLayout>
+</LinearLayout>

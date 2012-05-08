@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+      android:orientation="horizontal" android:layout_width="fill_parent"
+      android:layout_height="wrap_content">
+      
+    <FrameLayout
+		android:id="@+id/fr_avatar"
+		style="@style/TweetFrAvatar" >
+		<ImageView
+		   	android:id="@+id/user_avatar"
+		   	android:src="@drawable/avatar"
+	    	style="@style/TweetAvatar" />
+		<ImageView android:id="@+id/tag_more" 
+			android:layout_height="wrap_content" 
+			android:layout_gravity="right" 
+			android:layout_width="wrap_content"></ImageView>
+    </FrameLayout>
+	    	
+	<LinearLayout 
+	      android:orientation="vertical" android:layout_width="0dip"
+	      android:layout_weight="1"
+	      android:layout_height="wrap_content">
+
+			<TextView android:text="" style="@style/DescPreference" android:id="@+id/prog_username" android:layout_marginLeft="5dip" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
+			<TextView android:text="" style="@style/TitlePreference" android:id="@+id/prog_text" android:layout_marginLeft="5dip" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
+			<TextView android:text="" android:gravity="right" style="@style/DescPreference" android:id="@+id/prog_date" android:layout_width="fill_parent" android:layout_height="wrap_content"></TextView>
+	
+	</LinearLayout>
+</LinearLayout>

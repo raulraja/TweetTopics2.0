@@ -1,0 +1,28 @@
+How works TweetQuick?
+---------------------
+
+TweetQuick is a service of TweetTopics app, whereby you can post your photos in Twitter quickly.
+
+For use it you must write your posts previously, then from your gallery of Android you can send  to TweetQuick the photos selecting the post you want publish.
+
+To avoid all post can be identical you can use different modifiers for each message. Available modifiers:
+
+* %COUNTER% An auto increment counter by each sent photo.
+* %ADDRESS% It'll publish the address (street name and zip code) where you are at this moment.
+* %PHOTO% The place of the text where you want to locate your photo.
+
+Thereby, each post can be different. Imagine going to do a bicycling tour through the mountains. You can prepare a text like the following:
+
+"%PHOTO% Route in bike by the mountain.(Photo %COUNTER%)"
+
+Or you can be in an important event and you can't write tweets constantly. To save your time you can prepare several messages:
+
+"At Samgsung Event, at the #mwc %PHOTO%"
+
+"At HTC talk, on the #mwc %PHOTO%"
+
+"I'm having lunch near %ADDRESS% at #mwc %PHOTO%"
+
+You can also send direct messages to users who follow
+
+The fastest and easiest way to post pictures on Twitter

@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<color name="main_base_color">#FF990000</color>
+	
+	<color name="color_foreground">#FFBBBBBB</color>
+	<color name="color_background">#FFBBBBBB</color>
+	<color name="color_foreground_inverse">#FF444444</color>
+
+	<color name="title_slide_color_light">#FF9badbc</color>
+	<color name="title_slide_color_dark">#FF879aa8</color>
+	<color name="title_slide_border">#FF475a68</color>
+
+	<color name="title_color_light">#FF879aa8</color>
+	<color name="title_color_dark">#FF637787</color>
+	<color name="title_border">#FF475a68</color>
+
+	<color name="button_grey_color_light">#FFaeaeae</color>
+	<color name="button_grey_color_dark">#FF939393</color>
+
+	<color name="button_color_light">#FFc1c8c9</color>
+	<color name="button_color_dark">#FFa4abac</color>
+	<color name="button_color_disabled">#FF464e47</color>
+	<color name="button_default_border">#FF7a959a</color>
+	<color name="button_focused_border">#FFFFD400</color>
+	<color name="button_disabled_focused_border">#FFFFD400</color>
+
+	<color name="textfield_color_light">#FFFFFFFF</color>
+	<color name="textfield_color_dark">#FFDDDDDD</color>
+	<color name="textfield_color_disabled">#FFCCCCCC</color>
+	<color name="textfield_default_border">#FF444444</color>
+	<color name="textfield_focused_border">#FFFFD400</color>
+	<color name="textfield_disabled_focused_border">#FFFFD400</color>
+	
+	<color name="list_item_state_title_selected">#FF1f99b9</color>
+	
+	<color name="sidebar_color_light">#FFcfd7da</color>
+	<color name="sidebar_color_dark">#FF879aa8</color>
+	
+	<color name="count_chars_normal">#FFbbbbbb</color>
+	<color name="count_chars_error">#FFff0000</color>
+	
+	<color name="quick_action_selected">#FFf9e274</color>
+	
+	<color name="button_on_color_light">#FFf6c981</color>
+	<color name="button_on_color_dark">#FFefad44</color>
+	<color name="button_on_default_border">#FF034057</color>
+	<color name="button_on_focused_border">#FFd9e73f</color>
+	
+	<color name="button_off_color_light">#FFcfcfcf</color>
+	<color name="button_off_color_dark">#FFb0b0b0</color>
+	<color name="button_off_default_border">#FF034057</color>
+	<color name="button_off_focused_border">#FFd9e73f</color>
+	
+	<!-- TEMA CLARO -->
+	
+	<color name="list_background_row_color">#ffffff</color>
+	
+	<color name="tweet_color_link">#3c75b5</color>
+	<color name="tweet_color_hashtag">#d59721</color>
+	<color name="tweet_color_user">#10918c</color>
+	
+	<color name="tweet_color_selected">#efefe2</color>
+	
+	<color name="color_shadow_listview">#dddddd</color>
+	
+	<color name="color_tweet_usename">#000000</color>
+	<color name="color_tweet_source">#aaaaaa</color>
+	<color name="color_tweet_date">#aaaaaa</color>
+	<color name="color_tweet_text">#000000</color>
+	<color name="color_tweet_retweet">#aaaaaa</color>
+	
+	<color name="color_divider_tweet">#cccccc</color>
+	<color name="color_tweet_no_read">#bb3a68</color>
+	
+	<color name="color_1">#e0c8ce</color>
+	<color name="color_2">#9be4e5</color>
+	<color name="color_3">#cdf3be</color>
+	<color name="color_4">#e1b8e3</color>
+	<color name="color_5">#f8da88</color>
+	<color name="color_6">#e3c2a7</color>
+	<color name="color_7">#e4e58f</color>
+	<color name="color_8">#b8c4e3</color>
+	
+	<color name="color_top_bar">#32747f</color>
+	<color name="color_bottom_bar">#35979f</color>
+	
+	<color name="color_load_more_break">#fd6f00</color>
+	
+	<color name="color_background_new_status">#bbbbbb</color>
+	
+	<color name="color_main_button_normal">#ffffff</color>
+	<color name="color_main_button_selected">#795a05</color>
+	
+	<color name="color_tweet_buttons_normal">#000000</color>
+	<color name="color_tweet_buttons_press">#795a05</color>
+		
+	<!-- TEMA OSCURO -->
+	
+	<color name="list_background_row_color_dark">#525962</color>
+
+	<color name="tweet_color_link_dark">#a3ceff</color>
+	<color name="tweet_color_hashtag_dark">#fbd997</color>
+	<color name="tweet_color_user_dark">#7ee0dd</color>
+	
+	<color name="tweet_color_selected_dark">#4c709d</color>
+	
+	<color name="color_shadow_listview_dark">#222222</color>
+	
+	<color name="color_tweet_usename_dark">#ffffff</color>
+	<color name="color_tweet_source_dark">#bfbfbf</color>
+	<color name="color_tweet_date_dark">#bfbfbf</color>
+	<color name="color_tweet_text_dark">#ffffff</color>
+	<color name="color_tweet_retweet_dark">#bfbfbf</color>
+	
+	<color name="color_divider_tweet_dark">#777777</color>
+	<color name="color_tweet_no_read_dark">#dba513</color>
+	
+	<color name="color_1_dark">#9a5f6e</color>
+	<color name="color_2_dark">#4f999a</color>
+	<color name="color_3_dark">#608a4f</color>
+	<color name="color_4_dark">#a466a6</color>
+	<color name="color_5_dark">#c69308</color>
+	<color name="color_6_dark">#ac8769</color>
+	<color name="color_7_dark">#737406</color>
+	<color name="color_8_dark">#7080a9</color>
+	
+	<color name="color_top_bar_dark">#424242</color>
+	<color name="color_bottom_bar_dark">#585858</color>
+	
+	<color name="color_load_more_break_dark">#ab2100</color>
+	
+	<color name="color_background_new_status_dark">#777777</color>
+	
+	<color name="color_main_button_normal_dark">#ffffff</color>
+	<color name="color_main_button_selected_dark">#795a05</color>
+	
+	<color name="color_tweet_buttons_normal_dark">#ffffff</color>
+	<color name="color_tweet_buttons_press_dark">#795a05</color>
+	
+</resources>

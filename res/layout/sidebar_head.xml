@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" 
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/layout_tweet_sidebar"
+    >
+	<ImageView
+		android:id="@+id/user_avatar_sidebar"
+		android:src="@drawable/avatar"
+		android:background="@drawable/bg_push_button"
+		style="@style/TweetAvatarMedium" />
+				
+	<LinearLayout android:layout_width="fill_parent"
+	    	android:layout_height="wrap_content"
+	    	android:orientation="vertical"
+	    	android:layout_toRightOf="@id/user_avatar_sidebar" 
+	    	android:id="@+id/tweet_user_name_layout_sidebar"
+	    	>
+		<TextView
+		   	android:id="@+id/tweet_user_name_text_sidebar"
+		   	android:layout_width="wrap_content"
+		   	android:layout_height="wrap_content"
+	    	style="@style/TweetTitle" android:lines="1"/>
+	    <TextView
+		   	android:id="@+id/tweet_date_sidebar"
+		   	android:layout_width="wrap_content"
+		   	android:layout_height="wrap_content"
+	    	style="@style/TweetDateSidebar"
+	    	android:text="1h" />
+	</LinearLayout>
+	
+	<TextView
+	   	android:id="@+id/tweet_text_sidebar"
+	   	android:layout_width="wrap_content"
+	   	android:layout_height="wrap_content"
+	   	android:maxLines="4"
+    	android:layout_below="@+id/user_avatar_sidebar"
+    	style="@style/TweetTextSidebar" 
+    	/>
+				
+</RelativeLayout>	

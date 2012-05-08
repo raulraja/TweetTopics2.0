@@ -1,0 +1,573 @@
+Version 1.72
+============
+
+- Bug fixed in orientation when uploading images
+- Show the users who have retweeted the selected tweet
+- Upload images to Facebook too
+- When the user want send a tweet than more 140 characters the app ask which is a option for send it
+
+Build number 60
+
+Version 1.71
+============
+
+- Image thumb of pic.twitter.com and vvcap.net
+- New preference for set number of tweets by download in timeline by default
+- Don't delete automatically tweets of user that don't have read
+- Improvement in the avatar's loaders
+- Indonesian translate
+- Fixed bugs
+
+Build number 59
+
+Version 1.70
+============
+- Twitter avatar change from user management
+- New way to send direct messages by typing "d @username"
+- Improved behavior when you pull to refresh
+- Fixed bugs
+
+Build number 58
+
+Version 1.69
+============
+
+- Improvements in the conversations. Gradually load it and displayed tweets in the bar tweet
+- Fixed problems sending DM's (by @anderWeb;-))
+- Fixed bugs
+
+Build number 57
+
+Version 1.68
+============
+
+- Autocomplete hashtags when sending tweets
+- New widget 2x1 (only PRO)
+- Using Bing Translate for translate tweets
+- Fixed bugs
+
+Build number 56
+
+Version 1.67
+============
+
+- Fixes bug with users who can not access the application
+
+Build number 55
+
+Version 1.66
+============
+
+- Fixed bugs
+
+Build number 54
+
+Version 1.65
+============
+
+- Fixed error updating status in some users
+
+Build number 53
+
+Version 1.64
+============
+
+- You can post messages on Facebook. PRO version users will have the number of accounts that they need, Lite users only one
+- New way to send tweets over 140 characters. It is divided into several tweets (by @victorelec14)
+- When export HTML: Retweets appear and link to tweet on twitter (by @Devan0n)
+- Saves the state of geo (enabled or disabled) when you send tweets
+- Fixed problem when hidden tweets
+- Fixed errors in the vibration and sound notifications (by @comerycantar)
+- Fixed minor bugs
+
+Build number 52
+
+Version 1.63
+============
+
+- You can share an HTML file with the list of tweets for Gmail, DropBox, etc. (by @victorelec14 @Devan0n)
+- Fixes bug with links showing some errors 404 (thanks to @magura)
+- Fixes problems when restoring backups
+
+Build number 51
+
+Version 1.62
+============
+
+- Display images of lightbox.com directly into the application (by @aeliasnet)
+- Controls the status of the list when you rotate the phone
+- Slower in the notification LED (by @FedeProEx)
+- Improvements in the list of tweets programmer and correction of errors in dates
+- Fixed other bugs
+
+Build number 50
+
+
+Version 1.61
+============
+
+- Fixed error when logging into twitter on phones with version <= 2.1
+- Button on the screen when you create new message for programmed tweets (by @Bergonzini)
+- The tweet saved are stored in the backup
+- Fixed other bugs
+
+Build number 49
+
+
+Version 1.60
+============
+
+- Fixed bugs
+
+Build number 48
+
+Version 1.59
+============
+
+- Fixed bugs
+
+Build number 47
+
+Version 1.58
+============
+
+- Fixed bugs
+- Update the timeline after sending a tweet (by @franfersim)
+
+Build number 46
+
+Version 1.57
+============
+
+- Pull to refresh (beta). Activate on "Preferences - Interface and services - Pull to refresh"
+- New widget 4x1 (version PRO). With TL counters, references, direct and search
+- Improvements in the widget 4x2 (version PRO)
+- Icon in the tweet list to know that is a conversation (by @oGPS)
+- Fixed error in background notifications when the TL is "Never" and mentions in time (by @eduardoA)
+- Fixed bugs
+
+Build number 45
+
+Version 1.56
+============
+
+- You can set a refresh interval in the background to the timeline and other for the mentions and dms (by @huelvayork)
+- The unread tweets will be highlighted. You can change color or remove (by @sloy5101)
+- Fixes problems with some users to detect if two users are friends (by @anderwebs)
+- Corrects errors by counting the number of characters when you use long URLs
+- Fixed several minor bugs
+
+NOTE: If you don't use the default update interval should go to "Preferences - Notifications - Intervals ..."
+
+Build number 44
+
+Version 1.55
+============
+
+- Main menu with 2 levels for faster access to content
+- Show username who has sent a direct message
+- You can edit the user profile twitter
+- Displays links without "t.co." Change in "Preferences - Results - Show URLs"
+- You can change the date format listed in the tweets. "Preferences - Results - Date format"
+- Fixed Twittlonger problem
+- You can resize the text box where you write tweets
+
+Build number 43
+
+Version 1.52
+============
+
+- Fixes problems with the refresh button of the tweets
+- Position at the end when it download tweets by excess downloaded
+- Fixed some bugs
+
+Build number 42
+
+Version 1.51
+============
+
+- Fix bug when sending tweets
+
+Build number 41
+
+Version 1.50
+============
+
+- New designs QuickAction
+- New submenu when you hold down a tweet. You can configure it in "Preferences - Submenu tweets"
+- You can send a tweet to multiple accounts simultaneously (PRO only)
+- You can change the button colors using filters
+- New way to send tweets using notifications. You do not have to wait
+- You can block users and report spam (order by @ LluisLazaro)
+- Fixed bugs
+
+Build number 40
+
+
+Version 1.45
+============
+
+- Fixes bugs in the number of tweets (thanks to @FriDLaCk)
+- Fixed text in German (thanks to Markus Meyer)
+- Fixed several bugs
+
+Build number 39
+
+Version 1.44
+============
+
+- Translated to German (thanks to Markus Meyer)
+- Improved downloading of tweets for large downloads (by @anderwebs and @huelvayork)
+- You can see the timeline of users protected (by @victorelec14)
+- Clicking on the title page is positioned on the first tweet of the list (requested by many users)
+- Performance improvements list
+- Fixed bugs
+
+Build number 38
+
+Version 1.43
+============
+
+- Fixes bugs
+
+Build number 37
+
+Version 1.42
+============
+
+- Fixes problem with links in tweets in some ROMs
+
+Build number 36
+
+Version 1.41
+============
+
+- You can modify all the colors of the application and share your customization with other users
+- You can add a custom image as background 
+- You can activate/deactivate gradients in background tweets (Preferences - Interface - Use gradients)
+- Improvements in the gallery to navigate between links in a tweet (@anderwebs recommendation)
+- More information of users in the gallery links in a tweet (thanks to @Blocdeesbozos)
+- Fixed problems with name completion on keyboards and Swype SwiftKey 3.0 (thanks to @mariangvalle for help)
+- Fixed the problems of the text colors on dark theme to create a search (@Pasaba_Por_Aqui)
+- Correction of English texts (thanks to @StifledGenius)
+
+Build number 35
+
+Version 1.40
+============
+
+- Russian translation (thanks to @ smart_se - www.smart-se.ru)
+- Improvements with an image when zooming (by @ anderwebs)
+- The text box when you are writing a tweet is adapted to size text
+
+Build number 34
+
+Version 1.39
+============
+
+- Option to place links to the right of the tweets. Change Preferences - Interface and services - Position of the links (by @eaginsoftware)
+- Improved performance of the list of tweets (by @anderwebs)
+- You can do retweet with a link to the website of the tweet (by @huelvayork)
+- Improvements to changing the sizes of the text of the tweets "Menu - Sizes" (by @ eaginsoftware)
+- Exit the screen to write tweet if you have written a text asks you to save drafts
+
+Build number 33
+
+Version 1.38
+============
+
+- Fixed problems with notifications
+
+Build number 32
+
+Version 1.37
+============
+
+- Notifications of users and searches, separate by default (by @kix2902)
+- Options grouped notifications in the preferences (as before)
+- New options for images: save image SDCard, share, create QR code, etc.
+- New options for links and videos: share, create QR code, save to clipboard, etc.
+- Fixed problems with the widget (PRO only)
+
+Build number 31
+
+Version 1.36
+============
+
+- Fixes problems in TwittLonger
+- Fixes the color of the mentions (thanks to @ MikiStandby)
+- Fixed some errors
+
+Build number 30
+
+Version 1.35
+============
+
+- Fixed problems with orientation phone to send tweets (thanks to @Bergonzini for your help)
+- Support imgur.com and Mytubo.net
+- Option in preferences to not do updates in the background (by @TheLastMonkey)
+- You can hide tweets from a specific source (by @kix2902)
+
+Build number 29
+
+Version 1.34
+============
+
+- Fixes bug
+
+Build number 28
+
+Version 1.33
+============
+
+- Improved refresh rate of tweets on the timeline (thanks to @ eduardoA)
+- Program your tweets and you can change your status the date and time you want
+- You can save drafts of tweets
+- If you don't update the timeline in the last 6 hours you can decide the number of messages you want to download
+- Check location before sending a message geolocated
+- Option in preferences to not automatically update (by @ TheLastMonkey)
+
+Build number 27
+
+Version 1.32
+============
+
+- NEW THEME. You can choose between dark theme and default theme
+- Avarta rounded
+- Support for t.co
+- Support Lockerz.com and Picpkz.com
+- You can select the automatic refresh timeline (10 minutes by default)
+- Fixes problems when updating favorites (bug found by @ victorelec14)
+- Fixed problem of characters not displayed correctly (thanks to @ ignacio_gs)
+
+Build number 26
+
+Version 1.31
+============
+
+- Fixed problems with links
+- Fixes bug with colors in the default text
+- Fixed error when reply (copy)
+- Fixes bug with favorites
+- Fixed problems with HTML characters
+
+Build number 25
+
+Version 1.3
+============ 
+
+- New interface to display pictures, and links users
+- Use gestures to close the new window (right) and show next and previous link or picture (Up and Down)
+- Show the links in the browser by holding down the button for 2 seconds
+- New animations
+- You can delete messages in twitter
+- Can be used in landscape mode (testing)
+- You can send messages TwitLonger
+- Zoom button on images (suggested by @ huelvayork)
+- List in options for automated searches (suggested by @ magura)
+- You can display messages with HTML characters (bug found by @ victorelec14)
+
+Build number 24
+
+
+Version 1.20
+=============
+
+- Coloring the tweets of the mentions and favorites in your timeline
+- You can coloring the tweets of the users to highlight it of the rest by user types
+- You can see on the map the geo tweets
+- You can set default a hashtag to will appear if you write a new tweet
+
+Build number 23
+
+Version 1.19
+=============
+
+- New way respply to all (copy)
+- No send DM to users who follow you
+- Fixed some bugs
+
+
+Build number 22
+
+Version 1.181
+=============
+
+- Fixed a small error uploading photos
+- Can be used as shortening Bit.ly or Karmacracy, and you can use your own API KEY
+- Twitlonger support
+- You can select content to the right of username: source, fullname or anything
+- Fixed some bugs
+
+Build number 21
+
+Version 1.18
+=============
+
+- Can be used as shortening Bit.ly or Karmacracy, and you can use your own API KEY
+- Twitlonger support
+- You can select content to the right of username: source, fullname or anything
+- Fixed some bugs
+
+Build number 20
+
+Version 1.17
+=============
+
+- Fixed some bugs
+
+Build number 19
+
+Version 1.16
+=============
+
+- Improving the quality of the pictures to upload and display in app
+- Improving the conversations. You can see the answer directly and see the entire conversation by pressing a button
+- You can search users
+- You can read the messages retweet and the number of retweets made
+- You can see the friends and supporters from the user profile
+- Improved work with the background service
+
+Build number 18
+
+Version 1.15
+=============
+
+- Fixed FC to share pictures from Gallery
+- Improved the automatic update in the timeline
+- Fixed problem displaying only with pictures and video thumbs
+- Retweets custom. Create your retweets and send in one click
+- Changes in the screen "New tweet"
+
+Build number 17
+
+Version 1.142
+=============
+
+- Fixed bug in TweetQuick when it fails to upload photo and you can try re-upload from notification bar
+
+Build number 16
+
+
+Version 1.141
+=============
+
+- Fixed some TweetQuick bugs
+
+Build number 15
+
+
+Version 1.14
+=============
+
+- Service TweetQuick.
+
+TweetQuick is a service of TweetTopics app, whereby you can post your photos in Twitter quickly.
+
+For use it you must write your posts previously, then from your gallery of Android you can send  to TweetQuick the photos selecting the post you want publish.
+
+You can send messages to your timeline or direct to your followers
+
+- Fixed minor bugs
+
+Build number 14
+
+Version 1.13
+=============
+
+- Hide tweet timeline by word or by user
+- Direct access to tweets from the user profile and more action
+- Direct access to the tweets of a hashtag
+- Access to recent searches
+- The avatars are stored in the SD for not using data
+- Fixed FC in widget
+
+Build number 13
+
+
+Version 1.121
+=============
+
+- Fixed some errors with users who do not save the timeline, control background updates and updates since the application
+
+Build number 12
+
+
+Version 1.12
+=============
+
+- Upload images to TwitPic, YFrog y Plixi
+- Change size images
+- Change text sizes
+- Backup
+- Fixed some errors
+
+Build number 11
+
+
+Version 1.11
+=============
+
+- Fixed the auto FC usernames
+- Fixed problems with notifications
+- New Item "Read more" at the end of listings to view older tweets
+- Save last message read automatically if you move between timeline, references and direct messages
+
+Build number 10
+
+Version 1.1
+=============
+
+- Bug in autocomplete
+
+Build number 9
+
+Version 1.1
+=============
+
+- Fixed some errors
+
+Build number 8
+
+Version 1.04
+=============
+
+- You can sort the search by several criteria (see preferences)
+- New way to show the number of unread messages. Now also in the bar
+- Improvements to the notification service for older phones like HTC Magic
+- Fixed minor bugs
+
+Build number 7
+
+
+Version 1.03
+=============
+
+- New backgrounds and icons in QuickActions
+- Fixed error when updating position
+- Fixed minor bugs
+
+Build number 6
+
+Version 1.021
+=============
+
+- Fixed minor bugs
+
+Build number 5
+
+Version 1.02
+============
+
+- Integration in ADWLauncher
+
+Build number 3
+
+Version 1.01
+============
+
+- App to SDCard
+
+Build number 2
+
+

@@ -1,0 +1,9 @@
+USO DE LAS NOTIFICACIONES
+
+Al usar las notificaciones en un tema nos aseguramos que los tweets se guardarán en la base de datos de nuestro teléfono. Los tweets más antiguos en Twitter no aparecen en las búsquedas, esto puede producir que se pierdan tweets importantes para nosotros. Con las notificaciones nos aseguramos que siempre tendremos guardados los últimos 500 tweets de cada tema.
+
+Para usar las notificaciones debemos tener en cuenta de hacerlo en búsquedas que tengan poca actividad. No sería lógico guardar más información de la que podamos leer o guardar.
+
+Si usamos las notificaciones, en el listado de búsquedas nos aparecerá un icono cada vez que tengamos mensajes nuevos en ese tema con el número de mensajes no leidos. Si marcamos "Usar la barra de notificaciones de Android" el programa además lanzará una notificación en Android con una vibración, sonido y LED (podemos modificarlo en las preferencias).
+
+Recuerda que también puedes cambiar en las preferencias el intervalo de tiempo en el que quieres que se busquen nuevas notificaciones en Twitter.

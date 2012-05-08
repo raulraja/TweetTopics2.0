@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+      android:orientation="horizontal" android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:padding="10dip">
+    
+    <CheckBox android:id="@+id/cb_submenu" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="10dip"></CheckBox>
+        
+    <ImageView android:layout_height="wrap_content" android:id="@+id/image_submenu" android:layout_width="wrap_content" android:layout_marginRight="10dip"></ImageView>
+	<TextView android:text="name" android:id="@+id/name_submenu" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
+
+</LinearLayout>

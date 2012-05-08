@@ -1,0 +1,29 @@
+﻿ABOUT...
+
+TweetTopics is a Twitter application for Android focusing on advanced search.  For more information go to:
+
+http://www.tweet-topics.com
+
+Russian translation by @smart_se (www.smart-se.ru)
+
+The icons used in the program are free for commercial use and have been downloaded from the following locations:
+
+http://www.iconfinder.com/search/?q=iconset:hydropro
+http://www.iconfinder.com/search/?q=iconset:Iconshock_cinema
+http://www.iconfinder.com/search/1/?q=iconset:orchestra
+http://www.iconfinder.com/search/?q=iconset:blackblue
+http://www.icondrawer.com (buz@icondrawer.com)
+http://www.iconfinder.com/search/?q=iconset:macs
+http://www.iconfinder.com/search/?q=iconset:fliraneo
+http://www.iconfinder.com/search/?q=iconset:Mobile-Icons
+http://www.iconfinder.com/search/?q=iconset:iconshock_vista_consoles
+
+The application icon was created by Isaac Casanova, creator of the comic "La Guarida del Leviatán"
+
+http://laguaridadelleviatan.blogspot.com/
+
+The application has been made by Javier Pérez Pacheco (@javielinux)
+
+http://www.javielinux.com
+
+Comments and/or feedback is greatly (or always) appreciated javielinux@gmail.com

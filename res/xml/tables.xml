@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<database name="tweet_db" version="20">
+  
+  <table name="search" to-string="%name%">
+    <field name="name" obligatory="true" type="text" size="128"/>
+	
+    <field name="words_and" type="text" size="256"/>
+	<field name="words_or" type="text" />
+	<field name="words_not" type="text" size="256"/>
+	<field name="lang" type="text" size="8"/>
+	
+	<field name="source" type="text" size="256"/>
+	<field name="from_user" type="text" size="256"/>
+	<field name="to_user" type="text" size="256"/>
+	
+	<field name="attitude" obligatory="true" type="int" default="0" /> <!-- 0 Normal  -  1 Positiva  - 2 Negativa -->
+	<field name="filter" obligatory="true" type="int" default="0" /> <!-- 0 No usar  -  1 Solo enlaces  - 2 Solo imagenes - 3 Solo videos - 4 Solo preguntas -->
+	<field name="no_retweet" obligatory="true" type="int" default="0" />
+	
+	<field name="use_geo" obligatory="true" type="int" default="0" />
+	<field name="type_geo" obligatory="true" type="int" default="0" /> <!-- 0 Mapa  -  1 GPS -->
+	<field name="latitude" type="float" />
+	<field name="longitude" type="float" />
+	<field name="distance" type="int" />
+	<field name="type_distance" obligatory="true" type="int" default="0" /> <!-- 0 Millas  -  1 KM -->
+	
+	<field name="notifications" obligatory="true" type="int" default="0" />
+	<field name="notifications_bar" obligatory="true" type="int" default="0" />
+	
+	<field name="last_tweet_id" type="text" size="128" default="0" />
+	<field name="last_tweet_id_notifications" type="text" size="128" default="0" />
+	
+	<field name="new_tweets_count" type="int" default="0" />
+	
+	<field name="icon_id" type="int" default="1" />
+	<field name="icon_token_file" type="text" size="64"/>
+	<field name="icon_big" type="text" size="64"/>
+	<field name="icon_small" type="text" size="64"/>
+	
+	<field name="date_create" type="text" new-in-version="2" />
+	<field name="last_modified" type="text" new-in-version="2" />
+	<field name="use_count" type="int" default="0" new-in-version="2" />
+	
+	<field name="is_temp" obligatory="true" type="int" default="0" new-in-version="4" />
+	
+	<field name="birthday" type="text" size="64" new-in-version="10" />
+	
+  </table>
+  
+  <table name="users" to-string="%name%" backup="no">
+  	<field name="service" obligatory="true" type="text" size="16" new-in-version="16"/>
+    <field name="name" obligatory="true" type="text" size="128"/>
+	<field name="user_id" obligatory="true" type="int"/>
+	<field name="active" obligatory="true" type="int" default="0" />
+    <field name="auth_key" obligatory="true" type="text" size="128"/>
+	<field name="auth_secret_key" obligatory="true" type="text" size="128"/>
+	<field name="last_timeline_id" type="text" size="128" default="0" new-in-version="3" />
+	<field name="last_mention_id" type="text" size="128" default="0" new-in-version="3" />
+	<field name="last_direct_id" type="text" size="128" default="0" new-in-version="3" />
+	<field name="last_sent_direct_id" type="text" size="128" default="0" new-in-version="3" />
+	<field name="no_save_timeline" obligatory="true" type="int" default="0" new-in-version="4" />
+	
+	<field name="uid_facebook" obligatory="true" type="text" size="128" new-in-version="18" />
+	<field name="expires_facebook" obligatory="true" type="text" size="128" new-in-version="18"/>
+	<field name="token_facebook" obligatory="true" type="text" size="128" new-in-version="18"/>
+	<field name="username_facebook" obligatory="true" type="text" size="128" new-in-version="19"/>
+  </table>
+  
+  <table name="tweets" to-string="%username%" backup="no">
+  	<field name="search_id" type="foreign-key" foreign-table="search" />
+	<field name="url_avatar" obligatory="true" type="text" size="256" />
+    <field name="username" obligatory="true" type="text" size="128" />
+    <field name="fullname" obligatory="true" type="text" size="128" new-in-version="6" />
+	<field name="user_id" obligatory="true" type="int"/>
+	<field name="tweet_id" obligatory="true" type="text" size="128" />
+	<field name="text" obligatory="true" type="text" size="256" />
+	<field name="source" obligatory="true" type="text" size="64" />
+	<field name="to_username" type="text" size="128" />
+	<field name="to_user_id" type="int"/>
+	<field name="date" obligatory="true" type="text" size="64" />
+	<field name="favorite" obligatory="true" type="int" default="0" /> <!-- depretacated -->
+  	<field name="latitude" type="float" obligatory="true" default="0" new-in-version="7" />
+	<field name="longitude" type="float" obligatory="true" default="0" new-in-version="7" />
+  </table>
+  
+  <table name="saved_tweets" to-string="%username%" new-in-version="17" backup="yes">
+	<field name="url_avatar" obligatory="true" type="text" size="256" />
+    <field name="username" obligatory="true" type="text" size="128" />
+    <field name="fullname" obligatory="true" type="text" size="128" />
+	<field name="user_id" obligatory="true" type="int"/>
+	<field name="tweet_id" obligatory="true" type="text" size="128" />
+	<field name="text" obligatory="true" type="text" size="256" />
+	<field name="text_urls" obligatory="true" type="text" size="256" />
+	<field name="source" obligatory="true" type="text" size="64" />
+	<field name="to_username" type="text" size="128" />
+	<field name="to_user_id" type="int"/>
+	<field name="date" obligatory="true" type="text" size="64" />
+  	<field name="latitude" type="float" obligatory="true" default="0"/>
+	<field name="longitude" type="float" obligatory="true" default="0"/>
+  </table>
+  
+  <table name="tweets_user" to-string="%username%" new-in-version="3" backup="no" >
+  	<field name="user_tt_id" type="foreign-key" foreign-table="users" />
+	<field name="type_id" type="int" /> <!-- 0 Timeline  -  1 Mentions - 2 Favorites - 3 Direct Messages - 4 Sent Direct Messages -->
+	<field name="url_avatar" obligatory="true" type="text" size="256" />
+    <field name="username" obligatory="true" type="text" size="128" />
+    <field name="fullname" obligatory="true" type="text" size="128" new-in-version="6" />
+	<field name="user_id" obligatory="true" type="int"/>
+	<field name="tweet_id" obligatory="true" type="text" size="128" />
+	<field name="text" obligatory="true" type="text" size="256" />
+	<field name="text_urls" obligatory="true" type="text" size="256" new-in-version="15" />
+	<field name="source" obligatory="true" type="text" size="64" />
+	<field name="to_username" type="text" size="128" />
+	<field name="to_user_id" type="int"/>
+	<field name="date" obligatory="true" type="text" size="64" />
+	<field name="is_retweet" obligatory="true" type="int" default="0" />
+	<field name="retweet_url_avatar" obligatory="true" type="text" size="256" />
+    <field name="retweet_username" obligatory="true" type="text" size="128" />
+    <field name="retweet_source" obligatory="true" type="text" size="128" new-in-version="11" />
+	<field name="is_favorite" obligatory="true" type="int" default="0" />
+	<field name="reply_tweet_id" obligatory="true" type="text" size="128" new-in-version="4" />
+  	<field name="latitude" type="float" obligatory="true" default="0" new-in-version="7" />
+	<field name="longitude" type="float" obligatory="true" default="0" new-in-version="7" />
+	<field name="has_more_tweets_down" obligatory="true" type="int" default="0" new-in-version="13" />
+  </table>
+  
+  <table name="icons" to-string="%icon%" backup="no">
+	<field name="icon" obligatory="true" type="drawable-identifier"/>
+	<field name="icon_small" obligatory="true" type="drawable-identifier"/>
+	<field name="for_user" obligatory="true" type="int" default="0" />
+  </table>
+  
+  <table name="tweet_quick" to-string="%name%" new-in-version="4">
+    <field name="name" obligatory="true" type="text" size="64"/>
+	<field name="text" type="text" size="256"/>
+	<field name="count" obligatory="true" type="int" default="1" />
+	<field name="type_id" obligatory="true" type="int" default="1" /> <!-- 1 TIMELINE 2 DIRECTO -->
+	<field name="username_direct" type="text" size="64"/>
+  </table>
+  
+  <table name="quiet" to-string="%word%" new-in-version="4">
+    <field name="word" obligatory="true" type="text" size="64"/>
+	<field name="type_id" obligatory="true" type="int" default="1" /> <!-- 1 WORD 2 USER 3 SOURCE -->
+  </table>
+  
+  <table name="types_retweets" to-string="%phrase%" new-in-version="5">
+    <field name="phrase" obligatory="true" type="text" size="64"/>
+  </table>
+  
+  <table name="colors" to-string="%word%" new-in-version="4">
+    <field name="word" obligatory="true" type="text" size="64"/>
+	<field name="type_id" obligatory="true" type="int" default="1" /> <!-- 1 WORD 2 USER -->
+	<field name="type_color_id" type="foreign-key" foreign-table="type_colors" new-in-version="7" />
+  </table>
+  
+  <table name="type_colors" to-string="name" new-in-version="7">
+    <field name="name" obligatory="true" type="string-identifier" size="64"/>
+	<field name="color" type="text" size="64"/>
+	<field name="pos" obligatory="true" type="int" default="0" new-in-version="8" />
+  </table>
+  
+  <table name="send_tweets" to-string="%text%" new-in-version="14" backup="no">
+    <field name="users" type="text" size="128"/> <!-- IDs separados por comas -->
+	<field name="text" type="text" size="256" />
+	<field name="is_sent" obligatory="true" type="int" default="0" /> <!-- 0 para enviar 1 error -->
+	<field name="type_id" obligatory="true" type="int" default="1" /> <!-- 1 TIMELINE 2 DIRECTO -->
+	<field name="username_direct" type="text" size="64"/>
+	<field name="photos" type="text" size="128"/>
+	<field name="reply_tweet_id" obligatory="true" type="text" size="128" />
+	<field name="tweet_programmed_id" type="foreign-key" foreign-table="tweets_programmed" new-in-version="14" />
+	<field name="tweet_draft_id" type="foreign-key" foreign-table="tweets_draft" new-in-version="14" />
+	<field name="use_geo" obligatory="true" type="int" default="0" /> <!-- 1 SI 0 NO -->
+	<field name="mode_tweetlonger" obligatory="true" type="int" default="0" new-in-version="20" /> <!-- 0 Twitlonger 1 n_tweets -->
+  </table>
+  
+  <table name="tweets_programmed" to-string="%text%" new-in-version="9">
+    <field name="user_tt_id" type="foreign-key" foreign-table="users" />
+    <field name="users" type="text" size="128" new-in-version="14" /> <!-- IDs separados por comas -->
+	<field name="text" type="text" size="256" />
+	<field name="date" type="text" />
+	<field name="is_sent" obligatory="true" type="int" default="0" /> <!-- 0 por enviar 1 enviado 2 error -->
+	<field name="type_id" obligatory="true" type="int" default="1" /> <!-- 1 TIMELINE 2 DIRECTO -->
+	<field name="username_direct" type="text" size="64"/>
+	<field name="photos" type="text" size="128" new-in-version="14"/>
+	<field name="has_notification" obligatory="true" type="int" default="0" new-in-version="16" />
+  </table>
+  
+  <table name="tweets_draft" to-string="%text%" new-in-version="9">
+	<field name="text" type="text" size="256" />
+  </table>
+  
+  <table name="themes" to-string="name" new-in-version="12">
+	<field name="name" type="text" size="64" />
+	<field name="theme" type="text" />
+  </table>
+  
+ </database>

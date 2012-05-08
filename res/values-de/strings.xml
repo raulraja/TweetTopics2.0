@@ -1,0 +1,891 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+	<!-- v 1.55  -->
+	
+	<string name="my_tweets">Mein tweets, Rückantworten</string>
+	<string name="my_retweets">Rückantwort von mir</string>
+	<string name="retweet_others">Rückantwort von anderen</string>
+	
+	<string name="my_lists">Meine Liste</string>
+	<string name="list_follow_me">Liste die ich Folge</string>
+	
+	<string name="txt_more">Mehr</string>
+	
+	<!-- v 1.52  -->
+	
+	<string name="no_conversation">Es ist nicht ein Gespräch</string>
+	<string name="moretweetdown_loaded_msg">Wenn der Ladevorgang beendet ist, zurück zum letzten Tweet.</string>
+
+	<!-- v 1.50  -->
+	
+	<string name="msg_err_send">Fehler beim Senden</string>
+	<string name="add_user">Benutzer hinzufügen</string>
+	
+	<string name="delete_draft_sent">Löschen, wenn die Nachricht erfolgreich gesendet wurde.</string>
+	
+	<string name="report_spam">Spam</string>
+	<string name="create_block">Blockieren</string>
+	<string name="destroy_block">Frei geben</string>
+	
+	<string name="user_block">User Blockieren</string>
+	<string name="user_unlock">User frei geben</string>
+	<string name="user_report_spam">Als Spam gemeldet</string>
+	
+	<string name="dm">DM</string>
+	
+	<string name="option_no_available">Option steht nicht zur Verfügung</string>
+	<string name="title_prf_submenutweet">Untermenü Tweets</string>
+    <string name="summary_prf_submenutweet">Wählen Sie die gewünschten Optionen, um einen Tweet zu halten</string>
+	
+	<string name="edit">Bearbeiten</string>
+	<string name="web">Web</string>
+	<string name="finalize">fertig stellen</string>
+	
+	<string name="themes">Thema</string>
+	<string name="lists">Liste</string>
+	<string name="profile">Profile</string>
+	<string name="trending_topics">Trending topics</string>
+	<string name="retweets">Rückantwort</string>
+	<string name="last_read">Zuletzt gelesen</string>
+	<string name="saved">Sichern</string>
+	
+	<string name="section_buttons">Buttons Farben</string>
+	
+	<string name="title_color_main_button_normal">Home</string>
+	<string name="desc_color_main_button_normal">Farbe von Schaltflächen home</string>
+	
+	<string name="title_color_main_button_selected">Home (ausgewählt)</string>
+	<string name="desc_color_main_button_selected">Farbe auswählen für Tasten</string>
+	
+	<string name="title_color_tweet_buttons_normal">Tweet Bildschirm</string>
+	<string name="desc_color_tweet_buttons_normal">Farbe der Menü-Tasten eines Tweet</string>
+	
+	<string name="title_color_tweet_buttons_press">Tweet-Bildschirm (drücken)</string>
+	<string name="desc_color_tweet_buttons_press">Farbe für die Tweet Taste beim Drücken</string>
+
+	<!-- v 1.44  -->
+
+	<string name="title_color_load_more_break">Legen Sie mehr an</string>
+	<string name="desc_color_load_more_break">Hintergrund für die Zeilen, die mehr Tweets laden</string>
+	<string name="time_without_timeline">%1$s synchronisiert. Download?</string>
+
+	<!-- v 1.43  -->
+	
+	<string name="manager_theme">Themen Manager</string>
+	
+	<string name="delete_background">Lösche Hintergrund</string>
+	
+	<string name="adjust_background">Anpassen Bild</string>
+	<string name="correct_background">Einstellung sichern</string>
+	<string name="correct_delete_background">Lösche Hintergrund Bild</string>
+	
+	<string name="title_tweettopics_theme">Import Thema</string>
+    <string name="msg_tweettopics_theme">Dieser Link enthält ein Thema für TweetTopics. Möchten Sie es importieren?</string>
+	
+	<string name="delete_theme">Lösche Thema</string>
+	<string name="load_theme">Laden Thema</string>
+	<string name="overwrite_theme">Überschreibe Thema</string>
+	
+	<string name="correct_delete_theme">Erfolgreich löschen Thema</string>
+	
+	<string name="no_themes">Keine Themen im Moment</string>
+	
+	<string name="new_theme">Neues Thema</string>
+	<string name="desc_new_theme">Name für neues Thema</string>
+	<string name="correct_new_theme">Erfolgreich gespeichert Thema</string>
+	<string name="no_name_new_theme">Sie müssen einen Namen für das Thema eingeben</string>
+	
+	<string name="select_color">Wähle Farbe</string>
+	<string name="restarts_colors">Zurücksetzen Farbe</string>
+	
+	<string name="desc_restarts_colors">Themen Farben können sich verändert haben. Wollen Sie alle Farben der Anwendung, die dieses Thema verwendet zurücksetzen?</string>
+
+	<string name="section_texts">Text Farbe</string>
+	
+	<string name="section_bars">Bar Farbe</string>
+	
+	<string name="section_bgs">Hintergrund Farbe</string>
+	
+	<string name="section_links">Link Farbe in Tweets</string>
+
+	<string name="section_8colors">8 Hintergrundfarben für Nachrichten und Benutzer</string>
+
+	<string name="title_color_tweet_usename">Username</string>
+	<string name="desc_color_tweet_usename">Username Farbe</string>
+	
+	<string name="title_color_tweet_source">Quelle Tweet</string>
+	<string name="desc_color_tweet_source">Farbe für für Quelle vom Tweet</string>
+	
+	<string name="title_color_tweet_date">Datum Tweet</string>
+	<string name="desc_color_tweet_date">Farbe für Datum des Tweet</string>
+	
+	<string name="title_color_tweet_retweet">Antwort</string>
+	<string name="desc_color_tweet_retweet">Farbe Antwort Username</string>
+	
+	<string name="title_color_tweet_text">Text vom Tweets</string>
+	<string name="desc_color_tweet_text">Farbe des text für die Tweets</string>
+	
+	<string name="title_tweet_color_selected">Tweet ausgewählt</string>
+	<string name="desc_tweet_color_selected">Farbe auswählen für Tweet</string>
+	
+	<string name="title_color_shadow_listview">Schatten der Liste</string>
+	<string name="desc_color_shadow_listview">Obere und untere Schatten der Liste der Tweets</string>
+	
+	<string name="title_list_background_row_color">Hintergrund Tweets</string>
+	<string name="desc_list_background_row_color">Die Hintergrundfarbe des Tweets</string>
+	
+	<string name="title_color_divider_tweet">Separator tweets</string>
+	<string name="desc_color_divider_tweet">Farbe der Trennlinie tweets</string>
+	
+	<string name="title_color_top_bar">Obere Leiste</string>
+	<string name="desc_color_top_bar">Farbe der Oberen Leiste der Anwedung</string>
+	
+	<string name="title_color_bottom_bar">Untere Leiste</string>
+	<string name="desc_color_bottom_bar">Farbe der unteren Leiste der Anwendung</string>
+	
+	<string name="title_tweet_color_link">Farbe links</string>
+	<string name="desc_tweet_color_link">Farbe der Links in Tweets</string>
+	<string name="title_tweet_color_hashtag">Farbe Schlagwort</string>
+	<string name="desc_tweet_color_hashtag">Farbe der Schlagwörter in Tweets</string>
+	<string name="title_tweet_color_user">Farbe der Users</string>
+	<string name="desc_tweet_color_user">Farbe des Usernames in Tweets</string>
+	
+	<string name="title_color_x">Voreinstellung Farbe %1$s</string>
+	<string name="desc_color_x">Farbe %1$s für ausgewählte Nachrichten, Favorites, etc.</string>
+	
+	<string name="title_prf_colors_app">Themen Farbe</string>
+    <string name="summary_prf_colors_app">Ändert die Farben der Anwendung zu Ihrem Stil</string>
+    
+    <string name="title_prf_image_background">Hintergrundbild</string>
+    <string name="summary_prf_image_background">Ändern Sie das Hintergrundbild</string>
+		
+	<string name="title_prf_use_gradient">Verarbeitung gradients</string>
+    <string name="summary_prf_use_gradient">Verwenden gradients  in Hintergründe der Liste der Tweets</string>
+    
+    <string name="title_prf_use_divider_tweet">Trenne Tweets</string>
+    <string name="summary_prf_use_divider_tweet">Verwenden Trennlinie zwischen den Tweets in der Liste</string>
+
+	<!-- v 1.39  -->
+	
+	<string name="size_title">Größe von Titeln</string>
+	<string name="size_text">Text größe</string>
+	
+	<string name="discard">Verwerfen</string>
+	<string name="save_draft">Entwurf speichern</string>
+	<string name="quit_newstatus">Speichern Sie die Nachricht die nicht gesendet wurde. Was möchten Sie tun?</string>
+	
+	<string name="retweet_url">Antwort Twitter URL</string>
+	
+	<string name="title_prf_positions_links">Position von Links</string>
+    <string name="summary_prf_positions_links">Position der Links im Tweet</string>
+
+	<!-- v 1.37  -->
+	
+	<string name="save_image_download">Bild erfolgreich in den Download-Verzeichnis gespeichert</string>
+	
+	<string name="problem_image">Es gab ein Problem mit den Bild. Bitte versuchen Sie es später erneut</string>
+	
+	<string name="title_prf_notif_type_one_notification">Gruppe auf einer Ankündigung</string>
+    <string name="summary_prf_notif_type_one_notification">Gruppe Benutzer Benachrichtigungen und sucht in Benachrichtigungsleiste</string>
+	
+	<string name="title_prf_notif_delete_notifications_inside">Löschen Sie Benachrichtigungen nach der Eingabe</string>
+    <string name="summary_prf_notif_delete_notifications_inside">Löscht alle Meldungen beim Öffnen der Anwendung</string>
+	
+	<string name="title_prf_notif_in_timeline">Neue Timeline</string>
+    <string name="summary_prf_notif_in_timeline">Benachrichtigen bei neuen Nachrichten in der Timeline</string>
+	
+	<string name="tweettopics_searches">TweetTopics Suchen</string>
+	<string name="messages_in">Nachricht in</string>
+	<string name="notif_timeline">Timeline</string>
+
+	<!-- v 1.35  -->
+	
+	<string name="quit_user">User</string>
+	<string name="quit_word">Word</string>
+	<string name="quit_source">Quelle Tweet</string>
+
+	<!-- v 1.33  -->
+	
+	<string name="dialog_exit">Exit TweetTopics</string>
+	<string name="dialog_exit_msg">Tweets Service Hintergrund deaktiviert, diese Funktion wird automatisch aktualisiert. Deaktivieren den Dienst von Download Tweets?</string>
+	
+	<string name="download_msg">Anzahl der Meldungen zum Download</string>
+	
+	<string name="thanks">Danke</string>
+	<string name="follow_tweettopics">Folgen @tweettopics_app</string>
+	<string name="follow_tweettopics_msg">Sie können uns folgen, damit sich über neue Funktionen kommender Update informiert werdet. Wollen Sie uns folgen @tweettopics_app?</string>
+	
+	<string name="sent">Senden</string>
+	<string name="to_send">jetzt Senden</string>
+	<string name="error_sending">Fehler beim Senden</string>
+	
+	<string name="txt_download_mentions_directs">Laden Antworten und Nachrichten</string>
+	
+	<string name="draft_save">Entwurf wurde gespeichert</string>
+	<string name="programmed_save">Zeitplan Tweet wurde gespeichert</string>
+	
+	<string name="need_text">Noch einen Text schreiben</string>
+	
+	<string name="new_draft">Erstellen darft</string>
+	<string name="view_draft">Drafts</string>
+	<string name="new_programmed">Zeitplan Tweet</string>
+	
+	<string name="title_prf_draft">Drafts</string>
+    <string name="summary_prf_draft">Bereiten Sie gespeicherten Entwürfe für die schnelles Tweeting vor(wenn Sie es brauchen?)</string>
+    
+	<string name="title_prf_tweetprogrammed">Zeitplan</string>
+    <string name="summary_prf_tweetprogrammed">Erstellen Sie einen Zeitplan zu versenden Tweets zu bestimmten Zeiten vor</string>
+
+	<string name="draft">Draft</string>
+
+	<string name="title_no_geo">Geolocation</string>
+	<string name="text_no_geo">Unfähig, die Position des mobilen finden. Möchten Sie die Nachricht trotzdem senden?</string>
+
+	<!-- v 1.32  -->
+	
+	<string name="pull_to_refresh_pull_label">Ziehen für Aktualisierung...</string>
+    <string name="pull_to_refresh_release_label">Loslassen für Aktualisierung...</string>
+    <string name="pull_to_refresh_refreshing_label">Laden...</string>
+    <string name="pull_to_refresh_tap_label">Tap für Aktualisierung...</string>
+	
+	<string name="title_prf_theme">Themen</string>
+    <string name="summary_prf_theme">Auswählen Farbe für Thema</string>
+    
+    <string name="title_prf_time_refresh">Automatisch Upateintervall</string>
+    <string name="summary_prf_time_refresh">Minuten nach dem letzten Tweet zu aktualisieren Zeitachse innerhalb des Programms</string>
+    
+    <string name="refresh_theme">Wurde das Thema nicht geändert, das App neu starten.</string>
+    
+    <string name="problem_twitter_auth">Es gab ein Problem beim Senden der Twitter Web-Autorisierung. Bitte versuchen Sie es später erneut.</string>
+
+	<!-- v 1.3  -->
+	
+	<string name="title_prf_orientation">Ausrichtung</string>
+    <string name="summary_prf_orientation">Wählen Sie Display-Ausrichtung</string>
+	
+	<string name="send_twitlonger">Sende TwitLonger</string>
+	
+	<string name="changelog">Changelog</string>
+	
+	<string name="preparing_link">Vorbereiten Link. Einen Moment</string>
+	
+	<string name="no_more_links">Keine weitere Links</string>
+	
+	<string name="no_more_tweets">Keine weitere Tweets</string>
+	
+	<string name="change_country">Land auswählen</string>
+	
+	<string name="translating">Translating</string>
+	
+	<string name="back_to_menu">zurück zum Menü</string>
+
+	<string name="delete_tweet_correct">Ändern Tweet erfolgreich gelöscht</string>
+	<string name="delete_tweet_problem">Problem beim Löschen des Tweet. Bitte versuchen Sie es später erneut.</string>
+	<string name="delete_tweet">Lösche Tweet</string>
+
+	<string name="seconds">Sekunde</string>
+	<string name="minutes">Minute</string>
+	<string name="hours">Stunde</string>
+	<string name="days">Tag</string>
+	<string name="and">und</string>
+		
+	<string name="date_long">über %1$s vor</string>
+
+	<string name="tweets_hidden">Tweets versteckt</string>
+	<string name="sidebar_image">%1$s Bild</string>
+	<string name="sidebar_video">%1$s Video</string>
+	<string name="sidebar_link">Link</string>
+
+	<!-- v 1.20  -->
+	
+	<string name="error_view_url">Kann nicht auf die nächste URL zugreifen:</string>
+	
+	<string name="dialog_default_text">Voreinstellung Text</string>
+    <string name="dialog_default_text_msg">Einen Text schreiben und standardmäßig für allen neuen Tweets übernehmen.</string>  
+    
+	<string name="default_text">Voreinstellung Text</string>
+	<string name="clean">Löschen</string>
+	
+	<string name="view_map">Karte anzeigen</string>
+	<string name="no_tweet_map">Standort nicht zeigen.</string>
+	
+	<string name="color_add_user">Die Farbe ist für den Benutzer eingestellt</string>
+	<string name="color_delete_user">Die Farbe wurde vom Benutzer gelöscht</string>
+	
+	<string name="color_family">Family</string>
+	<string name="color_friends">Friends</string>
+	
+	<string name="title_dialog_color">Neue Farbe</string>
+	<string name="desc_dialog_color">Wählen Sie eine Farbe und einen Namen für Tweets Highlight</string>
+	
+	<string name="title_prf_color_tweets">Farben Tweets</string>
+	<string name="summary_prf_color_tweets">Wählen Sie die Farbe des Tweets für Benutzer und Hastags.</string>
+	
+	<string name="title_prf_color_mentions">Farben Antworten</string>
+	<string name="summary_prf_color_mentions">Wählen Sie die Farbe für Antworten.</string>
+	
+	<string name="title_prf_color_favorite">Farben Favorites</string>
+	<string name="summary_prf_color_favorite">Wählen Sie die Farbe für Favorites</string>
+
+	<!-- v 1.19  -->
+	
+	<string name="version">1.04</string>
+    <string name="hello">Hello World, TweetTopics!</string>
+    <string name="app_name">TweetTopics</string>
+    <string name="no_users">Kein Benutzer. Um TweetTopics verwenden zu können, müssen Sie mindestens ein Twitter Konto hinzufügen</string>
+    <string name="search">Suchen</string>
+    <string name="alert_dialog_ok">Akzeptieren</string>
+    <string name="alert_dialog_cancel">Abbrechen</string>
+    <string name="alert_dialog_close">Schließen</string>
+    <string name="loading_fromweb">Verbinden zum Web</string>
+    <string name="loading_title">Laden Tweets</string>
+    <string name="loading_conversation">Laden Unterhaltung</string>
+    <string name="loading_users">Laden Users</string>
+    <string name="loading_favorites">Laden Favoriten</string>
+    <string name="loading_imagen">Laden Bilder</string>
+    <string name="loading_info_web">Laden information aus den Web</string>
+    <string name="loading_description">Verbinde zu Twitter</string>
+    <string name="loading">Laden</string>
+    <string name="connecting">Verbinde</string>
+    <string name="uploading">Versende...</string>
+    
+    <string name="no_is_follower">Versende eine DM, der User muss mir Folgen.</string>
+    
+    <string name="karmacracy_key">Karmacracy key</string>
+    <string name="bitly_key">Bit.ly key</string>
+    
+    <string name="goto_web">gehe zu Web</string>
+    
+    <string name="suscribers">Teilnehmer</string>
+    <string name="members">Mitglieder</string>
+    
+    <string name="use_default">verwende Standard</string>
+    <string name="delete_default">Lösche Standard Wert</string>
+    
+    <string name="loading_title_lists">User Liste</string>
+    <string name="loading_description_lists">Laden User Liste</string>
+    
+    <string name="no_list">Dieser User hat keine Liste</string>
+    
+    <string name="user_in_list">User in die Liste aufgenommen</string>
+    
+    <string name="list">Liste</string>
+    <string name="show_lists">Zeige Liste</string>
+    <string name="show_profile">Profil anzeigen</string>
+    
+    <string name="show_retweets">Zeige Antworten</string>
+    <string name="retweets_ofme">Meine Tweets, Rückantworten</string>
+    <string name="retweets_byme">Rückantworten von mir</string>
+    <string name="retweets_tome">Rückantworten von anderen</string>
+    
+    <string name="friends">Freunde</string>
+    <string name="friends_of">Zeige Freunde</string>
+    <string name="followers_of">Die Anhänger des</string>
+    
+    <string name="search_users">Suche Users</string>
+    
+    <string name="view_conversation">Zeige Unterhaltung</string>
+    
+    <string name="retweet_now">Antworten jetzt</string>
+    <string name="retweet">Antworten</string>
+    <string name="now">jetzt</string>
+    <string name="edit_message">Bearbeite Nachricht</string>
+    <string name="show_retweets">Zeigen sie meine Antworten</string>
+    
+    <string name="user">User</string>
+    <string name="word">Wort</string>
+    <string name="title_quiet_words">User oder ein Wort</string>
+    <string name="desc_quiet_words">Schreiben Sie ein Wort oder Benutzer, das Sie ausblenden möchten.</string>
+    
+    <string name="title_new_retweet">Neue Rückantwort</string>
+    <string name="desc_new_retweet">Schreiben Sie ein Wort, das Sie vor dem Rückantwort erscheinen.</string>
+    
+    <string name="photo_upload_correct">Bild senden erfolgreich</string>
+    <string name="photo_upload_problem">Problem von senden des Bildes</string>
+    <string name="howto_use">verwenden Sie</string>
+    
+    <string name="photo_only">nur Foto</string>
+    
+    <string name="upload_photo">Hochladen von Bild auf Twitter</string>
+    
+    <string name="no_elements">Keine Artikel im Moment</string>
+    <string name="counter">Zähler</string>
+    <string name="address">Adresse</string>
+    <string name="photo">Foto</string>
+    <string name="text">Text</string>
+    <string name="send_dm_to">Sende eine Direktnachricht</string>
+    <string name="username">Username</string>
+    
+    <string name="add">Hinzufügen</string>
+    <string name="convert_search">Convert Suchen</string>
+    <string name="convert_search_correct">Erfolgreich converted</string>
+    
+    <string name="hashtag_hidden_correct">Der Schlagwort hat in seiner Timeline ausgeblendet</string>
+    <string name="user_hidden_correct">Der Benutzer hat in seiner Timeline ausgeblendet</string>
+    
+    <string name="font_size">Schriftgröße</string>
+    <string name="size">Größe</string>
+    
+    <string name="error_general">Es gab einen Fehler. Versuchen Sie es später noch einmal</string>
+    
+    <string name="activate">Aktivieren</string>
+    <string name="deactivate">Deaktivieren</string>
+    <string name="yes">Ja</string>
+    <string name="no">Nein</string>
+    <string name="title_no_save_timeline">Sichere Timeline</string>
+    
+    <string name="text_no_save_timeline">Wenn Sie diese Option aktivieren, sichert der Anwender die Timeline in Ihrer Datenbank. Kann verwendet werden, wenn Sie möchten einen Benutzer zu folgen, aber Sie möchten Tweets schreiben und Mitteilungen der Nennungen und direkte Nachrichten und verbessert damit Akkuleistung. Die Timeline direkt heruntergeladen werden. Möchten Sie Ihre Timeline auf dem Telefon gespeichert werden?</string>
+	<string name="save_timeline">Sichere Timeline</string>
+	<string name="no_save_timeline">Nicht sichern Timeline</string>
+    
+    <string name="notif_mentions">Antworten</string>
+    <string name="notif_directs">Direkt</string>
+    <string name="notif_searches">Suchen</string>
+    
+    <string name="load_data_first">Laden von Daten zum ersten mal. Dieser Vorgang kann ein wenig länger als normal dauern.</string>
+    <string name="mark_last_noread">Markiert zuletzt ungelesenen</string>
+    <string name="configure_widget">Einstellung Widget</string>
+    
+    <string name="alarm_longtime_title">Zeitüberschreitung</string>
+    <string name="alarm_longtime_desc">Ein Update im Hintergrund wird erkannt, mehr als erwartet und kann zu Abstürzen führen. Möchten Sie es stoppen?</string>
+    <string name="alarm_longtime_stop">Stop</string>
+    <string name="alarm_longtime_wait">Weiter</string>
+    
+    <string name="adw_integration_priority">Wählen Sie Priorität und Farbe für die gewünschten Botschaften in ADW Launcher Programm-Icon angezeigt. Falls es keine Nachrichten sind, wird es uns nächste, wobei der erste der einen mit mehr Priorität.</string>
+    
+    <string name="adw_integration_search_title">Suchen</string>
+    <string name="adw_integration_search_desc">Alle neuen Nachrichten von gemeldeten durchsucht.</string>
+    
+    <string name="adw_integration_timeline_title">Timeline</string>
+    <string name="adw_integration_timeline_desc">Neue Nachrichten in der Timeline</string>
+    
+    <string name="adw_integration_mentions_title">Antworten</string>
+    <string name="adw_integration_mentions_desc">Neue Antwort senden</string>
+    
+    <string name="adw_integration_directs_title">Direkt Nachricht</string>
+    <string name="adw_integration_directs_desc">Direkt Nachricht erhalten</string>
+    
+    <string name="txt_shorter_0">Keine Links zu verkürzen</string>
+    <string name="txt_shorter_n">verkürzen Links</string>
+    
+    <string name="txt_geoloc_on">Geolocation aktiviert</string>
+    <string name="txt_geoloc_off">Geolocation deaktiviert</string>
+    
+    <string name="geoloc">Geoloc</string>
+    <string name="shorter">Shorter</string>
+    
+    <string name="txt_type_reply">beantworten</string>
+    <string name="txt_type_retweet">Original retweet</string>
+    <string name="txt_type_dm">Direkt Nachricht an</string>
+    
+    <string name="wait_moment">Aktualisierung. Einen Augenblick bitte</string>
+    <string name="wait_moment_background">Aktualisieren im Hintergrund. Einen Augenblick bitte</string>
+    
+    <string name="select_action">Wählen Sie eine Aktion</string>
+    
+    <string name="retweet_by">Retweet bei</string>
+    
+    <string name="send_direct_message">Sende Direkt Nachricht</string>
+    
+    <string name="direct_messages">Direkt Nachricht</string>
+    <string name="new_search">Neue Suche</string>
+    <string name="goto_lastread">Gehe zum letzten Beitrag</string>
+    
+    <string name="new_status">Was ist los?</string>
+    <string name="reply_to">Beantworten</string>
+    <string name="retweet_to">Retweet</string>
+    
+    <string name="new_mentions">Antwort auf Twitter</string>
+    <string name="new_dm">Direkt Nachricht auf Twitter</string>
+    
+    <string name="topic">Topic:</string>
+    <string name="description">Beschreibung</string>
+    <string name="mention">Antwort</string>
+    
+    <string name="edit_search">Suche editieren</string>
+    
+    <string name="max_users_lite">Sie haben nur einen Benutzer in der Lite-Version. Upgrade auf Pro-Version, und Sie werden alles, was Sie brauchen</string>
+    
+    <string name="widget_lite">Widget aktiv in der Lite Version</string>
+    <string name="widget_no_user">Sie müssen ein Benutzer in der Anwendung eingetragen haben, um das Widget verwenden zu können</string>
+    <string name="btn_widget_lite">Kaufen Pro Version</string>
+    
+    <string name="loading_title_trends">Trending topics</string>
+    <string name="loading_description_trends">Laden trending topics</string>
+    
+    <string name="saved_tweet">Sichern Tweets</string>
+    <string name="saved_tweet_description">Sichern von Tweets in der datenbank</string>
+    
+    <string name="no_saved_tweet">Keine Tweets jetzt sichern. Erinnern Tweets zu sichern "zu einen späteren Zeitpunkt"</string>
+    
+    <string name="take_photo">Foto aufnehmen</string>
+    
+    <string name="upload_image_title">Bild senden</string>
+    <string name="upload_image_description">Bild Sende Dienst</string>
+    <string name="upload_image_error">Fehler vom senden des Bildes . Überprüfen Sie die Verbindung und versuchen Sie es später noch einmal</string>
+    <string name="upload_image_finish">Senden vom Bild vollständig</string>
+    <string name="upload_image_wait">Bild jetzt nicht senden</string>
+    
+    <string name="sending_title">Senden</string>
+    <string name="sending_description">Ändern Twitter Status</string>
+    <string name="sending_finish">Twitter Status erfolgreich aktualisiert</string>
+    
+    <string name="sending_dm_title">Senden</string>
+    <string name="sending_dm_description">Senden Direkt Nachricht</string>
+    <string name="sending_dm_finish">Die Nachricht wurde erfolgreich versendet</string>
+    
+    <string name="manager_user">Konten Verwaltung</string>
+    <string name="search_avatar_twitter">User Twitter Avatar</string>
+    
+    <string name="msg_new_in">neue Nachrichten</string>
+    <string name="searchs">Suchen</string>
+    
+    <string name="original_tweet">Original Tweet</string>
+    <string name="translate_tweet">Translated Tweet</string>
+    
+    <string name="no_links">Es gibt keine Links in diesen Tweet</string>
+    
+    <string name="refresh_avatar_correct">Avatar erfolgreich geändert</string>
+    <string name="refresh_avatar_no_correct">Es gab einen Fehler bei der Aktualisierung des Avatars. Bitte versuchen Sie es später erneut</string>
+        
+    <string name="name_and_icon">Name und Icon</string>
+    <string name="users">Users</string>
+    
+    <string name="txt_follow_user">Folge dem Benutzer</string> <!-- XXX ya sigue al usuario YYYY  -->
+    <string name="txt_unfollow_user">nicht mehr folgen dem Benutzer</string> <!-- XXX ya sigue al usuario YYYY  -->
+    
+    <string name="view">Ansicht</string>
+    <string name="tweets">Tweets</string>
+    <string name="followers">Folgen mir</string>
+    <string name="following">Folge ich</string>
+    <string name="last_tweet">Letzter TWEET</string>
+    
+    <string name="search_avatar">Username</string>
+    <string name="search_avatar_msg">Der Benutzername für Ihren Avatar als Symbol für die Suche verwenden</string>     
+	<string name="search_user">Username</string>
+    <string name="search_user_msg">Der Username den Sie suchen möchten</string>  
+    <string name="cancel">Abbrechen</string>
+       
+    <string name="other_Aktion">andere Aktionen</string>
+    
+    <string name="max_notifications">Sie können nicht mehr als 5 gemeldeten suchen</string>
+    <string name="max_notifications_lite">Sie können nur eine benachrichtigt Suche in der Lite Version vornehmen. Upgrade auf Pro-Version und Sie können bis zu 5 benachrichtigte Suche durchführen.</string>
+    <string name="how_notifications">Wie es funktioniert</string>
+    
+    <string name="search_words">Suchen</string>
+    <string name="search_words_user">Filtern durch den User</string>
+    
+    <string name="top_list">Springe nach oben</string>
+    
+    <string name="no_result">Keine Ergebnisse</string>
+    <string name="search_no_found_change_lang">Keine Ergebnisse wurden mit der Sprache gefunden: </string>
+    <string name="search_no_found_change_lang2">. Sie können vielleicht finden Ergebnisse, wenn Sie diesen Filter löschen. Möchten Sie erneut suchen, ohne Angabe der Sprache?</string>
+    
+    <string name="samples_search">Beispiele suchen</string>
+    <string name="samples_search_lang">Legen Sie an der verwendeten Sprache auf dem Handy, wenn sie kein ergebniss finden für Fotos noch Videos</string>
+    <string name="msg_no_search">Kein Suchen im Moment. Wenn Sie möchten, können wir Ihnen einige Beispiele für Sie mit der Software vertraut machen.</string>
+    
+    <string name="search_words_and">Wörter, die vorkommen müssen</string>
+    <string name="search_words_and_short">(Ja)</string>
+    <string name="search_words_or">Wörter, die möglicherweise angezeigt</string>
+    <string name="search_words_or_short">(Mai)</string>
+    <string name="search_words_not">Wörter, die ich nicht will</string>
+    <string name="search_words_not_short">(Nein)</string>
+    <string name="search_from_user">Tweets von diesem User</string>
+    <string name="search_from_user_short">(Tweets)</string>
+    <string name="search_to_user">Antworten auf diesen Benutzer</string>
+    <string name="search_to_user_short">(Antworten)</string>
+    <string name="search_source">Nur eine einzige Anwendung von Twitter</string>
+    <string name="search_source_short">Quelle</string>
+    <string name="languages">Sprachen</string>
+    <string name="attitude">Haltung</string>
+    <string name="filter">Filter</string>
+    <string name="close">Schließen</string>
+    <string name="no_retweet">Nicht anzeigen Rückantworten</string>
+    <string name="save">Sichern</string>
+    <string name="save_and_view">Sichern und Starten</string>
+    <string name="name">Name</string>
+    <string name="new_item">Neu</string>
+    <string name="back">Zurück</string>
+    <string name="initiation">Home</string>
+    <string name="actions">Menü</string>
+    <string name="delete">Löschen</string>
+    <string name="title_question_delete">Löschen</string>
+    <string name="question_delete">Sind Sie sicher, dass Sie dieses Thema löschen wollen?</string>
+    
+    <string name="question_delete_generic">Sind Sie sicher, die Sie löschen möchten?</string>
+    <string name="delete_correct_generic">Erfolgreich gelöscht</string>
+    
+    <string name="title_question_backup">Sicherung</string>
+    <string name="question_backup">Sie löschen die alte Kopie. Sind Sie sicher?</string>
+    <string name="backup_correct">Erfolgreich Gesichert</string>
+    
+    <string name="title_question_restore">Wiederherstellen Sicherung</string>
+    <string name="question_restore">Löschen Sie alle aktuellen Suchanfragen. Sind Sie sicher?</string>
+    <string name="restore_correct">Erfolgreich Wiederhergestellt</string>
+    <string name="restore_nofile">Keine Sicherung vorhanden</string>
+    
+    <string name="delete_correct">Item erfolgreich gelöscht</string>
+    <string name="refresh_search">Neu Laden suche</string>
+    <string name="language">Sprache</string>
+    <string name="range">Reichweite</string>
+    <string name="map">Karte</string>
+    <string name="reply">Antwort</string>
+    <string name="retweet">Rückantwort</string>
+    <string name="links">Links</string>
+    <string name="readafter">Sichern und später lesen</string>
+    <string name="more">Mehr</string>
+    <string name="send">Senden</string>
+    <string name="add_user">Hinzufügen User</string>
+    <string name="refresh_avatar">Aktualisieren Avatar</string>
+    <string name="delete_user">Löschen</string>
+    <string name="user_list">Mitgliedsliste</string>
+    <string name="more_140">Die Nachricht hat mehr als 140 Zeichen</string>
+    <string name="in_response">Als Antwort auf @</string>
+    <string name="in_response_final"> - Gespräch zeigen</string>
+    <string name="copied_to_clipboard">In die Ablage kopiert</string>
+    <string name="copy_to_clipboard">Kopieren Ablage</string>
+    <string name="copy">Kopie</string>
+    <string name="visit">Besuchen</string>
+    <string name="follow">Folgen</string>
+    <string name="unfollow">nicht Folgen</string>
+    <string name="show_tweets">Zeigen Tweets</string>
+    <string name="create_topic">Erstellen topic</string>
+    <string name="preferences">Einstellungen</string>
+    <string name="exit">Beenden</string>
+    <string name="about">Über...</string>
+    <string name="conversation">Gespräch</string>
+    <string name="no_server">Keine Verbindung zum Server. Überprüfen Sie die Verbindung und versuchen Sie es später noch einmal</string>
+    <string name="limit_server">Sie haben das Limit von 350 Abfragen pro Stunde in Twitter überschritten. Sie können erneut Versuchen in
+ </string>
+    <string name="use_geo">Using Geolocation</string>
+    <string name="use_geo_gps">Holen Sie sich GPS-Position</string>
+    <string name="use_geo_map">Suche Standort auf der Karte</string>
+    <string name="latitude">Breite</string>
+    <string name="longitude">Länge</string>
+    <string name="position">Position</string>
+    <string name="miles">Miles</string>
+    <string name="km">Km</string>
+    <string name="distance">Abstand</string>
+    
+    <string name="tweets_saved">Sichern Tweets</string>
+    <string name="order">Bestellen</string>
+    <string name="view_trending_topics">Zeige Trending Topics</string>
+    
+    <string name="create_tweet">Schreibe tweet</string>
+    <string name="error_search_name">Brauchen einen Namen für die Suche zu speichern</string>
+    <string name="error_search_coord">Die Längen-und Breitengrade sind nicht gültigen Werte</string>
+    <string name="error_search_distance">Der Abstand sollte größer sein als 0</string>
+    <string name="error_search_text">Um in der Lage zu sein, etwas zu finden, müssen wir zuerst wissen, dass Sie suchen möchten</string>
+    
+    <string name="error_load_link">Konnte keine Informationen finden, weiter leiten ins Internet</string>
+    
+    <string name="no_found_tweets">Keine Tweets für diese Suche gefunden</string>
+    <string name="no_location">Unfähig, die GPS-Position zu bekommen, ist die Suche gegangen, ohne es zu aktivieren</string>
+    
+    <string name="msg_finger_map">Klicken Sie auf die Stelle, wo Sie die Tweets finden wollen</string>
+    
+    <string name="duration">Dauer</string>
+    
+    <string name="timeline">Timeline</string>
+    <string name="mentions">Antworten</string>
+    
+    <string name="load_more_header">Neu Laden Suche</string>
+    <string name="load_more_header_conversation">zurück zur Suche</string>
+    <string name="load_more_footer">Lesen Sie mehr</string>
+    
+    <string name="favorite_save">Die Tweet wurde erfolgreich gespeichert</string>
+    <string name="favorite_no_save">Die Tweet konnte nicht gespeichert werden. Bitte versuchen Sie es später erneut</string>
+    <string name="favorite_delete">Tweet erfolgreich gelöscht</string>
+    
+    
+    
+    <string name="gotoweb">Zur Website</string>
+    
+    <string name="txt_head_user">Wählen Sie den gewünschten User aus der Userliste oder fügen Sie eine neue aus dem Menü hinzu.</string>
+    
+    <string name="create_favorite_twitter">Sicher Favorite Twitter</string>
+    <string name="delete_favorite_twitter">Lösche Favorite Twitter</string>
+    <string name="create_read_after">Lesen Sie mehr</string>
+    <string name="delete_read_after">Lösche Tweet</string>
+    
+    <string name="share">Teilen</string>
+    <string name="translate">Translate</string>
+    <string name="colors">Farbe</string>
+    
+    <string name="favorites">Favoriten</string>
+    <string name="favorite">Favorite</string>
+    <string name="msg_about_read">Was wollen Sie etwa lesen?</string>
+    <string name="msg_more_search">Suchen</string>
+    
+    <string name="bt_new_search">Neu</string>
+    <string name="bt_import">Import Suche</string>
+    <string name="bt_more">Mehr</string>
+    
+    <string name="import_correct">Erfolgreich Import</string>
+    <string name="import_no_correct">Fehler beim Importien</string>
+    
+    <string name="shorter">verkürzen</string>
+    
+    <string name="tab_general">General</string>
+    <string name="tab_avanced">Fortgeschritten</string>
+    <string name="tab_geo">Lage</string>
+    <string name="tab_notifications">Benachrichtigungen</string>
+    
+    <string name="notifications">Mit Benachrichtigungen</string>
+    <string name="notifications_bar">In Android Benachrichtigungsleiste</string>
+        
+    <string name="title_prf_result">Ergebnisse</string>
+    <string name="summary_prf_result">Stellen Sie die Suchergebnisse und Tweets</string>
+    
+    <string name="title_prf_n_result">Anzahl der Ergebnisse</string>
+    <string name="summary_prf_n_result">Anzahl der Tweets in jeder Suche angezeigt</string>
+    
+    <string name="title_prf_links">Links in Tweets</string>
+    <string name="summary_prf_links">Wählen Sie die Art von Links, die Sie in den Listen der Tweets angezeigt werden sollen</string>
+    
+    <string name="title_prf_accounts">Konten</string>
+    
+    <string name="title_prf_manage_accounts">Konten verwalten</string>
+    <string name="summary_prf_manage_accounts">Verwalten Twitter-Konten</string>
+    
+    <string name="title_prf_preferences">Einstellungen</string>
+    
+    <string name="title_prf_type_notifications">Benachrichtigungen Typen</string>
+    <string name="title_prf_configure_notifications">Benachrichtigung Einstellung</string>
+    <string name="title_prf_adw_launcher">ADW Launcher Integration</string>
+    
+    <string name="title_prf_notifications">Benachrichtigungen</string>
+    <string name="summary_prf_notifications">Einstellungen für Benachrichtigungen im Hintergrund</string>
+    
+    <string name="title_prf_notif_in_mentions">Auf neue Antworten</string>
+    <string name="summary_prf_notif_in_mentions">Benachrichtigen Sie über neue Antworten und Erwähnungen</string>
+    
+    <string name="title_prf_notif_in_direct">Auf neue Nachrichten</string>
+    <string name="summary_prf_notif_in_direct">Benachrichtigen Sie über neue Direkt Messages</string>
+    
+    <string name="title_prf_adw_launcher_configure">ADW Launcher-Konfiguration</string>
+    <string name="summary_prf_adw_launcher_configure">Konfigurieren Ordnung und Integration nach Vorlieben</string>
+    
+    <string name="title_prf_time_notifications">Aktualisierung im Hintergrund</string>
+    <string name="summary_prf_time_notifications">Kürzere Intervalle kann schneller Batterie erschöpfen</string>
+    
+    <string name="title_prf_vibrate_notifications">Vibration</string>
+    <string name="summary_prf_vibrate_notifications">Vibrationsalarm auf Benachrichtigungen</string>
+    
+    <string name="title_prf_vibrate_time">Vibrationsmodus</string>
+    <string name="summary_prf_vibrate_time">Wählen Sie die Dauer, wenn Sie wollen, dass es vibrieren soll</string>
+    
+    <string name="title_prf_sound_notifications">Sound</string>
+    <string name="summary_prf_sound_notifications">Play Sound auf Benachrichtigungen</string>
+    
+    <string name="title_prf_audio">Ringtone</string>
+    <string name="summary_prf_audio">Wählen Sie Benachrichtigung Sound</string>
+    
+    <string name="title_prf_led_notifications">Flash LED</string>
+    <string name="summary_prf_led_notifications">Setzen sie LED Benachrichtigung aktiv (nur unterstützten Telefone)</string>
+    
+    <string name="title_prf_led_color">LED Farbe</string>
+    <string name="summary_prf_led_color">Wähle LED Farbe aus</string>
+    
+    <string name="title_prf_retweet_via">Retweet "vía"</string>
+    <string name="summary_prf_retweet_via">Wenn Sie es vorziehen (via @ user) anstelle von RT:</string>
+    
+    <string name="title_prf_show_window_in_links">Vorschau Links</string>
+    <string name="summary_prf_show_window_in_links">Zeigt eine Vorschau auf den Link, die Sie besuchen</string>
+    
+    <string name="title_prf_content">Inhalt</string>
+    <string name="summary_prf_content">Einstellen der Inhalte von Tweets</string>
+    
+    <string name="title_prf_translate">Übersetzung</string>
+    <string name="summary_prf_translate">Sprache, um Tweets zu übersetzen</string>
+    
+    <string name="title_prf_clean">Löschen</string>
+    <string name="title_prf_delete_cache">Lösche Cache</string>
+    <string name="summary_prf_delete_cache">Entfernen Avatare im Speicher des Telefons die gespeichert sind</string>
+    
+    <string name="title_prf_delete_tweets">Lösche Nachricht</string>
+    <string name="summary_prf_delete_tweets">Benutzer entfernen aus dem Telefonspeicher</string>
+    
+    <string name="title_prf_info">Information</string>
+    
+    <string name="title_prf_about">über...</string>
+    <string name="summary_prf_about">Erfahren Sie mehr </string>
+    
+    <string name="title_prf_backup">Sicherung</string>
+    <string name="title_prf_create_backup">Erstelle Sicherung</string>
+    <string name="summary_prf_create_backup">Erstelle Sicherung auf /sdcard/backup_tweettopics.xml</string>
+    
+    <string name="title_prf_create_restore">Wiederherstellen Sicherung</string>
+    <string name="summary_prf_create_restore">Wiederherstellen Sicherung von /sdcard/backup_tweettopics.xml</string>
+    
+    <string name="title_prf_no_read_adw">Ungelesene in ADW Launcher</string>
+    <string name="summary_prf_no_read_adw">Zeigt die Anzahl der ungelesenen Nachrichten in ADW Launcher</string>
+    
+    <string name="title_prf_no_read_adw_all_users">Hinzufügen alle Users</string>
+    <string name="summary_prf_no_read_adw_all_users">Wenn nicht aktiviert, berücksichtig nur Nachrichten von aktiven Benutzern</string>
+    
+    <string name="title_prf_refresh_in_last_read">Aktualisierungs Modus</string>
+    <string name="summary_prf_refresh_in_last_read">Wenn aktualisiert, positioniert die Suche selbst in die zuletzt gelesene Nachricht</string>
+    
+    <string name="title_prf_list">Suchliste</string>
+    <string name="summary_prf_list">Konfigurieren der Suchliste</string>
+    
+    <string name="title_prf_order_list">Benutzer Modus</string>
+    <string name="summary_prf_order_list">Wählen Sie die Elemente, um Modus in der Liste</string>
+    
+    <string name="title_prf_size_photo">Foto Größe</string>
+	<string name="summary_prf_size_photo">Wählen Sie die Größe, die hochgeladen werden</string>
+	
+	<string name="title_prf_service_image">Auswählen Bilderservice</string>
+	<string name="summary_prf_service_image">Wähle Biderdienst, um Bilder auf Twitter hoch zuladen</string>
+    
+	<string name="title_prf_quiet">Verberge Wörter und User</string>
+	<string name="summary_prf_quiet">Fügen Sie Schlüsselwörter und Benutzer ein, die nicht in Tweets erscheinen sollen</string>
+	
+	<string name="title_prf_quiet_show_msg">Anzeigen der Anzahl von versteckten Gegenständen</string>
+	<string name="summary_prf_quiet_show_msg">Zeigt eine Meldung beim Laden der Liste der Tweets mit der Anzahl der versteckten Botschaften</string>
+	
+	<string name="title_prf_save_avatars">Sichern Avatars</string>
+    <string name="summary_prf_save_avatars">Gibt an, wo die Avatare der User speichern</string>
+    
+    <string name="title_prf_tweetquick">TweetQuick Service</string>
+    <string name="summary_prf_tweetquick">Senden von Bildern an Twitter in wenigen Sekunden</string>
+    
+    <string name="title_prf_types_retweet">Rückantwort Types</string>
+    <string name="summary_prf_types_retweet">Erstellen Sie Ihre eigenen Rückantwort auf Twitter und mit einem Klick versenden</string>
+    
+    <string name="title_prf_dev">Entwicklung</string>
+    <string name="title_prf_force_lite">Force Lite</string>
+    <string name="summary_prf_force_lite">Force to use the Lite version</string>
+    
+    <string name="title_prf_interface_services">Interface und Dienstleistungen</string>
+    <string name="summary_prf_interface_services">Interface-Konfiguration, Imaging-Dienstleistungen und die Verkürzung</string>
+    
+    <string name="title_prf_animations">Animationen</string>
+    <string name="summary_prf_animations">Verwenden Sie Animationen in der Anwendung</string>
+    
+    <string name="title_prf_images">Bilder Dienst</string>
+    <string name="title_prf_shorter">Verkürzer Dienst</string>
+    <string name="title_prf_interface">Interface</string>
+    
+    <string name="title_prf_service_shorter">Auswählen Dienst</string>
+    <string name="summary_prf_service_shorter">Wählen Sie einen Dienst aus</string>
+    
+    <string name="title_prf_service_bitly">Key Bit.ly</string>
+    <string name="summary_prf_service_bitly">Use your Bit.ly key</string>
+    
+    <string name="title_prf_service_karmacracy">Key Karmacracy</string>
+    <string name="summary_prf_service_karmacracy">Insert your Karmacracy key</string>
+    
+    <string name="title_prf_username_right">User information</string>
+    <string name="summary_prf_username_right">Select the information you want displayed to the right of username</string>
+    
+    <string name="title_tweettopics_qr">Import Suche</string>
+    <string name="msg_tweettopics_qr">Dieser Link enthält eine Suche nach TweetTopics. Möchten Sie es importieren?</string>
+    
+    <string name="title_download_scan">Barcode Scanner</string>
+    <string name="msg_download_scan">Diese Anwendung erfordert Barcode Scanner. Möchten Sie es installieren?</string>
+
+</resources>

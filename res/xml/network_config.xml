@@ -1,0 +1,27 @@
+<?xml version='1.0' encoding='UTF-8' standalone='yes' ?>
+<networks>
+	<network>
+		<Name>twitter.com</Name>
+		<ConsumerKey>Kw6jHt8RhJAXqQcFBKCx9w</ConsumerKey>
+		<ConsumerSecret>gPfzyWBssof3cJJgF8oSQeEXVWGxPzYpxawQBkrNaw</ConsumerSecret>
+		<AccessTokenURL>http://twitter.com/oauth/access_token</AccessTokenURL>
+    	<AuthorizationURL>http://twitter.com/oauth/authorize</AuthorizationURL>
+    	<RequestTokenURL>http://twitter.com/oauth/request_token</RequestTokenURL>
+    	<RestBaseURL>https://api.twitter.com/1/</RestBaseURL>
+    	<SearchBaseURL>http://search.twitter.com/</SearchBaseURL>
+    	<AuthenticationURL>http://twitter.com/oauth/authenticate</AuthenticationURL>
+    </network>
+    
+    <network>
+    	<Name>identi.ca</Name>
+		<ConsumerKey>d93b56692bd8d1a49d9d400b7367f537</ConsumerKey>
+		<ConsumerSecret>ef5c9a959897567dc272ada851bf871a</ConsumerSecret>
+		<AccessTokenURL>https://identi.ca/api/oauth/access_token</AccessTokenURL>
+    	<AuthorizationURL>https://identi.ca/api/oauth/authorize</AuthorizationURL>
+    	<RequestTokenURL>https://identi.ca/api/oauth/request_token</RequestTokenURL>
+    	<RestBaseURL>http://identi.ca/api/</RestBaseURL>
+    	<SearchBaseURL>http://search.identi.ca</SearchBaseURL>
+    	<AuthenticationURL>https://identi.ca/api/oauth/authenticate</AuthenticationURL>
+    </network>
+
+</networks>

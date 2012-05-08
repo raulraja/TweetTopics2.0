@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:padding="5dip"
+    >
+    
+	<EditText android:text="" 
+		android:id="@+id/word" 
+		android:layout_width="fill_parent" android:layout_height="wrap_content"></EditText>
+		
+	<RadioGroup android:id="@+id/RadioGroup02" android:layout_width="wrap_content" android:layout_height="wrap_content">
+		<RadioButton android:text="@string/quit_user" android:id="@+id/rb_user" android:layout_width="wrap_content" android:layout_height="wrap_content" android:checked="true"></RadioButton>
+		<RadioButton android:text="@string/quit_word" android:id="@+id/rb_word" android:layout_width="wrap_content" android:layout_height="wrap_content"></RadioButton>
+		<RadioButton android:text="@string/quit_source" android:id="@+id/rb_source" android:layout_width="wrap_content" android:layout_height="wrap_content"></RadioButton>
+	</RadioGroup>
+</LinearLayout>

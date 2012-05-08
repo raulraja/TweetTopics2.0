@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+      android:id="@+id/layout_foot"
+      android:layout_height="wrap_content"
+      android:layout_width="fill_parent"
+      android:orientation="horizontal">
+      <Button
+          android:id="@+id/bt_reply"
+          android:layout_height="wrap_content"
+          android:layout_marginRight="3dip"
+          android:layout_weight="1"
+          android:layout_width="fill_parent"
+          android:text="@string/reply" />
+
+      <Button
+          android:id="@+id/bt_back_to_menu"
+          android:layout_height="wrap_content"
+          android:layout_marginLeft="3dip"
+          android:layout_weight="1"
+          android:layout_width="fill_parent"
+          android:text="@string/back_to_menu" />
+</LinearLayout>

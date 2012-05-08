@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+<ScrollView android:id="@+id/ScrollView01" android:layout_width="fill_parent" android:layout_height="fill_parent">
+<LinearLayout android:orientation="vertical" android:layout_height="fill_parent" android:layout_width="fill_parent" android:padding="10sp">
+		
+	<EditText android:layout_height="wrap_content" android:layout_width="wrap_content" android:id="@+id/icon_id" android:visibility="gone"></EditText>
+	<EditText android:layout_height="wrap_content" android:layout_width="wrap_content" android:id="@+id/icon_file" android:visibility="gone"></EditText>
+		
+	<TextView style="@style/SearchTitle" android:layout_height="wrap_content" android:text="@string/name_and_icon" android:layout_margin="3sp" android:layout_width="fill_parent"></TextView>
+	
+	<LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_marginTop="5dip">
+		<ImageButton android:background="@drawable/bg_push_button" android:src="@drawable/letter_az" android:id="@+id/bt_icon" android:layout_width="70dip" android:layout_height="wrap_content"></ImageButton>	
+		<EditText android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_margin="3sp" android:id="@+id/et_name"></EditText>
+	</LinearLayout>
+	
+	<TextView style="@style/SearchTitle" android:layout_height="wrap_content" android:text="@string/search_words" android:layout_margin="3sp" android:layout_width="fill_parent"></TextView>
+	
+	<LinearLayout android:id="@+id/LinearLayout02" android:layout_height="wrap_content" android:layout_width="fill_parent">
+		<TextView style="@style/SearchShort" android:layout_height="wrap_content" android:text="@string/search_words_and_short" android:layout_margin="3sp" android:layout_width="70dip"></TextView>
+		<EditText android:layout_height="wrap_content" android:layout_width="fill_parent" android:hint="@string/search_words_and" android:layout_margin="3sp" android:id="@+id/et_words_and"></EditText>
+	</LinearLayout>
+	<LinearLayout android:id="@+id/LinearLayout03" android:layout_height="wrap_content" android:layout_width="fill_parent">
+		<TextView style="@style/SearchShort" android:layout_height="wrap_content" android:text="@string/search_words_or_short" android:layout_margin="3sp" android:layout_width="70dip"></TextView>
+		<EditText android:layout_height="wrap_content" android:layout_width="fill_parent" android:hint="@string/search_words_or" android:layout_margin="3sp" android:id="@+id/et_words_or"></EditText>
+	</LinearLayout>
+	<LinearLayout android:id="@+id/LinearLayout03" android:layout_height="wrap_content" android:layout_width="fill_parent">
+		<TextView style="@style/SearchShort" android:layout_height="wrap_content" android:text="@string/search_words_not_short" android:layout_margin="3sp" android:layout_width="70dip"></TextView>
+		<EditText android:layout_height="wrap_content" android:layout_width="fill_parent" android:hint="@string/search_words_not" android:layout_margin="3sp" android:id="@+id/et_words_not"></EditText>
+	</LinearLayout>
+	
+	<TextView style="@style/SearchTitle" android:layout_height="wrap_content" android:text="@string/search_words_user" android:layout_margin="3sp" android:layout_width="fill_parent"></TextView>
+	
+	<LinearLayout android:id="@+id/LinearLayout04" android:layout_height="wrap_content" android:layout_width="fill_parent">
+		<TextView style="@style/SearchShort" android:layout_height="wrap_content" android:text="@string/search_from_user_short" android:layout_margin="3sp" android:layout_width="70dip"></TextView>
+		<EditText android:layout_height="wrap_content" android:layout_width="fill_parent" android:hint="@string/search_from_user" android:layout_margin="3sp" android:id="@+id/et_from_user"></EditText>
+	</LinearLayout>
+	<LinearLayout android:id="@+id/LinearLayout05" android:layout_height="wrap_content" android:layout_width="fill_parent">
+		<TextView style="@style/SearchShort" android:layout_height="wrap_content" android:text="@string/search_to_user_short" android:layout_margin="3sp" android:layout_width="70dip"></TextView>
+		<EditText android:layout_height="wrap_content" android:layout_width="fill_parent" android:hint="@string/search_to_user" android:layout_margin="3sp" android:id="@+id/et_to_user"></EditText>
+	</LinearLayout>
+
+</LinearLayout>	
+</ScrollView>
+</LinearLayout>
