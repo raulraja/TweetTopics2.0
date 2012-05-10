@@ -1,6 +1,6 @@
 package preferences;
 
-import com.javielinux.tweettopics.R;
+import com.javielinux.tweettopics2.R;
 
 
 public class InfoADWIntegration {

@@ -3,7 +3,7 @@ package layouts;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.GridView;
-import com.javielinux.tweettopics.R;
+import com.javielinux.tweettopics2.R;
 
 public class PullToRefreshGridView extends PullToRefreshBase<GridView> {
 

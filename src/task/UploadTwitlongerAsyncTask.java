@@ -1,9 +1,10 @@
 package task;
 
-import java.io.StringReader;
-import java.util.ArrayList;
-import java.util.List;
-
+import android.content.Context;
+import android.location.Location;
+import android.os.AsyncTask;
+import android.util.Log;
+import com.javielinux.tweettopics2.Utils;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
@@ -14,16 +15,13 @@ import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
-
 import twitter4j.GeoLocation;
 import twitter4j.StatusUpdate;
 import twitter4j.Twitter;
-import android.content.Context;
-import android.location.Location;
-import android.os.AsyncTask;
-import android.util.Log;
 
-import com.javielinux.tweettopics.Utils;
+import java.io.StringReader;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UploadTwitlongerAsyncTask extends AsyncTask<String, Void, Boolean> {
 

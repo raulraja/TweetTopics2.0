@@ -3,20 +3,19 @@
  */
 package adapters;
 
-import java.util.ArrayList;
-
-import layouts.TweetListItem;
-import twitter4j.ResponseList;
-import twitter4j.Status;
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import com.javielinux.tweettopics2.R;
+import com.javielinux.tweettopics2.ThemeManager;
+import com.javielinux.tweettopics2.TweetTopicsCore;
+import com.javielinux.tweettopics2.Utils;
+import layouts.TweetListItem;
+import twitter4j.ResponseList;
+import twitter4j.Status;
 
-import com.javielinux.tweettopics.R;
-import com.javielinux.tweettopics.ThemeManager;
-import com.javielinux.tweettopics.TweetTopicsCore;
-import com.javielinux.tweettopics.Utils;
+import java.util.ArrayList;
 
 public class StatusListAdapter extends ArrayAdapter<Status> {
 

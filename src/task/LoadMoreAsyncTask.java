@@ -1,17 +1,16 @@
 package task;
 
-import java.util.ArrayList;
-
+import adapters.RowResponseList;
+import android.content.Context;
+import android.os.AsyncTask;
+import com.javielinux.tweettopics2.TweetTopicsCore;
+import com.javielinux.twitter.ConnectionManager;
 import twitter4j.DirectMessage;
 import twitter4j.Paging;
 import twitter4j.ResponseList;
 import twitter4j.TwitterException;
-import adapters.RowResponseList;
-import android.content.Context;
-import android.os.AsyncTask;
 
-import com.javielinux.tweettopics.TweetTopicsCore;
-import com.javielinux.twitter.ConnectionManager;
+import java.util.ArrayList;
 
 
 public class LoadMoreAsyncTask extends AsyncTask<Void, Void, ArrayList<RowResponseList>> {

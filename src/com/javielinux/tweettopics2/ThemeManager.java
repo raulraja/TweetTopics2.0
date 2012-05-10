@@ -1,6 +1,4 @@
-package com.javielinux.tweettopics;
-
-import java.util.ArrayList;
+package com.javielinux.tweettopics2;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -9,7 +7,7 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.preference.PreferenceManager;
 
-import com.cyrilmottier.android.greendroid.R;
+import java.util.ArrayList;
 
 public class ThemeManager {
 	

@@ -1,16 +1,14 @@
 package task;
 
-import infos.InfoSaveTweets;
 import android.content.Context;
 import android.os.AsyncTask;
-
 import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
-import com.javielinux.tweettopics.TweetTopicsCore;
-import com.javielinux.tweettopics.Utils;
+import com.javielinux.tweettopics2.TweetTopicsCore;
+import com.javielinux.tweettopics2.Utils;
 import com.javielinux.twitter.ConnectionManager;
-
 import database.EntityTweetUser;
+import infos.InfoSaveTweets;
 
 public class TwitterUserAsyncTask extends AsyncTask<Integer, Void, TwitterUserAsyncTask.TwitterUserResult> {
 

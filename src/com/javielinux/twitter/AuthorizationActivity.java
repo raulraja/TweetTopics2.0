@@ -1,20 +1,15 @@
 package com.javielinux.twitter;
 
 
-import twitter4j.TwitterException;
 import android.app.Activity;
 import android.net.Uri;
 import android.net.http.SslError;
 import android.os.Bundle;
 import android.view.View;
-import android.webkit.CookieManager;
-import android.webkit.CookieSyncManager;
-import android.webkit.SslErrorHandler;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
-
-import com.javielinux.tweettopics.R;
-import com.javielinux.tweettopics.Utils;
+import android.webkit.*;
+import com.javielinux.tweettopics2.R;
+import com.javielinux.tweettopics2.Utils;
+import twitter4j.TwitterException;
 
 public class AuthorizationActivity extends Activity {
 

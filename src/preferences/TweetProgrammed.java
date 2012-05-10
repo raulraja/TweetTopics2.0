@@ -13,11 +13,10 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
-
 import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
-import com.javielinux.tweettopics.R;
-import com.javielinux.tweettopics.Utils;
+import com.javielinux.tweettopics2.R;
+import com.javielinux.tweettopics2.Utils;
 
 public class TweetProgrammed extends Activity {
 	

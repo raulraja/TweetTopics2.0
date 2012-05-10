@@ -1,4 +1,4 @@
-package com.javielinux.tweettopics;
+package com.javielinux.tweettopics2;
 
 import adapters.RowUserAdapter;
 import android.app.AlertDialog;
@@ -10,7 +10,6 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.graphics.Shader.TileMode;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
@@ -23,14 +22,10 @@ import android.widget.*;
 import android.widget.AdapterView.OnItemClickListener;
 import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
-import com.cyrilmottier.android.greendroid.R;
 import com.javielinux.facebook.FacebookHandler;
-import com.javielinux.tweettopics.Utils.BuyProDialogBuilder;
+import com.javielinux.tweettopics2.Utils.BuyProDialogBuilder;
 import com.javielinux.twitter.AuthorizationActivity;
 import com.javielinux.twitter.ConnectionManager;
-import greendroid.app.GDActivity;
-import greendroid.widget.ActionBar;
-import greendroid.widget.ActionBarItem;
 import preferences.Preferences;
 import task.ProfileImageAsyncTask;
 import task.ProfileImageAsyncTask.Params;
@@ -41,7 +36,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.util.List;
 
-public class Users extends GDActivity implements ProfileImageAsyncTask.ProfileImageAsyncTaskResponder {
+public class Users extends BaseActivity implements ProfileImageAsyncTask.ProfileImageAsyncTaskResponder {
 
 	public static final int ACTIVITY_NEWUSER = 0;
 	public static final int ACTIVITY_EDITUSER = 1;
@@ -66,8 +61,6 @@ public class Users extends GDActivity implements ProfileImageAsyncTask.ProfileIm
 	private LinearLayout mLayoutBackgroundApp;
 	
 	private ThemeManager mThemeManager;
-	
-	private ActionBar mActionBar;
 
     private ProgressDialog progressDialog;
 
@@ -187,23 +180,7 @@ public class Users extends GDActivity implements ProfileImageAsyncTask.ProfileIm
         if (savedInstanceState != null && savedInstanceState.containsKey("user_id"))
             idUser = savedInstanceState.getLong("user_id");
 
-        setActionBarContentView(R.layout.users_list);
-        
-        mActionBar = this.getGreenDroidActionBar();
-        
-        mActionBar.setTitle(getString(R.string.user_list));
-        
-        ImageView mIconActivity = (ImageView) mActionBar.findViewById(R.id.gd_action_bar_home_item);
-        
-        mIconActivity.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				back();
-			}
-        	
-        });
-        
+        setContentView(R.layout.users_list);
         
         try {
             DataFramework.getInstance().open(this, Utils.packageName);
@@ -270,7 +247,7 @@ public class Users extends GDActivity implements ProfileImageAsyncTask.ProfileIm
     }
     
 	private void refreshColorsBars() {
-        mActionBar.setBackgroundColor(Color.parseColor("#"+mThemeManager.getStringColor("color_top_bar")));
+
     }
 	
 	
@@ -282,11 +259,7 @@ public class Users extends GDActivity implements ProfileImageAsyncTask.ProfileIm
     		mListView.setDividerHeight(0);
     	}
     }
-    
-	@Override
-	public boolean onHandleActionBarItemClick(ActionBarItem item, int position) {
-		return super.onHandleActionBarItemClick(item, position);
-	}
+
 	
     public void fillData() {
     	try {

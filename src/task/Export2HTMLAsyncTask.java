@@ -1,19 +1,18 @@
 package task;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.OutputStreamWriter;
-
-import twitter4j.User;
 import adapters.ResponseListAdapter;
 import adapters.RowResponseList;
 import adapters.StatusListAdapter;
 import android.os.AsyncTask;
+import com.javielinux.tweettopics2.R;
+import com.javielinux.tweettopics2.TweetTopicsCore;
+import com.javielinux.tweettopics2.Utils;
+import twitter4j.User;
 
-import com.javielinux.tweettopics.R;
-import com.javielinux.tweettopics.TweetTopicsCore;
-import com.javielinux.tweettopics.Utils;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.OutputStreamWriter;
 
 
 public class Export2HTMLAsyncTask extends AsyncTask<Long, Void, String> {

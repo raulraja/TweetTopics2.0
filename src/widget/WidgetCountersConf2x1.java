@@ -10,8 +10,8 @@ import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.os.Bundle;
 import com.android.dataframework.DataFramework;
-import com.javielinux.tweettopics.R;
-import com.javielinux.tweettopics.Utils;
+import com.javielinux.tweettopics2.R;
+import com.javielinux.tweettopics2.Utils;
 
 public class WidgetCountersConf2x1 extends Activity {
 	

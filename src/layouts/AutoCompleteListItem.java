@@ -1,8 +1,5 @@
 package layouts;
 
-import infos.InfoUsers;
-import task.LoadImageAutoCompleteAsyncTask;
-import task.LoadImageAutoCompleteAsyncTask.LoadImageAutoCompleteAsyncTaskResponder;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
@@ -10,8 +7,10 @@ import android.util.AttributeSet;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import com.javielinux.tweettopics.R;
+import com.javielinux.tweettopics2.R;
+import infos.InfoUsers;
+import task.LoadImageAutoCompleteAsyncTask;
+import task.LoadImageAutoCompleteAsyncTask.LoadImageAutoCompleteAsyncTaskResponder;
 
 public class AutoCompleteListItem extends LinearLayout implements LoadImageAutoCompleteAsyncTaskResponder {
 

@@ -14,9 +14,9 @@ import android.view.ViewGroup;
 import android.view.animation.*;
 import android.widget.*;
 import android.widget.AbsListView.OnScrollListener;
-import com.javielinux.tweettopics.R;
-import com.javielinux.tweettopics.ThemeManager;
-import com.javielinux.tweettopics.Utils;
+import com.javielinux.tweettopics2.R;
+import com.javielinux.tweettopics2.ThemeManager;
+import com.javielinux.tweettopics2.Utils;
 
 public abstract class PullToRefreshBase<T extends AbsListView> extends LinearLayout implements OnTouchListener,
         OnScrollListener {

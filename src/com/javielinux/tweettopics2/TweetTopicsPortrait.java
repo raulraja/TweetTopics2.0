@@ -1,9 +1,4 @@
-package com.javielinux.tweettopics;
-
-import greendroid.widget.ActionBarItem.Type;
-
-import java.util.ArrayList;
-import java.util.List;
+package com.javielinux.tweettopics2;
 
 import adapters.RowSearchAdapter;
 import android.graphics.Color;
@@ -11,26 +6,20 @@ import android.graphics.Shader.TileMode;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.shapes.RectShape;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
-import android.widget.AdapterView;
+import android.widget.*;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.GridView;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.SlidingDrawer;
 import android.widget.SlidingDrawer.OnDrawerCloseListener;
 import android.widget.SlidingDrawer.OnDrawerOpenListener;
-
 import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
-import com.cyrilmottier.android.greendroid.R;
-
 import database.EntitySearch;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class TweetTopicsPortrait extends TweetTopicsCore {
 
@@ -55,20 +44,8 @@ public class TweetTopicsPortrait extends TweetTopicsCore {
 	protected void onCreate(Bundle savedInstanceState) {
 		mTweetTopics.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		
-		mTweetTopics.setActionBarContentView(R.layout.tweet_list);
-		
-		mActionBar = mTweetTopics.getGreenDroidActionBar();
-        mActionBar.addItem(Type.Refresh);
-        mActionBar.addItem(Type.Compose); 
-        
-        mActionBar.setOnClickListener(new OnClickListener() {
+		mTweetTopics.setContentView(R.layout.tweet_list);
 
-			@Override
-			public void onClick(View v) {
-				goToTop();
-			}
-        	
-        });
 		
 		mSlidingDrawer = (SlidingDrawer) mTweetTopics.findViewById(R.id.drawer);
 		
@@ -127,7 +104,7 @@ public class TweetTopicsPortrait extends TweetTopicsCore {
 				if (mTypeList == TYPE_LIST_COLUMNUSER && mTypeLastColumn == MENTIONS) {
 					reloadColumnUser(true);
 				} else {
-					columnUser(TweetTopicsCore.MENTIONS);
+					columnUser(MENTIONS);
 				}
 			}
         	
@@ -150,33 +127,11 @@ public class TweetTopicsPortrait extends TweetTopicsCore {
 
 			@Override
 			public void onClick(View v) {
-				mQuicActionMore.show(v);
-			}
-        	
-        });
-                
-        
-        mIconActivity = (ImageView) mActionBar.findViewById(R.id.gd_action_bar_home_item);
-        
-        mIconActivity.setImageResource(R.drawable.icon_tt);
-        
-        int px = Utils.dip2px(mTweetTopics, 32);
-        
-        LinearLayout.LayoutParams ll = new LinearLayout.LayoutParams(px, px);
-        ll.gravity = Gravity.CENTER;
-        ll.setMargins(5, 5, 5, 5);
-        mIconActivity.setLayoutParams(ll);
-        
-        mIconActivity.setAdjustViewBounds(true);
-        
-        mIconActivity.setOnClickListener(new OnClickListener() {
 
-			@Override
-			public void onClick(View v) {
-				onClickIconActivity();
 			}
         	
         });
+
         
         super.onCreate(savedInstanceState);
         
@@ -223,7 +178,6 @@ public class TweetTopicsPortrait extends TweetTopicsCore {
 
 	@Override
 	protected void refreshColorsBars() {
-        mActionBar.setBackgroundColor(Color.parseColor("#"+mThemeManager.getStringColor("color_top_bar")));
 		mLayoutBottomBar.setBackgroundColor(Color.parseColor("#"+mThemeManager.getStringColor("color_bottom_bar")));
 		mSidebarBackground.setBackgroundColor(Color.parseColor("#"+mThemeManager.getStringColor("list_background_row_color")));
 		

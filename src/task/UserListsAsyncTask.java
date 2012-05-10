@@ -1,15 +1,14 @@
 package task;
 
-import java.util.ArrayList;
-
+import android.os.AsyncTask;
+import com.javielinux.tweettopics2.TweetTopicsCore;
+import com.javielinux.twitter.ConnectionManager;
 import task.UserListsAsyncTask.UserListsResult;
 import twitter4j.ResponseList;
 import twitter4j.TwitterException;
 import twitter4j.UserList;
-import android.os.AsyncTask;
 
-import com.javielinux.tweettopics.TweetTopicsCore;
-import com.javielinux.twitter.ConnectionManager;
+import java.util.ArrayList;
 
 
 public class UserListsAsyncTask extends AsyncTask<String, Void, UserListsResult> {

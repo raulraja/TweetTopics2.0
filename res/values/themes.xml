@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<style name="Theme.Twitter" parent="@style/Theme.GreenDroid.NoTitleBar">
+	<style name="Theme.Twitter" parent="@android:style/Theme.Black">
 	
 		<item name="color_tweet_usename">#ff000000</item>
 		<item name="color_tweet_source">#ffaaaaaa</item>
@@ -53,15 +53,10 @@
         <item name="android:buttonStyle">@style/Widget.Button</item>
         <item name="android:editTextStyle">@style/Widget.EditText</item>
         <item name="android:listViewStyle">@style/Widget.ListView</item>
-        <!-- GreenDroid -->
-        <item name="gdActionBarTitleColor">@android:color/white</item>
-		<item name="gdActionBarBackground">@drawable/action_bar_background</item>
-		<item name="gdActionBarDividerDrawable">@drawable/action_bar_divider</item>
-		<item name="gdActionBarDividerWidth">2px</item>
-		<item name="gdActionBarTitleStyle">@style/actionBarTitle</item>		
+
 	</style>
 	
-	<style name="Theme.TwitterBlack" parent="@style/Theme.GreenDroidDark.NoTitleBar">
+	<style name="Theme.TwitterBlack" parent="@android:style/Theme.Black">
 	
 		<item name="color_tweet_usename">#ffffffff</item>
 		<item name="color_tweet_source">#ffbfbfbf</item>
@@ -114,12 +109,6 @@
         <item name="android:buttonStyle">@style/Widget.Button</item>
         <item name="android:editTextStyle">@style/Widget.EditText</item>
         <item name="android:listViewStyle">@style/Widget.ListView</item>
-        <!-- GreenDroid -->
-        <item name="gdActionBarTitleColor">@android:color/white</item>
-		<item name="gdActionBarBackground">@drawable/action_bar_background_dark</item>
-		<item name="gdActionBarDividerDrawable">@drawable/action_bar_divider</item>
-		<item name="gdActionBarDividerWidth">2px</item>
-		<item name="gdActionBarTitleStyle">@style/actionBarTitle</item>	
 	
 	</style>
 	

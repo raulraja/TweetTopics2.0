@@ -1,13 +1,12 @@
 package task;
 
-import java.util.ArrayList;
-
-import com.javielinux.tweettopics.NewStatus;
-import com.javielinux.tweettopics.Utils;
-
+import android.os.AsyncTask;
+import com.javielinux.tweettopics2.NewStatus;
+import com.javielinux.tweettopics2.Utils;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
-import android.os.AsyncTask;
+
+import java.util.ArrayList;
 
 public class DirectMessageAsyncTask extends AsyncTask<String, Void, Boolean> {
 

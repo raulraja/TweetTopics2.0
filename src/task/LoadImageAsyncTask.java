@@ -5,8 +5,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.util.Log;
-import com.javielinux.tweettopics.TweetTopicsCore;
-import com.javielinux.tweettopics.Utils;
+import com.javielinux.tweettopics2.TweetTopicsCore;
+import com.javielinux.tweettopics2.Utils;
 import infos.CacheData;
 import infos.InfoLink;
 

@@ -9,17 +9,12 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.EditText;
-import android.widget.ListView;
-import android.widget.RadioButton;
-import android.widget.TextView;
+import android.widget.*;
 import android.widget.AdapterView.OnItemClickListener;
-
 import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
-import com.javielinux.tweettopics.R;
-import com.javielinux.tweettopics.Utils;
+import com.javielinux.tweettopics2.R;
+import com.javielinux.tweettopics2.Utils;
 
 public class QuietWords extends Activity {
 	

@@ -1,4 +1,4 @@
-package com.javielinux.tweettopics;
+package com.javielinux.tweettopics2;
 
 import adapters.TweetListDraftAdapter;
 import adapters.TweetLongerAdapter;
@@ -30,12 +30,7 @@ import android.widget.*;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
-import com.cyrilmottier.android.greendroid.R;
-import com.javielinux.tweettopics.Utils.BuyProDialogBuilder;
-import greendroid.app.GDActivity;
-import greendroid.widget.ActionBar;
-import greendroid.widget.ActionBarItem;
-import greendroid.widget.ActionBarItem.Type;
+import com.javielinux.tweettopics2.Utils.BuyProDialogBuilder;
 import infos.InfoUsers;
 import layouts.AutoCompleteHashTagListItem;
 import layouts.AutoCompleteListItem;
@@ -54,7 +49,7 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 
-public class NewStatus extends GDActivity {
+public class NewStatus extends BaseActivity {
 	
 	private static final int MAX_RESULTS = 5;
 	
@@ -85,8 +80,6 @@ public class NewStatus extends GDActivity {
     private static final int ACTIVITY_SELECTIMAGE = 0;
     private static final int ACTIVITY_CAMERA = 1;
     public static final int ACTIVITY_USER = 2;
-	
-	private ActionBar mActionBar;
 
 	private int mModeTweetLonger = MODE_TL_NONE;
 
@@ -185,7 +178,6 @@ public class NewStatus extends GDActivity {
     	
 		
     	mThemeManager.setColors();
-    	mActionBar.setBackgroundColor(Color.parseColor("#"+mThemeManager.getStringColor("color_top_bar")));
     	mButtonsFoot.setBackgroundColor(Color.parseColor("#"+mThemeManager.getStringColor("color_bottom_bar")));
     	
     	//mTxtUsername.setBackgroundColor(Color.parseColor("#99"+(mThemeManager.getTheme()==1?"FFFFFF":"000000")));
@@ -407,25 +399,11 @@ public class NewStatus extends GDActivity {
         mThemeManager = new ThemeManager(this);
         mThemeManager.setTheme();
         
-        setActionBarContentView(R.layout.new_status);
-        
-        mActionBar = this.getGreenDroidActionBar();
-        mActionBar.addItem(Type.TakePhoto);
-        
-        mActionBar.setTitle(getString(R.string.new_status));
+        setContentView(R.layout.new_status);
+
 
         mLayoutBackgroundApp = (LinearLayout) findViewById(R.id.layout_background_app);
-        
-        ImageView mIconActivity = (ImageView) mActionBar.findViewById(R.id.gd_action_bar_home_item);
-        
-        mIconActivity.setOnClickListener(new OnClickListener() {
 
-			@Override
-			public void onClick(View v) {
-				verifyTextAndQuit();
-			}
-        	
-        });
         
         try {
             DataFramework.getInstance().open(this, Utils.packageName);
@@ -1165,20 +1143,6 @@ public class NewStatus extends GDActivity {
 			mCounter.setTextColor(Color.WHITE);
 		}
 	}
-	
-    
-	@Override
-	public boolean onHandleActionBarItemClick(ActionBarItem item, int position) {
-		switch (position) {
-		case 0:
-			showDialogSelectImage();
-			break;
-		default:
-			break;
-		}
-		return super.onHandleActionBarItemClick(item, position);
-	}
-
     
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

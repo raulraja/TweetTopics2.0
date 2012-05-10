@@ -1,12 +1,5 @@
 package com.javielinux.facebook;
 
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
-
-import org.json.JSONObject;
-
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -19,7 +12,6 @@ import android.webkit.CookieSyncManager;
 import android.webkit.WebView;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
-
 import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
 import com.facebook.android.AsyncFacebookRunner;
@@ -27,8 +19,14 @@ import com.facebook.android.DialogError;
 import com.facebook.android.Facebook;
 import com.facebook.android.Facebook.DialogListener;
 import com.facebook.android.FacebookError;
-import com.javielinux.tweettopics.Users;
-import com.javielinux.tweettopics.Utils;
+import com.javielinux.tweettopics2.Users;
+import com.javielinux.tweettopics2.Utils;
+import org.json.JSONObject;
+
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 public class FacebookHandler {
 

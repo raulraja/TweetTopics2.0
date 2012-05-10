@@ -1,21 +1,19 @@
 package tweetprogrammed;
 
 
-import java.util.ArrayList;
-import java.util.Calendar;
-
-import updatestatus.ServiceUpdateStatus;
-
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
-
 import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
-import com.javielinux.tweettopics.Utils;
+import com.javielinux.tweettopics2.Utils;
+import updatestatus.ServiceUpdateStatus;
+
+import java.util.ArrayList;
+import java.util.Calendar;
 
 
 public class OnAlarmReceiverTweetProgrammed extends BroadcastReceiver {

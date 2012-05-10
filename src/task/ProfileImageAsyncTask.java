@@ -4,7 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import com.android.dataframework.Entity;
-import com.javielinux.tweettopics.Utils;
+import com.javielinux.tweettopics2.Utils;
 import com.javielinux.twitter.ConnectionManager;
 import twitter4j.TwitterException;
 import twitter4j.User;

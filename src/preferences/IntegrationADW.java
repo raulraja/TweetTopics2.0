@@ -1,15 +1,14 @@
 package preferences;
 
-import java.util.ArrayList;
-
 import android.app.ListActivity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
+import com.javielinux.tweettopics2.R;
+import com.javielinux.tweettopics2.Utils;
 
-import com.javielinux.tweettopics.R;
-import com.javielinux.tweettopics.Utils;
+import java.util.ArrayList;
 
 public class IntegrationADW extends ListActivity {
 	

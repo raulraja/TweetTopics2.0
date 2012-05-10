@@ -1,6 +1,5 @@
 package notifications;
 
-import notifications.AlarmAsyncTask.AlarmAsyncTaskResponder;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -8,9 +7,9 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.util.Log;
-
-import com.javielinux.tweettopics.R;
-import com.javielinux.tweettopics.Utils;
+import com.javielinux.tweettopics2.R;
+import com.javielinux.tweettopics2.Utils;
+import notifications.AlarmAsyncTask.AlarmAsyncTaskResponder;
 
 public class Alarm2 extends BroadcastReceiver implements AlarmAsyncTaskResponder {
 	public AsyncTask<Void, Void, Void> task;  

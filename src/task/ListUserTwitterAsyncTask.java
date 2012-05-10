@@ -1,24 +1,22 @@
 package task;
 
+import adapters.UserTwitterListAdapter;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
+import com.javielinux.tweettopics2.TabGeneral;
+import com.javielinux.tweettopics2.Utils;
 import infos.InfoUsers;
+import twitter4j.RateLimitStatus;
+import twitter4j.ResponseList;
+import twitter4j.TwitterException;
+import twitter4j.User;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
-
-import twitter4j.RateLimitStatus;
-import twitter4j.ResponseList;
-import twitter4j.TwitterException;
-import twitter4j.User;
-import adapters.UserTwitterListAdapter;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
-
-import com.javielinux.tweettopics.TabGeneral;
-import com.javielinux.tweettopics.Utils;
 
 public class ListUserTwitterAsyncTask extends AsyncTask<String, Void, UserTwitterListAdapter> {
 

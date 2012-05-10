@@ -16,10 +16,10 @@ import android.view.View;
 import android.widget.RemoteViews;
 import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
-import com.javielinux.tweettopics.R;
-import com.javielinux.tweettopics.TweetTopics;
-import com.javielinux.tweettopics.TweetTopicsCore;
-import com.javielinux.tweettopics.Utils;
+import com.javielinux.tweettopics2.R;
+import com.javielinux.tweettopics2.TweetTopics;
+import com.javielinux.tweettopics2.TweetTopicsCore;
+import com.javielinux.tweettopics2.Utils;
 
 public class WidgetCounters2x1 extends AppWidgetProvider {
 	@Override

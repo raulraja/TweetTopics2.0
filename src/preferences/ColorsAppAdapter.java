@@ -1,7 +1,5 @@
 package preferences;
 
-import java.util.ArrayList;
-
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.graphics.Canvas;
@@ -11,8 +9,9 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import com.javielinux.tweettopics2.R;
 
-import com.javielinux.tweettopics.R;
+import java.util.ArrayList;
 
 public class ColorsAppAdapter extends ArrayAdapter<InfoColorsApp> {
 	

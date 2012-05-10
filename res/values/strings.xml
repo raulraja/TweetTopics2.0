@@ -465,7 +465,7 @@
 	
 	<string name="version">1.04</string>
     <string name="hello">Hello World, TweetTopics!</string>
-    <string name="app_name">TweetTopics</string>
+    <string name="app_name">TweetTopics 2</string>
     <string name="no_users">No users. In order to use TweetTopics, you need to add at least one Twitter user</string>
     <string name="search">Search</string>
     <string name="alert_dialog_ok">Accept</string>

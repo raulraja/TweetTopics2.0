@@ -1,7 +1,5 @@
 package preferences;
 
-import java.util.Locale;
-
 import adapters.TweetQuickAdapter;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -14,15 +12,16 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.AdapterView.OnItemClickListener;
-
 import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
-import com.javielinux.tweettopics.R;
-import com.javielinux.tweettopics.Utils;
-import com.javielinux.tweettopics.Utils.PersonalDialogBuilder;
+import com.javielinux.tweettopics2.R;
+import com.javielinux.tweettopics2.Utils;
+import com.javielinux.tweettopics2.Utils.PersonalDialogBuilder;
+
+import java.util.Locale;
 
 public class TweetQuick extends Activity {
 	

@@ -1,26 +1,16 @@
 package com.javielinux.twitter;
 
+import android.app.Application;
 import android.os.AsyncTask;
-import com.javielinux.tweettopics.TweetTopicsCore;
+import com.javielinux.tweettopics2.TweetTopicsCore;
 import error_reporter.ErrorReporter;
-import greendroid.app.GDApplication;
 import interfaces.FinishTwitterDownload;
 import task.TwitterUserAsyncTask;
 import task.TwitterUserAsyncTask.TwitterUserAsyncTaskResponder;
 import task.TwitterUserAsyncTask.TwitterUserResult;
 
-public class TwitterApplication extends GDApplication {
+public class TwitterApplication extends Application {
     private ErrorReporter mErrs;
-	
-	@Override
-	public Class<?> getHomeActivityClass() {
-		return null;
-	}
-
-	@Override
-	public void onCreate() {
-		super.onCreate();
-	}
 
 /*
 	public boolean isDev() {

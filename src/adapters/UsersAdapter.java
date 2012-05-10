@@ -3,18 +3,17 @@
  */
 package adapters;
 
-import java.util.ArrayList;
-
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.android.dataframework.Entity;
-import com.javielinux.tweettopics.R;
-import com.javielinux.tweettopics.Utils;
+import com.javielinux.tweettopics2.R;
+import com.javielinux.tweettopics2.Utils;
+
+import java.util.ArrayList;
 
 public class UsersAdapter extends ArrayAdapter<Entity> {
 

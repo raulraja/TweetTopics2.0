@@ -23,13 +23,8 @@ import android.view.View.OnClickListener;
 import android.widget.*;
 import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
-import com.cyrilmottier.android.greendroid.R;
-import com.javielinux.tweettopics.*;
-import com.javielinux.tweettopics.Utils.TweetTopicsQuickAction;
+import com.javielinux.tweettopics2.*;
 import com.javielinux.twitter.ConnectionManager;
-import greendroid.widget.QuickActionBar;
-import greendroid.widget.QuickActionWidget;
-import greendroid.widget.QuickActionWidget.OnQuickActionClickListener;
 import infos.InfoLink;
 import infos.InfoTweet;
 import infos.InfoUsers;
@@ -323,77 +318,10 @@ public class Sidebar {
      * USER
      * 
      */
-    
-    static QuickActionBar mQuicActionUser;
-    
-    public static void prepareQuickActionUser(final TweetTopics mTweetTopics, final TweetTopicsCore mTweetTopicsCore, final InfoUsers iu) {
-    
-    	mQuicActionUser = new QuickActionBar(mTweetTopics);
-		try {
-			ConnectionManager.getInstance().open(mTweetTopics);
-			mQuicActionUser.addQuickAction(new TweetTopicsQuickAction(mTweetTopics, R.drawable.gd_action_bar_gallery, R.string.view));
-			if (ConnectionManager.getInstance().getTwitter().existsBlock(iu.getName())) {
-				mQuicActionUser.addQuickAction(new TweetTopicsQuickAction(mTweetTopics, R.drawable.gd_action_bar_block, R.string.destroy_block));
-			} else {
-				mQuicActionUser.addQuickAction(new TweetTopicsQuickAction(mTweetTopics, R.drawable.gd_action_bar_block, R.string.create_block));
-			}
-			
-			mQuicActionUser.addQuickAction(new TweetTopicsQuickAction(mTweetTopics, R.drawable.gd_action_bar_spam, R.string.report_spam));
-			
-			if (iu.getUrl()!=null && !iu.getUrl().equals("")) {
-				mQuicActionUser.addQuickAction(new TweetTopicsQuickAction(mTweetTopics, R.drawable.gd_action_bar_link, R.string.web));
-			}
-			mQuicActionUser.setOnQuickActionClickListener(new OnQuickActionClickListener() {
-	            public void onQuickActionClicked(QuickActionWidget widget, int position) {
-	            	mQuicActionUser = new QuickActionBar(mTweetTopics);
-	            	if (position==0) {
-	            		mTweetTopicsCore.showSidebarLink(iu.getBigUrlAvatar());
-	            	} else if (position==1) {
-	            		try {
-		            		if (ConnectionManager.getInstance().getTwitter().existsBlock(iu.getName())) {
-		            			ConnectionManager.getInstance().getTwitter().destroyBlock(iu.getName());
-		            			Utils.showMessage(mTweetTopics, mTweetTopics.getString(R.string.user_unlock));
-		        			} else {
-		        				ConnectionManager.getInstance().getTwitter().createBlock(iu.getName());
-		        				Utils.showMessage(mTweetTopics, mTweetTopics.getString(R.string.user_block));
-		        			}
-	            		} catch (TwitterException e1) {
-	        				e1.printStackTrace();
-	        			}
-	            		prepareQuickActionUser(mTweetTopics, mTweetTopicsCore, iu);
-	            	} else if (position==2) {
-	            		try {
-	            			ConnectionManager.getInstance().getTwitter().reportSpam(iu.getName());
-	            			Utils.showMessage(mTweetTopics, mTweetTopics.getString(R.string.user_report_spam));
-	            		} catch (TwitterException e1) {
-	        				e1.printStackTrace();
-	        			}
-	            		prepareQuickActionUser(mTweetTopics, mTweetTopicsCore, iu);
-	            	} else if (position==3) {
-	            		mTweetTopicsCore.goToLink(iu.getUrl());
-	            		/*
-	            		try {
-	            			Uri uri = Uri.parse(iu.getUrl());
-	            			Intent intent = new Intent(android.content.Intent.ACTION_VIEW, uri);
-	            			mTweetTopics.startActivity(intent);
-	            		} catch (Exception e) {
-	            			e.printStackTrace();
-	            		}*/
-	            	}
-	            }
-	        });
-			
-		} catch (TwitterException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-	}
-    
+
     
     public static View getViewUserHeadSidebar(final TweetTopics mTweetTopics, final TweetTopicsCore mTweetTopicsCore, final InfoUsers iu) {
     	View v = View.inflate(mTweetTopics, R.layout.sidebar_head_user, null);
-    	
-    	prepareQuickActionUser(mTweetTopics, mTweetTopicsCore, iu);
     	
     	ImageView avatar = (ImageView) v.findViewById(R.id.user_avatar_sidebar);
     	
@@ -401,7 +329,7 @@ public class Sidebar {
 
 			@Override
 			public void onClick(View v) {
-				mQuicActionUser.show(v);
+
 			}
 			
 		});    	

@@ -8,7 +8,7 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Environment;
 import android.util.Log;
-import com.javielinux.tweettopics.Utils;
+import com.javielinux.tweettopics2.Utils;
 import com.javielinux.twitter.TwitterApplication;
 
 import java.io.*;

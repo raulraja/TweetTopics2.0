@@ -6,8 +6,7 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
-import com.javielinux.tweettopics.R;
+import com.javielinux.tweettopics2.R;
 
 public class LoadMoreListItem extends RelativeLayout {
 

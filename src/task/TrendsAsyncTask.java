@@ -1,11 +1,10 @@
 package task;
 
+import android.os.AsyncTask;
+import com.javielinux.tweettopics2.TweetTopicsCore;
+import com.javielinux.twitter.ConnectionManager;
 import twitter4j.Trend;
 import twitter4j.TwitterException;
-import android.os.AsyncTask;
-
-import com.javielinux.tweettopics.TweetTopicsCore;
-import com.javielinux.twitter.ConnectionManager;
 
 
 public class TrendsAsyncTask extends AsyncTask<Integer, Void, Trend[]> {

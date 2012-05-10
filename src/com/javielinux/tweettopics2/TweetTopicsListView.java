@@ -1,4 +1,4 @@
-package com.javielinux.tweettopics;
+package com.javielinux.tweettopics2;
 
 import android.graphics.drawable.Drawable;
 import android.view.View;

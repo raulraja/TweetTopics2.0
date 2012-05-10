@@ -1,9 +1,8 @@
 package task;
 
-import infos.CacheData;
 import android.os.AsyncTask;
-
-import com.javielinux.tweettopics.Utils;
+import com.javielinux.tweettopics2.Utils;
+import infos.CacheData;
 
 public class PreparingLinkForSidebarAsyncTask extends AsyncTask<String, Void, Boolean> {
 

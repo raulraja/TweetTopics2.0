@@ -1,21 +1,15 @@
 package preferences;
 
-import infos.InfoSubMenuTweet;
-
-import java.util.ArrayList;
-
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
+import android.widget.*;
 import android.widget.CompoundButton.OnCheckedChangeListener;
-import android.widget.ImageView;
-import android.widget.TextView;
+import com.javielinux.tweettopics2.R;
+import com.javielinux.tweettopics2.Utils;
+import infos.InfoSubMenuTweet;
 
-import com.javielinux.tweettopics.R;
-import com.javielinux.tweettopics.Utils;
+import java.util.ArrayList;
 
 public class SubMenuTweetsAdapter extends ArrayAdapter<InfoSubMenuTweet> {
 	

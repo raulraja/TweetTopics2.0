@@ -1,48 +1,29 @@
-package com.javielinux.tweettopics;
+package com.javielinux.tweettopics2;
 
-import greendroid.app.GDActivity;
-import greendroid.widget.ActionBar;
-import greendroid.widget.ActionBarItem;
-import greendroid.widget.ActionBarItem.Type;
-
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-
-import org.xmlpull.v1.XmlPullParserException;
-
-import preferences.Preferences;
-import zoom.WrapMotionEvent;
-import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Matrix;
-import android.graphics.PointF;
+import android.graphics.*;
 import android.media.ExifInterface;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.util.DisplayMetrics;
 import android.util.FloatMath;
 import android.util.Log;
-import android.view.GestureDetector;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.MotionEvent;
-import android.view.View;
+import android.view.*;
 import android.view.View.OnTouchListener;
-import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
-
 import com.android.dataframework.DataFramework;
-import com.cyrilmottier.android.greendroid.R;
+import org.xmlpull.v1.XmlPullParserException;
+import preferences.Preferences;
+import zoom.WrapMotionEvent;
 
-public class AdjustImage extends GDActivity implements OnTouchListener
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
+public class AdjustImage extends BaseActivity implements OnTouchListener
 {
 	
 	private static final int OK_ID = Menu.FIRST;
@@ -82,11 +63,10 @@ public class AdjustImage extends GDActivity implements OnTouchListener
     float oldDist = 1f;
 
     private GestureDetector gd;
-    
-    private ActionBar mActionBar;
+
 
     public void refreshTheme() {		
-    	mActionBar.setBackgroundColor(Color.parseColor("#"+new ThemeManager(this).getStringColor("color_top_bar")));
+
     }
     
     @Override
@@ -127,7 +107,7 @@ public class AdjustImage extends GDActivity implements OnTouchListener
 			@Override
 			public void onLongPress(MotionEvent e) {
 				if (Utils.preference.getBoolean("prf_zoom_one_finger", false)) {
-					((Vibrator) getSystemService(Context.VIBRATOR_SERVICE)).vibrate(100); 
+					((Vibrator) getSystemService(VIBRATOR_SERVICE)).vibrate(100);
 					mode = ZOOM_ONEFINGER;
 					startOneFinger.set(e.getX(), e.getY());
 				}
@@ -192,32 +172,15 @@ public class AdjustImage extends GDActivity implements OnTouchListener
         
         fr.addView(mImage);
 
-        setActionBarContentView(fr, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.FILL_PARENT));
-        
-        mActionBar = getGreenDroidActionBar();
-        mActionBar.addItem(Type.Add);
-        
+        setContentView(fr, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.FILL_PARENT));
 
-        ImageView mIconActivity = (ImageView) mActionBar.findViewById(R.id.gd_action_bar_home_item);
-        mIconActivity.setVisibility(View.GONE);
         
         refreshTheme();
         
         Utils.showMessage(this, getString(R.string.adjust_background));
         
     }
-    
-	@Override
-	public boolean onHandleActionBarItemClick(ActionBarItem item, int position) {
-		switch (position) {
-		case 0:
-			save();
-			break;
-		default:
-			break;
-		}
-		return super.onHandleActionBarItemClick(item, position);
-	}
+
     
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

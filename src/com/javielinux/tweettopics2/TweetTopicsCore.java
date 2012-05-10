@@ -1,4 +1,4 @@
-package com.javielinux.tweettopics;
+package com.javielinux.tweettopics2;
 
 import adapters.*;
 import android.app.*;
@@ -29,14 +29,10 @@ import android.widget.SeekBar.OnSeekBarChangeListener;
 import animations.Rotate3dAnimation;
 import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
-import com.javielinux.tweettopics.Utils.TweetTopicsQuickAction;
 import com.javielinux.twitter.ConnectionManager;
 import com.javielinux.twitter.TwitterApplication;
 import database.EntitySearch;
 import database.EntityTweetUser;
-import greendroid.widget.*;
-import greendroid.widget.ActionBar;
-import greendroid.widget.QuickActionWidget.OnQuickActionClickListener;
 import infos.*;
 import interfaces.FinishTwitterDownload;
 import layouts.LoadMoreListItem;
@@ -47,12 +43,6 @@ import preferences.Colors;
 import preferences.ColorsApp;
 import preferences.Preferences;
 import preferences.RetweetsTypes;
-import quickactions.QuickActionGridTree;
-import quickactions.QuickActionTreeWidget;
-import quickactions.QuickActionTreeWidget.OnQuickActionTreeClickListener;
-import quickactions.QuickActionWidgetDF;
-import quickactions.QuickActionWidgetDF.QuickActionWidgetDFButtonOnClick;
-import quickactions.QuickActionWidgetDF.QuickActionWidgetDFGetView;
 import sidebar.Sidebar;
 import sidebar.SidebarGalleryLinks;
 import sidebar.SidebarMenu;
@@ -83,8 +73,6 @@ import widget.WidgetCounters4x1;
 
 import java.io.File;
 import java.util.*;
-
-import com.javielinux.tweettopics.R;
 
 public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskResponder,
 											GetConversationAsyncTaskResponder,
@@ -209,8 +197,6 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
 	protected LinearLayout mLayoutBlack;
 	
 	protected static InfoLink mSelectedInfoLink = null;
-	
-	protected ImageView mIconActivity;
 
 	protected ThemeManager mThemeManager;
 	
@@ -233,11 +219,6 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
 	protected long mCurrentId = -1;
 	
 	protected TweetTopics mTweetTopics = null;
-	
-	protected QuickActionGridTree mQuicActionMore;
-	protected QuickActionBar mQuicActionTweetItem;
-	protected QuickActionBar mQuicActionSearch;
-	protected QuickActionWidgetDF mQuicActionUsers;
 	
 	
 	private BroadcastReceiver receiver = new BroadcastReceiver() {
@@ -688,12 +669,11 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
 			public void onClick(View v) {
 				showDialogSamples();		
 			}
-        	
+
         });
         
         loadGridSearch();
-        
-        prepareQuickActions();
+
 
         app = (TwitterApplication) mTweetTopics.getApplication();
 
@@ -730,19 +710,7 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
        	isFinishOnCreate = true;
        	
 	}
-	
-	public void onHandleActionBarItemClick(ActionBarItem item, int position) {
-		switch (position) {
-		case 0:
-			reload();
-			break;
-		case 1:
-			updateStatus(NewStatus.TYPE_NORMAL, "", null);
-			break;
-		default:
-			break;
-		}
-	}
+
 	
     public void onCreateOptionsMenu(Menu menu) {
         menu.add(0, NEW_ID, 0,  R.string.new_search)
@@ -820,9 +788,6 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
         mTweetTopics.registerReceiver(receiver, new IntentFilter(Intent.ACTION_VIEW));
                 
         if (app.isReloadUserTwitter()) {
-        	if (app.getLoad()==1) {
-        		((LoaderActionBarItem)mActionBar.getItem(0)).setLoading(true);
-        	}
         	if (app.getLoad()==2) {
         		mLayoutInfoBackground.setVisibility(View.VISIBLE);
         	}
@@ -854,7 +819,6 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
     
     protected void onPause() {
     	mTweetTopics.unregisterReceiver(receiver);
-        ((LoaderActionBarItem)mActionBar.getItem(0)).setLoading(false);
         Utils.saveStatusWorkApp(mTweetTopics, false);
         app.setOnFinishTwitterDownload(null);
     }
@@ -925,7 +889,6 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
     		}
     		break;
     	case ACTIVITY_PREFERENCES:
-    		prepareQuickActionTweetItem();
     		refreshTheme();
     		loadGridSearch();
     		break;
@@ -993,7 +956,6 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
         	if (searchTask!=null) {
         		searchTask.cancel(true);
         		searchTask = null;
-        		((LoaderActionBarItem)mActionBar.getItem(0)).setLoading(false);
         		isGenericSearch = false;
         		return false;
         	}
@@ -1215,285 +1177,7 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
         deleteTempSearch();
 		toDoSearch(ent.getId());
 	}
-	
-	private void prepareQuickActions() {
 
-		mQuicActionMore = new QuickActionGridTree(mTweetTopics, new TweetTopicsQuickAction(mTweetTopics, R.drawable.gd_action_bar_menu, R.string.menu));
-		
-		mQuicActionMore.addQuickAction(new TweetTopicsQuickAction(mTweetTopics, R.drawable.gd_action_bar_star, R.string.favorites));
-		
-        ArrayList<QuickAction> listsList = new ArrayList<QuickAction>();
-        listsList.add(new TweetTopicsQuickAction(mTweetTopics, R.drawable.gd_action_bar_my_lists, R.string.my_lists));
-        listsList.add(new TweetTopicsQuickAction(mTweetTopics, R.drawable.gd_action_bar_retweet_others, R.string.list_follow_me));
-		
-        //mQuicActionMore.addQuickAction(new TweetTopicsQuickAction(mTweetTopics, R.drawable.gd_action_bar_list, R.string.lists));
-        mQuicActionMore.addChildsQuickAction(new TweetTopicsQuickAction(mTweetTopics, R.drawable.gd_action_bar_list, R.string.lists), listsList);
-        
-        mQuicActionMore.addQuickAction(new TweetTopicsQuickAction(mTweetTopics, R.drawable.gd_action_bar_profile, R.string.profile));
-        mQuicActionMore.addQuickAction(new TweetTopicsQuickAction(mTweetTopics, R.drawable.gd_action_bar_trending, R.string.trending_topics));
-        
-        ArrayList<QuickAction> retweetsList = new ArrayList<QuickAction>();
-        retweetsList.add(new TweetTopicsQuickAction(mTweetTopics, R.drawable.gd_action_bar_my_tweets, R.string.my_tweets));
-        retweetsList.add(new TweetTopicsQuickAction(mTweetTopics, R.drawable.gd_action_bar_my_retweets, R.string.my_retweets));
-        retweetsList.add(new TweetTopicsQuickAction(mTweetTopics, R.drawable.gd_action_bar_retweet_others, R.string.retweet_others));
-        
-        mQuicActionMore.addChildsQuickAction(new TweetTopicsQuickAction(mTweetTopics, R.drawable.gd_action_bar_retweet, R.string.retweets), retweetsList);
-        //mQuicActionMore.addQuickAction(new TweetTopicsQuickAction(mTweetTopics, R.drawable.gd_action_bar_retweet, R.string.retweets));
-        
-        mQuicActionMore.addQuickAction(new TweetTopicsQuickAction(mTweetTopics, R.drawable.gd_action_bar_search, R.string.search));
-        mQuicActionMore.addQuickAction(new TweetTopicsQuickAction(mTweetTopics, R.drawable.gd_action_bar_save, R.string.saved));
-
-        ArrayList<QuickAction> themes = new ArrayList<QuickAction>();
-        themes.add(new TweetTopicsQuickAction(mTweetTopics, R.drawable.gd_action_bar_edit, R.string.edit));
-        themes.add(new TweetTopicsQuickAction(mTweetTopics, R.drawable.gd_action_bar_load, R.string.load_theme));
-        themes.add(new TweetTopicsQuickAction(mTweetTopics, R.drawable.gd_action_bar_qr, R.string.title_tweettopics_theme));
-        themes.add(new TweetTopicsQuickAction(mTweetTopics, R.drawable.gd_action_bar_share, R.string.share));
-        
-        mQuicActionMore.addChildsQuickAction(new TweetTopicsQuickAction(mTweetTopics, R.drawable.gd_action_bar_themes, R.string.title_prf_theme), themes);
-		
-        ArrayList<QuickAction> moveList = new ArrayList<QuickAction>();
-        moveList.add(new TweetTopicsQuickAction(mTweetTopics, R.drawable.gd_action_bar_last_read, R.string.last_read));
-        moveList.add(new TweetTopicsQuickAction(mTweetTopics, R.drawable.gd_action_bar_top, R.string.top_list));
-        moveList.add(new TweetTopicsQuickAction(mTweetTopics, R.drawable.gd_action_bar_bottom, R.string.bottom_list));
-        
-        mQuicActionMore.addChildsQuickAction(new TweetTopicsQuickAction(mTweetTopics, R.drawable.gd_action_bar_move, R.string.displace), moveList);
-        
-        mQuicActionMore.setOnQuickActionClickListener(new OnQuickActionTreeClickListener() {
-            public void onQuickActionTreeClicked(QuickActionTreeWidget widget, int parent, int position) {
-            	//Log.d(Utils.TAG, parent + " -- " + position);
-            	if (parent==QuickActionGridTree.GRID_PARENT) {
-	            	if (position==0) {
-	            		columnUser(TweetTopicsCore.FAVORITES);
-	            	} else if (position==2) {
-	            		Entity e = mTweetTopics.getActiveUser();
-	    				if (e!=null) {
-	    					loadSidebarUser(e.getString("name"));
-	    		    	}
-	            	} else if (position==3) {
-	            		showLocationsTrends();
-	            	} else if (position==5) {
-	            		newSearch();
-	            	} else if (position==6) {
-	            		toDoReadAfter();
-	            	}
-            	}
-            	
-            	if (parent==1) { // listas
-	           		 if (position==0) {
-	           			showListUser(UserListsAsyncTask.SHOW_TWEETS);
-	            	} else if (position==1) {
-	            		showListUser(UserListsAsyncTask.SHOW_TWEETS_FOLLOWINGLIST);
-	            	}
-	           	}
-            	
-            	if (parent==4) { // retweets
-	           		if (position==0) {
-	           			loadTypeStatus(LoadTypeStatusAsyncTask.RETWEETED_OFME);
-	            	} else if (position==1) {
-	            		loadTypeStatus(LoadTypeStatusAsyncTask.RETWEETED_BYME);
-	            	} else if (position==2) {
-	            		loadTypeStatus(LoadTypeStatusAsyncTask.RETWEETED_TOME);
-	            	}
-	           	}
-            	
-            	if (parent==8) {
-            		 if (position==0) {
- 	            		goToLastRead();
- 	            	} else if (position==1) {
- 	            		goToTop();
- 	            	} else if (position==2) {
- 	            		goToBottom();
- 	            	}
-            	}
-
-            	if (parent==7) {
-            		if (position==0) {
-                    	Intent colorsApp = new Intent(mTweetTopics, ColorsApp.class);
-                    	mTweetTopics.startActivityForResult(colorsApp, ACTIVITY_COLORS_APP);
-                    } else if (position==1) {
-                    	dialogLoadTheme();
-                    } else if (position==2) {
-                    	IntentIntegrator.initiateScan(mTweetTopics, R.string.title_download_scan, R.string.msg_download_scan, R.string.alert_dialog_ok, R.string.alert_dialog_cancel);
-                    } else if (position==3) {
-                    	ColorsApp.exportTheme(mTweetTopics);
-                    }
-            	}
-            	
-            }
-        });
-        
-		/*
-        mQuicActionMore = new QuickActionGrid(mTweetTopics);
-        
-        mQuicActionMore.addQuickAction(new TweetTopicsQuickAction(mTweetTopics, R.drawable.gd_action_bar_star, R.string.favorites));
-        mQuicActionMore.addQuickAction(new TweetTopicsQuickAction(mTweetTopics, R.drawable.gd_action_bar_list, R.string.lists));
-        mQuicActionMore.addQuickAction(new TweetTopicsQuickAction(mTweetTopics, R.drawable.gd_action_bar_profile, R.string.profile));
-        mQuicActionMore.addQuickAction(new TweetTopicsQuickAction(mTweetTopics, R.drawable.gd_action_bar_trending, R.string.trending_topics));
-        mQuicActionMore.addQuickAction(new TweetTopicsQuickAction(mTweetTopics, R.drawable.gd_action_bar_retweet, R.string.retweets));
-        mQuicActionMore.addQuickAction(new TweetTopicsQuickAction(mTweetTopics, R.drawable.gd_action_bar_search, R.string.search));
-        mQuicActionMore.addQuickAction(new TweetTopicsQuickAction(mTweetTopics, R.drawable.gd_action_bar_save, R.string.saved));
-        mQuicActionMore.addQuickAction(new TweetTopicsQuickAction(mTweetTopics, R.drawable.gd_action_bar_last_read, R.string.last_read));
-        mQuicActionMore.addQuickAction(new TweetTopicsQuickAction(mTweetTopics, R.drawable.gd_action_bar_top, R.string.top_list));
-
-        mQuicActionMore.setOnQuickActionClickListener(new OnQuickActionClickListener() {
-            public void onQuickActionClicked(QuickActionWidget widget, int position) {
-            	if (position==0) {
-            		columnUser(TweetTopicsCore.FAVORITES);
-            	} else if (position==1) {
-            		showListUser();
-            	} else if (position==2) {
-            		Entity e = mTweetTopics.getActiveUser();
-    				if (e!=null) {
-    					loadSidebarUser(e.getString("name"));
-    		    	}
-            	} else if (position==3) {
-            		showLocationsTrends();
-            	} else if (position==4) {
-            		showDialogRetweetOptionsUser();
-            	} else if (position==5) {
-            		newSearch();
-            	} else if (position==6) {
-            		toDoReadAfter();
-            	} else if (position==7) {
-            		goToLastRead();
-            	} else if (position==8) {
-            		goToTop();
-            	}
-            }
-        });
-        */
-        
-        prepareQuickActionTweetItem();
-        
-		mQuicActionUsers = new QuickActionWidgetDF(mTweetTopics, QuickActionWidgetDF.TYPE_LIST, "users", "service is null or service = \"twitter.com\"");
-		mQuicActionUsers.addButton(R.string.manager_user, new QuickActionWidgetDFButtonOnClick() {
-
-			@Override
-			public void OnClick() {
-				newUser();
-			}
-			
-		});
-        
-		mQuicActionUsers.setOnGetView(new QuickActionWidgetDFGetView() {
-
-			@Override
-			public View OnGetView(int position, View view, ViewGroup parent) {
-            	LinearLayout root = (LinearLayout) view;
-
-                if (view == null) {
-                    final LayoutInflater inflater = LayoutInflater.from(mTweetTopics);
-                    root = (LinearLayout) inflater.inflate(R.layout.gd_quick_action_grid_users_item, null, false);
-                }
-                
-                Entity user = mQuicActionUsers.getEntities().get(position);
-
-                TextView name = (TextView)root.findViewById(R.id.qa_text);                
-                name.setText(user.getString("name"));
-                              
-                ImageView avatar = (ImageView)root.findViewById(R.id.qa_avatar);
-                avatar.setImageBitmap(Utils.getBitmapAvatar(user.getId(), Utils.AVATAR_LARGE));
-                
-                TextView timeline = (TextView)root.findViewById(R.id.qa_n_timeline);
-                if (user.getInt("no_save_timeline")==1) {
-					timeline.setText("- ");
-				} else {
-					int totalTimeline = DataFramework.getInstance().getEntityListCount("tweets_user", "type_id = " + TweetTopicsCore.TIMELINE 
-	       				+ " AND user_tt_id="+user.getId() + " AND tweet_id >'" + Utils.fillZeros(""+user.getString("last_timeline_id"))+"'");
-					timeline.setText(totalTimeline+"");
-				}
-                
-	    		int totalMentions = DataFramework.getInstance().getEntityListCount("tweets_user", "type_id = " + TweetTopicsCore.MENTIONS 
-	       				+ " AND user_tt_id="+user.getId() + " AND tweet_id >'" + Utils.fillZeros(""+user.getString("last_mention_id"))+"'");
-
-	    		int totalDirectMessages = DataFramework.getInstance().getEntityListCount("tweets_user", "type_id = " + TweetTopicsCore.DIRECTMESSAGES 
-	       				+ " AND user_tt_id="+user.getId() + " AND tweet_id >'" + Utils.fillZeros(""+user.getString("last_direct_id"))+"'");
-				
-                
-                TextView mentions = (TextView)root.findViewById(R.id.qa_n_mentions);
-                mentions.setText(totalMentions+"");
-                
-                TextView directs = (TextView)root.findViewById(R.id.qa_n_directs);
-                directs.setText(totalDirectMessages+"");
-
-                return root;
-			}
-			
-		});
-		
-        mQuicActionUsers.setOnQuickActionClickListener(new OnQuickActionClickListener() {
-            public void onQuickActionClicked(QuickActionWidget widget, int position) {
-            	ArrayList<Entity> users = DataFramework.getInstance().getEntityList("users", "service is null or service = \"twitter.com\"");
-            	if (position<users.size()) {
-            		changeUser(users.get(position).getId());
-            	}
-            }
-        });
-	}
-	
-	private void prepareQuickActionTweetItem() {
-	    ArrayList<String> codes = Utils.getArraySubMenuTweet(mTweetTopics);
-	    
-	    if (codes.size()>1) {
-	        mQuicActionTweetItem = new QuickActionBar(mTweetTopics);
-	        for (String code : codes) {
-	        	InfoSubMenuTweet submenu = new InfoSubMenuTweet(mTweetTopics, code);
-	        	mQuicActionTweetItem.addQuickAction(new TweetTopicsQuickAction(mTweetTopics, submenu.getResDrawable(), submenu.getResName()));	
-	        }
-	        
-	        mQuicActionTweetItem.setOnQuickActionClickListener(new OnQuickActionClickListener() {
-	            public void onQuickActionClicked(QuickActionWidget widget, int position) {
-	            	ArrayList<String> codes = Utils.getArraySubMenuTweet(mTweetTopics);
-	            	InfoTweet it = null;
-	            	int posTweet = 0;
-                    try {
-                        if (listIsConversation) {
-                            posTweet = mPositionSelectedTweetConversation;
-                            it = new InfoTweet(mAdapterStatusList.getItem(posTweet));
-                        } else {
-                            posTweet = mPositionSelectedTweet;
-                            it = new InfoTweet(mAdapterResponseList.getItem(posTweet));
-                        }
-                    } catch (IndexOutOfBoundsException e) {
-                        e.printStackTrace();
-                    }
-	            	if (it!=null) {
-	            		it.execByCode(codes.get(position), TweetTopicsCore.this, posTweet);
-	            	}
-	
-	            }
-	        });
-	        
-	    } else {
-	    	mQuicActionTweetItem = null;
-	    }
-	}
-	
-	private void prepareQuickActionSearch() {
-		mQuicActionSearch = new QuickActionBar(mTweetTopics);
-		mQuicActionSearch.addQuickAction(new TweetTopicsQuickAction(mTweetTopics, R.drawable.gd_action_bar_share, R.string.share));
-		mQuicActionSearch.addQuickAction(new TweetTopicsQuickAction(mTweetTopics, R.drawable.gd_action_bar_reply, R.string.edit));
-		Entity e = new Entity("search", mCurrentId);
-		if (e.getInt("is_temp")==1) {
-			mQuicActionSearch.addQuickAction(new TweetTopicsQuickAction(mTweetTopics, R.drawable.gd_action_bar_check, R.string.finalize));	
-		}
-		mQuicActionSearch.setOnQuickActionClickListener(new OnQuickActionClickListener() {
-            public void onQuickActionClicked(QuickActionWidget widget, int position) {
-            	if (position==0) {
-            		exportCurrenSearch();
-            	} else if (position==1) {
-            		editCurrenSearch();
-            	} else if (position==2) {
-            		Entity e = new Entity("search", mCurrentId);
-					e.setValue("is_temp", 0);
-					e.save();
-					loadGridSearch();
-					Utils.showShortMessage(mTweetTopics, mTweetTopics.getString(R.string.convert_search_correct));
-            	}
-            }
-        });
-	}
-	
 	private View getLoadingView() {
 		View v = mTweetTopics.getLayoutInflater().inflate(R.layout.loading, null);
 		LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
@@ -1645,17 +1329,15 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
 							}
 						}
 						
-						if (mQuicActionTweetItem!=null) {
-							mQuicActionTweetItem.show(view);
-						} else {
-							ArrayList<String> codes = Utils.getArraySubMenuTweet(mTweetTopics);
-							if (codes.size()==1) {
-								InfoTweet it = new InfoTweet(mAdapterResponseList.getItem(position));
-								if (it!=null) {
-									return it.execByCode(codes.get(0), TweetTopicsCore.this, position);
-								}
-							}
-						}
+
+                        ArrayList<String> codes = Utils.getArraySubMenuTweet(mTweetTopics);
+                        if (codes.size()==1) {
+                            InfoTweet it = new InfoTweet(mAdapterResponseList.getItem(position));
+                            if (it!=null) {
+                                return it.execByCode(codes.get(0), TweetTopicsCore.this, position);
+                            }
+                        }
+
 					}
 				}
 				return false;
@@ -2511,22 +2193,10 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
 
     	}
     	if (mTypeList == TYPE_LIST_COLUMNUSER) {
-    		/*
-			QuickActionsUsers dw = new QuickActionsUsers(mIconActivity, twitter);
-			dw.setTweetTopicsCore(TweetTopicsCore.this);
-			dw.showLikePopDownMenu();
-			*/
-    		mQuicActionUsers.refresh();
-    		mQuicActionUsers.show(mIconActivity);
+
     	}
     	if ( (mTypeList == TYPE_LIST_SEARCH_NOTIFICATIONS) || (mTypeList == TYPE_LIST_SEARCH) ) {
-			if (mCurrentId>0) {
-				prepareQuickActionSearch();
-				mQuicActionSearch.show(mIconActivity);
-				//QuickActionsOptionsSearch dw = new QuickActionsOptionsSearch(mTweetTopics, mIconActivity, mCurrentId);
-				//dw.setTweetTopicsCore(TweetTopicsCore.this);
-				//dw.showLikePopDownMenu();
-			}
+
     	}
     }
     
@@ -3535,12 +3205,6 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
     		Entity e = DataFramework.getInstance().getTopEntity("users", "active=1", "");
         	if (e!=null) {
 	    		mEntityUser = new EntityTweetUser(e.getId(), mTypeLastList);
-		    	try {
-		    		mIconActivity.setImageBitmap(Utils.getBitmapAvatar(e.getId(), Utils.AVATAR_SMALL));
-	    		} catch (Exception ex) {
-	    			ex.printStackTrace();
-	    			mIconActivity.setImageResource(R.drawable.avatar_small);
-	    		}
         	}
         	
 	    	if (mTypeLastColumn==TIMELINE) {
@@ -3556,23 +3220,15 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
 				addFooter();
 			}
     	} else if (mTypeList == TYPE_LIST_READAFTER) {
-    		mIconActivity.setImageResource(R.drawable.icon_tt);
         	mTweetTopics.setTitle(mTweetTopics.getString(R.string.tweets_saved));
     	} else if (mTypeList == TYPE_LIST_SEARCH || mTypeList == TYPE_LIST_SEARCH_NOTIFICATIONS) {
     		if (mEntitySearch!=null) {
 				mTweetTopics.setTitle(mEntitySearch.getString("name"));
-				mIconActivity.setImageDrawable(Utils.getDrawable(mTweetTopics,mEntitySearch.getString("icon_small")));
 			}
     	} else if (mTypeList == TYPE_LIST_USERS) {
     		Entity e = DataFramework.getInstance().getTopEntity("users", "active=1", "");
         	if (e!=null) {
 	    		mEntityUser = new EntityTweetUser(e.getId(), mTypeLastList);
-		    	try {
-		    		mIconActivity.setImageBitmap(Utils.getBitmapAvatar(e.getId(), Utils.AVATAR_SMALL));
-	    		} catch (Exception ex) {
-	    			ex.printStackTrace();
-	    			mIconActivity.setImageResource(R.drawable.avatar_small);
-	    		}
         	}
 			if (mCurrentTypeStatus == LoadTypeStatusAsyncTask.FOLLOWERS) {
 		    	mTweetTopics.setTitle(mTweetTopics.getString(R.string.followers_of) + " " + mCurrentTextTypeStatus);
@@ -3583,12 +3239,6 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
     		Entity e = DataFramework.getInstance().getTopEntity("users", "active=1", "");
         	if (e!=null) {
 	    		mEntityUser = new EntityTweetUser(e.getId(), mTypeLastList);
-		    	try {
-		    		mIconActivity.setImageBitmap(Utils.getBitmapAvatar(e.getId(), Utils.AVATAR_SMALL));
-	    		} catch (Exception ex) {
-	    			ex.printStackTrace();
-	    			mIconActivity.setImageResource(R.drawable.avatar_small);
-	    		}
         	}
         	if (mCurrentTypeStatus == LoadTypeStatusAsyncTask.RETWEETED_BYME) {
     	    	mTweetTopics.setTitle(mTweetTopics.getString(R.string.retweets_byme));
@@ -3601,12 +3251,6 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
     		Entity e = DataFramework.getInstance().getTopEntity("users", "active=1", "");
         	if (e!=null) {
 	    		mEntityUser = new EntityTweetUser(e.getId(), mTypeLastList);
-		    	try {
-		    		mIconActivity.setImageBitmap(Utils.getBitmapAvatar(e.getId(), Utils.AVATAR_SMALL));
-	    		} catch (Exception ex) {
-	    			ex.printStackTrace();
-	    			mIconActivity.setImageResource(R.drawable.avatar_small);
-	    		}
         	}
         	mTweetTopics.setTitle(mCurrentTextTypeStatus);
     	}
@@ -3760,7 +3404,6 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
 	    	}
 	    	if (!gotoreload) {
 	    		mListView.onRefreshComplete();
-	    		((LoaderActionBarItem)mActionBar.getItem(0)).setLoading(false);
 	    	}
     	}
     }
@@ -3870,10 +3513,8 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
     		if (firstIsLastPosition) {
     			mAdapterResponseList.firtsItemIsLastRead();
     		}
-    		((LoaderActionBarItem)mActionBar.getItem(0)).setLoading(true);
     		searchTask = new SearchAsyncTask(this, mTweetTopics).execute(mEntitySearch);
     	} else {
-    		((LoaderActionBarItem)mActionBar.getItem(0)).setLoading(true);
     		searchTask = new SearchAsyncTask(this, mTweetTopics).execute(mEntitySearch);
     	}
     }
@@ -3885,7 +3526,6 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
 	@Override
 	public void searchLoaded(SearchResult searchResult) {
 		setLayoutListView();
-		((LoaderActionBarItem)mActionBar.getItem(0)).setLoading(false);
 		searchTask = null;
     	
     	if (searchResult.info.getError()==Utils.UNKNOWN_ERROR) {
@@ -3896,8 +3536,7 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
     	} else {
     		
     		mTweetTopics.setTitle(mEntitySearch.getString("name"));
-    		mIconActivity.setImageDrawable(Utils.getDrawable(mTweetTopics,mEntitySearch.getString("icon_small")));
-    		    		
+
     		if (mEntitySearch.getInt("notifications")==1) {
     			
     			if (searchResult.info.getNewMessages()>0) {
@@ -4189,9 +3828,7 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
     	removeFooter();
     	
     	CacheData.clearChace_Others();
-    	
-    	mIconActivity.setImageResource(R.drawable.icon_tt);
-    	
+
     	mTweetTopics.setTitle(mTweetTopics.getString(R.string.tweets_saved));
     	
     	closeSidebar();
@@ -4272,13 +3909,6 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
     			reloadNewMsgInAllColumns();
     			
     			mEntityUser = new EntityTweetUser(e.getId(), column);
-    				
-		    	try {
-		    		mIconActivity.setImageBitmap(Utils.getBitmapAvatar(e.getId(), Utils.AVATAR_SMALL));
-	    		} catch (Exception ex) {
-	    			ex.printStackTrace();
-	    			mIconActivity.setImageResource(R.drawable.avatar_small);
-	    		}
 				
 	    		loadTypeStatus(LoadTypeStatusAsyncTask.TIMELINE);
 					 
@@ -4290,13 +3920,6 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
     			reloadNewMsgInAllColumns();
     		    		
 	    		mEntityUser = new EntityTweetUser(e.getId(), column);
-		    	
-		    	try {
-		    		mIconActivity.setImageBitmap(Utils.getBitmapAvatar(e.getId(), Utils.AVATAR_SMALL));
-	    		} catch (Exception ex) {
-	    			ex.printStackTrace();
-	    			mIconActivity.setImageResource(R.drawable.avatar_small);
-	    		}
 		    	
 				closeSidebar();
 				
@@ -4416,14 +4039,12 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
     		
     		if (mTypeLastColumn==TIMELINE && mEntityUser!=null && mEntityUser.getInt("no_save_timeline")==1) { // no se guarda el timeline
     			columnUser(TIMELINE);
-    			((LoaderActionBarItem)mActionBar.getItem(0)).setLoading(false);
     		} else if (mTypeLastColumn==FAVORITES) {
     			columnUser(FAVORITES);
     		} else {
     			if (firstIsLastPosition) {
     				mAdapterResponseList.firtsItemIsLastRead();
     			}
-    			((LoaderActionBarItem)mActionBar.getItem(0)).setLoading(true);
     			app.reloadUserTwitter();
     			
     		}
@@ -4439,9 +4060,6 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
     	} else {
     		if (searchResult.infoTimeline!=null) mLayoutInfoBackground.setVisibility(View.VISIBLE);
     	}
-    	
-    	// si es la segunda carga con las columnas que no son la activa se termina de cargar
-    	((LoaderActionBarItem)mActionBar.getItem(0)).setLoading(false);
 				
 		InfoSaveTweets info = null;
 		
@@ -5035,8 +4653,6 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
 		mCurrentTypeStatus = type;
 		mCurrentTextTypeStatus = text;
 		
-		((LoaderActionBarItem)mActionBar.getItem(0)).setLoading(true);
-		
 		setLayoutLoading();
 		
 		String idListUser = "";
@@ -5090,9 +4706,7 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
 	public void typeStatusLoaded(ArrayList<RowResponseList> result) {
 		
 		setLayoutListView();
-		
-		((LoaderActionBarItem)mActionBar.getItem(0)).setLoading(false);
-		
+
 		try {
 			if (mCurrentTypeStatus==LoadTypeStatusAsyncTask.LIST) {
 				addFooter();

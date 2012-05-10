@@ -1,4 +1,4 @@
-package com.javielinux.tweettopics;
+package com.javielinux.tweettopics2;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
@@ -12,14 +12,12 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import com.android.dataframework.DataFramework;
-import com.cyrilmottier.android.greendroid.R;
 import com.javielinux.twitter.ConnectionManager;
-import greendroid.app.GDActivity;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.User;
 
-public class EditUserTwitter extends GDActivity implements Runnable  {
+public class EditUserTwitter extends BaseActivity implements Runnable  {
 	private long mCurrentId = -1;
 	
 	private TextView mUserName;
@@ -86,7 +84,7 @@ public class EditUserTwitter extends GDActivity implements Runnable  {
 	        ThemeManager mThemeManager = new ThemeManager(this);
 	        mThemeManager.setTheme();
 	        
-	        setActionBarContentView(R.layout.edit_user_twitter);
+	        setContentView(R.layout.edit_user_twitter);
 	        
 	        setTitle(R.string.edit_user);
 	        

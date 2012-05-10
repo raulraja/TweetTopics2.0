@@ -1,8 +1,5 @@
 package adapters;
 
-import java.util.List;
-
-import layouts.AlphaTextView;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -10,10 +7,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-
 import com.android.dataframework.Entity;
-import com.javielinux.tweettopics.R;
-import com.javielinux.tweettopics.Utils;
+import com.javielinux.tweettopics2.R;
+import com.javielinux.tweettopics2.Utils;
+import layouts.AlphaTextView;
+
+import java.util.List;
 
 public class RowSearchAdapter extends BaseAdapter {
 	

@@ -6,11 +6,10 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
 import android.content.Intent;
 import android.os.Bundle;
-
 import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
-import com.cyrilmottier.android.greendroid.R;
-import com.javielinux.tweettopics.Utils;
+import com.javielinux.tweettopics2.R;
+import com.javielinux.tweettopics2.Utils;
 
 public class LaunchServiceUpdateStatus extends Activity {
 

@@ -1,14 +1,13 @@
 package task;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
-
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
+import com.javielinux.tweettopics2.Utils;
 
-import com.javielinux.tweettopics.Utils;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 public class LoadImageAutoCompleteAsyncTask extends AsyncTask<String, Void, Bitmap> {
 

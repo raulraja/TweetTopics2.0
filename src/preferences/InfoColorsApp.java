@@ -3,9 +3,8 @@ package preferences;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-
-import com.javielinux.tweettopics.ThemeManager;
-import com.javielinux.tweettopics.Utils;
+import com.javielinux.tweettopics2.ThemeManager;
+import com.javielinux.tweettopics2.Utils;
 
 
 public class InfoColorsApp {

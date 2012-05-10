@@ -1,5 +1,13 @@
 package infos;
 
+import android.graphics.Bitmap;
+import android.util.Log;
+import com.javielinux.tweettopics2.Utils;
+import org.htmlcleaner.CleanerProperties;
+import org.htmlcleaner.HtmlCleaner;
+import org.htmlcleaner.TagNode;
+import org.htmlcleaner.XPatherException;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -7,16 +15,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLDecoder;
-
-import org.htmlcleaner.CleanerProperties;
-import org.htmlcleaner.HtmlCleaner;
-import org.htmlcleaner.TagNode;
-import org.htmlcleaner.XPatherException;
-
-import android.graphics.Bitmap;
-import android.util.Log;
-
-import com.javielinux.tweettopics.Utils;
 
 public class InfoWeb {
 

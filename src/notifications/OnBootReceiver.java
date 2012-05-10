@@ -1,12 +1,11 @@
 package notifications;
 
-import tweetprogrammed.OnAlarmReceiverTweetProgrammed;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
-
-import com.javielinux.tweettopics.Utils;
+import com.javielinux.tweettopics2.Utils;
+import tweetprogrammed.OnAlarmReceiverTweetProgrammed;
 
 public class OnBootReceiver extends BroadcastReceiver {
 	

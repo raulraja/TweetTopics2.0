@@ -1,7 +1,5 @@
 package widget;
 
-import java.util.List;
-
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
@@ -16,16 +14,12 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.RemoteViews;
-
 import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
-import com.javielinux.tweettopics.NewStatus;
-import com.javielinux.tweettopics.R;
-import com.javielinux.tweettopics.TweetTopics;
-import com.javielinux.tweettopics.TweetTopicsCore;
-import com.javielinux.tweettopics.Utils;
-
+import com.javielinux.tweettopics2.*;
 import database.EntitySearch;
+
+import java.util.List;
 
 public class WidgetCounters4x1 extends AppWidgetProvider {
 

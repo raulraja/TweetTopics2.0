@@ -1,4 +1,4 @@
-package com.javielinux.tweettopics;
+package com.javielinux.tweettopics2;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -15,10 +15,8 @@ import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
 import com.flurry.android.FlurryAgent;
 import error_reporter.ErrorReporter;
-import greendroid.app.GDActivity;
-import greendroid.widget.ActionBarItem;
 
-public class TweetTopics extends GDActivity {
+public class TweetTopics extends BaseActivity {
 			
 	private TweetTopicsCore mTweetTopicsOrientation;
 	
@@ -38,12 +36,12 @@ public class TweetTopics extends GDActivity {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle(R.string.title_crash);
             builder.setMessage(R.string.msg_crash);
-            builder.setPositiveButton(com.cyrilmottier.android.greendroid.R.string.alert_dialog_ok, new DialogInterface.OnClickListener() {
+            builder.setPositiveButton(R.string.alert_dialog_ok, new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int whichButton) {
                     Utils.sendLastCrash(TweetTopics.this);
                 }
             });
-            builder.setNegativeButton(com.cyrilmottier.android.greendroid.R.string.alert_dialog_cancel, new DialogInterface.OnClickListener() {
+            builder.setNegativeButton(R.string.alert_dialog_cancel, new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int whichButton) {
                 }
             });
@@ -59,11 +57,9 @@ public class TweetTopics extends GDActivity {
     	PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
     	mPreference = PreferenceManager.getDefaultSharedPreferences(this);
         
-        /*if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-        	mTweetTopicsOrientation = new TweetTopicsLandscape(this);
-        } else {*/
-        	mTweetTopicsOrientation = new TweetTopicsPortrait(this);
-        //}
+
+        mTweetTopicsOrientation = new TweetTopicsPortrait(this);
+
         
         mTweetTopicsOrientation.onCreate(savedInstanceState);
 
@@ -83,12 +79,6 @@ public class TweetTopics extends GDActivity {
         }
 		
     }
-    
-	@Override
-	public boolean onHandleActionBarItemClick(ActionBarItem item, int position) {
-		mTweetTopicsOrientation.onHandleActionBarItemClick(item, position);
-		return super.onHandleActionBarItemClick(item, position);
-	}
     
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

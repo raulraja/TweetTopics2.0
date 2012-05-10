@@ -1,6 +1,5 @@
-package com.javielinux.tweettopics;
+package com.javielinux.tweettopics2;
 
-import layouts.ImageViewZoomTouch;
 import android.app.Activity;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -10,6 +9,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import layouts.ImageViewZoomTouch;
 
 public class ShowImage extends Activity
 {

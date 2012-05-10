@@ -1,16 +1,15 @@
 package adapters;
 
-import java.util.List;
-
-import widget.ServiceWidgetTweets4x2;
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import com.javielinux.tweettopics2.R;
+import widget.ServiceWidgetTweets4x2;
 
-import com.javielinux.tweettopics.R;
+import java.util.List;
 
 public class RowUserWidgetAdapter extends BaseAdapter {
 	

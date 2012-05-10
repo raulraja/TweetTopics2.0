@@ -1,14 +1,12 @@
 package preferences;
 
-import infos.InfoSubMenuTweet;
-
-import java.util.ArrayList;
-
 import android.app.Activity;
 import android.os.Bundle;
 import android.widget.ListView;
+import com.javielinux.tweettopics2.Utils;
+import infos.InfoSubMenuTweet;
 
-import com.javielinux.tweettopics.Utils;
+import java.util.ArrayList;
 
 public class SubMenuTweet extends Activity {
     private ListView mListView;

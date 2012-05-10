@@ -4,7 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
-import com.javielinux.tweettopics.Utils;
+import com.javielinux.tweettopics2.Utils;
 import com.javielinux.twitter.ConnectionManager;
 import com.memetix.mst.language.Language;
 import com.memetix.mst.translate.Translate;

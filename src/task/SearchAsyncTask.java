@@ -1,25 +1,18 @@
 package task;
 
 
-import infos.InfoSaveTweets;
-
-import java.util.ArrayList;
-
-import twitter4j.QueryResult;
-import twitter4j.RateLimitStatus;
-import twitter4j.ResponseList;
-import twitter4j.Tweet;
-import twitter4j.TwitterException;
 import adapters.ResponseListAdapter;
 import adapters.RowResponseList;
 import android.content.Context;
 import android.os.AsyncTask;
-
-import com.javielinux.tweettopics.TweetTopicsCore;
-import com.javielinux.tweettopics.Utils;
+import com.javielinux.tweettopics2.TweetTopicsCore;
+import com.javielinux.tweettopics2.Utils;
 import com.javielinux.twitter.ConnectionManager;
-
 import database.EntitySearch;
+import infos.InfoSaveTweets;
+import twitter4j.*;
+
+import java.util.ArrayList;
 
 public class SearchAsyncTask extends AsyncTask<EntitySearch, Void, SearchAsyncTask.SearchResult> {
 	

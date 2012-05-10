@@ -1,11 +1,10 @@
 package task;
 
-import infos.InfoLink;
-import infos.InfoWeb;
 import android.content.Context;
 import android.os.AsyncTask;
-
-import com.javielinux.tweettopics.Utils;
+import com.javielinux.tweettopics2.Utils;
+import infos.InfoLink;
+import infos.InfoWeb;
 
 public class LoadLinkAsyncTask extends AsyncTask<InfoLink, Void, InfoLink> {
 

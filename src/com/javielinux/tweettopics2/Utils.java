@@ -1,4 +1,4 @@
-package com.javielinux.tweettopics;
+package com.javielinux.tweettopics2;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -28,10 +28,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
-import com.cyrilmottier.android.greendroid.R;
 import com.javielinux.twitter.ConnectionManager;
 import error_reporter.ErrorReporter;
-import greendroid.widget.QuickAction;
 import infos.CacheData;
 import infos.InfoLink;
 import infos.InfoSubMenuTweet;
@@ -95,9 +93,9 @@ public class Utils {
 	
 	public static final String URL_SHARE_THEME_QR = "http://chart.apis.google.com/chart?cht=qr&chs=300x300&chl=tweettopics%%theme";
 	
-	public static final String TAG = "TweetTopicsDev";
-	public static final String TAG_ALARM = "TweetTopicsDevAlarm";
-	public static final String TAG_WIDGET = "TweetTopicsDevWidget";
+	public static final String TAG = "TweetTopics2";
+	public static final String TAG_ALARM = "TweetTopics2Alarm";
+	public static final String TAG_WIDGET = "TweetTopics2Widget";
 	
 	public static final String HASHTAG_SHARE = "#TweetTopicsQR";
 	public static final String HASHTAG_SHARE_THEME = "#TweetTopicsTheme";
@@ -153,10 +151,10 @@ public class Utils {
 	
 	static public SharedPreferences preference = null;
 	
-	static public String appDirectory = Environment.getExternalStorageDirectory().getAbsolutePath()+"/tweettopics/";
-	static public String appIconsDirectory = Environment.getExternalStorageDirectory().getAbsolutePath()+"/tweettopics/icons/";
-	static public String appUploadImageDirectory = Environment.getExternalStorageDirectory().getAbsolutePath()+"/tweettopics/uploadimage/";
-	static public String packageName = "com.javielinux.tweettopics";
+	static public String appDirectory = Environment.getExternalStorageDirectory().getAbsolutePath()+"/tweettopics2/";
+	static public String appIconsDirectory = Environment.getExternalStorageDirectory().getAbsolutePath()+"/tweettopics2/icons/";
+	static public String appUploadImageDirectory = Environment.getExternalStorageDirectory().getAbsolutePath()+"/tweettopics2/uploadimage/";
+	static public String packageName = "com.javielinux.tweettopics2";
 	static public String packageNamePRO = "com.javielinux.tweettopics.pro";
 	
 	//static public String filesDirPath = Environment.getExternalStorageDirectory().getAbsolutePath()+"/tweettopics/avatars/";
@@ -3713,19 +3711,7 @@ public class Utils {
             s.draw(c, mStrokePaint);
         }
     }
-	
-	public static class TweetTopicsQuickAction extends QuickAction {
-        
-        public TweetTopicsQuickAction(Context ctx, int drawableId, int titleId) {
-            super(ctx, buildDrawable(ctx, drawableId), titleId);
-        }
-        
-        private static Drawable buildDrawable(Context ctx, int drawableId) {
-            Drawable d = ctx.getResources().getDrawable(drawableId);
-            return Utils.colorDrawable(d, Color.BLACK);
-        }
-        
-    }
+
 
 	
 }

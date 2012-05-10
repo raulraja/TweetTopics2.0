@@ -1,10 +1,5 @@
 package preferences;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.StringTokenizer;
-
-import layouts.ColorDialog;
 import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.content.Context;
@@ -18,12 +13,16 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ListView;
-
 import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
-import com.javielinux.tweettopics.NewStatus;
-import com.javielinux.tweettopics.R;
-import com.javielinux.tweettopics.Utils;
+import com.javielinux.tweettopics2.NewStatus;
+import com.javielinux.tweettopics2.R;
+import com.javielinux.tweettopics2.Utils;
+import layouts.ColorDialog;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.StringTokenizer;
 
 public class ColorsApp extends ListActivity implements ColorDialog.OnChangeColor {
 	

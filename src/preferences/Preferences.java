@@ -25,8 +25,8 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
-import com.javielinux.tweettopics.*;
-import com.javielinux.tweettopics.Utils.PersonalDialogBuilder;
+import com.javielinux.tweettopics2.*;
+import com.javielinux.tweettopics2.Utils.PersonalDialogBuilder;
 import notifications.OnAlarmReceiver;
 import org.xmlpull.v1.XmlPullParserException;
 

@@ -1,17 +1,5 @@
 package database;
 
-import infos.InfoSaveTweets;
-
-import java.util.ArrayList;
-
-import twitter4j.GeoLocation;
-import twitter4j.GeoQuery;
-import twitter4j.Query;
-import twitter4j.QueryResult;
-import twitter4j.RateLimitStatus;
-import twitter4j.Tweet;
-import twitter4j.Twitter;
-import twitter4j.TwitterException;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -19,12 +7,15 @@ import android.database.Cursor;
 import android.location.Location;
 import android.preference.PreferenceManager;
 import android.util.Log;
-
 import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
-import com.javielinux.tweettopics.R;
-import com.javielinux.tweettopics.TweetTopicsCore;
-import com.javielinux.tweettopics.Utils;
+import com.javielinux.tweettopics2.R;
+import com.javielinux.tweettopics2.TweetTopicsCore;
+import com.javielinux.tweettopics2.Utils;
+import infos.InfoSaveTweets;
+import twitter4j.*;
+
+import java.util.ArrayList;
 
 public class EntitySearch extends Entity {
 	/*

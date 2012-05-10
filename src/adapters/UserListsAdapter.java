@@ -1,15 +1,14 @@
 package adapters;
 
-import java.util.ArrayList;
-
-import twitter4j.UserList;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+import com.javielinux.tweettopics2.R;
+import com.javielinux.tweettopics2.TweetTopics;
+import twitter4j.UserList;
 
-import com.javielinux.tweettopics.R;
-import com.javielinux.tweettopics.TweetTopics;
+import java.util.ArrayList;
 
 public class UserListsAdapter extends ArrayAdapter<UserList> {
 	

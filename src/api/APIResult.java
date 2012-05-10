@@ -2,7 +2,7 @@ package api;
 
 
 import adapters.RowResponseList;
-import com.javielinux.tweettopics.Utils;
+import com.javielinux.tweettopics2.Utils;
 import twitter4j.RateLimitStatus;
 import twitter4j.Status;
 import twitter4j.Tweet;

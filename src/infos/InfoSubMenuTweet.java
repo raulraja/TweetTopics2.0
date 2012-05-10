@@ -1,9 +1,8 @@
 package infos;
 
 import android.content.Context;
-
-import com.javielinux.tweettopics.R;
-import com.javielinux.tweettopics.Utils;
+import com.javielinux.tweettopics2.R;
+import com.javielinux.tweettopics2.Utils;
 
 public class InfoSubMenuTweet {
 

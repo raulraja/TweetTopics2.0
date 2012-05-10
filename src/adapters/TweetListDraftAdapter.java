@@ -1,15 +1,14 @@
 package adapters;
 
-import java.util.List;
-
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
-
 import com.android.dataframework.Entity;
-import com.javielinux.tweettopics.R;
+import com.javielinux.tweettopics2.R;
+
+import java.util.List;
 
 public class TweetListDraftAdapter extends BaseAdapter {
 

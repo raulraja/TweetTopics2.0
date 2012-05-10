@@ -1,35 +1,22 @@
 package preferences;
 
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-
-import tweetprogrammed.OnAlarmReceiverTweetProgrammed;
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.DatePickerDialog;
-import android.app.Dialog;
-import android.app.TimePickerDialog;
+import android.app.*;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
+import android.widget.*;
 import android.widget.CompoundButton.OnCheckedChangeListener;
-import android.widget.DatePicker;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.TimePicker;
-
 import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
-import com.javielinux.tweettopics.R;
-import com.javielinux.tweettopics.Utils;
+import com.javielinux.tweettopics2.R;
+import com.javielinux.tweettopics2.Utils;
+import tweetprogrammed.OnAlarmReceiverTweetProgrammed;
+
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
 
 public class NewEditTweetProgrammed extends Activity {
 	

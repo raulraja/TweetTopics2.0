@@ -73,6 +73,6 @@
         
     <ImageButton android:layout_width="45dip" android:layout_height="45dip"
     		android:background="@android:drawable/menuitem_background"
-    		android:src="@drawable/gd_action_bar_compose" android:id="@+id/new_status"></ImageButton>
+    		android:src="@drawable/action_bar_compose" android:id="@+id/new_status"></ImageButton>
         
 </LinearLayout>

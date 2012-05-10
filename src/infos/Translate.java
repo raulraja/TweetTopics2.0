@@ -1,5 +1,9 @@
 package infos;
 
+import android.util.Log;
+import com.javielinux.tweettopics2.Utils;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -8,12 +12,6 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
-
-import org.json.JSONObject;
-
-import com.javielinux.tweettopics.Utils;
-
-import android.util.Log;
 
 /**
  * Makes the Google Translate API available to Java applications.

@@ -3,19 +3,17 @@
  */
 package adapters;
 
-import infos.InfoUsers;
-
-import java.util.ArrayList;
-
-import twitter4j.RateLimitStatus;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import com.javielinux.tweettopics2.R;
+import com.javielinux.tweettopics2.TabGeneral;
+import infos.InfoUsers;
+import twitter4j.RateLimitStatus;
 
-import com.javielinux.tweettopics.R;
-import com.javielinux.tweettopics.TabGeneral;
+import java.util.ArrayList;
 
 public class UserTwitterListAdapter extends ArrayAdapter<InfoUsers> {
 
