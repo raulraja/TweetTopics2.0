@@ -362,13 +362,15 @@ public class EntityTweetUser extends Entity {
 						// finalizar
 						
 						int total = nResult+statii.size();
-		
-						if (total>Utils.MAX_ROW_BYSEARCH && getValueNewCount()<Utils.MAX_ROW_BYSEARCH) {
-							Log.d(Utils.TAG,"Limpiando base de datos de " + getTypeText() + " actualmente " + total + " registros");
-							String date = DataFramework.getInstance().getEntityList("tweets_user", "type_id=" + mType + " and user_tt_id="+getId(), "date desc").get(Utils.MAX_ROW_BYSEARCH).getString("date");
-							String sqldelete = "DELETE FROM tweets_user WHERE type_id=" + mType + " and user_tt_id="+getId() + " AND date  < '" + date + "'";
-							DataFramework.getInstance().getDB().execSQL(sqldelete);
-						}
+
+                        if (total>Utils.MAX_ROW_BYSEARCH && getValueNewCount()<Utils.MAX_ROW_BYSEARCH || total>Utils.MAX_ROW_BYSEARCH_FORCE) {
+                            try {
+                                Log.d(Utils.TAG,"Limpiando base de datos de " + getTypeText() + " actualmente " + total + " registros");
+                                String date = DataFramework.getInstance().getEntityList("tweets_user", "type_id=" + mType + " and user_tt_id="+getId(), "date desc").get(Utils.MAX_ROW_BYSEARCH).getString("date");
+                                String sqldelete = "DELETE FROM tweets_user WHERE type_id=" + mType + " and user_tt_id="+getId() + " AND date  < '" + date + "'";
+                                DataFramework.getInstance().getDB().execSQL(sqldelete);
+                            } catch (OutOfMemoryError e) { }
+                        }
 						
 						DataFramework.getInstance().getDB().setTransactionSuccessful();
 						

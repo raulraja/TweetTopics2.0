@@ -142,6 +142,7 @@ public class Utils {
     public static final int HEIGHT_PHOTO_SIZE_LARGE = 1600;
 	
 	public static final int MAX_ROW_BYSEARCH = 500;
+    public static final int MAX_ROW_BYSEARCH_FORCE = 1200;
 	
 	static public int AVATAR_SMALL = 30;
 	static public int AVATAR_MEDIUM = 36;

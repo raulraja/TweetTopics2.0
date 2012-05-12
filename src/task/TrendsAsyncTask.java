@@ -27,11 +27,7 @@ public class TrendsAsyncTask extends AsyncTask<Integer, Void, Trend[]> {
 	protected Trend[] doInBackground(Integer... args) {
 		try {
 			ConnectionManager.getInstance().open(mTweetTopicsCore.getTweetTopics());
-			if (args.length>0) {
-				return ConnectionManager.getInstance().getTwitter().getLocationTrends(args[0]).getTrends();
-			} else {
-				return ConnectionManager.getInstance().getTwitter().getTrends().getTrends();
-			}
+			return ConnectionManager.getInstance().getTwitter().getLocationTrends(args[0]).getTrends();
 		} catch (TwitterException e) {
 			return null;
 		}

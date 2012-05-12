@@ -4,7 +4,10 @@ import adapters.RowResponseList;
 import android.os.AsyncTask;
 import com.javielinux.tweettopics2.TweetTopicsCore;
 import com.javielinux.twitter.ConnectionManager;
-import twitter4j.*;
+import twitter4j.Paging;
+import twitter4j.ResponseList;
+import twitter4j.TwitterException;
+import twitter4j.User;
 
 import java.util.ArrayList;
 
@@ -78,24 +81,26 @@ public class LoadTypeStatusAsyncTask extends AsyncTask<String, Void, ArrayList<R
 					RowResponseList row = new RowResponseList(TweetTopicsCore.twitter.showUser(i));
 					result.add(row);
 				}*/
-				PagableResponseList<User> users = ConnectionManager.getInstance().getTwitter().getFollowersStatuses(args[0], -1);
+                // TODO
+				/*PagableResponseList<User> users = ConnectionManager.getInstance().getTwitter().getFollowersStatuses(args[0], -1);
 				for (User user : users) {
 					RowResponseList row = new RowResponseList(user);
 					result.add(row);
-				}
+				}   */
 			} else if (type==FRIENDS) {
-				ResponseList<User> users = ConnectionManager.getInstance().getTwitter().getFriendsStatuses(args[0], -1);
+                // TODO
+				/*ResponseList<User> users = ConnectionManager.getInstance().getTwitter().getFriendsStatuses(args[0], -1);
 				for (User user : users) {
 					RowResponseList row = new RowResponseList(user);
 					result.add(row);
-				}
+				}  */
 			} else if (type==TIMELINE) {
 				ResponseList<twitter4j.Status> statii = ConnectionManager.getInstance().getTwitter().getHomeTimeline();
 				for (int i=0; i<statii.size(); i++) {
 					result.add(new RowResponseList(statii.get(i)));
 				}
 			} else if (type==LIST) {
-				ResponseList<twitter4j.Status> statii = ConnectionManager.getInstance().getTwitter().getUserListStatuses(args[0], Integer.parseInt(args[1]), new Paging(1));
+				ResponseList<twitter4j.Status> statii = ConnectionManager.getInstance().getTwitter().getUserListStatuses(Integer.parseInt(args[1]), new Paging(1));
 				for (int i=0; i<statii.size(); i++) {
 					result.add(new RowResponseList(statii.get(i)));
 				}
