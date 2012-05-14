@@ -17,7 +17,7 @@ public class CheckConversationLoader extends AsynchronousLoader<APIResult> {
     public CheckConversationLoader(Context context, Bundle bundle) {
         super(context);
         from = bundle.getInt("from");
-        conversation = bundle.getInt("conversation");
+        conversation = bundle.getLong("conversation");
     }
 
     @Override

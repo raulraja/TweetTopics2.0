@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.Loader;
 import android.os.Bundle;
 import api.api.loaders.CheckConversationLoader;
+import api.api.loaders.ConversationLoader;
+import api.api.loaders.DirectMessageLoader;
 
 public class APILoader implements LoaderManager.LoaderCallbacks {
 
@@ -35,6 +37,10 @@ public class APILoader implements LoaderManager.LoaderCallbacks {
         switch (i) {
             case APITweetTopics.KEY_CHECK_CONVERSATION:
                 return new CheckConversationLoader(context, bundle);
+            case APITweetTopics.KEY_CONVERSATION:
+                return new ConversationLoader(context, bundle);
+            case APITweetTopics.KEY_DIRECT_MESSAGE:
+                return new DirectMessageLoader(context, bundle);
         }
         return null;
     }
