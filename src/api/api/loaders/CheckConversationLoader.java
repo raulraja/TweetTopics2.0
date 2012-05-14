@@ -1,8 +1,10 @@
-package api;
+package api.api.loaders;
 
 
 import android.content.Context;
 import android.os.Bundle;
+import api.APIResult;
+import api.AsynchronousLoader;
 import com.javielinux.twitter.ConnectionManager;
 import infos.InfoTweet;
 import twitter4j.TwitterException;

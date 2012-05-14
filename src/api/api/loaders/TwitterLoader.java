@@ -1,7 +1,9 @@
-package api;
+package api.api.loaders;
 
 import android.content.Context;
 import android.os.Bundle;
+import api.APIResult;
+import api.AsynchronousLoader;
 import com.android.dataframework.Entity;
 import com.javielinux.tweettopics2.TweetTopicsCore;
 import com.javielinux.tweettopics2.Utils;

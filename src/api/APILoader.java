@@ -5,6 +5,7 @@ import android.app.LoaderManager;
 import android.content.Context;
 import android.content.Loader;
 import android.os.Bundle;
+import api.api.loaders.CheckConversationLoader;
 
 public class APILoader implements LoaderManager.LoaderCallbacks {
 
