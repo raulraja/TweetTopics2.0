@@ -35,7 +35,7 @@ public class ConversationLoader extends AsynchronousLoader<APIResult> {
                 st = ConnectionManager.getInstance().getTwitter().showStatus(st.getInReplyToStatusId());
                 tweets.add(st);
             }
-            out.addArrayParameter("tweets", (ArrayList<Object>) tweets);
+            out.addArrayStatusParameter("tweets", tweets);
             return out;
         } catch (TwitterException e) {
             e.printStackTrace();

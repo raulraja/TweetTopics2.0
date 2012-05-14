@@ -84,6 +84,30 @@ public class APIResult {
     }
 
     /*
+   ARRAYS STATUS
+    */
+
+    public HashMap<String,ArrayList<Status>> arraysStatus = new HashMap<String,ArrayList<Status>>();
+
+    public void addArrayStatusParameter(String name, ArrayList<Status> obj) {
+        arraysStatus.put(name, obj);
+    }
+
+    public ArrayList<Status> getArrayStatusParameter(String name) {
+        if (arraysStatus.containsKey(name)) {
+            return arraysStatus.get(name);
+        }
+        return null;
+    }
+
+    public boolean existArrayStatusParameter(String name) {
+        if (arraysStatus.containsKey(name)) {
+            return true;
+        }
+        return false;
+    }
+
+    /*
     OBJECTS
      */
 
