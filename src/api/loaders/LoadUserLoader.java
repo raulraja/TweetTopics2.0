@@ -3,9 +3,11 @@ package api.loaders;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.Bundle;
-import api.APIResult;
 import api.AsynchronousLoader;
+import api.request.LoadUserRequest;
+import api.response.BaseResponse;
+import api.response.ErrorResponse;
+import api.response.LoadUserResponse;
 import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
 import com.javielinux.tweettopics2.Utils;
@@ -16,31 +18,24 @@ import twitter4j.User;
 
 import java.io.File;
 
-public class LoadUserLoader extends AsynchronousLoader<APIResult> {
+public class LoadUserLoader extends AsynchronousLoader<BaseResponse> {
 
     private String user = "";
 
-    public LoadUserLoader(Context context, Bundle bundle) {
+    public LoadUserLoader(Context context, LoadUserRequest request) {
         super(context);
 
-        this.user = bundle.getString("user");
+        this.user = request.getUser();
     }
 
     @Override
-    public APIResult loadInBackground() {
-
-        APIResult out = new APIResult();
+    public BaseResponse loadInBackground() {
 
 		try {
+            LoadUserResponse response = new LoadUserResponse();
             InfoUsers infoUsers = new InfoUsers();
 
-			try {
-                DataFramework.getInstance().open(getContext(), Utils.packageName);
-            } catch (Exception e) {
-	            e.printStackTrace();
-                out.setError(e, e.getMessage());
-                return out;
-	        }
+            DataFramework.getInstance().open(getContext(), Utils.packageName);
 
 	        Entity user_entity = DataFramework.getInstance().getTopEntity("users", "active=1", "");
             String screenName = "";
@@ -87,20 +82,23 @@ public class LoadUserLoader extends AsynchronousLoader<APIResult> {
 				e.printStackTrace();
 			}
 
-            out.addParameter("infoUsers", infoUsers);
-            return out;
+            response.setInfoUsers(infoUsers);
+            return response;
 		} catch (TwitterException e) {
 			e.printStackTrace();
-			out.setError(e, e.getMessage());
-            return out;
+            ErrorResponse response = new ErrorResponse();
+			response.setError(e, e.getMessage());
+            return response;
 		} catch (NullPointerException e) {
 			e.printStackTrace();
-			out.setError(e, e.getMessage());
-            return out;
+            ErrorResponse response = new ErrorResponse();
+			response.setError(e, e.getMessage());
+            return response;
 		} catch (Exception e) {
 			e.printStackTrace();
-			out.setError(e, e.getMessage());
-            return out;
+            ErrorResponse response = new ErrorResponse();
+			response.setError(e, e.getMessage());
+            return response;
 		}
     }
 }

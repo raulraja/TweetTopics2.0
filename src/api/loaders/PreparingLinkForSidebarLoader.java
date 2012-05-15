@@ -1,35 +1,38 @@
 package api.loaders;
 
 import android.content.Context;
-import android.os.Bundle;
-import api.APIResult;
 import api.AsynchronousLoader;
+import api.request.PreparingLinkForSidebarRequest;
+import api.response.BaseResponse;
+import api.response.ErrorResponse;
+import api.response.PreparingLinkForSidebarResponse;
 import com.javielinux.tweettopics2.Utils;
 import infos.CacheData;
 
-public class PreparingLinkForSidebarLoader extends AsynchronousLoader<APIResult> {
+public class PreparingLinkForSidebarLoader extends AsynchronousLoader<BaseResponse> {
 
     private String link = "";
 
-    public PreparingLinkForSidebarLoader(Context context, Bundle bundle) {
+    public PreparingLinkForSidebarLoader(Context context, PreparingLinkForSidebarRequest request) {
         super(context);
 
-        this.link = bundle.getString("link");
+        this.link = request.getLink();
     }
 
     @Override
-    public APIResult loadInBackground() {
-
-        APIResult out = new APIResult();
+    public BaseResponse loadInBackground() {
 
 		try {
+            PreparingLinkForSidebarResponse response = new PreparingLinkForSidebarResponse();
 			CacheData.putCacheImages(link, Utils.getThumbTweet(link));
 
-            out.addParameter("ready", true);
-            return out;
+            response.setReady(true);
+            return response;
 		} catch (Exception e) {
-			out.setError(e, e.getMessage());
-            return out;
+            e.printStackTrace();
+            ErrorResponse response = new ErrorResponse();
+			response.setError(e, e.getMessage());
+            return response;
 		}
     }
 }

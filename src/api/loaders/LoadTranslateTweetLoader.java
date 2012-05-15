@@ -3,9 +3,11 @@ package api.loaders;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.Bundle;
-import api.APIResult;
 import api.AsynchronousLoader;
+import api.request.LoadTranslateTweetRequest;
+import api.response.BaseResponse;
+import api.response.ErrorResponse;
+import api.response.LoadTranslateTweetResponse;
 import com.javielinux.tweettopics2.Utils;
 import com.javielinux.twitter.ConnectionManager;
 import com.memetix.mst.language.Language;
@@ -14,23 +16,23 @@ import infos.InfoUsers;
 import twitter4j.Status;
 import twitter4j.TwitterException;
 
-public class LoadTranslateTweetLoader extends AsynchronousLoader<APIResult> {
+public class LoadTranslateTweetLoader extends AsynchronousLoader<BaseResponse> {
 
     private long id = 0;
 
-    public LoadTranslateTweetLoader(Context context, Bundle bundle) {
+    public LoadTranslateTweetLoader(Context context, LoadTranslateTweetRequest request) {
         super(context);
 
-        this.id = bundle.getLong("id");
+        this.id = request.getId();
     }
 
     @Override
-    public APIResult loadInBackground() {
+    public BaseResponse loadInBackground() {
 
-        APIResult out = new APIResult();
-		InfoUsers infoUsers = new InfoUsers();
+    	try {
+            LoadTranslateTweetResponse response = new LoadTranslateTweetResponse();
+            InfoUsers infoUsers = new InfoUsers();
 
-		try {
 			ConnectionManager.getInstance().open(getContext());
 
 			Status status = ConnectionManager.getInstance().getTwitter().showStatus(id);
@@ -75,25 +77,29 @@ public class LoadTranslateTweetLoader extends AsynchronousLoader<APIResult> {
 				infoUsers.setAvatar(Bitmap.createScaledBitmap(bmp, 48, 48, true));
 			} catch (OutOfMemoryError exception) {
 				exception.printStackTrace();
-                out.setError(exception, exception.getMessage());
-                return out;
+                ErrorResponse errorResponse = new ErrorResponse();
+                errorResponse.setError(exception,exception.getMessage());
+                return errorResponse;
 			} catch (Exception exception) {
 				exception.printStackTrace();
-                out.setError(exception, exception.getMessage());
-                return out;
+                ErrorResponse errorResponse = new ErrorResponse();
+                errorResponse.setError(exception, exception.getMessage());
+                return errorResponse;
 			}
 
-            out.addParameter("infoUsers", infoUsers);
-            return out;
+            response.setInfoUsers(infoUsers);
+            return response;
 
 		} catch (TwitterException twitterException) {
             twitterException.printStackTrace();
-            out.setError(twitterException, twitterException.getMessage());
-            return out;
+            ErrorResponse errorResponse = new ErrorResponse();
+            errorResponse.setError(twitterException, twitterException.getMessage());
+            return errorResponse;
 		} catch (Exception exception) {
 			exception.printStackTrace();
-            out.setError(exception, exception.getMessage());
-            return out;
+            ErrorResponse errorResponse = new ErrorResponse();
+            errorResponse.setError(exception, exception.getMessage());
+            return errorResponse;
 		}
     }
 }

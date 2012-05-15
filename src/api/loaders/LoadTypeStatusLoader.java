@@ -2,16 +2,18 @@ package api.loaders;
 
 import adapters.RowResponseList;
 import android.content.Context;
-import android.os.Bundle;
-import api.APIResult;
 import api.AsynchronousLoader;
+import api.request.LoadTypeStatusRequest;
+import api.response.BaseResponse;
+import api.response.ErrorResponse;
+import api.response.LoadTypeStatusResponse;
 import com.javielinux.twitter.ConnectionManager;
 import twitter4j.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class LoadTypeStatusLoader extends AsynchronousLoader<APIResult> {
+public class LoadTypeStatusLoader extends AsynchronousLoader<BaseResponse> {
 
 	public static int FAVORITES = 0;
 	public static int SEARCH_USERS = 1;
@@ -24,27 +26,27 @@ public class LoadTypeStatusLoader extends AsynchronousLoader<APIResult> {
 	public static int LIST = 8;
 
     private int type = 0;
-    private String user_search_text = "";
     private String user = "";
-    private int userlist_id = 0;
+    private String user_search_text = "";
+    private int list_id = 0;
 
-    public LoadTypeStatusLoader(Context context, Bundle bundle) {
+    public LoadTypeStatusLoader(Context context, LoadTypeStatusRequest request) {
         super(context);
 
-        this.type = bundle.getInt("type");
-        this.user_search_text = bundle.getString("user_search_text");
-        this.user = bundle.getString("user");
-        this.userlist_id = bundle.getInt("userlist_id");
+        this.type = request.getType();
+        this.user = request.getUser();
+        this.user_search_text = request.getUserSearchText();
+        this.list_id = request.getListId();
     }
 
     @Override
-    public APIResult loadInBackground() {
-
-        APIResult out = new APIResult();
+    public BaseResponse loadInBackground() {
 
 		try {
-            ConnectionManager.getInstance().open(getContext());
+            LoadTypeStatusResponse response = new LoadTypeStatusResponse();
             ArrayList<RowResponseList> result = new ArrayList<RowResponseList>();
+
+            ConnectionManager.getInstance().open(getContext());
 
             if (type == FAVORITES) {
                 ResponseList<Status> statii = ConnectionManager.getInstance().getTwitter().getFavorites();
@@ -60,19 +62,19 @@ public class LoadTypeStatusLoader extends AsynchronousLoader<APIResult> {
                     result.add(row);
                 }
             } else if (type == RETWEETED_BYME) {
-				ResponseList<twitter4j.Status> statii = ConnectionManager.getInstance().getTwitter().getRetweetedByMe();
+				ResponseList<Status> statii = ConnectionManager.getInstance().getTwitter().getRetweetedByMe();
 
 				for (int i=0; i<statii.size(); i++) {
 					result.add(new RowResponseList(statii.get(i)));
 				}
 			} else if (type==RETWEETED_TOME) {
-				ResponseList<twitter4j.Status> statii = ConnectionManager.getInstance().getTwitter().getRetweetedToMe();
+				ResponseList<Status> statii = ConnectionManager.getInstance().getTwitter().getRetweetedToMe();
 
 				for (int i=0; i<statii.size(); i++) {
 					result.add(new RowResponseList(statii.get(i)));
 				}
 			} else if (type==RETWEETED_OFME) {
-				ResponseList<twitter4j.Status> statii = ConnectionManager.getInstance().getTwitter().getRetweetsOfMe();
+				ResponseList<Status> statii = ConnectionManager.getInstance().getTwitter().getRetweetsOfMe();
 
 				for (int i=0; i<statii.size(); i++) {
 					result.add(new RowResponseList(statii.get(i)));
@@ -132,27 +134,30 @@ public class LoadTypeStatusLoader extends AsynchronousLoader<APIResult> {
 					result.add(new RowResponseList(statii.get(i)));
 				}
 			} else if (type==LIST) {
-				ResponseList<twitter4j.Status> statii = ConnectionManager.getInstance().getTwitter().getUserListStatuses(userlist_id, new Paging(1));
+				ResponseList<twitter4j.Status> statii = ConnectionManager.getInstance().getTwitter().getUserListStatuses(list_id, new Paging(1));
 				for (int i=0; i<statii.size(); i++) {
 					result.add(new RowResponseList(statii.get(i)));
 				}
 			}
 
-            out.addParameter("result", result);
-            return out;
+            response.setRowResponseList(result);
+            return response;
 
 		} catch (TwitterException e) {
             e.printStackTrace();
-            out.setError(e,e.getMessage());
-            return out;
+            ErrorResponse response = new ErrorResponse();
+            response.setError(e,e.getMessage());
+            return response;
 		} catch (OutOfMemoryError e) {
             e.printStackTrace();
-            out.setError(e,e.getMessage());
-            return out;
+            ErrorResponse response = new ErrorResponse();
+            response.setError(e,e.getMessage());
+            return response;
         } catch (Exception e) {
 			e.printStackTrace();
-            out.setError(e,e.getMessage());
-            return out;
+            ErrorResponse response = new ErrorResponse();
+            response.setError(e,e.getMessage());
+            return response;
 		}
     }
 }
