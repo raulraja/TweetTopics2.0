@@ -1,6 +1,7 @@
 package com.javielinux.tweettopics2;
 
 import adapters.RowSearchAdapter;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Shader.TileMode;
 import android.graphics.drawable.BitmapDrawable;
@@ -14,6 +15,7 @@ import android.widget.*;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.SlidingDrawer.OnDrawerCloseListener;
 import android.widget.SlidingDrawer.OnDrawerOpenListener;
+import api.PruebaLoaderActivity;
 import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
 import database.EntitySearch;
@@ -127,7 +129,8 @@ public class TweetTopicsPortrait extends TweetTopicsCore {
 
 			@Override
 			public void onClick(View v) {
-
+                Intent prueba = new Intent(mTweetTopics, PruebaLoaderActivity.class);
+                mTweetTopics.startActivity(prueba);
 			}
         	
         });

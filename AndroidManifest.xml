@@ -16,6 +16,8 @@
     	<activity android:name="com.javielinux.twitter.AuthorizationActivity"></activity>
 		<activity android:name="TabNewEditSearch"></activity>
 
+        <activity android:name="api.PruebaLoaderActivity"></activity>
+
 		<activity android:name="Users"></activity>
 		<activity android:name="TabGeneral"></activity>
 		<activity android:name="TabGeo"></activity>

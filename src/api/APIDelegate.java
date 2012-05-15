@@ -1,9 +1,12 @@
 package api;
 
-public interface APIDelegate {
+import api.response.BaseResponse;
+import api.response.ErrorResponse;
 
-    void onResults(APIResult result);
+public interface APIDelegate<T extends BaseResponse> {
 
-    void onError(APIResult error);
+    void onResults(T result);
+
+    void onError(ErrorResponse error);
 
 }

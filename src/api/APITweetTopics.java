@@ -4,12 +4,17 @@ package api;
 import android.app.LoaderManager;
 import android.content.Context;
 import android.os.Bundle;
+import api.request.CheckConversationRequest;
+import api.request.ConversationRequest;
+import api.request.DirectMessageRequest;
+import api.request.Export2HTMLRequest;
 
 public class APITweetTopics {
     
     public static final int KEY_CHECK_CONVERSATION = 0;
     public static final int KEY_CONVERSATION = 1;
     public static final int KEY_DIRECT_MESSAGE = 2;
+    public static final int KEY_EXPORT_HTML = 3;
     public static final int KEY_LOAD_TRANSLATE_TWEET = 16;
     public static final int KEY_LOAD_TYPE_STATUS = 17;
     public static final int KEY_LOAD_USER = 18;
@@ -23,11 +28,7 @@ public class APITweetTopics {
 
         APILoader api = new APILoader(context, loaderManager, delegate, KEY_CHECK_CONVERSATION);
 
-        Bundle params=new Bundle();
-        params.putInt("from", from);
-        params.putLong("conversation", conversation);
-
-        api.execute(params);
+        api.execute(new CheckConversationRequest(from, conversation));
 
     }
 
@@ -35,10 +36,7 @@ public class APITweetTopics {
 
         APILoader api = new APILoader(context, loaderManager, delegate, KEY_CONVERSATION);
 
-        Bundle params=new Bundle();
-        params.putLong("id", id);
-
-        api.execute(params);
+        api.execute(new ConversationRequest(id));
 
     }
 
@@ -46,12 +44,15 @@ public class APITweetTopics {
 
         APILoader api = new APILoader(context, loaderManager, delegate, KEY_DIRECT_MESSAGE);
 
-        Bundle params=new Bundle();
-        params.putInt("modeTweetLonger", modeTweetLonger);
-        params.putString("user", user);
-        params.putString("text", text);
+        api.execute(new DirectMessageRequest(modeTweetLonger, user, text));
 
-        api.execute(params);
+    }
+
+    public static void export2HTML(Context context, LoaderManager loaderManager, APIDelegate delegate) {
+
+        APILoader api = new APILoader(context, loaderManager, delegate, KEY_EXPORT_HTML);
+
+        api.execute(new Export2HTMLRequest(null));
 
     }
 
@@ -62,7 +63,7 @@ public class APITweetTopics {
         Bundle params=new Bundle();
         params.putLong("id", id);
 
-        api.execute(params);
+        //api.execute(params);
 
     }
 
@@ -75,7 +76,7 @@ public class APITweetTopics {
         params.putString("user", user);
         params.putInt("userlist_id", userlist_id);
 
-        api.execute(params);
+        //api.execute(params);
 
     }
 
@@ -86,7 +87,7 @@ public class APITweetTopics {
         Bundle params=new Bundle();
         params.putString("user", user);
 
-        api.execute(params);
+        //api.execute(params);
 
     }
 
@@ -97,7 +98,7 @@ public class APITweetTopics {
         Bundle params=new Bundle();
         params.putString("link", link);
 
-        api.execute(params);
+        //api.execute(params);
 
     }
 
@@ -109,7 +110,7 @@ public class APITweetTopics {
         params.putInt("action", action);
         params.putLong("user_id", user_id);
 
-        api.execute(params);
+        //api.execute(params);
 
     }
 
@@ -120,7 +121,7 @@ public class APITweetTopics {
         Bundle params=new Bundle();
         params.putLong("id", id);
 
-        api.execute(params);
+        //api.execute(params);
 
     }
 
@@ -131,7 +132,7 @@ public class APITweetTopics {
         Bundle params=new Bundle();
         params.putLong("id", id);
 
-        api.execute(params);
+        //api.execute(params);
 
     }
 
@@ -142,7 +143,7 @@ public class APITweetTopics {
         Bundle params=new Bundle();
         params.putLong("id", id);
 
-        api.execute(params);
+        //api.execute(params);
 
     }
 }

@@ -1,31 +1,33 @@
-package api.api.loaders;
+package api.loaders;
 
 
 import android.content.Context;
-import android.os.Bundle;
-import api.APIResult;
 import api.AsynchronousLoader;
+import api.request.ConversationRequest;
+import api.response.BaseResponse;
+import api.response.ConversationResponse;
+import api.response.ErrorResponse;
 import com.javielinux.twitter.ConnectionManager;
 import twitter4j.Status;
 import twitter4j.TwitterException;
 
 import java.util.ArrayList;
 
-public class ConversationLoader extends AsynchronousLoader<APIResult> {
+public class ConversationLoader extends AsynchronousLoader<BaseResponse> {
 
     private long id = 0;
 
-    public ConversationLoader(Context context, Bundle bundle) {
+    public ConversationLoader(Context context, ConversationRequest request) {
         super(context);
-        id = bundle.getLong("id");
+        id = request.getId();
     }
 
     @Override
-    public APIResult loadInBackground() {
-
-        APIResult out = new APIResult();
+    public BaseResponse loadInBackground() {
 
         try {
+            ConversationResponse response = new ConversationResponse();
+
             ConnectionManager.getInstance().open(getContext());
             ArrayList<Status> tweets = new ArrayList<twitter4j.Status>();
             twitter4j.Status st = ConnectionManager.getInstance().getTwitter().showStatus(id);
@@ -35,12 +37,13 @@ public class ConversationLoader extends AsynchronousLoader<APIResult> {
                 st = ConnectionManager.getInstance().getTwitter().showStatus(st.getInReplyToStatusId());
                 tweets.add(st);
             }
-            out.addArrayStatusParameter("tweets", tweets);
-            return out;
+            response.setTweets(tweets);
+            return response;
         } catch (TwitterException e) {
             e.printStackTrace();
-            out.setError(e, e.getMessage());
-            return out;
+            ErrorResponse error = new ErrorResponse();
+            error.setError(e, e.getMessage());
+            return error;
         }
 
     }

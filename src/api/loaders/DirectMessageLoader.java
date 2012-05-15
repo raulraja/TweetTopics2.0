@@ -1,9 +1,11 @@
-package api.api.loaders;
+package api.loaders;
 
 import android.content.Context;
-import android.os.Bundle;
-import api.APIResult;
 import api.AsynchronousLoader;
+import api.request.DirectMessageRequest;
+import api.response.BaseResponse;
+import api.response.DirectMessageResponse;
+import api.response.ErrorResponse;
 import com.javielinux.tweettopics2.NewStatus;
 import com.javielinux.tweettopics2.Utils;
 import com.javielinux.twitter.ConnectionManager;
@@ -11,25 +13,24 @@ import twitter4j.TwitterException;
 
 import java.util.ArrayList;
 
-public class DirectMessageLoader extends AsynchronousLoader<APIResult> {
+public class DirectMessageLoader extends AsynchronousLoader<BaseResponse> {
 
     private int modeTweetLonger = 0;
     private String text = "";
     private String user = "";
 
-    public DirectMessageLoader(Context context, Bundle bundle) {
+    public DirectMessageLoader(Context context, DirectMessageRequest request) {
         super(context);
-        modeTweetLonger = bundle.getInt("modeTweetLonger");
-        text = bundle.getString("text");
-        user = bundle.getString("user");
+        modeTweetLonger = request.getModeTweetLonger();
+        text = request.getText();
+        user = request.getUser();
     }
 
     @Override
-    public APIResult loadInBackground() {
-
-        APIResult out = new APIResult();
+    public BaseResponse loadInBackground() {
 
         try {
+            DirectMessageResponse response = new DirectMessageResponse();
             if (modeTweetLonger == NewStatus.MODE_TL_NONE) {
                 ConnectionManager.getInstance().getTwitter().sendDirectMessage(user, text);
             } else {
@@ -38,15 +39,18 @@ public class DirectMessageLoader extends AsynchronousLoader<APIResult> {
                     ConnectionManager.getInstance().getTwitter().sendDirectMessage(user, t);
                 }
             }
-            return out;
+            response.setSent(true);
+            return response;
         } catch (TwitterException e) {
             e.printStackTrace();
-            out.setError(e, e.getMessage());
-            return out;
+            ErrorResponse error = new ErrorResponse();
+            error.setError(e, e.getMessage());
+            return error;
         } catch (Exception e) {
             e.printStackTrace();
-            out.setError(e, e.getMessage());
-            return out;
+            ErrorResponse error = new ErrorResponse();
+            error.setError(e, e.getMessage());
+            return error;
         }
 
     }

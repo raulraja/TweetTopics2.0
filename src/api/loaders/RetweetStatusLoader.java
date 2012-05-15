@@ -1,20 +1,18 @@
-package api.api.loaders;
+package api.loaders;
 
 import android.content.Context;
 import android.os.Bundle;
 import api.APIResult;
 import api.AsynchronousLoader;
 import com.javielinux.twitter.ConnectionManager;
-import twitter4j.Paging;
-import twitter4j.ResponseList;
 import twitter4j.TwitterException;
-import twitter4j.User;
 
-public class StatusRetweetersLoader extends AsynchronousLoader<APIResult> {
+public class RetweetStatusLoader extends AsynchronousLoader<APIResult> {
 
     private long id = 0;
 
-    public StatusRetweetersLoader(Context context, Bundle bundle) {
+    public RetweetStatusLoader(Context context, Bundle bundle) {
+
         super(context);
 
         this.id = bundle.getLong("id");
@@ -27,13 +25,12 @@ public class StatusRetweetersLoader extends AsynchronousLoader<APIResult> {
 
 		try {
 			ConnectionManager.getInstance().open(getContext());
-            ResponseList<User> retweeters_list = ConnectionManager.getInstance().getTwitter().getRetweetedBy(id, new Paging(1, 100));
+			ConnectionManager.getInstance().getTwitter().retweetStatus(id);
 
-            out.addParameter("retweeters_list", retweeters_list);
+            out.addParameter("ready", true);
             return out;
 		} catch (TwitterException e) {
-			e.printStackTrace();
-            out.setError(e, e.getMessage());
+			out.setError(e, e.getMessage());
             return out;
 		}
     }

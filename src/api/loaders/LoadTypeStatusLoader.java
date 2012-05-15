@@ -1,4 +1,4 @@
-package api.api.loaders;
+package api.loaders;
 
 import adapters.RowResponseList;
 import android.content.Context;

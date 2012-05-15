@@ -1,4 +1,4 @@
-package api.api.loaders;
+package api.loaders;
 
 import android.content.Context;
 import android.graphics.Bitmap;
