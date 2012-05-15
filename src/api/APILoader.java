@@ -5,9 +5,7 @@ import android.app.LoaderManager;
 import android.content.Context;
 import android.content.Loader;
 import android.os.Bundle;
-import api.api.loaders.CheckConversationLoader;
-import api.api.loaders.ConversationLoader;
-import api.api.loaders.DirectMessageLoader;
+import api.api.loaders.*;
 
 public class APILoader implements LoaderManager.LoaderCallbacks {
 
@@ -41,6 +39,22 @@ public class APILoader implements LoaderManager.LoaderCallbacks {
                 return new ConversationLoader(context, bundle);
             case APITweetTopics.KEY_DIRECT_MESSAGE:
                 return new DirectMessageLoader(context, bundle);
+            case APITweetTopics.KEY_LOAD_TRANSLATE_TWEET:
+                return new LoadTranslateTweetLoader(context, bundle);
+            case APITweetTopics.KEY_LOAD_TYPE_STATUS:
+                return new LoadTypeStatusLoader(context, bundle);
+            case APITweetTopics.KEY_LOAD_USER:
+                return new LoadUserLoader(context, bundle);
+            case APITweetTopics.KEY_PREPARING_LINK_FOR_SIDEBAR:
+                return new PreparingLinkForSidebarLoader(context, bundle);
+            case APITweetTopics.KEY_PROFILE_IMAGE:
+                return new ProfileImageLoader(context, bundle);
+            case APITweetTopics.KEY_RETWEET_STATUS:
+                return new RetweetStatusLoader(context, bundle);
+            case APITweetTopics.KEY_SAVE_FIRST_TWEETS:
+                return new SaveFirstTweetsLoader(context, bundle);
+            case APITweetTopics.KEY_STATUS_RETWEETEERS:
+                return new StatusRetweetersLoader(context, bundle);
         }
         return null;
     }
