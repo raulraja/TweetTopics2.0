@@ -6,6 +6,10 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import api.APIResult;
 import api.AsynchronousLoader;
+import api.request.ProfileImageRequest;
+import api.response.BaseResponse;
+import api.response.ErrorResponse;
+import api.response.ProfileImageResponse;
 import com.android.dataframework.Entity;
 import com.javielinux.tweettopics2.Utils;
 import com.javielinux.twitter.ConnectionManager;
@@ -17,7 +21,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-public class ProfileImageLoader extends AsynchronousLoader<APIResult> {
+public class ProfileImageLoader extends AsynchronousLoader<BaseResponse> {
 
     public static final int CHANGE_AVATAR = 1;
     public static final int REFRESH_AVATAR = 2;
@@ -25,11 +29,11 @@ public class ProfileImageLoader extends AsynchronousLoader<APIResult> {
     private int action = 0;
     private long user_id = 0;
 
-    public ProfileImageLoader(Context context, Bundle bundle) {
+    public ProfileImageLoader(Context context, ProfileImageRequest request) {
         super(context);
 
-        this.action = bundle.getInt("action");
-        this.user_id = bundle.getLong("user_id");
+        this.action = request.getAction();
+        this.user_id = request.getUserId();
     }
 
     private String getURLNewAvatar() {
@@ -125,9 +129,7 @@ public class ProfileImageLoader extends AsynchronousLoader<APIResult> {
     }
 
     @Override
-    public APIResult loadInBackground() {
-
-        APIResult out = new APIResult();
+    public BaseResponse loadInBackground() {
 
 		try {
             boolean result = false;
@@ -141,16 +143,19 @@ public class ProfileImageLoader extends AsynchronousLoader<APIResult> {
                     break;
             }
 
-            out.addParameter("ready", result);
-            return out;
+            ProfileImageResponse response = new ProfileImageResponse();
+            response.setReady(result);
+            return response;
 		} catch (OutOfMemoryError e) {
 			e.printStackTrace();
-            out.setError(e, e.getMessage());
-            return out;
+            ErrorResponse response = new ErrorResponse();
+            response.setError(e, e.getMessage());
+            return response;
 		} catch (Exception e) {
 			e.printStackTrace();
-            out.setError(e, e.getMessage());
-            return out;
+            ErrorResponse response = new ErrorResponse();
+            response.setError(e, e.getMessage());
+            return response;
 		}
     }
 }

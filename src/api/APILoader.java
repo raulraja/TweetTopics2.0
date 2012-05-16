@@ -62,6 +62,22 @@ public class APILoader implements LoaderManager.LoaderCallbacks {
                 return new LoadUserLoader(context, (LoadUserRequest)baseRequest);
             case APITweetTopics.KEY_PREPARING_LINK_FOR_SIDEBAR:
                 return new PreparingLinkForSidebarLoader(context, (PreparingLinkForSidebarRequest)baseRequest);
+            case APITweetTopics.KEY_PROFILE_IMAGE:
+                return new ProfileImageLoader(context, (ProfileImageRequest)baseRequest);
+            case APITweetTopics.KEY_RETWEET_STATUS:
+                return new RetweetStatusLoader(context, (RetweetStatusRequest)baseRequest);
+            case APITweetTopics.KEY_SAVE_FIRST_TWEETS:
+                return new SaveFirstTweetsLoader(context, (SaveFirstTweetsRequest)baseRequest);
+            case APITweetTopics.KEY_STATUS_RETWEETEERS:
+                return new StatusRetweetersLoader(context, (StatusRetweetersRequest)baseRequest);
+            case APITweetTopics.KEY_TRENDS:
+                return new TrendsLoader(context, (TrendsRequest)baseRequest);
+            case APITweetTopics.KEY_TRENDS_LOCATION:
+                return new TrendsLocationLoader(context, (TrendsLocationRequest)baseRequest);
+            case APITweetTopics.KEY_TWITTER_USER:
+                return new TwitterUserLoader(context, (TwitterUserRequest)baseRequest);
+            case APITweetTopics.KEY_UPLOAD_STATUS:
+                return new UploadStatusLoader(context, (UploadStatusRequest)baseRequest);
         }
         return null;
     }

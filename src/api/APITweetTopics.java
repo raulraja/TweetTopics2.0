@@ -23,6 +23,11 @@ public class APITweetTopics {
     public static final int KEY_RETWEET_STATUS = 21;
     public static final int KEY_SAVE_FIRST_TWEETS = 22;
     public static final int KEY_STATUS_RETWEETEERS = 24;
+    public static final int KEY_TRENDS = 25;
+    public static final int KEY_TRENDS_LOCATION = 26;
+    public static final int KEY_TWITTER_USER = 27;
+    public static final int KEY_UPLOAD_STATUS = 28;
+
 
     public static void execute(Context context, LoaderManager loaderManager, APIDelegate delegate, BaseRequest request) {
 
@@ -52,6 +57,22 @@ public class APITweetTopics {
             key = KEY_LOAD_USER;
         } else if (request instanceof PreparingLinkForSidebarRequest) {
             key = KEY_PREPARING_LINK_FOR_SIDEBAR;
+        } else if (request instanceof ProfileImageRequest) {
+            key = KEY_PROFILE_IMAGE;
+        } else if (request instanceof RetweetStatusRequest) {
+            key = KEY_RETWEET_STATUS;
+        } else if (request instanceof SaveFirstTweetsRequest) {
+            key = KEY_SAVE_FIRST_TWEETS;
+        } else if (request instanceof StatusRetweetersRequest) {
+            key = KEY_STATUS_RETWEETEERS;
+        } else if (request instanceof TrendsRequest) {
+            key = KEY_TRENDS;
+        } else if (request instanceof TrendsLocationRequest) {
+            key = KEY_TRENDS_LOCATION;
+        } else if (request instanceof TwitterUserRequest) {
+            key = KEY_TWITTER_USER;
+        } else if (request instanceof UploadStatusRequest) {
+            key = KEY_UPLOAD_STATUS;
         }
 
         APILoader api = new APILoader(context, loaderManager, delegate, key);

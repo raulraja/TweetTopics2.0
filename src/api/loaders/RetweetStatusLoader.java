@@ -4,34 +4,42 @@ import android.content.Context;
 import android.os.Bundle;
 import api.APIResult;
 import api.AsynchronousLoader;
+import api.request.RetweetStatusRequest;
+import api.response.BaseResponse;
+import api.response.ErrorResponse;
+import api.response.RetweetStatusResponse;
 import com.javielinux.twitter.ConnectionManager;
 import twitter4j.TwitterException;
 
-public class RetweetStatusLoader extends AsynchronousLoader<APIResult> {
+public class RetweetStatusLoader extends AsynchronousLoader<BaseResponse> {
 
     private long id = 0;
 
-    public RetweetStatusLoader(Context context, Bundle bundle) {
+    public RetweetStatusLoader(Context context, RetweetStatusRequest request) {
 
         super(context);
 
-        this.id = bundle.getLong("id");
+        this.id = request.getId();
     }
 
     @Override
-    public APIResult loadInBackground() {
+    public BaseResponse loadInBackground() {
 
-        APIResult out = new APIResult();
+        //TODO: Comprobar el valor devuelto con el valor esperado (error - ready)
 
 		try {
+            RetweetStatusResponse response = new RetweetStatusResponse();
+
 			ConnectionManager.getInstance().open(getContext());
 			ConnectionManager.getInstance().getTwitter().retweetStatus(id);
 
-            out.addParameter("ready", true);
-            return out;
+            response.setReady(true);
+            return response;
 		} catch (TwitterException e) {
-			out.setError(e, e.getMessage());
-            return out;
+            e.printStackTrace();
+            ErrorResponse response = new ErrorResponse();
+            response.setError(e, e.getMessage());
+            return response;
 		}
     }
 }
