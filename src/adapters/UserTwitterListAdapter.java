@@ -3,13 +3,13 @@
  */
 package adapters;
 
+import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.javielinux.tweettopics2.R;
-import com.javielinux.tweettopics2.TabGeneral;
 import infos.InfoUsers;
 import twitter4j.RateLimitStatus;
 
@@ -17,11 +17,11 @@ import java.util.ArrayList;
 
 public class UserTwitterListAdapter extends ArrayAdapter<InfoUsers> {
 
-	private TabGeneral context;
+	private Context context;
 	private int error;
 	private RateLimitStatus rate;
 
-	public UserTwitterListAdapter(TabGeneral context, ArrayList<InfoUsers> statii) {
+	public UserTwitterListAdapter(Context context, ArrayList<InfoUsers> statii) {
 		super(context, android.R.layout.simple_list_item_1, statii);
 		this.context = context;
 	}

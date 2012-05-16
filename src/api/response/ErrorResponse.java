@@ -7,7 +7,6 @@ public class ErrorResponse implements BaseResponse {
     private int typeError = Utils.NOERROR;
     private RateLimitStatus rateError = null;
 
-    private boolean hasError;
     private Throwable error;
     private String msgError;
 
@@ -19,17 +18,14 @@ public class ErrorResponse implements BaseResponse {
         return msgError;
     }
 
-
-    public boolean hasError() {
-        return hasError;
-    }
-
     public void setError(Throwable error, String msgError) {
-        this.hasError = true;
         this.error = error;
         this.msgError = msgError;
     }
 
+    public void setError(String msgError) {
+        this.msgError = msgError;
+    }
 
     public int getTypeError() {
         return typeError;

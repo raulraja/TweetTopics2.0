@@ -2,13 +2,13 @@ package api.response;
 
 
 public class Export2HTMLResponse implements BaseResponse {
-    private boolean sent;
+    private String url;
 
-    public boolean isSent() {
-        return sent;
+    public String getUrl() {
+        return url;
     }
 
-    public void setSent(boolean sent) {
-        this.sent = sent;
+    public void setUrl(String url) {
+        this.url = url;
     }
 }
