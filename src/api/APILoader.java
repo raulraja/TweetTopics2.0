@@ -5,10 +5,7 @@ import android.app.LoaderManager;
 import android.content.Context;
 import android.content.Loader;
 import android.os.Bundle;
-import api.loaders.CheckConversationLoader;
-import api.loaders.ConversationLoader;
-import api.loaders.DirectMessageLoader;
-import api.loaders.Export2HTMLLoader;
+import api.loaders.*;
 import api.request.*;
 import api.response.BaseResponse;
 import api.response.ErrorResponse;
@@ -49,6 +46,22 @@ public class APILoader implements LoaderManager.LoaderCallbacks {
                 return new DirectMessageLoader(context, (DirectMessageRequest)baseRequest);
             case APITweetTopics.KEY_EXPORT_HTML:
                 return new Export2HTMLLoader(context, (Export2HTMLRequest)baseRequest);
+            case APITweetTopics.KEY_GET_CONVERSATION:
+                return new GetConversationLoader(context, (GetConversationRequest)baseRequest);
+            case APITweetTopics.KEY_IMAGE_UPLOAD:
+                return new ImageUploadLoader(context, (ImageUploadRequest)baseRequest);
+            case APITweetTopics.KEY_LIST_USER_TWITTER:
+                return new ListUserTwitterLoader(context, (ListUserTwitterRequest)baseRequest);
+            case APITweetTopics.KEY_LOAD_IMAGE:
+                return new LoadImageLoader(context, (LoadImageRequest)baseRequest);
+            case APITweetTopics.KEY_LOAD_TRANSLATE_TWEET:
+                return new LoadTranslateTweetLoader(context, (LoadTranslateTweetRequest)baseRequest);
+            case APITweetTopics.KEY_LOAD_TYPE_STATUS:
+                return new LoadTypeStatusLoader(context, (LoadTypeStatusRequest)baseRequest);
+            case APITweetTopics.KEY_LOAD_USER:
+                return new LoadUserLoader(context, (LoadUserRequest)baseRequest);
+            case APITweetTopics.KEY_PREPARING_LINK_FOR_SIDEBAR:
+                return new PreparingLinkForSidebarLoader(context, (PreparingLinkForSidebarRequest)baseRequest);
         }
         return null;
     }

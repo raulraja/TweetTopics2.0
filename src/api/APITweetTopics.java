@@ -3,11 +3,7 @@ package api;
 
 import android.app.LoaderManager;
 import android.content.Context;
-import android.os.Bundle;
-import api.request.CheckConversationRequest;
-import api.request.ConversationRequest;
-import api.request.DirectMessageRequest;
-import api.request.Export2HTMLRequest;
+import api.request.*;
 
 public class APITweetTopics {
     
@@ -15,6 +11,10 @@ public class APITweetTopics {
     public static final int KEY_CONVERSATION = 1;
     public static final int KEY_DIRECT_MESSAGE = 2;
     public static final int KEY_EXPORT_HTML = 3;
+    public static final int KEY_GET_CONVERSATION = 4;
+    public static final int KEY_IMAGE_UPLOAD = 5;
+    public static final int KEY_LIST_USER_TWITTER = 6;
+    public static final int KEY_LOAD_IMAGE = 7;
     public static final int KEY_LOAD_TRANSLATE_TWEET = 16;
     public static final int KEY_LOAD_TYPE_STATUS = 17;
     public static final int KEY_LOAD_USER = 18;
@@ -24,19 +24,57 @@ public class APITweetTopics {
     public static final int KEY_SAVE_FIRST_TWEETS = 22;
     public static final int KEY_STATUS_RETWEETEERS = 24;
 
-    public static void checkConversation(Context context, LoaderManager loaderManager, APIDelegate delegate, int from, long conversation) {
+    public static void execute(Context context, LoaderManager loaderManager, APIDelegate delegate, BaseRequest request) {
 
-        APILoader api = new APILoader(context, loaderManager, delegate, KEY_CHECK_CONVERSATION);
+        int key = 0;
 
-        api.execute(new CheckConversationRequest(from, conversation));
+        if (request instanceof CheckConversationRequest) {
+            key = KEY_CHECK_CONVERSATION;
+        } else if (request instanceof ConversationRequest) {
+            key = KEY_CONVERSATION;
+        } else if (request instanceof DirectMessageRequest) {
+            key = KEY_DIRECT_MESSAGE;
+        } else if (request instanceof Export2HTMLRequest) {
+            key = KEY_EXPORT_HTML;
+        } else if (request instanceof GetConversationRequest) {
+            key = KEY_GET_CONVERSATION;
+        } else if (request instanceof ImageUploadRequest) {
+            key = KEY_IMAGE_UPLOAD;
+        } else if (request instanceof ListUserTwitterRequest) {
+            key = KEY_LIST_USER_TWITTER;
+        } else if (request instanceof LoadImageRequest) {
+            key = KEY_LOAD_IMAGE;
+        } else if (request instanceof LoadTranslateTweetRequest) {
+            key = KEY_LOAD_TRANSLATE_TWEET;
+        } else if (request instanceof LoadTypeStatusRequest) {
+            key = KEY_LOAD_TYPE_STATUS;
+        } else if (request instanceof LoadUserRequest) {
+            key = KEY_LOAD_USER;
+        } else if (request instanceof PreparingLinkForSidebarRequest) {
+            key = KEY_PREPARING_LINK_FOR_SIDEBAR;
+        }
+
+        APILoader api = new APILoader(context, loaderManager, delegate, key);
+
+        api.execute(request);
 
     }
 
-    public static void conversation(Context context, LoaderManager loaderManager, APIDelegate delegate, long id) {
+    /*
+    public static void checkConversation(Context context, LoaderManager loaderManager, APIDelegate delegate, CheckConversationRequest request) {
+
+        APILoader api = new APILoader(context, loaderManager, delegate, KEY_CHECK_CONVERSATION);
+
+        api.execute(request);
+
+    }
+
+
+    public static void conversation(Context context, LoaderManager loaderManager, APIDelegate delegate, ConversationRequest request) {
 
         APILoader api = new APILoader(context, loaderManager, delegate, KEY_CONVERSATION);
 
-        api.execute(new ConversationRequest(id));
+        api.execute(request);
 
     }
 
@@ -48,11 +86,19 @@ public class APITweetTopics {
 
     }
 
-    public static void export2HTML(Context context, LoaderManager loaderManager, APIDelegate delegate) {
+    public static void export2HTML(Context context, LoaderManager loaderManager, APIDelegate delegate, ArrayList<InfoTweet> tweets) {
 
         APILoader api = new APILoader(context, loaderManager, delegate, KEY_EXPORT_HTML);
 
-        api.execute(new Export2HTMLRequest(null));
+        api.execute(new Export2HTMLRequest(tweets));
+
+    }
+
+    public static void getConversation(Context context, LoaderManager loaderManager, APIDelegate delegate, ArrayList<InfoTweet> tweets) {
+
+        APILoader api = new APILoader(context, loaderManager, delegate, KEY_EXPORT_HTML);
+
+        api.execute(new Export2HTMLRequest(tweets));
 
     }
 
@@ -146,4 +192,5 @@ public class APITweetTopics {
         //api.execute(params);
 
     }
+    */
 }

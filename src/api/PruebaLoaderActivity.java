@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import api.request.Export2HTMLRequest;
 import api.response.ErrorResponse;
 import api.response.Export2HTMLResponse;
 import com.javielinux.tweettopics2.BaseActivity;
@@ -42,7 +43,7 @@ public class PruebaLoaderActivity extends BaseActivity {
     }
 
     private void click() {
-        APITweetTopics.export2HTML(this, this.getLoaderManager(), new APIDelegate<Export2HTMLResponse>() {
+        APITweetTopics.execute(this, this.getLoaderManager(), new APIDelegate<Export2HTMLResponse>() {
             @Override
             public void onResults(Export2HTMLResponse result) {
                 text.setText("OnResult");
@@ -52,7 +53,7 @@ public class PruebaLoaderActivity extends BaseActivity {
             public void onError(ErrorResponse error) {
                 text.setText("OnError");
             }
-        });
+        }, new Export2HTMLRequest(null));
     }
 
 }
