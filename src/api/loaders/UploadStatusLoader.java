@@ -58,7 +58,7 @@ public class UploadStatusLoader extends AsynchronousLoader<BaseResponse> {
     @Override
     public BaseResponse loadInBackground() {
 
-        //TODO: Comprobar el valor devuelto con el valor esperado (error - ready)
+        //TODO: Comprobar el valor devuelto con el valor esperado (error - ready) y el parámetro user_geolocation
         try {
             UploadStatusResponse response = new UploadStatusResponse();
 

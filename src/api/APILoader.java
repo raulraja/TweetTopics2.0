@@ -78,6 +78,8 @@ public class APILoader implements LoaderManager.LoaderCallbacks {
                 return new RetweetStatusLoader(context, (RetweetStatusRequest)baseRequest);
             case APITweetTopics.KEY_SAVE_FIRST_TWEETS:
                 return new SaveFirstTweetsLoader(context, (SaveFirstTweetsRequest)baseRequest);
+            case APITweetTopics.KEY_SEARCH:
+                return new SearchLoader(context, (SearchRequest)baseRequest);
             case APITweetTopics.KEY_STATUS_RETWEETEERS:
                 return new StatusRetweetersLoader(context, (StatusRetweetersRequest)baseRequest);
             case APITweetTopics.KEY_TRENDS:
@@ -88,6 +90,10 @@ public class APILoader implements LoaderManager.LoaderCallbacks {
                 return new TwitterUserLoader(context, (TwitterUserRequest)baseRequest);
             case APITweetTopics.KEY_UPLOAD_STATUS:
                 return new UploadStatusLoader(context, (UploadStatusRequest)baseRequest);
+            case APITweetTopics.KEY_UPLOAD_TWIT_LONGER:
+                return new UploadTwitlongerLoader(context, (UploadTwitlongerRequest)baseRequest);
+            case APITweetTopics.KEY_USER_LISTS:
+                return new UserListsLoader(context, (UserListsRequest)baseRequest);
         }
         return null;
     }
