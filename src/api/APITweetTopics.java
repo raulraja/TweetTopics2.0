@@ -15,6 +15,11 @@ public class APITweetTopics {
     public static final int KEY_IMAGE_UPLOAD = 5;
     public static final int KEY_LIST_USER_TWITTER = 6;
     public static final int KEY_LOAD_IMAGE = 7;
+    public static final int KEY_LOAD_IMAGE_AUTO_COMPLETE = 8;
+    public static final int KEY_LOAD_IMAGE_WIDGET = 9;
+    public static final int KEY_LOAD_LINK = 10;
+    public static final int KEY_LOAD_MORE = 11;
+    public static final int KEY_LOAD_MORE_TWEET_DOWNLOADER = 12;
     public static final int KEY_LOAD_TRANSLATE_TWEET = 16;
     public static final int KEY_LOAD_TYPE_STATUS = 17;
     public static final int KEY_LOAD_USER = 18;
@@ -49,6 +54,16 @@ public class APITweetTopics {
             key = KEY_LIST_USER_TWITTER;
         } else if (request instanceof LoadImageRequest) {
             key = KEY_LOAD_IMAGE;
+        } else if (request instanceof LoadImageAutoCompleteRequest) {
+            key = KEY_LOAD_IMAGE_AUTO_COMPLETE;
+        } else if (request instanceof LoadImageWidgetRequest) {
+            key = KEY_LOAD_IMAGE_WIDGET;
+        } else if (request instanceof LoadLinkRequest) {
+            key = KEY_LOAD_LINK;
+        } else if (request instanceof LoadMoreRequest) {
+            key = KEY_LOAD_MORE;
+        } else if (request instanceof LoadMoreTweetDownRequest) {
+            key = KEY_LOAD_MORE_TWEET_DOWNLOADER;
         } else if (request instanceof LoadTranslateTweetRequest) {
             key = KEY_LOAD_TRANSLATE_TWEET;
         } else if (request instanceof LoadTypeStatusRequest) {
@@ -81,137 +96,4 @@ public class APITweetTopics {
 
     }
 
-    /*
-    public static void checkConversation(Context context, LoaderManager loaderManager, APIDelegate delegate, CheckConversationRequest request) {
-
-        APILoader api = new APILoader(context, loaderManager, delegate, KEY_CHECK_CONVERSATION);
-
-        api.execute(request);
-
-    }
-
-
-    public static void conversation(Context context, LoaderManager loaderManager, APIDelegate delegate, ConversationRequest request) {
-
-        APILoader api = new APILoader(context, loaderManager, delegate, KEY_CONVERSATION);
-
-        api.execute(request);
-
-    }
-
-    public static void directMessage(Context context, LoaderManager loaderManager, APIDelegate delegate, int modeTweetLonger, String user, String text) {
-
-        APILoader api = new APILoader(context, loaderManager, delegate, KEY_DIRECT_MESSAGE);
-
-        api.execute(new DirectMessageRequest(modeTweetLonger, user, text));
-
-    }
-
-    public static void export2HTML(Context context, LoaderManager loaderManager, APIDelegate delegate, ArrayList<InfoTweet> tweets) {
-
-        APILoader api = new APILoader(context, loaderManager, delegate, KEY_EXPORT_HTML);
-
-        api.execute(new Export2HTMLRequest(tweets));
-
-    }
-
-    public static void getConversation(Context context, LoaderManager loaderManager, APIDelegate delegate, ArrayList<InfoTweet> tweets) {
-
-        APILoader api = new APILoader(context, loaderManager, delegate, KEY_EXPORT_HTML);
-
-        api.execute(new Export2HTMLRequest(tweets));
-
-    }
-
-    public static void loadTranslateTweet(Context context, LoaderManager loaderManager, APIDelegate delegate, long id) {
-
-        APILoader api = new APILoader(context, loaderManager, delegate, KEY_LOAD_TRANSLATE_TWEET);
-
-        Bundle params=new Bundle();
-        params.putLong("id", id);
-
-        //api.execute(params);
-
-    }
-
-    public static void loadTypeStatus(Context context, LoaderManager loaderManager, APIDelegate delegate, int type, String user, int userlist_id) {
-
-        APILoader api = new APILoader(context, loaderManager, delegate, KEY_LOAD_TYPE_STATUS);
-
-        Bundle params=new Bundle();
-        params.putInt("type", type);
-        params.putString("user", user);
-        params.putInt("userlist_id", userlist_id);
-
-        //api.execute(params);
-
-    }
-
-    public static void loadTypeStatus(Context context, LoaderManager loaderManager, APIDelegate delegate, String user) {
-
-        APILoader api = new APILoader(context, loaderManager, delegate, KEY_LOAD_USER);
-
-        Bundle params=new Bundle();
-        params.putString("user", user);
-
-        //api.execute(params);
-
-    }
-
-    public static void preparingLinkForSidebar(Context context, LoaderManager loaderManager, APIDelegate delegate, String link) {
-
-        APILoader api = new APILoader(context, loaderManager, delegate, KEY_PREPARING_LINK_FOR_SIDEBAR);
-
-        Bundle params=new Bundle();
-        params.putString("link", link);
-
-        //api.execute(params);
-
-    }
-
-    public static void profileImage(Context context, LoaderManager loaderManager, APIDelegate delegate, int action, long user_id) {
-
-        APILoader api = new APILoader(context, loaderManager, delegate, KEY_PROFILE_IMAGE);
-
-        Bundle params=new Bundle();
-        params.putInt("action", action);
-        params.putLong("user_id", user_id);
-
-        //api.execute(params);
-
-    }
-
-    public static void retweetStatus(Context context, LoaderManager loaderManager, APIDelegate delegate, long id) {
-
-        APILoader api = new APILoader(context, loaderManager, delegate, KEY_RETWEET_STATUS);
-
-        Bundle params=new Bundle();
-        params.putLong("id", id);
-
-        //api.execute(params);
-
-    }
-
-    public static void saveFirstTweets(Context context, LoaderManager loaderManager, APIDelegate delegate, long id) {
-
-        APILoader api = new APILoader(context, loaderManager, delegate, KEY_RETWEET_STATUS);
-
-        Bundle params=new Bundle();
-        params.putLong("id", id);
-
-        //api.execute(params);
-
-    }
-
-    public static void statusRetweeters(Context context, LoaderManager loaderManager, APIDelegate delegate, long id) {
-
-        APILoader api = new APILoader(context, loaderManager, delegate, KEY_STATUS_RETWEETEERS);
-
-        Bundle params=new Bundle();
-        params.putLong("id", id);
-
-        //api.execute(params);
-
-    }
-    */
 }

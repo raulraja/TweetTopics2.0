@@ -54,6 +54,16 @@ public class APILoader implements LoaderManager.LoaderCallbacks {
                 return new ListUserTwitterLoader(context, (ListUserTwitterRequest)baseRequest);
             case APITweetTopics.KEY_LOAD_IMAGE:
                 return new LoadImageLoader(context, (LoadImageRequest)baseRequest);
+            case APITweetTopics.KEY_LOAD_IMAGE_AUTO_COMPLETE:
+                return new LoadImageAutoCompleteLoader(context, (LoadImageAutoCompleteRequest)baseRequest);
+            case APITweetTopics.KEY_LOAD_IMAGE_WIDGET:
+                return new LoadImageWidgetLoader(context, (LoadImageWidgetRequest)baseRequest);
+            case APITweetTopics.KEY_LOAD_LINK:
+                return new LoadLinkLoader(context, (LoadLinkRequest)baseRequest);
+            case APITweetTopics.KEY_LOAD_MORE:
+                return new LoadMoreLoader(context, (LoadMoreRequest)baseRequest);
+            case APITweetTopics.KEY_LOAD_MORE_TWEET_DOWNLOADER:
+                return new LoadMoreTweetDownLoader(context, (LoadMoreTweetDownRequest)baseRequest);
             case APITweetTopics.KEY_LOAD_TRANSLATE_TWEET:
                 return new LoadTranslateTweetLoader(context, (LoadTranslateTweetRequest)baseRequest);
             case APITweetTopics.KEY_LOAD_TYPE_STATUS:
