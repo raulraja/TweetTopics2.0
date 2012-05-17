@@ -1571,12 +1571,6 @@ public class NewStatus extends BaseActivity {
 		
 		super.onSaveInstanceState(outState);
 	}
-	
-	
-	@Override
-	public Object onRetainNonConfigurationInstance() {
-		return null;
-	}
 
 	
     private String getURLBase() {

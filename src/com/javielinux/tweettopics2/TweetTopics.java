@@ -131,11 +131,11 @@ public class TweetTopics extends BaseActivity {
         	return false;
         }        
     }
-    
+    /*
     @Override
     public Object onRetainNonConfigurationInstance() {
     	return mTweetTopicsOrientation.onRetainNonConfigurationInstance();
-    }
+    } */
     
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {

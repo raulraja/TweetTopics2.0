@@ -1,20 +1,14 @@
 package com.javielinux.tweettopics2;
 
-import android.app.Activity;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 
-public abstract class BaseActivity extends Activity {
-
-    // Call to GDActivity with Dashboard property for show icon PhotoParty forever in top bar
+public abstract class BaseActivity extends FragmentActivity {
 
     public BaseActivity() {
 
     }
-    /*
-    public LoaderManager getLoaderManager() {
-        return getLoaderManager();
-    };
-    */
+
     @Override
     protected void onStart() {
         super.onStart();
