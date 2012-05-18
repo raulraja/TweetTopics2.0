@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 
-<database name="tweet_db" version="20">
+<database name="tweet_db" version="24">
   
   <table name="search" to-string="%name%">
     <field name="name" obligatory="true" type="text" size="128"/>
@@ -194,5 +194,28 @@
 	<field name="name" type="text" size="64" />
 	<field name="theme" type="text" />
   </table>
-  
+
+  <table name="user_lists" to-string="name" new-in-version="21">
+    <field name="user_id" obligatory="true" type="foreign-key" foreign-table="users" />
+    <field name="user_screenname" obligatory="true" type="text" size="256" new-in-version="23" />
+    <field name="url_avatar" obligatory="true" type="text" size="256" />
+    <field name="userlist_id" obligatory="true" type="int" />
+    <field name="type_id" obligatory="true" type="int" /> <!-- 1 Lista que sigue el usuario, 2 Lista que sigue al usuario -->
+    <field name="name" obligatory="true" type="text" size="128" />
+    <field name="full_name" obligatory="true" type="text" size="128" new-in-version="22" />
+  </table>
+
+  <table name="columns" to-string="%description%" new-in-version="24">
+    <field name="description" obligatory="true" type="text" size="64"/>
+    <field name="type_id" obligatory="true" type="foreign-key" foreign-table="type_columns" />
+    <field name="order" obligatory="true" type="int" />
+    <field name="user_id" type="foreign-key" foreign-table="users" />
+    <field name="userlist_id" type="foreign-key" foreign-table="user_lists" />
+    <field name="location_id" type="int" />
+    <field name="search_id" type="foreign-key" foreign-table="search" />
+  </table>
+
+  <table name="type_columns" to-string="%description%" new-in-version="24">
+    <field name="description" obligatory="true" type="text" size="64"/>
+  </table>
  </database>
