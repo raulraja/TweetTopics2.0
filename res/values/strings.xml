@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <!-- v 2.0  -->
+    <string name="create_columns">Create columns</string>
+
     <!-- v 1.72  -->
     <string name="show_retweeters">Show retweeters</string>
     <string name="txt_retweeters_title">Users who have retweeted</string>

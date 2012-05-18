@@ -250,7 +250,6 @@
     	<item>Edit user</item>
         <item>Change avatar</item> <!-- v 1.70  -->
     	<item>Refresh avatar</item>
-    	<item>Save timeline on phone</item>
     	<item>Delete</item>
     </string-array>
     

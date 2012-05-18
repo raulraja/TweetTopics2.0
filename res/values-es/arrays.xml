@@ -250,7 +250,6 @@
     	<item>Editar usuario</item>
         <item>Cambiar avatar</item> <!-- v 1.70  -->
     	<item>Actualizar avatar</item>
-    	<item>Guardar timeline en el teléfono</item>
     	<item>Eliminar</item>
     </string-array>
         

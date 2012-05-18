@@ -195,7 +195,6 @@
     <string-array name="actions_users">
     	<item>Bearbeiten User</item> <!-- 1.55 -->
     	<item>Neu laden Avatar</item>
-    	<item>Sichere Timeline auf Smartphone</item>
     	<item>Löschen</item>
     </string-array>
     

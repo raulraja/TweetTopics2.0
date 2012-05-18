@@ -79,8 +79,8 @@ public class Utils {
 	public static final int NETWORK_TWITTER = 0;
 	public static final int NETWORK_FACEBOOK = 1;
 	
-	public static String ACTION_WIDGET_CONTROL = "com.javielinux.tweettopics.WIDGET_CONTROL";
-	public static final String URI_SCHEME = "tweettopics_widget_tweets";
+	public static String ACTION_WIDGET_CONTROL = "com.javielinux.tweettopics2.WIDGET_CONTROL";
+	public static final String URI_SCHEME = "tweettopics2_widget_tweets";
 	
 	//public static final String SEP_BLOCK = "--";
 	//public static final String SEP_VALUES = ";;";
