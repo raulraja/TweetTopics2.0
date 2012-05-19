@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<values>
+	
+	<row table="type_columns" id="1">
+		<field name="description" value="My activity" />
+	</row>
+
+    <row table="type_columns" id="2">
+        <field name="description" value="Timeline" />
+    </row>
+
+    <row table="type_columns" id="3">
+        <field name="description" value="Mentions" />
+    </row>
+
+    <row table="type_columns" id="4">
+        <field name="description" value="Direct messages" />
+    </row>
+
+    <row table="type_columns" id="5">
+        <field name="description" value="Favorites" />
+    </row>
+
+    <row table="type_columns" id="6">
+        <field name="description" value="List user" />
+    </row>
+
+    <row table="type_columns" id="7">
+        <field name="description" value="Your tweets, retweeted" />
+    </row>
+
+    <row table="type_columns" id="8">
+        <field name="description" value="Retweets by you" />
+    </row>
+
+    <row table="type_columns" id="9">
+        <field name="description" value="Retweets by others" />
+    </row>
+
+    <row table="type_columns" id="10">
+        <field name="description" value="Trending topic" />
+    </row>
+
+    <row table="type_columns" id="11">
+        <field name="description" value="Search" />
+    </row>
+
+    <row table="type_columns" id="12">
+        <field name="description" value="Saved tweets" />
+    </row>
+
+    <row table="type_columns" id="13">
+        <field name="description" value="Followers" />
+    </row>
+
+    <row table="type_columns" id="14">
+        <field name="description" value="Followings" />
+    </row>
+
+    <row table="type_columns" id="15">
+        <field name="description" value="Followings" />
+    </row>
+
+    <row table="type_columns" id="16">
+        <field name="description" value="Timeline of user" />
+    </row>
+
+</values>

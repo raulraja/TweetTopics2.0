@@ -211,7 +211,7 @@
     <field name="order" obligatory="true" type="int" />
     <field name="user_id" type="foreign-key" foreign-table="users" />
     <field name="userlist_id" type="foreign-key" foreign-table="user_lists" />
-    <field name="location_id" type="int" />
+    <field name="location_id" type="int" />  <!-- Trending topics -->
     <field name="search_id" type="foreign-key" foreign-table="search" />
   </table>
 

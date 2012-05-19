@@ -458,7 +458,36 @@ public class Users extends BaseActivity {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     // choices
-                    Utils.showMessage(Users.this, (isChoices[0]?"timeline - ":"no timeline - ") + (isChoices[1]?"menciones - ":"no menciones - ") + (isChoices[2]?"directos":"no directos"));
+                    int count = DataFramework.getInstance().getEntityListCount("columns", "") + 1;
+                    if (isChoices[0]) {
+                        Entity type = new Entity("type_columns", 2L);
+                        Entity timeline = new Entity("columns");
+                        timeline.setValue("description", type.getString("description"));
+                        timeline.setValue("type_id", type);
+                        timeline.setValue("order", count);
+                        timeline.setValue("user_id", e.getId());
+                        timeline.save();
+                        count++;
+                    }
+                    if (isChoices[1]) {
+                        Entity type = new Entity("type_columns", 3L);
+                        Entity timeline = new Entity("columns");
+                        timeline.setValue("description", type.getString("description"));
+                        timeline.setValue("type_id", type);
+                        timeline.setValue("order", count);
+                        timeline.setValue("user_id", e.getId());
+                        timeline.save();
+                        count++;
+                    }
+                    if (isChoices[2]) {
+                        Entity type = new Entity("type_columns", 4L);
+                        Entity timeline = new Entity("columns");
+                        timeline.setValue("description", type.getString("description"));
+                        timeline.setValue("type_id", type);
+                        timeline.setValue("order", count);
+                        timeline.setValue("user_id", e.getId());
+                        timeline.save();
+                    }
 
                     // create friend
                     if (boxInvite.isChecked()) {
