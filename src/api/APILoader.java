@@ -48,6 +48,8 @@ public class APILoader implements LoaderManager.LoaderCallbacks {
                 return new Export2HTMLLoader(context, (Export2HTMLRequest)baseRequest);
             case APITweetTopics.KEY_GET_CONVERSATION:
                 return new GetConversationLoader(context, (GetConversationRequest)baseRequest);
+            case APITweetTopics.KEY_GET_USER_LIST:
+                return new GetUserListLoader(context, (GetUserListRequest)baseRequest);
             case APITweetTopics.KEY_IMAGE_UPLOAD:
                 return new ImageUploadLoader(context, (ImageUploadRequest)baseRequest);
             case APITweetTopics.KEY_LIST_USER_TWITTER:

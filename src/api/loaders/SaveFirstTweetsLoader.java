@@ -1,8 +1,6 @@
 package api.loaders;
 
 import android.content.Context;
-import android.os.Bundle;
-import api.APIResult;
 import api.AsynchronousLoader;
 import api.request.SaveFirstTweetsRequest;
 import api.response.BaseResponse;

@@ -20,6 +20,7 @@ public class APITweetTopics {
     public static final int KEY_LOAD_LINK = 10;
     public static final int KEY_LOAD_MORE = 11;
     public static final int KEY_LOAD_MORE_TWEET_DOWNLOADER = 12;
+    public static final int KEY_GET_USER_LIST= 13;
     public static final int KEY_LOAD_TRANSLATE_TWEET = 16;
     public static final int KEY_LOAD_TYPE_STATUS = 17;
     public static final int KEY_LOAD_USER = 18;
@@ -51,6 +52,8 @@ public class APITweetTopics {
             key = KEY_EXPORT_HTML;
         } else if (request instanceof GetConversationRequest) {
             key = KEY_GET_CONVERSATION;
+        } else if (request instanceof GetUserListRequest) {
+            key = KEY_GET_USER_LIST;
         } else if (request instanceof ImageUploadRequest) {
             key = KEY_IMAGE_UPLOAD;
         } else if (request instanceof ListUserTwitterRequest) {
