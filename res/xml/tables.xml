@@ -164,7 +164,7 @@
     <field name="users" type="text" size="128"/> <!-- IDs separados por comas -->
 	<field name="text" type="text" size="256" />
 	<field name="is_sent" obligatory="true" type="int" default="0" /> <!-- 0 para enviar 1 error -->
-	<field name="type_id" obligatory="true" type="int" default="1" /> <!-- 1 TIMELINE 2 DIRECTO -->
+	<field name="type_id" obligatory="true" type="int" default="1" /> <!-- 1 TIMELINE 2 DIRECTO 3 RETWEET -->
 	<field name="username_direct" type="text" size="64"/>
 	<field name="photos" type="text" size="128"/>
 	<field name="reply_tweet_id" obligatory="true" type="text" size="128" />

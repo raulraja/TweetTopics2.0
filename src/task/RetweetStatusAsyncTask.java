@@ -1,54 +1,52 @@
 package task;
 
 import android.os.AsyncTask;
-import com.javielinux.tweettopics2.TweetTopicsCore;
-import com.javielinux.twitter.ConnectionManager;
+import twitter4j.Twitter;
 import twitter4j.TwitterException;
 
 
 public class RetweetStatusAsyncTask extends AsyncTask<Long, Void, Boolean> {
 
-	public interface RetweetStatusAsyncTaskResponder {
-		public void retweetStatusLoading();
-		public void retweetStatusCancelled();
-		public void retweetStatusLoaded(boolean error);
-	}
+    public interface RetweetStatusAsyncTaskResponder {
+        public void retweetStatusLoading();
+        public void retweetStatusCancelled();
+        public void retweetStatusLoaded(boolean error);
+    }
 
-	private RetweetStatusAsyncTaskResponder responder;
-	private TweetTopicsCore mTweetTopicsCore;
+    private RetweetStatusAsyncTaskResponder responder;
+    private Twitter twitter;
 
-	public RetweetStatusAsyncTask(TweetTopicsCore responder) {
-		mTweetTopicsCore = responder;
-		this.responder = (RetweetStatusAsyncTaskResponder)responder;
-	}
+    public RetweetStatusAsyncTask(RetweetStatusAsyncTaskResponder responder, Twitter twitter) {
+        this.responder = responder;
+        this.twitter = twitter;
+    }
 
-	@Override
-	protected Boolean doInBackground(Long... args) {
-		try {
-			ConnectionManager.getInstance().open(mTweetTopicsCore.getTweetTopics());
-			ConnectionManager.getInstance().getTwitter().retweetStatus(args[0]);
-		} catch (TwitterException e) {
-			return true;
-		}
-		return false;
-	}
+    @Override
+    protected Boolean doInBackground(Long... args) {
+        try {
+            twitter.retweetStatus(args[0]);
+        } catch (TwitterException e) {
+            return true;
+        }
+        return false;
+    }
 
-	@Override
-	protected void onPreExecute() {
-		super.onPreExecute();
-		responder.retweetStatusLoading();
-	}
+    @Override
+    protected void onPreExecute() {
+        super.onPreExecute();
+        responder.retweetStatusLoading();
+    }
 
-	@Override
-	protected void onCancelled() {
-		super.onCancelled();
-		responder.retweetStatusCancelled();
-	}
+    @Override
+    protected void onCancelled() {
+        super.onCancelled();
+        responder.retweetStatusCancelled();
+    }
 
-	@Override
-	protected void onPostExecute(Boolean error) {
-		super.onPostExecute(error);
-		responder.retweetStatusLoaded(error);
-	}
+    @Override
+    protected void onPostExecute(Boolean error) {
+        super.onPostExecute(error);
+        responder.retweetStatusLoaded(error);
+    }
 
 }

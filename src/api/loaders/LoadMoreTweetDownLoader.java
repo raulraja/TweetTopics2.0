@@ -55,11 +55,13 @@ public class LoadMoreTweetDownLoader extends AsynchronousLoader<BaseResponse> {
                     e.printStackTrace();
                 }
 
-                while (statii.size()%60>=50 || statii.size()%60==0) {
-                    p = new Paging(1, 60);
-                    if (request.getSinceId()>0) p.setSinceId(request.getSinceId());
-                    p.setMaxId(statii.get(statii.size()-1).getId());
-                    statii.addAll(ConnectionManager.getInstance().getTwitter().getHomeTimeline(p));
+                if (statii!=null) {
+                    while (statii.size()%60>=50 || statii.size()%60==0) {
+                        p = new Paging(1, 60);
+                        if (request.getSinceId()>0) p.setSinceId(request.getSinceId());
+                        p.setMaxId(statii.get(statii.size()-1).getId());
+                        statii.addAll(ConnectionManager.getInstance().getTwitter().getHomeTimeline(p));
+                    }
                 }
 
                 /*

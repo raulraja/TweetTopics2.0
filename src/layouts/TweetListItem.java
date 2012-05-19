@@ -73,7 +73,9 @@ public class TweetListItem extends RelativeLayout implements LoadImageAsyncTaskR
                     e.printStackTrace();
                 }
 			}
-			holder.setImageResource(R.drawable.avatar);
+            try {
+			    holder.setImageResource(R.drawable.avatar);
+            } catch (OutOfMemoryError e) {}
 			return false;
 		}
 	}

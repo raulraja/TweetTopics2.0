@@ -78,11 +78,13 @@ public class LoadMoreTweetDownAsyncTask extends AsyncTask<Void, Void, LoadMoreTw
                     e.printStackTrace();
                 }
 
-                while (statii.size()%60>=50 || statii.size()%60==0) {
-                    p = new Paging(1, 60);
-                    if (sinceId>0) p.setSinceId(sinceId);
-                    p.setMaxId(statii.get(statii.size()-1).getId());
-                    statii.addAll(ConnectionManager.getInstance().getTwitter().getHomeTimeline(p));
+                if (statii!=null) {
+                    while (statii.size()%60>=50 || statii.size()%60==0) {
+                        p = new Paging(1, 60);
+                        if (sinceId>0) p.setSinceId(sinceId);
+                        p.setMaxId(statii.get(statii.size()-1).getId());
+                        statii.addAll(ConnectionManager.getInstance().getTwitter().getHomeTimeline(p));
+                    }
                 }
 
                 /*

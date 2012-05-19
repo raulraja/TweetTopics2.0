@@ -56,7 +56,6 @@ import task.LoadTranslateTweetAsyncTask.LoadTranslateTweetAsyncAsyncTaskResponde
 import task.LoadTypeStatusAsyncTask.LoadTypeStatusResponder;
 import task.LoadUserAsyncTask.LoadUserAsyncAsyncTaskResponder;
 import task.PreparingLinkForSidebarAsyncTask.PreparingLinkForSidebarAsyncTaskResponder;
-import task.RetweetStatusAsyncTask.RetweetStatusAsyncTaskResponder;
 import task.SearchAsyncTask.SearchAsyncTaskResponder;
 import task.SearchAsyncTask.SearchResult;
 import task.StatusRetweetersAsyncTask.StatusRetweetersAsyncTaskResponder;
@@ -64,10 +63,10 @@ import task.StatusRetweetersAsyncTask.StatusRetweetersResult;
 import task.TrendsAsyncTask.TrendsAsyncTaskResponder;
 import task.TrendsLocationAsyncTask.TrendsLocationAsyncTaskResponder;
 import task.TwitterUserAsyncTask.TwitterUserResult;
-import task.UploadStatusAsyncTask.UploadStatusAsyncTaskResponder;
 import task.UserListsAsyncTask.UserListsAsyncTaskResponder;
 import task.UserListsAsyncTask.UserListsResult;
 import twitter4j.*;
+import updatestatus.ServiceUpdateStatus;
 import widget.WidgetCounters2x1;
 import widget.WidgetCounters4x1;
 
@@ -76,13 +75,12 @@ import java.util.*;
 
 public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskResponder,
 											GetConversationAsyncTaskResponder,
-											RetweetStatusAsyncTaskResponder,
 											LoadMoreTweetDownResponder,
 											TrendsAsyncTaskResponder,
-											FinishTwitterDownload, TrendsLocationAsyncTaskResponder, 
-											LoadMoreResponder, UploadStatusAsyncTaskResponder, LoadTypeStatusResponder,
+											FinishTwitterDownload, TrendsLocationAsyncTaskResponder,
+											LoadMoreResponder, LoadTypeStatusResponder,
 											UserListsAsyncTaskResponder, Export2HTMLAsyncTaskResponder {
-	
+
 	public static final int TYPE_LIST_SEARCH = 0;
 	public static final int TYPE_LIST_SEARCH_NOTIFICATIONS = 1;
 	public static final int TYPE_LIST_CONVERSATION = 2;
@@ -92,11 +90,11 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
 	public static final int TYPE_LIST_RETWEETS = 6;
 	public static final int TYPE_LIST_LISTUSERS = 7;
     public static final int TYPE_LIST_RETWEETERS = 8;
-	
+
 	public static final int TYPE_SIDEBAR_TWEET = 0;
 	public static final int TYPE_SIDEBAR_LINK = 1;
 	public static final int TYPE_SIDEBAR_USER = 2;
-	
+
 	public static final int DIALOG_SUBMENU_SEARCH = 0;
 	public static final int DIALOG_DELETE = 1;
 	public static final int DIALOG_IMPORT = 2;
@@ -110,13 +108,13 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
 	public static final int DIALOG_LISTS_ACTIONS = 10;
 	public static final int DIALOG_SUBMENU_SEARCH_TEMP = 11;
 	public static final int DIALOG_MANAGER_THEME = 12;
-	
+
 	public static int TIMELINE = 0;
 	public static int MENTIONS = 1;
 	public static int FAVORITES = 2;
 	public static int DIRECTMESSAGES = 3;
 	public static int SENT_DIRECTMESSAGES = 4;
-	
+
 	protected static final int NEW_ID = Menu.FIRST;
 	protected static final int IMPORT_ID = Menu.FIRST+1;
 	protected static final int TWEET_SAVED_ID = Menu.FIRST+2;
@@ -128,104 +126,102 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
 	protected static final int MANAGER_USER_ID = Menu.FIRST+8;
 	protected static final int SIZE_TEXT_ID = Menu.FIRST+9;
 	protected static final int SEARCH_USER_ID = Menu.FIRST+10;
-	
+
 	public static final int ACTIVITY_NEWEDITSEARCH = 0;
 	public static final int ACTIVITY_PREFERENCES = 1;
 	public static final int ACTIVITY_NEWSTATUS = 2;
 	public static final int ACTIVITY_USER = 3;
 	public static final int ACTIVITY_WALLPAPER = 4;
 	public static final int ACTIVITY_COLORS_APP = 5;
-		
+
 	private GestureDetector gestureDetector;
-		
+
 	protected static int mTypeList = TYPE_LIST_COLUMNUSER;
 	protected static int mTypeLastList = TYPE_LIST_COLUMNUSER;
 	public static int mTypeLastColumn = TIMELINE;
-	
-	private int mTypeSidebar = TYPE_SIDEBAR_TWEET; 
-	
+
+	private int mTypeSidebar = TYPE_SIDEBAR_TWEET;
+
 	private InfoLink mCurrentInfoLink;
-	
+
 	private int mColumStart = TIMELINE;
-	
+
 	protected TwitterApplication app;
 	public Twitter twitter;
 	protected ProgressDialog progressDialog;
-	
+
 	private boolean isLoadingData = false;
 	private boolean isFinishOnCreate = false;
     private boolean isAnimationOutStarted = false;
-	
+
 	protected LinearLayout mLayoutBackgroundApp;
 	protected LinearLayout mLayoutList;
 	protected LinearLayout mLayoutBottomBar;
 	protected LinearLayout mLayoutInfoBackground;
 	protected TweetTopicsListView mListView;
-	
-	public static UserList mCurrentList = null;
-	
+
+    public static UserList mCurrentList = null;
+
 	protected LoadMoreListItem mFooterView;
 	protected boolean hasFooter = false;
-	
+
 	protected boolean mListViewScroll = false;
 	protected int mPositionLastRead = 0;
-		
+
 	protected StatusListAdapter mAdapterStatusList;
 	protected RowSearchAdapter mAdapterSearch;
 	protected ResponseListAdapter mAdapterResponseList;
 
     protected ArrayList<Status> mConversationStatusList;
-	
+
 	protected ImageView mCountTimeline;
 	protected ImageView mCountMentions;
 	protected ImageView mCountDirectMessages;
-	
+
 	protected EntitySearch mEntitySearch = null;
 	protected EntityTweetUser mEntityUser = null;
-	
-	
+
+
 	public static boolean isGenericSearch = false;
 
 	protected LinearLayout mSidebarTweet;
-	
+
 	protected LinearLayout mSidebarHead;
 	protected LinearLayout mSidebarContent;
 	protected LinearLayout mSidebarMenu;
 	protected LinearLayout mSidebarFoot;
 	protected LinearLayout mSidebarBackground;
-	
+
 	protected LinearLayout mLayoutBlack;
-	
+
 	protected static InfoLink mSelectedInfoLink = null;
 
 	protected ThemeManager mThemeManager;
-	
+
 	protected boolean listIsConversation = false;
-	
-	protected ActionBar mActionBar;
-	
+
 	protected LinearLayout mLayoutSamplesSearch;
 	protected Button mButtonSamplesSearch;
-	
+
 	protected int mPositionSelectedTweet = -1;
 	protected int mPositionSelectedTweetConversation = -1;
-	
+
 	protected InfoUsers mUserNameSelected = null;
 	protected String mHashTagSelected = "";
-		
+
 	protected int mPositionSelectedSearch = -1;
 	protected boolean isToDoSearch = false;
-	
+
 	protected long mCurrentId = -1;
-	
+
 	protected TweetTopics mTweetTopics = null;
-	
-	
+
+
 	private BroadcastReceiver receiver = new BroadcastReceiver() {
-        
+
         @Override
-        public void onReceive(Context context, Intent intent) {  
-        	
+        public void onReceive(Context context, Intent intent) {
+
         	if (intent!=null) {
         		String action = intent.getAction();
 	        	if (Intent.ACTION_VIEW.equals(action)) {
@@ -239,18 +235,18 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
 	        		}
 	        	}
         	}
-        	
+
         }
     };
-	
+
 	public TweetTopicsCore(TweetTopics cnt)  {
 		mTweetTopics = cnt;
 	}
-	
+
 	public TweetTopics getTweetTopics() {
 		return mTweetTopics;
 	}
-	
+
     protected Dialog onCreateDialog(int id) {
         switch (id) {
         case DIALOG_SUBMENU_SEARCH:
@@ -271,7 +267,7 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
                 	}
                 }
             })
-            .create();    
+            .create();
         case DIALOG_MANAGER_THEME:
             return new AlertDialog.Builder(mTweetTopics)
             .setTitle(R.string.manager_theme)
@@ -289,7 +285,7 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
                     }
                 }
             })
-            .create(); 
+            .create();
         case DIALOG_SUBMENU_SEARCH_TEMP:
             return new AlertDialog.Builder(mTweetTopics)
             .setTitle(R.string.actions)
@@ -310,7 +306,7 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
                 	}
                 }
             })
-            .create(); 
+            .create();
         case DIALOG_IMPORT:
             return new AlertDialog.Builder(mTweetTopics)
             .setTitle(R.string.actions)
@@ -392,7 +388,7 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
                     	closeSidebar();
                     	Entity ent = new Entity("quiet");
         				ent.setValue("word", mUserNameSelected.getName());
-        				ent.setValue("type_id", 2);	
+        				ent.setValue("type_id", 2);
         				ent.save();
         				Utils.showMessage(mTweetTopics, mTweetTopics.getString(R.string.user_hidden_correct));
                     } else if (which==7) {
@@ -431,7 +427,7 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
                     	closeSidebar();
                     	Entity ent = new Entity("quiet");
         				ent.setValue("word", mHashTagSelected);
-        				ent.setValue("type_id", 1);	
+        				ent.setValue("type_id", 1);
         				ent.save();
         				Utils.showMessage(mTweetTopics, mTweetTopics.getString(R.string.hashtag_hidden_correct));
                     } else if (which==2) {
@@ -511,7 +507,7 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
     				    		user = e.getString("name");
     				    	}
         					for (int i=0; i<users.size(); i++) {
-        						if ( (!users.get(i).toLowerCase().equals("@"+it.getUsername().toLowerCase())) 
+        						if ( (!users.get(i).toLowerCase().equals("@"+it.getUsername().toLowerCase()))
         								&& (!users.get(i).toLowerCase().equals("@"+user.toLowerCase())) ) {
         							text += users.get(i) + " ";
         						}
@@ -528,7 +524,7 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
     				    		user = e.getString("name");
     				    	}
         					for (int i=0; i<users.size(); i++) {
-        						if ( (!users.get(i).toLowerCase().equals("@"+it.getUsername().toLowerCase())) 
+        						if ( (!users.get(i).toLowerCase().equals("@"+it.getUsername().toLowerCase()))
         								&& (!users.get(i).toLowerCase().equals("@"+user.toLowerCase())) ) {
         							text += users.get(i) + " ";
         						}
@@ -560,118 +556,118 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
         }
         return null;
     }
-	
+
 	protected void onCreate(Bundle savedInstanceState) {
 
 		gestureDetector = new GestureDetector(this);
-		
+
 		Intent intent=new Intent();
 		intent.setAction("org.adw.launcher.counter.SEND");
 		intent.putExtra("PNAME", Utils.packageName);
 		intent.putExtra("COUNT", 0);
 		mTweetTopics.sendBroadcast(intent);
-        
+
 		if (mTweetTopics.getPreference().getBoolean("prf_notif_delete_notifications_inside", true)) {
 			((NotificationManager) mTweetTopics.getSystemService(Context.NOTIFICATION_SERVICE)).cancelAll();
 		}
-        
+
         Utils.saveNotificationsApp(mTweetTopics, true);
-                
+
         Utils.setActivity(mTweetTopics);
 
     	if (mTweetTopics.getPreference().getString("prf_orientation", "1").equals("2")) {
     		mTweetTopics.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
     	}
-               
+
         OnAlarmReceiver.callAlarm(mTweetTopics);
-        
+
         try {
             DataFramework.getInstance().open(mTweetTopics, Utils.packageName);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        
+
         long mUserStart = -1;
-        
+
         if (savedInstanceState != null) {
         	mCurrentId = savedInstanceState.getLong(DataFramework.KEY_ID);
         	if (savedInstanceState.containsKey("start_user_id")) mUserStart = Long.parseLong(savedInstanceState.getString("start_user_id"));
         	if (savedInstanceState.containsKey("start_column")) mColumStart = Integer.parseInt(savedInstanceState.getString("start_column"));
        	} else {
-       		Bundle extras = mTweetTopics.getIntent().getExtras();  
+       		Bundle extras = mTweetTopics.getIntent().getExtras();
        		if (extras != null) {
        			mCurrentId = extras.getLong(DataFramework.KEY_ID);
        			if (extras.containsKey("start_user_id")) mUserStart = Long.parseLong(extras.getString("start_user_id"));
        			if (extras.containsKey("start_column")) mColumStart = Integer.parseInt(extras.getString("start_column"));
        		}
        	}
-        
+
         mThemeManager = new ThemeManager(mTweetTopics);
         mThemeManager.setTheme();
-                        
+
         mCountTimeline = (ImageView) mTweetTopics.findViewById(R.id.count_timeline);
         mCountMentions = (ImageView) mTweetTopics.findViewById(R.id.count_mentions);
         mCountDirectMessages = (ImageView) mTweetTopics.findViewById(R.id.count_directmessages);
-		
-        mSidebarHead = (LinearLayout) mTweetTopics.findViewById(R.id.sidebar_head);  
-    	mSidebarContent = (LinearLayout) mTweetTopics.findViewById(R.id.sidebar_content);  
-    	
+
+        mSidebarHead = (LinearLayout) mTweetTopics.findViewById(R.id.sidebar_head);
+    	mSidebarContent = (LinearLayout) mTweetTopics.findViewById(R.id.sidebar_content);
+
     	mSidebarMenu = (LinearLayout) mTweetTopics.findViewById(R.id.sidebar_menu);
     	mSidebarFoot = (LinearLayout) mTweetTopics.findViewById(R.id.sidebar_foot);
     	mSidebarBackground = (LinearLayout) mTweetTopics.findViewById(R.id.sidebar_background);
-        
+
         mLayoutBlack = (LinearLayout) mTweetTopics.findViewById(R.id.layout_black);
-        
+
         mLayoutBackgroundApp = (LinearLayout) mTweetTopics.findViewById(R.id.layout_background_app);
-		
+
 		mLayoutList = (LinearLayout) mTweetTopics.findViewById(R.id.layout_list);
-		
+
 		mLayoutBottomBar  = (LinearLayout) mTweetTopics.findViewById(R.id.layout_bottom_bar);
-						
+
 		mLayoutInfoBackground = (LinearLayout) mTweetTopics.findViewById(R.id.layout_info_background);
-		
+
 		//mListView = (ListView) mTweetTopics.findViewById(R.id.list);
-		
+
 		createListView();
-				
+
         mLayoutList.addView(mListView.get());
-                
+
 		mFooterView = (LoadMoreListItem) mTweetTopics.getLayoutInflater().inflate(R.layout.load_more, null);
 		mFooterView.setBackgroundDrawable(Utils.createStateListDrawable(mTweetTopics, mThemeManager.getColor("list_background_row_color")));
 		mFooterView.showFooterText();
 
-        mSidebarTweet = (LinearLayout) mTweetTopics.findViewById(R.id.sidebar_menu_tweet);  
-        
+        mSidebarTweet = (LinearLayout) mTweetTopics.findViewById(R.id.sidebar_menu_tweet);
+
         mSidebarTweet.setOnTouchListener(new OnTouchListener() {
 
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
 				return gestureDetector.onTouchEvent(event);
 			}
-        	
+
         });
-        
+
 
         mTweetTopics.setTitle(mTweetTopics.getText(R.string.app_name));
-        
-        
+
+
         refreshTheme();
-        
+
         // botones para ejemplos
-        
+
         mLayoutSamplesSearch = (LinearLayout) mTweetTopics.findViewById(R.id.layout_samples_search);
-        
+
         mButtonSamplesSearch = (Button) mTweetTopics.findViewById(R.id.bt_samples_search);
-        
+
         mButtonSamplesSearch.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-				showDialogSamples();		
+				showDialogSamples();
 			}
 
         });
-        
+
         loadGridSearch();
 
 
@@ -686,7 +682,7 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
         }
 
         //OnAlarmReceiver.callAlarm(this);
-	
+
         final Object data = mTweetTopics.getLastNonConfigurationInstance();
         if (data != null) {
         	InfoTweetList itl = (InfoTweetList)data;
@@ -706,17 +702,17 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
         } else {
         	columnUser(mColumStart);
         }
-        
+
        	isFinishOnCreate = true;
-       	
+
 	}
 
-	
+
     public void onCreateOptionsMenu(Menu menu) {
         menu.add(0, NEW_ID, 0,  R.string.new_search)
 			.setIcon(android.R.drawable.ic_menu_add);
         menu.add(0, SEARCH_USER_ID, 0,  R.string.search_users)
-    		.setIcon(android.R.drawable.ic_menu_search);        
+    		.setIcon(android.R.drawable.ic_menu_search);
         menu.add(0, SIZE_TEXT_ID, 0,  R.string.size)
         	.setIcon(R.drawable.ic_menu_font_size);
         menu.add(0, PREFERENCES_ID, 0,  R.string.preferences)
@@ -730,7 +726,7 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
         menu.add(0, SAMPLES_ID, 0,  R.string.samples_search);
         menu.add(0, MANAGER_USER_ID, 0,  R.string.manager_user);
     }
-    
+
     public boolean onMenuItemSelected(int featureId, MenuItem item) {
         switch(item.getItemId()) {
         case NEW_ID:
@@ -771,31 +767,31 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
         }
         return false;
     }
-    
+
     protected void onResume() {
-    	
+
 		try {
             DataFramework.getInstance().open(mTweetTopics, Utils.packageName);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        
+
     	Entity user = DataFramework.getInstance().getTopEntity("users", "active=1", "");
     	if (user==null) {
     		newUser();
     	}
-        
+
         mTweetTopics.registerReceiver(receiver, new IntentFilter(Intent.ACTION_VIEW));
-                
+
         if (app.isReloadUserTwitter()) {
         	if (app.getLoad()==2) {
         		mLayoutInfoBackground.setVisibility(View.VISIBLE);
         	}
         }
-    	
+
     	Utils.saveStatusWorkApp(mTweetTopics, true);
     	app.setOnFinishTwitterDownload(this);
-    	
+
     	if (isFinishOnCreate) {
     		isFinishOnCreate = false;
         	/*final Object data = mTweetTopics.getLastNonConfigurationInstance();
@@ -808,55 +804,55 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
     	} else {
     		twitter = ConnectionManager.getInstance().getTwitterForceActiveUser();
     	}
-    	
+
     	if (Utils.getShowHelp(mTweetTopics)) {
     		showHelp();
     	} else {
     		Utils.showChangeLog(mTweetTopics);
     	}
-    	
+
     }
-    
+
     protected void onPause() {
     	mTweetTopics.unregisterReceiver(receiver);
         Utils.saveStatusWorkApp(mTweetTopics, false);
         app.setOnFinishTwitterDownload(null);
     }
-    
+
     private void onListItemClick(View v, int position, long id) {
-    	
+
     	try {
 			if (v.equals(mFooterView)) {
-				
+
 				loadOlderTweets();
-				
+
 			} else {
-				
+
 				if (listIsConversation) {
-		
+
 					mPositionSelectedTweetConversation = position;
 					showSidebarTweet();
 
 					mAdapterStatusList.selectedRow(position);
-					
+
 				} else {
 					mPositionSelectedTweet = position;
 					if (mAdapterResponseList.getItem(position).getType() == RowResponseList.TYPE_MORE_TWEETS) {
 						showDialogMoreTweetDown();
-					} else {					
+					} else {
 						showSidebarTweet();
 						mAdapterResponseList.selectedRow(position);
 					}
-	
+
 				}
-				
+
 			}
     	} catch (Exception e) {
     		e.printStackTrace();
     	}
-		
+
 	}
-    
+
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
 
     	IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
@@ -898,7 +894,7 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
     	case ACTIVITY_COLORS_APP:
     		refreshTheme();
     		break;
-    	case ACTIVITY_NEWSTATUS: 
+    	case ACTIVITY_NEWSTATUS:
     		/*
     		if( resultCode != Activity.RESULT_CANCELED ) {
     			if (mTypeList == TYPE_LIST_COLUMNUSER && mTypeLastColumn == TIMELINE) {
@@ -906,8 +902,8 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
     			}
     		}*/
     		break;
-    	case ACTIVITY_USER: 
-    		
+    	case ACTIVITY_USER:
+
     		if( resultCode == Activity.RESULT_OK ) { // ha cambiado de usuario
     			twitter = ConnectionManager.getInstance().getTwitterForceActiveUser();
     			if (DataFramework.getInstance().getEntityListCount("tweets_user", "user_tt_id="+ConnectionManager.getInstance().getIdUserDB())<=0) {
@@ -925,12 +921,12 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
     				}
     			}*/
     		}
-    		
+
     		break;
     	}
-    	
+
     }
-    
+
     public Object onRetainNonConfigurationInstance() {
     	InfoTweetList itl = new InfoTweetList();
     	itl.setResponseListAdapter(mAdapterResponseList);
@@ -945,21 +941,21 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
     	itl.setTextTypeStatus(mCurrentTextTypeStatus);
     	return itl;
     }
-    
+
     protected void onDestroy() {
         DataFramework.getInstance().close();
     }
-    
+
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-        	
+
         	if (searchTask!=null) {
         		searchTask.cancel(true);
         		searchTask = null;
         		isGenericSearch = false;
         		return false;
         	}
-        	
+
         	if (mSidebarTweet.getVisibility()==View.VISIBLE) {
                 if (!isAnimationOutStarted) {
         		    closeSidebar();
@@ -967,49 +963,49 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
 
                 return false;
         	}
-        	
+
         	if (listIsConversation) {
         		backToSearchFromConversation();
         		return false;
         	}
 
 			// salvamos el ultimo id en caso de salir
-			
+
 			if (mTypeList == TYPE_LIST_COLUMNUSER) {
 				markPositionLastReadAsLastReadId();
 			}
-			
+
         }
         return true;
     }
-    
+
 	protected void onSaveInstanceState(Bundle outState) {
 //		outState.putString("file", file);
 
 	}
 
     /*
-     * 
+     *
      * Funciones auxiliares
-     * 
+     *
      */
-	
+
     /*
-     * 
+     *
      * retweet status
-     * 
+     *
      */
-    
+
     private AsyncTask<Long, Void, String> exportHTML;
-    
+
     public void export2HTML() {
-    	
+
 		progressDialog = ProgressDialog.show(
 				mTweetTopics,
 				mTweetTopics.getResources().getString(R.string.export_html_title),
 				mTweetTopics.getResources().getString(R.string.export_html_description)
 		);
-		
+
 		progressDialog.setCancelable(true);
 		progressDialog.setOnCancelListener(new OnCancelListener() {
 
@@ -1017,9 +1013,9 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
 			public void onCancel(DialogInterface arg0) {
 				if (exportHTML!=null) exportHTML.cancel(true);
 			}
-			
+
 		});
-    	
+
     	if (listIsConversation) {
     		exportHTML = new Export2HTMLAsyncTask(this, null, mAdapterStatusList).execute();
     	} else {
@@ -1027,7 +1023,7 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
     	}
 
     }
-    
+
 
 	@Override
 	public void export2HTMLCancelled() {
@@ -1054,14 +1050,14 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
 	/*
 	public void export2HTML2() {
 		try {
-			
+
 			String f = Utils.appDirectory+"export_html_"+ System.currentTimeMillis() +".html";
-			
+
 			File file = new File(f);
     		if (file.exists()) file.delete();
-    		FileOutputStream fOut = new FileOutputStream(f); 
-    		OutputStreamWriter osw = new OutputStreamWriter(fOut); 
-			
+    		FileOutputStream fOut = new FileOutputStream(f);
+    		OutputStreamWriter osw = new OutputStreamWriter(fOut);
+
     		osw.write("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\"\n"
 				+ "\"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\n"
 				+ "<html>\n"
@@ -1085,7 +1081,7 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
 				+ "div.username {\n"
 				+ "font-size: 13px;\n"
 				+ "font-weight: bolder;\n"
-				+ "}\n" 
+				+ "}\n"
 				+ "div.date {\n"
 				+ "font-size: 11px;\n"
 				+ "color: #999999;\n"
@@ -1130,18 +1126,18 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
         			+ "</div>\n");
         		}
         	}
-			
+
 			osw.append("</body>\n"
 				+ "</html>");
-			
+
             osw.flush();
             osw.close();
-			
+
     		Intent msg=new Intent(Intent.ACTION_SEND);
 			msg.setType("text/html");
 			msg.putExtra(Intent.EXTRA_STREAM, Uri.parse("file://"+f));
 			mTweetTopics.startActivity(Intent.createChooser(msg, mTweetTopics.getString(R.string.share)));
-			
+
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (Exception e) {
@@ -1187,35 +1183,35 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
 		v.setBackgroundColor(Color.parseColor("#99"+(mThemeManager.getTheme()==1?"FFFFFF":"000000")));
 		return v;
 	}
-	
+
 	private void setLayoutLoading() {
 		if (!isLoadingData) {
 			isLoadingData = true;
 			mLayoutList.removeAllViews();
 			LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
 			lp.gravity = Gravity.CENTER;
-			
+
 			LinearLayout ll = new LinearLayout(mTweetTopics);
 			ll.addView(getLoadingView());
 			ll.setLayoutParams(lp);
-			
+
 			mLayoutList.addView(ll, new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
 		}
 	}
-	
+
 	private void setLayoutListView() {
 		if (isLoadingData) {
 			mListView.onRefreshComplete();
 			isLoadingData = false;
 			mLayoutList.removeAllViews();
 			mLayoutList.addView(mListView.get());
-		} 
+		}
 	}
-	
+
 	protected void refreshColorsBars() {}
 
     public void refreshTheme() {
-    	
+
     	try {
 	    	boolean hasWallpaper = false;
 	    	File f = new File(Preferences.IMAGE_WALLPAPER);
@@ -1228,8 +1224,8 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
                 } catch (OutOfMemoryError e) {
                     e.printStackTrace();
                 }
-	    	} 
-	    	
+	    	}
+
 	    	if (!hasWallpaper) {
 	    		if (mThemeManager.getTheme()==ThemeManager.THEME_DEFAULT) {
 	    			mLayoutBackgroundApp.setBackgroundResource(R.drawable.background);
@@ -1252,12 +1248,12 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
     	refreshAdapters();
     	refreshButtonsColumns();
     }
-    
+
     public void refreshAdapters() {
     	if (mAdapterResponseList!=null) mAdapterResponseList.notifyDataSetChanged();
     	if (mAdapterStatusList!=null) mAdapterStatusList.notifyDataSetChanged();
     }
-    
+
     private void dialogLoadTheme() {
     	final ArrayList<Entity> ents = DataFramework.getInstance().getEntityList("themes");
 
@@ -1266,26 +1262,26 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
 			for (int i=0; i<ents.size(); i++) {
 				c[i] = ents.get(i).getString("name");
 			}
-			
+
 			AlertDialog.Builder builder = new AlertDialog.Builder(mTweetTopics);
 			builder.setTitle(R.string.load_theme);
 			builder.setItems(c, new DialogInterface.OnClickListener() {
-	
+
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
 					ColorsApp.loadTheme(mTweetTopics, ents.get(which).getString("theme"));
 					refreshTheme();
 				}
-	
-				
+
+
 			});
 	        builder.create();
-	        builder.show();	 
+	        builder.show();
 		} else {
 			Utils.showMessage(mTweetTopics, mTweetTopics.getString(R.string.no_themes));
 		}
     }
-    
+
     private void createListView() {
     	mListView = new TweetTopicsListView(mTweetTopics);
     	mListView.setDivider(Utils.createDividerDrawable(mTweetTopics, new ThemeManager(mTweetTopics).getColor("color_divider_tweet")));
@@ -1296,24 +1292,24 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
     	}
 		mListView.setFadingEdgeLength(6);
 		mListView.setCacheColorHint(mThemeManager.getColor("color_shadow_listview"));
-		
-		
+
+
 		mListView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener(){
             @Override
             public void onRefresh() {
                 reload();
             }
         });
-		
+
 		mListView.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View v, int position, long id) {
 				onListItemClick(v, position, id);
 			}
-			
+
 		});
-	 
+
 		mListView.setOnItemLongClickListener(new OnItemLongClickListener() {
 
 			@Override
@@ -1323,12 +1319,12 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
 						if (listIsConversation) {
 							mPositionSelectedTweetConversation = position;
 						} else {
-							if ( (mAdapterResponseList.getItem(position).getType() != RowResponseList.TYPE_MORE_TWEETS) 
+							if ( (mAdapterResponseList.getItem(position).getType() != RowResponseList.TYPE_MORE_TWEETS)
 									&& (mAdapterResponseList.getItem(position).getType() != RowResponseList.TYPE_PUB) ) {
 								mPositionSelectedTweet = position;
 							}
 						}
-						
+
 
                         ArrayList<String> codes = Utils.getArraySubMenuTweet(mTweetTopics);
                         if (codes.size()==1) {
@@ -1343,9 +1339,9 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
 				return false;
 			}
 
-			
+
 		});
-		
+
         mListView.setOnScrollListener(new OnScrollListener() {
 
 			@Override
@@ -1380,12 +1376,12 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
 			public void onScrollStateChanged(AbsListView view, int scrollState) {
 				//mListView.setOnScrollStateChanged(view, scrollState);
 				if (scrollState==SCROLL_STATE_TOUCH_SCROLL) closeSidebar();
-				
+
 				if (scrollState==SCROLL_STATE_TOUCH_SCROLL) {
 					//Log.d(Utils.TAG, "moviendo");
 					flinging = true;
 			    }
-				
+
 				if (scrollState != OnScrollListener.SCROLL_STATE_FLING && scrollState!=SCROLL_STATE_TOUCH_SCROLL) {
 					//Log.d(Utils.TAG, "parado");
 					flinging = false;
@@ -1393,13 +1389,13 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
 					TweetListItem.executeLoadTasks();
 			    }
 			}
-        	
+
         });
 
     }
-    
+
     private boolean flinging = false;
-    
+
     public boolean isFlinging() {
     	return flinging;
     }
@@ -1407,12 +1403,12 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
     public ThemeManager getThemeManager() {
     	return mThemeManager;
     }
-    
+
     public boolean isSidebarOpen() {
     	return mSidebarTweet.getVisibility()==View.VISIBLE;
     }
 
-    
+
     public boolean openSidebar() {
     	if (!isSidebarOpen()) {
 	    	mSidebarTweet.setVisibility(View.VISIBLE);
@@ -1424,7 +1420,7 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
     	}
     	return false;
     }
-    
+
     public boolean closeSidebar() {
     	if (isSidebarOpen()) {
     		if (loadSidebarUser!=null) loadSidebarUser.cancel(true);
@@ -1452,7 +1448,7 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
     	}
     	return false;
     }
-    
+
     public void setFavoritedSelected(boolean b) {
     	if (mAdapterResponseList!=null) {
     		if (mPositionSelectedTweet>=0) {
@@ -1460,7 +1456,7 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
     		}
     	}
     }
-    
+
     public boolean isFavoritedSelected() {
     	if (mAdapterResponseList!=null) {
     		if (mPositionSelectedTweet>=0) {
@@ -1469,7 +1465,7 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
     	}
     	return false;
     }
-    
+
     public void searchUsers() {
     	final EditText et = new EditText(mTweetTopics);
     	AlertDialog.Builder builder = new AlertDialog.Builder(mTweetTopics);
@@ -1480,33 +1476,33 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
 
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-				loadTypeStatus(LoadTypeStatusAsyncTask.SEARCH_USERS, et.getText().toString());		
+				loadTypeStatus(LoadTypeStatusAsyncTask.SEARCH_USERS, et.getText().toString());
 			}
-			
+
 		});
 		builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
 
 			@Override
-			public void onClick(DialogInterface dialog, int which) {	
+			public void onClick(DialogInterface dialog, int which) {
 			}
-			
+
 		});
 		AlertDialog alert = builder.create();
 		alert.show();
     }
-    
+
     public void showDialogRetweetOptionsUser() {
     	mTweetTopics.showDialog(DIALOG_RETWEETS_ACTIONS);
     }
-    
+
     public void showListUser() {
     	mTweetTopics.showDialog(DIALOG_LISTS_ACTIONS);
     }
-    
+
     private void showDialogExit() {
-    	
+
     	int minutes = Integer.parseInt(mTweetTopics.getPreference().getString("prf_time_notifications", "15"));
-    	
+
     	if (minutes>0) {
 	    	AlertDialog.Builder builder = new AlertDialog.Builder(mTweetTopics);
 			builder.setTitle(R.string.dialog_exit);
@@ -1527,14 +1523,14 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
     		mTweetTopics.finish();
     	}
     }
-    
+
     private void showDialogColoringTweets() {
-    	
+
 		final ArrayList<Entity> entsColor = DataFramework.getInstance().getEntityList("type_colors");
-		
+
 		ColoringTweetsAdapter ad = new ColoringTweetsAdapter(mTweetTopics, entsColor);
 
-		
+
 		AlertDialog.Builder builder = new AlertDialog.Builder(mTweetTopics);
 		builder.setTitle(R.string.colors);
 		builder.setAdapter(ad, new DialogInterface.OnClickListener() {
@@ -1550,7 +1546,7 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
 				refreshAdapters();
 			}
 
-			
+
 		});
         builder.setPositiveButton(R.string.new_item, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
@@ -1573,9 +1569,9 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
             }
         });
         builder.create();
-        builder.show();	 
+        builder.show();
     }
-    
+
     public void showDialogRetweet() {
     	final ArrayList<String> phrases = new ArrayList<String>();
 		ArrayList<Entity> ents = DataFramework.getInstance().getEntityList("types_retweets");
@@ -1591,7 +1587,7 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
 			c[i+3] = mTweetTopics.getString(R.string.retweet) + " \"" + ents.get(i).getString("phrase") + "\" " + mTweetTopics.getString(R.string.now);
 			phrases.add(ents.get(i).getString("phrase"));
 		}
-		
+
 		AlertDialog.Builder builder = new AlertDialog.Builder(mTweetTopics);
 		builder.setTitle(R.string.retweet);
 		builder.setItems(c, new DialogInterface.OnClickListener() {
@@ -1625,7 +1621,7 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
 				closeSidebar();
 			}
 
-			
+
 		});
         builder.setNeutralButton(R.string.show_retweets, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
@@ -1638,9 +1634,9 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
             }
         });
         builder.create();
-        builder.show();	 
+        builder.show();
     }
-    
+
     private void deleteTempSearch() {
     	ArrayList<Entity> ents = DataFramework.getInstance().getEntityList("search", "is_temp=1", "date_create desc");
 		if (ents.size()>6) {
@@ -1650,12 +1646,12 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
 			DataFramework.getInstance().getDB().execSQL(sqldelete);
 		}
     }
-    
+
     public void showDialogHashTag(String hashtag) {
     	mHashTagSelected = hashtag;
     	mTweetTopics.showDialog(DIALOG_HASHTAG);
     }
-    
+
     public void addFooter() {
     	try {
     		if (!hasFooter) {
@@ -1666,7 +1662,7 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
     		e.printStackTrace();
     	}
     }
-    
+
     public void removeFooter() {
     	try {
 	    	if (hasFooter) {
@@ -1677,37 +1673,37 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
     		e.printStackTrace();
     	}
     }
-    
+
     public void showHelp() {
     	ImageView help = (ImageView) mTweetTopics.findViewById(R.id.image_help);
-    	int res = R.drawable.help_en; 
+    	int res = R.drawable.help_en;
 		if (Locale.getDefault().getLanguage().equals("es")) {
 			res = R.drawable.help_es;
 		}
 		help.setImageResource(res);
-		
+
 		help.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
 				hideHelp();
 			}
-			
+
 		});
-		
+
 		LinearLayout layout = (LinearLayout) mTweetTopics.findViewById(R.id.layout_image_help);
-		
+
 		layout.setVisibility(View.VISIBLE);
-    	
+
     }
-    
+
     public void hideHelp() {
     	ImageView help = (ImageView) mTweetTopics.findViewById(R.id.image_help);
     	help.setImageBitmap(null);
 		LinearLayout layout = (LinearLayout) mTweetTopics.findViewById(R.id.layout_image_help);
 		layout.setVisibility(View.GONE);
     }
-        
+
     public void goToDirectMessages() {
 		if (mTypeList == TYPE_LIST_COLUMNUSER && mTypeLastColumn == DIRECTMESSAGES) {
 			reloadColumnUser(true);
@@ -1715,23 +1711,23 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
 			columnUser(DIRECTMESSAGES);
 		}
     }
-    
+
     public void goToTop() {
 		mListView.setSelection(0);
     }
-    
+
     public void goToBottom() {
     	if (mAdapterResponseList!=null) {
     		mListView.setSelection(mAdapterResponseList.getCount()-1);
     	}
     }
-    
+
     public void goToLastRead() {
     	if (mAdapterResponseList!=null) {
    			mListView.setSelection(mAdapterResponseList.getLastReadPosition());
     	}
     }
-    
+
     public void showMap(InfoTweet it) {
     	if (it.hasLocation()) {
     		Intent map = new Intent(mTweetTopics, MapSearch.class);
@@ -1743,7 +1739,7 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
     		Utils.showMessage(mTweetTopics, mTweetTopics.getString(R.string.no_tweet_map));
     	}
     }
-    
+
     public void directMessage(String username) {
     	/*boolean isFriend = false;
 
@@ -1776,11 +1772,11 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
         mTweetTopics.startActivityForResult(newstatus, ACTIVITY_NEWSTATUS);
 
     }
-    
+
     public void updateStatus(int type, String text, InfoTweet tweet) {
     	updateStatus(type, text, tweet, "");
     }
-    
+
     private void updateStatus(int type, String text, InfoTweet tweet, String prev) {
     	mPositionSelectedTweet = -1;
     	Intent newstatus = new Intent(mTweetTopics, NewStatus.class);
@@ -1804,14 +1800,14 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
     	mTweetTopics.startActivityForResult(newstatus, ACTIVITY_NEWSTATUS);
     	closeSidebar();
     }
-    
+
     private void sendBroadcastWidgets() {
     	WidgetCounters4x1.updateAll(mTweetTopics);
         WidgetCounters2x1.updateAll(mTweetTopics);
     }
-        
+
     protected void reloadNewMsgInSlide() {}
-    
+
     private void reloadNewMsgInTimeline(int totalTimeline) {
     	if (totalTimeline>0) {
     		mCountTimeline.setVisibility(View.VISIBLE);
@@ -1820,7 +1816,7 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
     		mCountTimeline.setVisibility(View.GONE);
     	}
     }
-    
+
     private void reloadNewMsgInMentions(int totalMentions) {
     	if (totalMentions>0) {
     		mCountMentions.setVisibility(View.VISIBLE);
@@ -1829,7 +1825,7 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
     		mCountMentions.setVisibility(View.GONE);
     	}
     }
-    
+
     private void reloadNewMsgInDirectMessage(int totalDirectMessages) {
     	if (totalDirectMessages>0) {
     		mCountDirectMessages.setVisibility(View.VISIBLE);
@@ -1838,25 +1834,25 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
     		mCountDirectMessages.setVisibility(View.GONE);
     	}
     }
-    
+
     private void reloadNewMsgInCurrentColumns(int total) {
     	if (mTypeList == TYPE_LIST_COLUMNUSER) {
     		if (mTypeLastColumn == TIMELINE) {
     			reloadNewMsgInTimeline(total);
     		}
 			if (mTypeLastColumn == MENTIONS) {
-				reloadNewMsgInMentions(total);		
+				reloadNewMsgInMentions(total);
 			}
 			if (mTypeLastColumn == DIRECTMESSAGES) {
 				reloadNewMsgInDirectMessage(total);
 			}
     	}
     }
-    
+
     private void reloadNewMsgInAllColumns() {
     	reloadNewMsgInAllColumns(true, true, true);
     }
-    
+
     private void reloadNewMsgInAllColumns(boolean timeline, boolean mentions, boolean directs) {
     	mListViewScroll = true;
     	int totalTimeline = 0;
@@ -1864,36 +1860,36 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
     	int totalDirectMessages = 0;
     	Entity e = DataFramework.getInstance().getTopEntity("users", "active=1", "");
     	if (e!=null) {
-    		
+
     		if (timeline) {
 	    		if (e.getInt("no_save_timeline")!=1) {
-	    			totalTimeline = DataFramework.getInstance().getEntityListCount("tweets_user", "type_id = " + TIMELINE 
+	    			totalTimeline = DataFramework.getInstance().getEntityListCount("tweets_user", "type_id = " + TIMELINE
 	       				+ " AND user_tt_id="+e.getId() + " AND tweet_id >'" + Utils.fillZeros(""+e.getString("last_timeline_id"))+"'");
 	    		}
     		}
 
     		if (mentions) {
-	    		totalMentions = DataFramework.getInstance().getEntityListCount("tweets_user", "type_id = " + MENTIONS 
+	    		totalMentions = DataFramework.getInstance().getEntityListCount("tweets_user", "type_id = " + MENTIONS
 	       				+ " AND user_tt_id="+e.getId() + " AND tweet_id >'" + Utils.fillZeros(""+e.getString("last_mention_id"))+"'");
     		}
 
     		if (directs) {
-	    		totalDirectMessages = DataFramework.getInstance().getEntityListCount("tweets_user", "type_id = " + DIRECTMESSAGES 
+	    		totalDirectMessages = DataFramework.getInstance().getEntityListCount("tweets_user", "type_id = " + DIRECTMESSAGES
 	       				+ " AND user_tt_id="+e.getId() + " AND tweet_id >'" + Utils.fillZeros(""+e.getString("last_direct_id"))+"'");
     		}
     	}
 
     	if (timeline) reloadNewMsgInTimeline(totalTimeline);
-    	
+
     	if (mentions) reloadNewMsgInMentions(totalMentions);
-    	
+
     	if (directs) reloadNewMsgInDirectMessage(totalDirectMessages);
 
 
     }
-    
+
     protected void refreshButtonsColumns() {}
-    
+
     private boolean markPositionLastReadFirstVisible() {
     	if (mTypeList == TYPE_LIST_COLUMNUSER) {
     		if (mTypeLastColumn == TIMELINE || mTypeLastColumn == MENTIONS || mTypeLastColumn == DIRECTMESSAGES) {
@@ -1905,7 +1901,7 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
     	}
     	return false;
     }
-    
+
     public boolean markLastReadId(int position, long id) {
     	if (mEntityUser!=null) {
 	    	if (mTypeList == TYPE_LIST_COLUMNUSER) {
@@ -1921,7 +1917,7 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
     	}
     	return false;
     }
-    
+
     private boolean markPositionLastReadAsLastReadId() {
     	sendBroadcastWidgets();
     	if (mTypeList == TYPE_LIST_COLUMNUSER) {
@@ -1948,15 +1944,15 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
 		    				e.printStackTrace();
 		    			}
 		    		}
-		    		
+
 	    		}
-	    		
+
 	    	}
     	}
     	return false;
     }
-    
-    
+
+
     public void importSearch(String text) {
     	if (Utils.importSearch(mTweetTopics, text)) {
     		Utils.showMessage(mTweetTopics, mTweetTopics.getString(R.string.import_correct));
@@ -1965,7 +1961,7 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
     		Utils.showMessage(mTweetTopics, mTweetTopics.getString(R.string.import_no_correct));
     	}
     }
-    
+
     public void importTheme(String text) {
     	if (Utils.importTheme(mTweetTopics, text)) {
     		Utils.showMessage(mTweetTopics, mTweetTopics.getString(R.string.import_correct));
@@ -1974,22 +1970,22 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
     		Utils.showMessage(mTweetTopics, mTweetTopics.getString(R.string.import_no_correct));
     	}
     }
-    
+
     public void showSizeText() {
-    	
+
     	final int minValue = 6;
-    	
+
     	LayoutInflater factory = LayoutInflater.from(mTweetTopics);
         final View sizesFontView = factory.inflate(R.layout.alert_dialog_sizes_font, null);
-                
+
         ((TextView)sizesFontView.findViewById(R.id.txt_size_titles)).setText(mTweetTopics.getString(R.string.size_title) + " (" + Utils.getSizeTitles(mTweetTopics) + ")");
         ((TextView)sizesFontView.findViewById(R.id.txt_size_text)).setText(mTweetTopics.getString(R.string.size_text) + " (" + Utils.getSizeText(mTweetTopics) + ")");
-        
+
         SeekBar sbSizeTitles = (SeekBar)sizesFontView.findViewById(R.id.sb_size_titles);
-        
+
         sbSizeTitles.setMax(18);
         sbSizeTitles.setProgress(Utils.getSizeTitles(mTweetTopics)-minValue);
-    	
+
         sbSizeTitles.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
 
 			@Override
@@ -2002,19 +1998,19 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
 			}
 
 			@Override
-			public void onStartTrackingTouch(SeekBar seekBar) {				
+			public void onStartTrackingTouch(SeekBar seekBar) {
 			}
 
 			@Override
-			public void onStopTrackingTouch(SeekBar seekBar) {				
+			public void onStopTrackingTouch(SeekBar seekBar) {
 			}
-    		
+
     	});
-        
+
         SeekBar sbSizeText = (SeekBar)sizesFontView.findViewById(R.id.sb_size_text);
         sbSizeText.setMax(18);
         sbSizeText.setProgress(Utils.getSizeText(mTweetTopics)-minValue);
-    	
+
         sbSizeText.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
 
 			@Override
@@ -2027,15 +2023,15 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
 			}
 
 			@Override
-			public void onStartTrackingTouch(SeekBar seekBar) {				
+			public void onStartTrackingTouch(SeekBar seekBar) {
 			}
 
 			@Override
-			public void onStopTrackingTouch(SeekBar seekBar) {				
+			public void onStopTrackingTouch(SeekBar seekBar) {
 			}
-    		
+
     	});
-        
+
         AlertDialog.Builder builder = new AlertDialog.Builder(mTweetTopics);
         builder.setTitle(R.string.font_size);
         builder.setView(sizesFontView);
@@ -2045,16 +2041,16 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
         });
         builder.create();
         builder.show();
-        
+
     }
 
     public void showDialogSamples() {
     	final boolean[] samplesChecked = new boolean[]{false, false, false, false, false, false, false, false, false, false, false, false};
-    	
+
     	final CheckBox cb = new CheckBox(mTweetTopics);
     	cb.setText(R.string.samples_search_lang);
     	cb.setTextColor(Color.GRAY);
-    	
+
     	AlertDialog builder = new AlertDialog.Builder(mTweetTopics)
             .setTitle(R.string.samples_search)
             .setView(cb)
@@ -2170,24 +2166,24 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
                 public void onClick(DialogInterface dialog, int whichButton) {
                 }
             })
-           .create();  
+           .create();
     	builder.show();
     }
 
     public static boolean isTypeList(int t) {
-    	if (mTypeList==t) 
+    	if (mTypeList==t)
     		return true;
     	else
     		return false;
     }
-    
+
     public static boolean isTypeLastColumn(int t) {
-    	if (mTypeLastColumn==t) 
+    	if (mTypeLastColumn==t)
     		return true;
     	else
     		return false;
-    }    
-    
+    }
+
     protected void onClickIconActivity() {
     	if ( (mTypeList == TYPE_LIST_CONVERSATION) || (mTypeList == TYPE_LIST_READAFTER) ) {
 
@@ -2199,7 +2195,7 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
 
     	}
     }
-    
+
     public int getPositionTweet() {
     	int pos = -1;
     	if (mTypeList == TYPE_LIST_CONVERSATION) {
@@ -2214,7 +2210,7 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
 
 		return pos;
     }
-    
+
     public InfoTweet getInfoTweet(int pos) {
     	InfoTweet it = null;
     	if (mTypeList == TYPE_LIST_CONVERSATION) {
@@ -2230,7 +2226,7 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
 		return it;
     }
 
-    
+
     public InfoTweet getCurrentInfoTweet() {
     	InfoTweet it = null;
     	if (mTypeList == TYPE_LIST_CONVERSATION) {
@@ -2259,7 +2255,7 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
 
 		return false;
     }
-    
+
     public boolean isBOFTweet() {
     	if (mTypeList == TYPE_LIST_CONVERSATION) {
 			if (mAdapterStatusList!=null)	{
@@ -2273,7 +2269,7 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
 
 		return false;
     }
-    
+
     public boolean isEOFTweet(int pos) {
     	if (mTypeList == TYPE_LIST_CONVERSATION) {
 			if (mAdapterStatusList!=null)	{
@@ -2287,7 +2283,7 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
 
 		return true;
     }
-    
+
     public boolean isEOFTweet() {
     	if (mTypeList == TYPE_LIST_CONVERSATION) {
 			if (mAdapterStatusList!=null)	{
@@ -2306,33 +2302,33 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
     	mTypeLastList = mTypeList;
     	mTypeList = t;
     }
-    
+
     public void copyToClipboard(String text) {
-		ClipboardManager clipboard = (ClipboardManager) mTweetTopics.getSystemService(Context.CLIPBOARD_SERVICE);  
-		clipboard.setText(text); 
+		ClipboardManager clipboard = (ClipboardManager) mTweetTopics.getSystemService(Context.CLIPBOARD_SERVICE);
+		clipboard.setText(text);
 		Utils.showMessage(mTweetTopics, mTweetTopics.getString(R.string.copied_to_clipboard));
     }
-    
+
     public void newSearch() {
     	Intent newsearch = new Intent(mTweetTopics, TabNewEditSearch.class);
     	mTweetTopics.startActivityForResult(newsearch, ACTIVITY_NEWEDITSEARCH);
     }
-    
+
     public void newUser() {
     	Intent newuser = new Intent(mTweetTopics, Users.class);
     	mTweetTopics.startActivityForResult(newuser, ACTIVITY_USER);
     }
-    
+
     /*
-     * 
+     *
      * Animations
-     * 
+     *
      */
-    
+
     private void animationLayoutIn(LinearLayout l) {
     	animationLayoutIn(l, Utils.TYPE_ANIM_RIGHT);
     }
-    
+
     private void animationLayoutIn(LinearLayout l, int type) {
     	int anim = R.anim.inlayout_right_left;
     	if (type==Utils.TYPE_ANIM_TOP) {
@@ -2345,11 +2341,11 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
 		l.setLayoutAnimationListener(null);
 		l.startLayoutAnimation();
     }
-    
+
     private void animationLayoutOut(final LinearLayout l) {
     	animationLayoutOut(l, Utils.TYPE_ANIM_RIGHT);
     }
-    
+
     private void animationLayoutOut(final LinearLayout l, int type) {
         int anim = R.anim.outlayout_left_right;
         if (type==Utils.TYPE_ANIM_TOP) {
@@ -2382,20 +2378,20 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
 
         l.startLayoutAnimation();
     }
-    
+
     public class AnimationRotation {
-        
+
     	final public static int TYPE_CONVERSATION = 0;
     	final public static int TYPE_TRANSLATE = 1;
     	final public static int TYPE_MENU = 2;
-    	
+
     	private Status mStatusConversation;
     	private int typeRotate = 0;
     	private int type = 0;
-    	
+
     	public AnimationRotation() {
     	}
-    	
+
     	public void goToConversation(Status st) {
     		type = TYPE_CONVERSATION;
     		mStatusConversation = st;
@@ -2413,7 +2409,7 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
         		setViewConversation();
         	}
     	}
-    	
+
     	public void goToMenu() {
     		type = TYPE_MENU;
         	boolean anim = mTweetTopics.getPreference().getBoolean("prf_animations", true);
@@ -2423,7 +2419,7 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
         		setViewMenuSidebar();
         	}
     	}
-    	
+
     	public void goToTranslate() {
     		type = TYPE_TRANSLATE;
         	boolean anim = mTweetTopics.getPreference().getBoolean("prf_animations", true);
@@ -2443,7 +2439,7 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
         		setViewRetweetersInfo();
         	}
     	}
-    	
+
 	    public void applyRotation() {
 			float centerX = mSidebarMenu.getWidth() / 2.0f;
 	        float centerY = mSidebarMenu.getHeight() / 2.0f;
@@ -2451,7 +2447,7 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
 	        float end = 90;
 	        if (typeRotate==1) {
 	        	start = 270;
-		        end = 360;	
+		        end = 360;
 	        }
 	        Rotate3dAnimation rotation = new Rotate3dAnimation(start, end, centerX, centerY, 310.0f, typeRotate==0?true:false);
 	        rotation.setDuration(500);
@@ -2459,7 +2455,7 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
 	        if (typeRotate==0) {
 	        	rotation.setInterpolator(new AccelerateInterpolator());
 		        rotation.setAnimationListener(new Animation.AnimationListener() {
-		        	
+
 					@Override
 					public void onAnimationEnd(Animation animation) {
 						if (type == TYPE_CONVERSATION) {
@@ -2474,47 +2470,47 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
 						typeRotate = 1;
 						applyRotation();
 					}
-		
+
 					@Override
 					public void onAnimationRepeat(Animation animation) {
 					}
-		
+
 					@Override
 					public void onAnimationStart(Animation animation) {
 					}
-					
+
 				});
 	        } else {
 	        	rotation.setInterpolator(new DecelerateInterpolator());
 	        }
 
-	
+
 	        mSidebarMenu.startAnimation(rotation);
 	    }
-	    
+
 	    public void setViewConversation() {
 	    	mSidebarMenu.removeAllViews();
 	    	mSidebarMenu.setVisibility(View.VISIBLE);
-	    	mSidebarMenu.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));    
+	    	mSidebarMenu.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
 	    	mSidebarMenu.addView(Sidebar.getViewConversationSidebar(mTweetTopics, TweetTopicsCore.this, mStatusConversation), new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
 	    }
-	    
+
 	    public void setViewMenuSidebar() {
 	    	SidebarMenu menu = new SidebarMenu(TweetTopicsCore.this);
 	    	mSidebarMenu.removeAllViews();
 	    	mSidebarMenu.setVisibility(View.VISIBLE);
-	    	mSidebarMenu.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));    
+	    	mSidebarMenu.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
 	    	mSidebarMenu.addView(menu.getView(), new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
 	    	mSidebarContent.setVisibility(View.VISIBLE);
 	    }
-	    
+
 	    public void setViewTranslate() {
 	    	LinearLayout.LayoutParams ll = new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT, 1);
 	    	ll.gravity = Gravity.CENTER;
-	    	
+
 	    	mSidebarMenu.removeAllViews();
 	    	mSidebarMenu.setVisibility(View.VISIBLE);
-	    	mSidebarMenu.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));    
+	    	mSidebarMenu.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
 	    	mSidebarMenu.addView(Sidebar.getLoadingView(mTweetTopics, mTweetTopics.getString(R.string.translating)), ll);
 	    	mSidebarContent.setVisibility(View.GONE);
 	    }
@@ -2529,19 +2525,19 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
 	    	mSidebarMenu.addView(Sidebar.getLoadingView(mTweetTopics, mTweetTopics.getString(R.string.loading)), ll);
 	    	mSidebarContent.setVisibility(View.GONE);
 	    }
-	    
+
     }
 
     /*
-     * 
+     *
      * Sidebars
-     * 
+     *
      */
-    
+
     public void goToLink(InfoLink il) {
     	goToLink(il.getOriginalLink());
     }
-    
+
     public void goToLink(String url) {
 		try {
 			//markPositionLastReadAsLastReadId();
@@ -2551,18 +2547,18 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
     		}
     		Uri uri = Uri.parse(url);
     		Intent intent = new Intent(android.content.Intent.ACTION_VIEW, uri);
-    		mTweetTopics.startActivity(intent);	
+    		mTweetTopics.startActivity(intent);
 		} catch (Exception e) {
 			Utils.showMessage(mTweetTopics, mTweetTopics.getString(R.string.error_view_url) + " " + url);
 		}
     }
-    
-    public void showSidebarLink(final String link) {    	
-    	
+
+    public void showSidebarLink(final String link) {
+
     	mTypeSidebar = TYPE_SIDEBAR_LINK;
-    	
+
     	InfoLink il = CacheData.getInfoLinkCaches(link);
-    	
+
     	if (il!=null) {
     		showSidebarLink(il);
     		return;
@@ -2570,26 +2566,26 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
 
     	mSidebarHead.removeAllViews();
     	mSidebarHead.setVisibility(View.GONE);
-    	
+
     	mSidebarMenu.removeAllViews();
     	mSidebarMenu.setVisibility(View.GONE);
-    	
+
     	LinearLayout.LayoutParams ll = new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT, 1);
     	ll.gravity = Gravity.CENTER;
-    	
-    	mSidebarContent.setVisibility(View.VISIBLE);    	
+
+    	mSidebarContent.setVisibility(View.VISIBLE);
     	mSidebarContent.removeAllViews();
     	mSidebarContent.setLayoutParams(ll);
     	mSidebarContent.addView(Sidebar.getLoadingView(mTweetTopics), ll);
-    	
+
     	mSidebarFoot.removeAllViews();
     	mSidebarFoot.setVisibility(View.GONE);
-    	
+
     	openSidebar();
-    	
+
 		new PreparingLinkForSidebarAsyncTask(new PreparingLinkForSidebarAsyncTaskResponder() {
 			@Override
-			public void preparingLinkLoading() {				
+			public void preparingLinkLoading() {
 			}
 			@Override
 			public void preparingLinkCancelled() {
@@ -2601,24 +2597,24 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
 				}
 			}
 		}).execute(link);
-    					
+
     }
-    
+
     public void showSidebarLink(InfoLink il) {
-    	showSidebarLink(il, -1);	
+    	showSidebarLink(il, -1);
     }
 
     public void showSidebarLink(InfoLink il, int positionTweet) {
-    	
+
     	if (il==null) {
     		Utils.showMessage(mTweetTopics, mTweetTopics.getString(R.string.no_server));
     		closeSidebar();
     	} else {
-    		
+
 	    	mTypeSidebar = TYPE_SIDEBAR_LINK;
-	    	
+
 	    	mCurrentInfoLink = il;
-	    	
+
 	    	if (positionTweet>=0) {
 				if (mTypeList == TYPE_LIST_CONVERSATION) {
 					mPositionSelectedTweetConversation = positionTweet;
@@ -2626,7 +2622,7 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
 					mPositionSelectedTweet = positionTweet;
 				}
 	    	}
-	    	
+
 	    	if (il.getType()==Utils.TYPE_LINK_TWEETOPICS_QR) {
 	    		final String link = il.getLink();
 				AlertDialog.Builder qrDialog = new AlertDialog.Builder(mTweetTopics);
@@ -2643,7 +2639,7 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
 				qrDialog.show();
 				return;
 	    	}
-	    	
+
 	    	if (il.getType()==Utils.TYPE_LINK_TWEETOPICS_THEME) {
 	    		final String link = il.getLink();
 				AlertDialog.Builder qrDialog = new AlertDialog.Builder(mTweetTopics);
@@ -2667,39 +2663,39 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
 	    	}
 	    	*/
 	    	boolean openWindows = mTweetTopics.getPreference().getBoolean("prf_show_window_in_links", true);
-	    	
+
 	    	if ( (il.getLink().endsWith(".pdf")) ) {
 	    		openWindows = false;
 	    	}
-	    	
+
 	    	if (openWindows) {
-		    	
+
 	    		LinearLayout.LayoutParams ll = new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT, 1);
-	    		
+
 		    	mSidebarHead.removeAllViews();
 		    	mSidebarHead.setVisibility(View.VISIBLE);
 		    	mSidebarHead.addView(Sidebar.getViewLinkHeadSidebar(mTweetTopics, this, il), new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
-		
+
 		    	mSidebarContent.removeAllViews();
 		    	mSidebarContent.setVisibility(View.VISIBLE);
-		    	
+
 		    	mSidebarContent.setLayoutParams(ll);
 		    	mSidebarContent.addView(Sidebar.getViewLinkContentSidebar(mTweetTopics, this, il), ll);
-		
+
 		    	mSidebarMenu.removeAllViews();
 		    	mSidebarMenu.setVisibility(View.GONE);
-		    	
+
 		    	mSidebarFoot.removeAllViews();
 		    	mSidebarFoot.setVisibility(View.VISIBLE);
 		    	mSidebarFoot.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
 		    	mSidebarFoot.addView(Sidebar.getViewLinkFootSidebar(mTweetTopics, this, il), new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
-		    		    	
+
 		    	if (!openSidebar()) {
 		    		animationLayoutIn(mSidebarHead, Utils.TYPE_ANIM_TOP);
 		    		animationLayoutIn(mSidebarContent);
 		    		animationLayoutIn(mSidebarFoot, Utils.TYPE_ANIM_BOTTOM);
 		    	}
-		    	
+
 	    	} else {
 	    		goToLink(il.getOriginalLink());
 	    		/*
@@ -2710,16 +2706,16 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
 		    		}
 		    		Uri uri = Uri.parse(u);
 		    		Intent intent = new Intent(android.content.Intent.ACTION_VIEW, uri);
-		    		mTweetTopics.startActivity(intent);	
+		    		mTweetTopics.startActivity(intent);
 	    		} catch (Exception e) {
 					Utils.showMessage(mTweetTopics, mTweetTopics.getString(R.string.error_view_url) + " " + u);
 				}*/
 	    	}
-	    	
-    	}	
-    	
+
+    	}
+
     }
-    
+
     public void refreshLink(InfoLink il) {
     	if (il!=null) {
 	    	if (mCurrentInfoLink==il) {
@@ -2735,15 +2731,15 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
 
     public void showSidebarConversation(Status mStatusConversation) {
     	mSidebarContent.setVisibility(View.GONE);
-    	
+
    		new AnimationRotation().goToConversation(mStatusConversation);
 
     }
-    
+
     public void loadSidebarTranslate(long id) {
-    	
+
     	new AnimationRotation().goToTranslate();
-    	
+
     	new LoadTranslateTweetAsyncTask(mTweetTopics, new LoadTranslateTweetAsyncAsyncTaskResponder() {
 
 			@Override
@@ -2758,9 +2754,9 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
 			public void translateLoaded(InfoUsers iu) {
 				showSidebarTranslate(iu);
 			}
-    		
+
     	}).execute(id);
-    	
+
     }
 
     public void showSidebarTranslate(InfoUsers iu) {
@@ -2820,44 +2816,44 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
             }
     	}
     }
-    
+
     public void backToMenuSidebar() {
     	new AnimationRotation().goToMenu();
     }
-    
+
     public void showSidebarTweet() {
-    	
+
     	mTypeSidebar = TYPE_SIDEBAR_TWEET;
-    	
+
     	mSidebarHead.removeAllViews();
     	mSidebarHead.setVisibility(View.VISIBLE);
     	mSidebarHead.addView(Sidebar.getViewTweetHeadSidebar(mTweetTopics, this));
-    	
+
     	SidebarGalleryLinks gallery = new SidebarGalleryLinks(this, getPositionTweet());
     	LinearLayout.LayoutParams ll = new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT, 1);
     	ll.gravity = Gravity.CENTER;
-    	
+
     	mSidebarContent.removeAllViews();
     	mSidebarContent.setVisibility(View.VISIBLE);
     	mSidebarContent.setLayoutParams(ll);
     	mSidebarContent.addView(gallery.getView(), ll);
-    	
+
     	SidebarMenu menu = new SidebarMenu(this);
 
     	mSidebarMenu.removeAllViews();
     	mSidebarMenu.setVisibility(View.VISIBLE);
-    	mSidebarMenu.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));    
+    	mSidebarMenu.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
     	mSidebarMenu.addView(menu.getView(), new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
-    	
+
     	mSidebarFoot.setVisibility(View.GONE);
     	mSidebarFoot.removeAllViews();
-    	
+
     	if (!openSidebar()) {
     		animationLayoutIn(mSidebarHead, Utils.TYPE_ANIM_RIGHT);
     		animationLayoutIn(mSidebarContent, Utils.TYPE_ANIM_RIGHT);
     		animationLayoutIn(mSidebarMenu, Utils.TYPE_ANIM_RIGHT);
     	}
-    }   
+    }
     /*
     private void setPosition(int pos) {
 	    if (mTypeList == TYPE_LIST_CONVERSATION) {
@@ -2868,20 +2864,20 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
     }
     */
     private void prevSidebarLink() {
-    	
+
     	int pos = -1;
 		if (mTypeList == TYPE_LIST_CONVERSATION) {
 			pos = mPositionSelectedTweetConversation;
 		} else {
 			pos = mPositionSelectedTweet;
 		}
-		
+
 		InfoTweet it = getCurrentInfoTweet();
 		if (it!=null) {
-			
+
 			ArrayList<String> links = Utils.pullLinksHTTP(it.getText());
 			int posLink = -1;
-			
+
 			try {
 				if (links.contains(mCurrentInfoLink.getOriginalLink())) {
 					posLink = links.indexOf(mCurrentInfoLink.getOriginalLink());
@@ -2889,13 +2885,13 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
 			} catch (NullPointerException e) {
 				e.printStackTrace();
 			}
-			
+
 			if (posLink>=0) {
-				
+
 				if (posLink==0) {
-					
+
 					boolean search = true;
-					
+
 					while (search) {
 						pos--;
 						//Log.d(Utils.TAG, pos+"");
@@ -2946,8 +2942,8 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
 							Utils.showShortMessage(mTweetTopics, mTweetTopics.getString(R.string.no_more_links));
 						}
 					}
-						
-					
+
+
 				//} else if (posLink>=links.size()-1) {
 				} else {
 					InfoLink il = CacheData.getInfoLinkCaches(links.get(posLink-1));
@@ -2962,34 +2958,34 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
 				}
 			}
 		}
-		
+
     }
-    
+
     private void nextSidebarLink() {
-    	
+
     	int pos = -1;
 		if (mTypeList == TYPE_LIST_CONVERSATION) {
 			pos = mPositionSelectedTweetConversation;
 		} else {
 			pos = mPositionSelectedTweet;
 		}
-		
+
 		InfoTweet it = getCurrentInfoTweet();
 		if (it!=null) {
-			
+
 			ArrayList<String> links = Utils.pullLinksHTTP(it.getText());
 			int posLink = -1;
-			
+
 			if (links.contains(mCurrentInfoLink.getOriginalLink())) {
 				posLink = links.indexOf(mCurrentInfoLink.getOriginalLink());
 			}
-			
+
 			if (posLink>=0) {
-				
+
 				if (posLink>=links.size()-1) {
-					
+
 					boolean search = true;
-					
+
 					while (search) {
 						pos++;
 						//Log.d(Utils.TAG, pos+"");
@@ -3041,8 +3037,8 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
 							Utils.showShortMessage(mTweetTopics, mTweetTopics.getString(R.string.no_more_links));
 						}
 					}
-						
-					
+
+
 				//} else if (posLink>=links.size()-1) {
 				} else {
 					InfoLink il = CacheData.getInfoLinkCaches(links.get(posLink+1));
@@ -3057,10 +3053,10 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
 				}
 			}
 		}
-    	
-    	
+
+
     }
-    
+
     private void prevSidebarTweet() {
     	boolean todo = false;
 		if (mTypeList == TYPE_LIST_CONVERSATION) {
@@ -3083,7 +3079,7 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
 			Utils.showMessage(mTweetTopics, mTweetTopics.getString(R.string.no_more_tweets));
 		}
     }
-    
+
     private void nextSidebarTweet() {
     	boolean todo = false;
 		if (mTypeList == TYPE_LIST_CONVERSATION) {
@@ -3106,16 +3102,16 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
 			Utils.showMessage(mTweetTopics, mTweetTopics.getString(R.string.no_more_tweets));
 		}
     }
-    
-    
+
+
     AsyncTask<String, Void, InfoUsers> loadSidebarUser;
-    
-    public void loadSidebarUser(String user) {    	
-    	
+
+    public void loadSidebarUser(String user) {
+
     	mTypeSidebar = TYPE_SIDEBAR_USER;
-    	
+
     	InfoUsers iu = CacheData.getCacheUser(user);
-    	
+
     	if (iu!=null) {
     		showSidebarUser(iu);
     		return;
@@ -3123,27 +3119,27 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
 
     	mSidebarHead.removeAllViews();
     	mSidebarHead.setVisibility(View.GONE);
-    	
+
     	mSidebarMenu.removeAllViews();
     	mSidebarMenu.setVisibility(View.GONE);
-    	
+
     	LinearLayout.LayoutParams ll = new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT, 1);
     	ll.gravity = Gravity.CENTER;
-    	
-    	mSidebarContent.setVisibility(View.VISIBLE);    	
+
+    	mSidebarContent.setVisibility(View.VISIBLE);
     	mSidebarContent.removeAllViews();
     	mSidebarContent.setLayoutParams(ll);
     	mSidebarContent.addView(Sidebar.getLoadingView(mTweetTopics), ll);
-    	
+
     	mSidebarFoot.removeAllViews();
     	mSidebarFoot.setVisibility(View.GONE);
-    	
+
     	openSidebar();
-    	
+
     	loadSidebarUser = new LoadUserAsyncTask(mTweetTopics, new LoadUserAsyncAsyncTaskResponder() {
 
 			@Override
-			public void userLoading() {				
+			public void userLoading() {
 			}
 
 			@Override
@@ -3154,59 +3150,59 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
 			public void userLoaded(InfoUsers iu) {
 				showSidebarUser(iu);
 			}
-			
+
 		});
     	loadSidebarUser.execute(user);
-    					
+
 
     }
-    
+
     public void showSidebarUser(InfoUsers iu) {
-    	
+
     	if (iu==null) {
     		Utils.showMessage(mTweetTopics, mTweetTopics.getString(R.string.no_server));
     		closeSidebar();
     	} else {
-    		
+
     		CacheData.addCacheUsers(iu);
-    		
+
 	    	mUserNameSelected = iu;
-	    	
+
 	    	mSidebarHead.removeAllViews();
 	    	mSidebarHead.setVisibility(View.VISIBLE);
 	    	mSidebarHead.addView(Sidebar.getViewUserHeadSidebar(mTweetTopics, this, iu));
-	    	
+
 	    	LinearLayout.LayoutParams ll = new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT, 1);
 	    	ll.gravity = Gravity.CENTER;
-	    	
+
 	    	mSidebarContent.removeAllViews();
 	    	mSidebarContent.setVisibility(View.VISIBLE);
 	    	mSidebarContent.setLayoutParams(ll);
 	    	mSidebarContent.addView(Sidebar.getViewUserContentSidebar(mTweetTopics, this, iu), ll);
-	    	
+
 	    	mSidebarMenu.removeAllViews();
 	    	mSidebarMenu.setVisibility(View.GONE);
-	    	
+
 	    	mSidebarFoot.removeAllViews();
 	    	mSidebarFoot.setVisibility(View.VISIBLE);
 	    	mSidebarFoot.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
 	    	mSidebarFoot.addView(Sidebar.getViewUserFootSidebar(mTweetTopics, this, iu), new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
-	    	
+
 	    	if (!openSidebar()) {
 	    		animationLayoutIn(mSidebarHead, Utils.TYPE_ANIM_TOP);
 	    		animationLayoutIn(mSidebarContent);
 	    		animationLayoutIn(mSidebarFoot, Utils.TYPE_ANIM_BOTTOM);
 	    	}
-	    } 
+	    }
     }
-    
+
     private void refreshTitle() {
     	if (mTypeList == TYPE_LIST_COLUMNUSER) {
     		Entity e = DataFramework.getInstance().getTopEntity("users", "active=1", "");
         	if (e!=null) {
 	    		mEntityUser = new EntityTweetUser(e.getId(), mTypeLastList);
         	}
-        	
+
 	    	if (mTypeLastColumn==TIMELINE) {
 				mTweetTopics.setTitle(mTweetTopics.getString(R.string.timeline));
 				addFooter();
@@ -3256,15 +3252,15 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
     	}
     	refreshButtonsColumns();
     }
-    
+
     private void backToSearchFromConversation() {
     	CacheData.clearChace_Others();
         listIsConversation = false;
 
 		if (mTypeLastList == TYPE_LIST_COLUMNUSER) {
-			
+
 	    	setTypeList(TYPE_LIST_COLUMNUSER);
-	    	
+
 			if (mTypeLastColumn==TIMELINE) {
 				mTweetTopics.setTitle(mTweetTopics.getString(R.string.timeline));
 				addFooter();
@@ -3277,12 +3273,12 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
 				mTweetTopics.setTitle(mTweetTopics.getString(R.string.direct_messages));
 				addFooter();
 			}
-			
+
 	    	if (mAdapterResponseList!=null) {
 	    		mListView.setAdapter(mAdapterResponseList);
 	    		mListView.setSelection(mPositionSelectedTweet);
 	    	}
-	    	
+
 		} else if (mTypeLastList == TYPE_LIST_READAFTER) {
 			toDoReadAfter();
 		} else {
@@ -3305,94 +3301,105 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
 
 
     /*
-     * 
+     *
      * Carga grid busquedas
-     * 
+     *
      */
-    
+
     public void loadGridSearch() {
     }
-    
+
     private void editSearch() {
     	Intent newsearch = new Intent(mTweetTopics, TabNewEditSearch.class);
 		newsearch.putExtra(DataFramework.KEY_ID, mAdapterSearch.getItem(mPositionSelectedSearch).getId());
 		mTweetTopics.startActivityForResult(newsearch, ACTIVITY_NEWEDITSEARCH);
     }
-    
+
     public void editCurrenSearch() {
     	Intent newsearch = new Intent(mTweetTopics, TabNewEditSearch.class);
 		newsearch.putExtra(DataFramework.KEY_ID, mCurrentId);
 		mTweetTopics.startActivityForResult(newsearch, ACTIVITY_NEWEDITSEARCH);
     }
-    
+
     public void exportCurrenSearch() {
     	mTweetTopics.showDialog(DIALOG_CURRENT_EXPORT);
     }
-    
+
     private void deleteSearch() {
     	Entity ent = new Entity("search", mAdapterSearch.getItem(mPositionSelectedSearch).getId());
     	ent.delete();
     	loadGridSearch();
     	Utils.showMessage(mTweetTopics, mTweetTopics.getString(R.string.delete_correct));
     }
-	
+
     /*
-     * 
+     *
      * retweet status
-     * 
+     *
      */
-    
-    private AsyncTask<Long, Void, Boolean> retweetStatus;
-    
-    public void retweetStatus(long tweet_id) {
-    	
-		progressDialog = ProgressDialog.show(
-				mTweetTopics,
-				mTweetTopics.getResources().getString(R.string.sending_title),
-				mTweetTopics.getResources().getString(R.string.sending_description)
-		);
-		
-		retweetStatus = new RetweetStatusAsyncTask(this).execute(tweet_id);
+
+    public void sendRetweet(String users, long tweet_id) {
+        Entity ent = new Entity("send_tweets");
+        ent.setValue("users", users);
+        ent.setValue("is_sent", 0);
+        ent.setValue("type_id", 3);
+        ent.setValue("reply_tweet_id",  tweet_id);
+        ent.save();
+
+        mTweetTopics.startService(new Intent(mTweetTopics, ServiceUpdateStatus.class));
+    }
+
+    public void retweetStatus(final long tweet_id) {
+
+        ArrayList<Entity> ents = DataFramework.getInstance().getEntityList("users", "service is null or service = \"twitter.com\"");
+
+        if (ents.size()==1) {
+
+            sendRetweet(ents.get(0).getId() + "", tweet_id);
+
+        } else  {
+
+            final UsersAdapter adapter = new UsersAdapter(mTweetTopics, ents);
+
+            AlertDialog builder = new AlertDialog.Builder(mTweetTopics)
+                    .setCancelable(true)
+                    .setTitle(R.string.users)
+                    .setAdapter(adapter, new DialogInterface.OnClickListener() {
+
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            sendRetweet(adapter.getItem(which).getId() + "", tweet_id);
+                        }
+
+                    })
+                    .setNegativeButton(R.string.alert_dialog_cancel, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                        }
+                    })
+                    .create();
+            builder.show();
+
+        }
 
     }
-    
 
-	@Override
-	public void retweetStatusCancelled() {
-		if (retweetStatus!=null) retweetStatus.cancel(true);
-	}
 
-	@Override
-	public void retweetStatusLoaded(boolean error) {
-    	progressDialog.dismiss();
-    	if (error) {
-    		Utils.showMessage(mTweetTopics, mTweetTopics.getString(R.string.no_server));
-    	} else {
-    		Utils.showMessage(mTweetTopics, mTweetTopics.getString(R.string.sending_finish));
-    	}
-	}
-
-	@Override
-	public void retweetStatusLoading() {
-
-	}
-	
-	
     /*
-     * 
+     *
      * Busquedas en Twitter
-     * 
+     *
      */
-    
+
     public void reload() {
     	if (!app.isReloadUserTwitter()) {
     		boolean gotoreload = false;
 	    	if ((mTypeList == TYPE_LIST_CONVERSATION) || (mTypeList == TYPE_LIST_READAFTER) ) {
-	
+
 	    	}
 	    	if (mTypeList == TYPE_LIST_COLUMNUSER) {
 	    		gotoreload = true;
-	    		reloadColumnUser(true);	    		
+	    		reloadColumnUser(true);
 	    	}
 	    	if ( (mTypeList == TYPE_LIST_SEARCH_NOTIFICATIONS)  ) {
 	    		gotoreload = true;
@@ -3407,37 +3414,37 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
 	    	}
     	}
     }
-        
+
     protected void toDoSearch(long id) {
-    	
+
     	if (searchTask!=null || app.isReloadUserTwitter()) {
     		Utils.showMessage(mTweetTopics, mTweetTopics.getString(R.string.wait_moment));
     		return;
     	}
-    	
+
     	// antes de cambiar marcar como ultimo leido el primero visible
 		if (markPositionLastReadAsLastReadId()) {
 			reloadNewMsgInAllColumns();
 		}
-    	
+
     	setTypeList(TYPE_LIST_SEARCH);
     	isToDoSearch = true;
     	mCurrentId = id;
     	closeSidebar();
-    	
+
     }
-    
+
     private AsyncTask<EntitySearch, Void, SearchAsyncTask.SearchResult> searchTask;
-    
+
     protected void search() {
-    	
+
     	if (searchTask!=null || app.isReloadUserTwitter()) {
     		Utils.showMessage(mTweetTopics, mTweetTopics.getString(R.string.wait_moment));
     		return;
     	}
-    	
+
     	refreshButtonsColumns();
-    	
+
     	if (mCurrentId>0) {
 
     		removeFooter();
@@ -3446,25 +3453,25 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
                 mEntitySearch.setValue("last_modified", Utils.now());
                 mEntitySearch.setValue("use_count", mEntitySearch.getInt("use_count")+1);
                 mEntitySearch.save();
-                
+
                 CacheData.clearChace_Others();
-                
+
                 exetuteSearchAsyncTask();
             } catch (CursorIndexOutOfBoundsException e) {
                 e.printStackTrace();
                 Utils.showMessage(mTweetTopics, R.string.no_server);
             }
     	}
-    	
+
     }
-    
+
     public void exetuteSearchAsyncTask() {
 
         listIsConversation = false;
-		
+
 		if (mEntitySearch.getInt("notifications")==1) {
 			ArrayList<Entity> tweets = DataFramework.getInstance().getEntityList("tweets", "search_id = " + mEntitySearch.getId() + " AND favorite = 0", "date desc");
-	    	
+
 	    	ArrayList<RowResponseList> response = new ArrayList<RowResponseList>();
 	    	int pos = 0;
 	    	boolean found = false;
@@ -3476,7 +3483,9 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
 	    			}
 	    		}
 	    		if (delete) {
-	    			tweets.get(i).delete();
+                    try {
+                        tweets.get(i).delete();
+                    } catch (Exception er) {}
 	    		} else {
 		    		RowResponseList r = new RowResponseList(tweets.get(i));
 		    		if (!found && mEntitySearch.getValueLastId()>=tweets.get(i).getLong("tweet_id")) {
@@ -3493,21 +3502,21 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
 		    		response.add(r);
 	    		}
 	    	}
-	    	
+
 	    	mAdapterResponseList = new ResponseListAdapter(mTweetTopics, this, response, mEntitySearch.getValueLastId());
-	    	
+
 	    	mAdapterResponseList.setLastReadPosition(pos);
 	    	mListView.setAdapter(mAdapterResponseList);
-	    	
+
 	    	mListView.setSelection(pos);
-			
+
 	    	reloadSearch(true, false);
 		} else {
 			setLayoutLoading();
 			reloadSearch(false, false);
 		}
     }
-    
+
     public void reloadSearch(boolean isNotification, boolean firstIsLastPosition) {
     	if (isNotification) {
     		if (firstIsLastPosition) {
@@ -3518,27 +3527,27 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
     		searchTask = new SearchAsyncTask(this, mTweetTopics).execute(mEntitySearch);
     	}
     }
-    
+
 	@Override
-	public void searchCancelled() {		
+	public void searchCancelled() {
 	}
 
 	@Override
 	public void searchLoaded(SearchResult searchResult) {
 		setLayoutListView();
 		searchTask = null;
-    	
+
     	if (searchResult.info.getError()==Utils.UNKNOWN_ERROR) {
     		Utils.showMessage(mTweetTopics, mTweetTopics.getString(R.string.no_server));
     	} else if (searchResult.info.getError()==Utils.LIMIT_ERROR) {
     		Date date = searchResult.info.getRate().getResetTime();
     		Utils.showMessage(mTweetTopics, mTweetTopics.getString(R.string.limit_server) + " " + date.toLocaleString());
     	} else {
-    		
+
     		mTweetTopics.setTitle(mEntitySearch.getString("name"));
 
     		if (mEntitySearch.getInt("notifications")==1) {
-    			
+
     			if (searchResult.info.getNewMessages()>0) {
     				int pos = mListView.getFirstVisiblePosition();
     				String where = "search_id =" + mEntitySearch.getId() + " AND favorite = 0 AND tweet_id >= '" + Utils.fillZeros(""+searchResult.info.getOlderId())+"'";
@@ -3547,7 +3556,7 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
     				mListView.setSelection(pos + count);
     	        	mAdapterResponseList.setLastReadPosition(mAdapterResponseList.getLastReadPosition() + count);
     			}
-    			
+
     			// meter publicidad
     			if (Utils.isLite(mTweetTopics) && mAdapterResponseList.getCount()>0 && !mAdapterResponseList.hasAd()) {
     				try {
@@ -3562,28 +3571,28 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
     					e.printStackTrace();
     				}
     			}
-	                			
-	            if (mAdapterResponseList.getCount()>0) {		            
+
+	            if (mAdapterResponseList.getCount()>0) {
 		            // guardar el ultimo id
-		            
+
 		            if (mEntitySearch!=null) {
 		            	mEntitySearch.setValue("new_tweets_count", 0);
 		            	mEntitySearch.setValue("last_tweet_id", mAdapterResponseList.getItem(0).getEntity().getLong("tweet_id")+"");
 		            	mEntitySearch.setValue("last_tweet_id_notifications", mAdapterResponseList.getItem(0).getEntity().getLong("tweet_id")+"");
 		            	mEntitySearch.save();
 		            }
-		            
+
 	            } else {
-            		Utils.showMessage(mTweetTopics, mTweetTopics.getString(R.string.no_found_tweets));	            		            	
+            		Utils.showMessage(mTweetTopics, mTweetTopics.getString(R.string.no_found_tweets));
 	            }
     		} else {
-    			
+
     			boolean refreshInLastRead = mTweetTopics.getPreference().getBoolean("prf_refresh_in_last_read", true);
-    			
+
     			mAdapterResponseList = searchResult.response;
-    			
+
     			mListView.setAdapter(mAdapterResponseList);
-	            
+
 	            if (mAdapterResponseList.getCount()>0) {
 	            	int pos = 0;
 	            	try {
@@ -3611,23 +3620,23 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
 	            		e.printStackTrace();
 	            	}
 	            	mListView.setSelection(pos);
-		            
+
 		            // guardar el ultimo id
-		            
+
 		            if (mEntitySearch!=null) {
 		            	mEntitySearch.setValue("last_tweet_id", mAdapterResponseList.getItem(0).getTweetId() +"");
 		            	mEntitySearch.save();
 		            }
-		            
+
 		            if  (mEntitySearch!=null) {
 			            if (!mEntitySearch.getErrorLastQuery().equals("")) {
 			        		Utils.showMessage(mTweetTopics, mEntitySearch.getErrorLastQuery());
 			        	}
 		            }
-		            
+
 	            } else {
 	            	if (mEntitySearch.getString("lang").equals("")) {
-	            		Utils.showMessage(mTweetTopics, mTweetTopics.getString(R.string.no_found_tweets));	            		
+	            		Utils.showMessage(mTweetTopics, mTweetTopics.getString(R.string.no_found_tweets));
 	            	} else {
 	            		if (isGenericSearch) {
 	            			Utils.showMessage(mTweetTopics, mTweetTopics.getString(R.string.no_found_tweets));
@@ -3641,7 +3650,7 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
 	        						selectedLang = langNames[i];
 	        					}
 	        				}
-	            			
+
 		            		AlertDialog.Builder builder = new AlertDialog.Builder(mTweetTopics);
 		            		builder.setTitle(R.string.no_result);
 		            		builder.setMessage(mTweetTopics.getString(R.string.search_no_found_change_lang) + selectedLang + mTweetTopics.getString(R.string.search_no_found_change_lang2));
@@ -3656,13 +3665,13 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
 		                        }
 		                    });
 		                    builder.create();
-		                    builder.show();	            			
+		                    builder.show();
 	            		}
 	            	}
 	            }
-	            
+
     			// meter publicidad
-    			
+
     			if (Utils.isLite(mTweetTopics) && mAdapterResponseList.getCount()>0) {
     				try {
 	    				int pos = mAdapterResponseList.getLastReadPosition();
@@ -3677,27 +3686,26 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
     					e.printStackTrace();
     				}
     			}
-	            
+
 	            isGenericSearch = false;
-	            
+
     		}
-    		
+
     		this.loadGridSearch();
-    		
+
     	}
-		
+
 	}
 
 	@Override
 	public void searchLoading() {
 	}
 
-  
-    
+
     /*
-     * 
+     *
      * Conversacion
-     * 
+     *
      */
 
     public void showConversationLinks(String tweet_text) {
@@ -3811,120 +3819,120 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
 	}
 
     /*
-     * 
+     *
      * Leer luego
-     * 
+     *
      */
-    
+
     public void toDoReadAfter() {
     	isToDoSearch = true;
     	setTypeList(TYPE_LIST_READAFTER);
     	closeSidebar();
     }
-    
+
     public void readAfter() {
     	setTypeList(TYPE_LIST_READAFTER);
-    	
+
     	removeFooter();
-    	
+
     	CacheData.clearChace_Others();
 
     	mTweetTopics.setTitle(mTweetTopics.getString(R.string.tweets_saved));
-    	
+
     	closeSidebar();
     	ArrayList<Entity> ents = DataFramework.getInstance().getEntityList("saved_tweets", "", "date desc");
-    	
-    	ArrayList<RowResponseList> response = new ArrayList<RowResponseList>(); 
+
+    	ArrayList<RowResponseList> response = new ArrayList<RowResponseList>();
     	for (int i=0; i<ents.size(); i++) {
     		RowResponseList r = new RowResponseList(ents.get(i));
     		response.add(r);
     	}
-    	
+
     	mAdapterResponseList = new ResponseListAdapter(mTweetTopics, this, response, -1);
-    	
+
     	mListView.setAdapter(mAdapterResponseList);
     	mListView.setSelection(0);
     	if (ents.size()<=0) {
     		Utils.showMessage(mTweetTopics, mTweetTopics.getString(R.string.no_saved_tweet));
     	}
-    	
+
     }
-    
+
     /*
-     * 
+     *
      * Cargar Timeline y Menciones
-     * 
+     *
      */
-        
+
     public void changeUser(long id) {
-    	
+
     	CacheData.clearChace_Users();
-    	
+
     	if (app.isReloadUserTwitter()) {
     		Utils.showMessage(mTweetTopics, mTweetTopics.getString(R.string.wait_moment));
     		return;
     	}
-    	
+
     	markPositionLastReadAsLastReadId();
-    	
+
     	twitter = ConnectionManager.getInstance().getTwitter(id, true);
 
     	columnUser(TIMELINE, true);
 
-    } 
-    
+    }
+
     public void columnUser(int column) {
     	columnUser(column, false);
     }
-    
+
     public void columnUser(int column, boolean isChangeUser) {
-    	    	
+
     	if (loadMoreTask!=null) loadMoreTask.cancel(true);
-    	
+
     	Entity e = DataFramework.getInstance().getTopEntity("users", "active=1", "");
     	if (e!=null) {
-    		
+
     		// antes de cambiar marcar como ultimo leido el primero visible
     		if (!isChangeUser) markPositionLastReadAsLastReadId();
-    		
-    		// ir a las menciones en el caso de que el usuario no guarde el timeline 
+
+    		// ir a las menciones en el caso de que el usuario no guarde el timeline
     		// y sea un cambio de usuario
     		if (isChangeUser && e.getInt("no_save_timeline")==1) {
     			column = MENTIONS;
     		}
-    		
+
 	    	mTypeLastColumn = column;
 	    	setTypeList(TYPE_LIST_COLUMNUSER);
-	    	
+
 	    	refreshButtonsColumns();
-    		
+
     		if (column==FAVORITES) {
-    			
+
     			loadTypeStatus(LoadTypeStatusAsyncTask.FAVORITES);
-				
+
     		} else if (column==TIMELINE && e.getInt("no_save_timeline")==1) { // no se guarda el timeline
-    			    			
+
     			addFooter();
-    			
+
     			reloadNewMsgInAllColumns();
-    			
+
     			mEntityUser = new EntityTweetUser(e.getId(), column);
-				
+
 	    		loadTypeStatus(LoadTypeStatusAsyncTask.TIMELINE);
-					 
-    			
+
+
     		} else { // todas las demas
-    			    			
+
     			addFooter();
-    			
+
     			reloadNewMsgInAllColumns();
-    		    		
+
 	    		mEntityUser = new EntityTweetUser(e.getId(), column);
-		    	
+
 				closeSidebar();
-				
+
 				String whereType = "";
-				
+
 				if (column==TIMELINE) {
 					Utils.fillHide();
 					mTweetTopics.setTitle(mTweetTopics.getString(R.string.timeline));
@@ -3941,10 +3949,15 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
 					mTweetTopics.setTitle(mTweetTopics.getString(R.string.direct_messages));
 					whereType = " AND (type_id = " + DIRECTMESSAGES + " OR type_id = " + SENT_DIRECTMESSAGES + ")";
 				}
-				
 
-		    	ArrayList<Entity> tweets = DataFramework.getInstance().getEntityList("tweets_user", "user_tt_id = " + mEntityUser.getId() + whereType, "date desc, has_more_tweets_down asc");
-		    	
+
+                ArrayList<Entity> tweets;
+                try {
+                    tweets = DataFramework.getInstance().getEntityList("tweets_user", "user_tt_id = " + mEntityUser.getId() + whereType, "date desc, has_more_tweets_down asc");
+                } catch (OutOfMemoryError er) {
+                    tweets = DataFramework.getInstance().getEntityList("tweets_user", "user_tt_id = " + mEntityUser.getId() + whereType, "date desc, has_more_tweets_down asc", "0,"+Utils.MAX_ROW_BYSEARCH);
+                }
+
 		    	ArrayList<RowResponseList> response = new ArrayList<RowResponseList>();
 		    	int pos = 0;
 		    	int count = 0;
@@ -3958,9 +3971,11 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
 		    			}
 		    		}
 		    		if (delete) {
-		    			tweets.get(i).delete();
+                        try {
+    		    			tweets.get(i).delete();
+                        } catch (Exception er) {}
 		    		} else {
-		    					    			
+
 		    			if (column==TIMELINE && Utils.hideUser.contains(tweets.get(i).getString("username").toLowerCase())) { // usuario
 		    				countHide++;
 		    			} else if (column==TIMELINE && Utils.isHideWordInText(tweets.get(i).getString("text").toLowerCase())) { // palabra
@@ -3980,29 +3995,33 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
 				    			found = true;
 				    		}
 				    		r.setRead(found);
-				    		response.add(r);
-				    		if (r.hasMoreTweetDown()) {
-				    			response.add(new RowResponseList(RowResponseList.TYPE_MORE_TWEETS));	
-				    		}
-				    		count++;
+                            try {
+                                response.add(r);
+                                if (r.hasMoreTweetDown()) {
+                                    response.add(new RowResponseList(RowResponseList.TYPE_MORE_TWEETS));
+                                }
+                                count++;
+                            } catch (OutOfMemoryError er) {
+                                i = tweets.size();
+                            }
 		    			}
 		    		}
-		    		
+
 		    	}
-		    	
+
 		    	//pos++;
-		    	
+
 		    	mAdapterResponseList = new ResponseListAdapter(mTweetTopics, this, response, mEntityUser.getValueLastId());
-		    	
+
 		    	mAdapterResponseList.setHideMessages(countHide);
-		    	
+
 		    	mAdapterResponseList.setLastReadPosition(pos);
 		    	mPositionLastRead = pos;
-		    		    	
+
 		    	mListView.setAdapter(mAdapterResponseList);
-		    	
+
 		    	mListView.setSelection(pos);
-				
+
 		    	if (column==TIMELINE) { //&& mEntityUser.getValueNewCount()<20
 		    		// actualizar automaticamente si hace X minutos del ultimo tweets
 		    		if (count>0) {
@@ -4026,17 +4045,17 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
 		    			mEntityUser.saveValueLastIdFromDB();
 		    		}
 		    	}
-		    	
+
     		}
-    		
+
     	}
-    	
+
     }
 
 
     public void reloadColumnUser(boolean firstIsLastPosition) {
     	if (!app.isReloadUserTwitter()) {
-    		
+
     		if (mTypeLastColumn==TIMELINE && mEntityUser!=null && mEntityUser.getInt("no_save_timeline")==1) { // no se guarda el timeline
     			columnUser(TIMELINE);
     		} else if (mTypeLastColumn==FAVORITES) {
@@ -4046,23 +4065,23 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
     				mAdapterResponseList.firtsItemIsLastRead();
     			}
     			app.reloadUserTwitter();
-    			
+
     		}
-	    	
+
     	}
     }
-	
+
     @Override
 	public void OnFinishTwitterDownload(TwitterUserResult searchResult, int witch) {
-		
+
     	if (witch==2) { // es la segunda vez
     		mLayoutInfoBackground.setVisibility(View.GONE);
     	} else {
     		if (searchResult.infoTimeline!=null) mLayoutInfoBackground.setVisibility(View.VISIBLE);
     	}
-				
+
 		InfoSaveTweets info = null;
-		
+
 		if (mTypeLastColumn==TIMELINE) {
 			info = searchResult.infoTimeline;
 		}
@@ -4072,9 +4091,9 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
 		if (mTypeLastColumn==DIRECTMESSAGES) {
 			info = searchResult.infoDM;
 		}
-		
+
 		reloadNewMsgInAllColumns(searchResult.infoTimeline!=null, searchResult.infoMentions!=null, searchResult.infoDM!=null);
-    	
+
 		if (info!=null) {
 			mListView.onRefreshComplete();
 	    	if (info.getError()==Utils.UNKNOWN_ERROR) {
@@ -4083,9 +4102,9 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
 	    		Date date = info.getRate().getResetTime();
 	    		Utils.showMessage(mTweetTopics, mTweetTopics.getString(R.string.limit_server) + " " + date.toLocaleString());
 	    	} else {
-	    		
+
 	    		// comprobamos si hay mensajes por encima del primero mensaje puesto en la lista y si es asi los mostramos
-	    		
+
 	    		int newMsg = info.getNewMessages();
 	    		long oldId = info.getOlderId();
 	    		String oper = ">=";
@@ -4095,7 +4114,7 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
 	    			oldId = id;
 	    			oper = ">";
 	    		}
-	    		
+
 	    		if (newMsg>0) {
 	    			int pos = mListView.getFirstVisiblePosition();
 	    			String where = "user_tt_id="+searchResult.user_id + " AND tweet_id "+oper+"'" + Utils.fillZeros(""+oldId)+"'";
@@ -4117,96 +4136,96 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
 		        	mAdapterResponseList.setLastReadPosition(mAdapterResponseList.getLastReadPosition() + count);
 		        	mPositionLastRead += count;
 	    		}
-	    		
+
 	    		if (mAdapterResponseList.getCount()>0) {
 	    			mEntityUser.saveValueLastIdFromDB();
 	    		}
-	    		
+
 	    		// comprobamos si hay mensajes ocultos y mostramos el toast
-	    		
+
 	    		showHideMessage();
-	    		
+
 	    	}
-	    	
+
 		}
-		
+
 	}
-    
+
     public void showHideMessage() {
     	boolean show = mTweetTopics.getPreference().getBoolean("prf_quiet_show_msg", true);
-		
+
 		if (show && mAdapterResponseList.getHideMessages()>0) {
 			Utils.showMessage(mTweetTopics, mAdapterResponseList.getHideMessages() + " " + mTweetTopics.getString(R.string.tweets_hidden));
 		}
     }
 
     /*
-     * 
+     *
      * Buscar locations trends
-     * 
+     *
      */
-    
-	private AsyncTask<Void, Void, ResponseList<Location>> trendsLocationsTask;    
-	
-    public void showLocationsTrends() {    	
+
+	private AsyncTask<Void, Void, ResponseList<Location>> trendsLocationsTask;
+
+    public void showLocationsTrends() {
 
     	closeSidebar();
-    	
+
     	if (Utils.getWoeidTT(mTweetTopics)>0) {
     		showTrends(Utils.getWoeidTT(mTweetTopics));
     	} else {
-    	
+
 			progressDialog = new ProgressDialog(mTweetTopics);
-			
+
 			progressDialog.setTitle(R.string.loading_title_trends);
 			progressDialog.setMessage(mTweetTopics.getResources().getString(R.string.loading_description_trends));
-	
+
 			progressDialog.setCancelable(true);
 			progressDialog.setOnCancelListener(new OnCancelListener() {
-	
+
 						@Override
 						public void onCancel(DialogInterface arg0) {
 							if (trendsLocationsTask!=null) trendsLocationsTask.cancel(true);
 						}
-						
+
 					});
-			
+
 			progressDialog.show();
-	
+
 			trendsLocationsTask = new TrendsLocationAsyncTask(this).execute();
-			
+
     	}
-    					
+
 
     }
 
 	@Override
-	public void trendsLocationCancelled() {		
+	public void trendsLocationCancelled() {
 	}
 
 	@Override
 	public void trendsLocationLoaded(ResponseList<Location> locations) {
 		progressDialog.dismiss();
-		
+
 		if (locations==null || locations.size()<=0) {
 			Utils.showMessage(mTweetTopics, mTweetTopics.getString(R.string.no_server));
 			return;
 		}
-		
+
 		try {
 			Collections.sort(locations, new Comparator<Location>(){
-				 
+
 	            public int compare(Location o1, Location o2) {
 	            	Location l1 = (Location) o1;
 	            	Location l2 = (Location) o2;
 	            	return l1.getName().compareToIgnoreCase(l2.getName());
 	            }
-	 
+
 	        });
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		final ArrayList<Integer> woeid = new ArrayList<Integer>();
 
 		CharSequence[] c = new CharSequence[locations.size()];
@@ -4214,11 +4233,11 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
 			c[i] = locations.get(i).getName();
 			woeid.add(locations.get(i).getWoeid());
 		}
-		
+
 		final CheckBox cb = new CheckBox(mTweetTopics);
     	cb.setText(R.string.use_default);
     	cb.setTextColor(Color.GRAY);
-		
+
 		AlertDialog.Builder builder = new AlertDialog.Builder(mTweetTopics);
 		builder.setView(cb);
 		builder.setTitle(R.string.loading_title_trends);
@@ -4230,35 +4249,35 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
 				showTrends(woeid.get(which));
 			}
 
-			
+
 		});
         builder.setNegativeButton(R.string.alert_dialog_cancel, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
             }
         });
         builder.create();
-        builder.show();	 
+        builder.show();
 	}
 
 	@Override
 	public void trendsLocationLoading() {
-		
+
 	}
-    
+
     /*
-     * 
+     *
      * Mostrar trends
-     * 
+     *
      */
-    
-	private AsyncTask<Integer, Void, Trend[]> trendsTask;    
-	
-    public void showTrends(int woeid) {    	
+
+	private AsyncTask<Integer, Void, Trend[]> trendsTask;
+
+    public void showTrends(int woeid) {
 
     	closeSidebar();
-    	
+
 		progressDialog = new ProgressDialog(mTweetTopics);
-		
+
 		progressDialog.setTitle(R.string.loading_title_trends);
 		progressDialog.setMessage(mTweetTopics.getResources().getString(R.string.loading_description_trends));
 
@@ -4269,9 +4288,9 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
 					public void onCancel(DialogInterface arg0) {
 						if (trendsTask!=null) trendsTask.cancel(true);
 					}
-					
+
 				});
-		
+
 		progressDialog.show();
 
 		if (woeid<0) {
@@ -4279,30 +4298,30 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
 		} else {
 			trendsTask = new TrendsAsyncTask(this).execute(woeid);
 		}
-    					
+
 
     }
 
 	@Override
 	public void trendsCancelled() {
-		
+
 	}
 
 	@Override
 	public void trendsLoaded(Trend[] trends) {
-		
+
 		progressDialog.dismiss();
-		
+
 		if (trends!=null && trends.length>0) {
 			final CharSequence[] c = new CharSequence[trends.length];
 			for (int i=0; i<trends.length; i++) {
 				c[i] = trends[i].getName();
 			}
-			
+
 			AlertDialog.Builder builder = new AlertDialog.Builder(mTweetTopics);
 			builder.setTitle(R.string.loading_title_trends);
 			builder.setItems(c, new DialogInterface.OnClickListener() {
-	
+
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
 	            	Entity ent = new Entity("search");
@@ -4317,10 +4336,10 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
 					ent.setValue("words_and", c[which]);
 					ent.save();
 					deleteTempSearch();
-					toDoSearch(ent.getId());		
+					toDoSearch(ent.getId());
 				}
-	
-				
+
+
 			});
 			if (Utils.getWoeidTT(mTweetTopics)>0) {
 				builder.setNeutralButton(R.string.change_country, new DialogInterface.OnClickListener() {
@@ -4335,36 +4354,36 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
 	            }
 	        });
 	        builder.create();
-	        builder.show();	   
+	        builder.show();
 		}
 	}
 
 	@Override
 	public void trendsLoading() {
-		
+
 	}
-	
+
     /*
-     * 
+     *
      * Buscar listas
-     * 
+     *
      */
-    
-	private AsyncTask<String, Void, UserListsResult> userListTask;    
-	
-	public void showListUser(int type) {    
+
+	private AsyncTask<String, Void, UserListsResult> userListTask;
+
+	public void showListUser(int type) {
 		Entity e = DataFramework.getInstance().getTopEntity("users", "active=1", "");
 		if (e!=null) {
 			showListUser(e.getString("name"), type);
 		}
 	}
-	
-    public void showListUser(String user, int type) {    	
+
+    public void showListUser(String user, int type) {
 
     	closeSidebar();
-    	
+
 		progressDialog = new ProgressDialog(mTweetTopics);
-		
+
 		progressDialog.setTitle(R.string.loading_title_lists);
 		progressDialog.setMessage(mTweetTopics.getResources().getString(R.string.loading_description_lists));
 
@@ -4375,51 +4394,51 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
 					public void onCancel(DialogInterface arg0) {
 						if (userListTask!=null) userListTask.cancel(true);
 					}
-					
+
 				});
-		
+
 		progressDialog.show();
-		
+
 		if (type == UserListsAsyncTask.SHOW_TWEETS) {
 			userListTask = new UserListsAsyncTask(this, type, "").execute(user);
 		} else {
 			Entity e = DataFramework.getInstance().getTopEntity("users", "active=1", "");
 			if (e!=null) {
-				userListTask = new UserListsAsyncTask(this, type, user).execute(e.getString("name"));	
-			}			
+				userListTask = new UserListsAsyncTask(this, type, user).execute(e.getString("name"));
+			}
 		}
 
 
     }
 
 	@Override
-	public void userListsCancelled() {		
+	public void userListsCancelled() {
 	}
 
 	@Override
 	public void userListsLoaded(UserListsResult result) {
 		progressDialog.dismiss();
-		
+
 		if (result!=null) {
-		
+
 			final ResponseList<UserList> userLists = result.response;
 			final int type = result.type;
-			final String userAdd = result.userAdd; 
-			
+			final String userAdd = result.userAdd;
+
 			if (userLists!=null && userLists.size()>0) {
-				
+
 				ArrayList<UserList> ar = new ArrayList<UserList>();
-				
+
 				for (UserList u : result.response) {
 					ar.add(u);
 				}
-				
+
 				UserListsAdapter adapter = new UserListsAdapter(mTweetTopics, ar);
-				
+
 				AlertDialog.Builder builder = new AlertDialog.Builder(mTweetTopics);
 				builder.setTitle(R.string.loading_title_lists);
 				builder.setAdapter(adapter, new DialogInterface.OnClickListener() {
-		
+
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
 						Entity e = DataFramework.getInstance().getTopEntity("users", "active=1", "");
@@ -4432,15 +4451,15 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
 									Utils.showMessage(mTweetTopics, mTweetTopics.getString(R.string.user_in_list));
 								} catch (TwitterException e1) {
 									e1.printStackTrace();
-								}	
-								
+								}
+
 							} else {
-								loadTypeListStatus(e.getString("name"), userLists.get(which));					
+								loadTypeListStatus(e.getString("name"), userLists.get(which));
 							}
 				    	}
 					}
-		
-					
+
+
 				});
 		        builder.setNegativeButton(R.string.alert_dialog_cancel, new DialogInterface.OnClickListener() {
 		            public void onClick(DialogInterface dialog, int whichButton) {
@@ -4448,31 +4467,31 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
 		        });
 		        builder.create();
 		        builder.show();
-		        
+
 			} else {
 				Utils.showMessage(mTweetTopics, mTweetTopics.getString(R.string.no_list));
 			}
-			
+
 		} else {
 			Utils.showMessage(mTweetTopics, mTweetTopics.getString(R.string.error_general));
 		}
-		
+
 	}
 
 	@Override
 	public void userListsLoading() {
-		
+
 	}
-	
+
     /*
-     * 
+     *
      * Mostrar tweet antiguos
-     * 
+     *
      */
-	
+
 	private int mColumnOldTweets;
-	private AsyncTask<Void, Void, ArrayList<RowResponseList>> loadMoreTask;   
-	
+	private AsyncTask<Void, Void, ArrayList<RowResponseList>> loadMoreTask;
+
 	private void loadOlderTweets() {
 		if (mAdapterResponseList!=null && mAdapterResponseList.getCount()>0) {
 			mColumnOldTweets = mTypeLastColumn;
@@ -4483,7 +4502,7 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
 
 	@Override
 	public void loadingMoreStatuses() {
-		
+
 	}
 
 	@Override
@@ -4495,15 +4514,15 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
 			}
 		}
 	}
-	
+
     /*
-     * 
+     *
      * Mostrar tweets en medio del timeline
-     * 
+     *
      */
-	
+
     private int whichMoreTweetDown = 0;
-    
+
     public void showDialogMoreTweetDown() {
     	whichMoreTweetDown = 0;
     	AlertDialog.Builder builder = new AlertDialog.Builder(mTweetTopics);
@@ -4529,15 +4548,15 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
             		count = 20;
             	}
             	//mAdapterResponseList.showProgressMoreTweetsView(mPositionSelectedTweet);
-				moreTweetDown(mPositionSelectedTweet, mAdapterResponseList.getItem(mPositionSelectedTweet+1).getTweetId(), 
+				moreTweetDown(mPositionSelectedTweet, mAdapterResponseList.getItem(mPositionSelectedTweet+1).getTweetId(),
 						mAdapterResponseList.getItem(mPositionSelectedTweet-1).getTweetId(), count);
             }
         });
 
 		AlertDialog alert = builder.create();
 		alert.show();
-    } 
-	
+    }
+
 	private void moreTweetDown(int pos, long since, long max, int count) {
 		if (mAdapterResponseList!=null && mAdapterResponseList.getCount()>0) {
 			//Utils.showShortMessage(mTweetTopics, R.string.moretweetdown_loaded_msg);
@@ -4552,7 +4571,7 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
 
 	@Override
 	public void loadingMoreTweetDown() {
-		
+
 	}
 
 	@Override
@@ -4580,83 +4599,92 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
 	}
 
     /*
-     * 
+     *
      * Update status
-     * 
+     *
      */
-    
-    private AsyncTask<String, Void, Boolean> updateStatus;
-    
-    public void updateStatus(String text) {
-    	
-    	mTweetTopics.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
-    	
-		progressDialog = ProgressDialog.show(
-				mTweetTopics,
-				mTweetTopics.getResources().getString(R.string.sending_title),
-				mTweetTopics.getResources().getString(R.string.sending_description)
-		);
-		
-		updateStatus = new UploadStatusAsyncTask(mTweetTopics, this, twitter, NewStatus.MODE_TL_NONE).execute(text, "-1", "0");
 
+    public void sendStatus(String users, String text) {
+        Entity ent = new Entity("send_tweets");
+        ent.setValue("users", users);
+        ent.setValue("text", text);
+        ent.setValue("is_sent", 0);
+        ent.setValue("type_id", 1);
+        ent.setValue("username_direct", "");
+        ent.setValue("photos", "");
+        ent.setValue("mode_tweetlonger", NewStatus.MODE_TL_NONE);
+        ent.setValue("reply_tweet_id",  "-1");
+        ent.setValue("use_geo", Utils.getGeo(mTweetTopics)?"1":"0");
+        ent.save();
+
+        mTweetTopics.startService(new Intent(mTweetTopics, ServiceUpdateStatus.class));
     }
-    
 
-	@Override
-	public void uploadStatusCancelled() {
-		if (updateStatus!=null) updateStatus.cancel(true);
-	}
 
-	@Override
-	public void uploadStatusLoaded(boolean error) {
-    	if (progressDialog!=null) progressDialog.dismiss();
-    	progressDialog = null;
-    	mTweetTopics.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
-    	if (error) {
-    		Utils.showMessage(mTweetTopics, mTweetTopics.getString(R.string.no_server));
-    	} else {
-    		Utils.showMessage(mTweetTopics, mTweetTopics.getString(R.string.sending_finish));
-    	}
-	}
+    public void updateStatus(final String text) {
+        ArrayList<Entity> ents = DataFramework.getInstance().getEntityList("users", "service is null or service = \"twitter.com\"");
 
-	@Override
-	public void uploadStatusLoading() {
-	}
-	
+        if (ents.size()==1) {
+
+            sendStatus(ents.get(0).getId()+"", text);
+
+        } else {
+            final UsersAdapter adapter = new UsersAdapter(mTweetTopics, ents);
+
+            AlertDialog builder = new AlertDialog.Builder(mTweetTopics)
+                    .setCancelable(true)
+                    .setTitle(R.string.users)
+                    .setAdapter(adapter, new DialogInterface.OnClickListener() {
+
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            sendStatus(adapter.getItem(which).getId() + "", text);
+                        }
+
+                    })
+                    .setNegativeButton(R.string.alert_dialog_cancel, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                        }
+                    })
+                    .create();
+            builder.show();
+        }
+    }
     /*
-     * 
+     *
      * Mostrar status por tipo
-     * 
+     *
      */
-	
-	//private AsyncTask<String, Void, ArrayList<RowResponseList>> loadTypeStatusTask;   
+
+	//private AsyncTask<String, Void, ArrayList<RowResponseList>> loadTypeStatusTask;
 	private int mCurrentTypeStatus = 0;
 	private String mCurrentTextTypeStatus = "";
-	
+
 	private void loadTypeStatus(int type) {
 		loadTypeStatus(type, "");
 	}
-	
-	private void loadTypeListStatus(String user, UserList list) {
-		mCurrentList = list;
+
+	protected void loadTypeListStatus(String user, UserList list) {
+        mCurrentList = list;
 		loadTypeStatus(LoadTypeStatusAsyncTask.LIST, user, list);
 	}
-	
+
 	public void loadTypeStatus(int type, String text) {
 		loadTypeStatus(type, text, null);
 	}
-	
+
 	public void loadTypeStatus(int type, String text, UserList list) {
 
 		closeSidebar();
-		
+
 		mCurrentTypeStatus = type;
 		mCurrentTextTypeStatus = text;
-		
+
 		setLayoutLoading();
-		
+
 		String idListUser = "";
-		
+
 		if (type == LoadTypeStatusAsyncTask.FAVORITES) {
 			mTweetTopics.setTitle(mTweetTopics.getString(R.string.favorites));
 		} else if (type == LoadTypeStatusAsyncTask.SEARCH_USERS) {
@@ -4693,18 +4721,18 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
 			mTweetTopics.setTitle(list.getFullName());
 			mCurrentTextTypeStatus = list.getFullName();
 		}
-		
+
 		new LoadTypeStatusAsyncTask(this, type).execute(text, idListUser);
 	}
 
 	@Override
 	public void loadingTypeStatus() {
-		
+
 	}
 
 	@Override
 	public void typeStatusLoaded(ArrayList<RowResponseList> result) {
-		
+
 		setLayoutListView();
 
 		try {
@@ -4720,15 +4748,15 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
 	   	mListView.setAdapter(mAdapterResponseList);
 
 	}
-	
+
     /*
-     * 
+     *
      * GESTOS
-     * 
+     *
      */
-	
+
 	//prevSidebarTweet
-	
+
 	public void gestureUp() {
 		if (mTypeSidebar == TYPE_SIDEBAR_TWEET) {
 			nextSidebarTweet();
@@ -4744,15 +4772,15 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
 			prevSidebarLink();
 		}
 	}
-	
+
 	public void gestureLeft() {
-		
+
 	}
-	
+
 	public void gestureRight() {
 		closeSidebar();
 	}
-	
+
 	@Override
 	public boolean onDown(MotionEvent e) {
 		return true;
@@ -4780,7 +4808,7 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
 
 	@Override
 	public void onLongPress(MotionEvent e) {
-		
+
 	}
 
 	@Override
@@ -4799,5 +4827,5 @@ public class TweetTopicsCore implements 	OnGestureListener, SearchAsyncTaskRespo
 		return true;
 	}
 
-	
+
 }
