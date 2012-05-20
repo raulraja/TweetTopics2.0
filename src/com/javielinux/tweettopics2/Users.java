@@ -464,29 +464,29 @@ public class Users extends BaseActivity {
                         Entity timeline = new Entity("columns");
                         timeline.setValue("description", type.getString("description"));
                         timeline.setValue("type_id", type);
-                        timeline.setValue("order", count);
+                        timeline.setValue("position", count);
                         timeline.setValue("user_id", e.getId());
                         timeline.save();
                         count++;
                     }
                     if (isChoices[1]) {
                         Entity type = new Entity("type_columns", 3L);
-                        Entity timeline = new Entity("columns");
-                        timeline.setValue("description", type.getString("description"));
-                        timeline.setValue("type_id", type);
-                        timeline.setValue("order", count);
-                        timeline.setValue("user_id", e.getId());
-                        timeline.save();
+                        Entity mentions = new Entity("columns");
+                        mentions.setValue("description", type.getString("description"));
+                        mentions.setValue("type_id", type);
+                        mentions.setValue("position", count);
+                        mentions.setValue("user_id", e.getId());
+                        mentions.save();
                         count++;
                     }
                     if (isChoices[2]) {
                         Entity type = new Entity("type_columns", 4L);
-                        Entity timeline = new Entity("columns");
-                        timeline.setValue("description", type.getString("description"));
-                        timeline.setValue("type_id", type);
-                        timeline.setValue("order", count);
-                        timeline.setValue("user_id", e.getId());
-                        timeline.save();
+                        Entity dms = new Entity("columns");
+                        dms.setValue("description", type.getString("description"));
+                        dms.setValue("type_id", type);
+                        dms.setValue("position", count);
+                        dms.setValue("user_id", e.getId());
+                        dms.save();
                     }
 
                     // create friend

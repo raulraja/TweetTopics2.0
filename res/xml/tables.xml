@@ -208,7 +208,7 @@
   <table name="columns" to-string="%description%" new-in-version="24">
     <field name="description" obligatory="true" type="text" size="64"/>
     <field name="type_id" obligatory="true" type="foreign-key" foreign-table="type_columns" />
-    <field name="order" obligatory="true" type="int" />
+    <field name="position" obligatory="true" type="int" />
     <field name="user_id" type="foreign-key" foreign-table="users" />
     <field name="userlist_id" type="foreign-key" foreign-table="user_lists" />
     <field name="location_id" type="int" />  <!-- Trending topics -->
