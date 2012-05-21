@@ -5,10 +5,8 @@ import infos.InfoSaveTweets;
 public class TwitterUserResponse implements BaseResponse {
 
     private long user_id = -1;
-    private boolean loadOtherColumns = false;
-    private InfoSaveTweets infoTimeline = null;
-    private InfoSaveTweets infoMentions = null;
-    private InfoSaveTweets infoDM = null;
+    private InfoSaveTweets info = null;
+    private int column = 0;
 
     public long getUserId() {
         return user_id;
@@ -17,31 +15,18 @@ public class TwitterUserResponse implements BaseResponse {
         this.user_id = user_id;
     }
 
-    public boolean getLoadOtherColumns() {
-        return loadOtherColumns;
+    public InfoSaveTweets getInfo() {
+        return info;
     }
-    public void setLoadOtherColumns(boolean loadOtherColumns) {
-        this.loadOtherColumns = loadOtherColumns;
-    }
-
-    public InfoSaveTweets getInfoTimeline() {
-        return infoTimeline;
-    }
-    public void setInfoTimeline(InfoSaveTweets infoTimeline) {
-        this.infoTimeline = infoTimeline;
+    public void setInfo(InfoSaveTweets info) {
+        this.info = info;
     }
 
-    public InfoSaveTweets getInfoMentions() {
-        return infoMentions;
-    }
-    public void setInfoMentions(InfoSaveTweets infoMentions) {
-        this.infoMentions = infoMentions;
+    public int getColumn() {
+        return column;
     }
 
-    public InfoSaveTweets getInfoDM() {
-        return infoDM;
-    }
-    public void setInfoDM(InfoSaveTweets infoDM) {
-        this.infoDM = infoDM;
+    public void setColumn(int column) {
+        this.column = column;
     }
 }

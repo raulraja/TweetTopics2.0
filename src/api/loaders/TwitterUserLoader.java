@@ -12,20 +12,18 @@ import com.javielinux.tweettopics2.TweetTopicsCore;
 import com.javielinux.tweettopics2.Utils;
 import com.javielinux.twitter.ConnectionManager;
 import database.EntityTweetUser;
-import error_reporter.ErrorReporter;
 import infos.InfoSaveTweets;
 
 public class TwitterUserLoader extends AsynchronousLoader<BaseResponse> {
 
     private int column;
-    private boolean loadOtherColumns;
     private Entity current_user;
 
     public TwitterUserLoader(Context context, TwitterUserRequest request) {
         super(context);
 
         this.column = request.getColumn();
-        this.loadOtherColumns = request.getLoadOtherColumns();
+
     }
 
     private InfoSaveTweets saveTimeline(long user_id) {
@@ -109,25 +107,16 @@ public class TwitterUserLoader extends AsynchronousLoader<BaseResponse> {
             current_user = DataFramework.getInstance().getTopEntity("users", "active=1", "");
 
             response.setUserId(current_user.getId());
-            response.setLoadOtherColumns(loadOtherColumns);
+            response.setColumn(column);
 
             if (column == TweetTopicsCore.TIMELINE) {
-                if (loadOtherColumns) {
-                    response.setInfoMentions(saveMentions(response.getUserId()));
-                    response.setInfoDM(saveDirects(response.getUserId()));
-                } else {
-                    response.setInfoTimeline(saveTimeline(response.getUserId()));
-                }
+               response.setInfo(saveTimeline(response.getUserId()));
             }
             if (column == TweetTopicsCore.MENTIONS) {
-                if (!loadOtherColumns) {
-                    response.setInfoMentions(saveMentions(response.getUserId()));
-                }
+                response.setInfo(saveMentions(response.getUserId()));
             }
             if (column == TweetTopicsCore.DIRECTMESSAGES) {
-                if (!loadOtherColumns) {
-                    response.setInfoDM(saveDirects(response.getUserId()));
-                };
+                response.setInfo(saveDirects(response.getUserId()));
             }
 
             return response;
