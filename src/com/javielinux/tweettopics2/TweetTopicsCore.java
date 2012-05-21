@@ -44,7 +44,6 @@ import preferences.ColorsApp;
 import preferences.Preferences;
 import preferences.RetweetsTypes;
 import sidebar.Sidebar;
-import sidebar.SidebarGalleryLinks;
 import sidebar.SidebarMenu;
 import task.*;
 import task.Export2HTMLAsyncTask.Export2HTMLAsyncTaskResponder;
@@ -2835,7 +2834,10 @@ public class TweetTopicsCore implements OnGestureListener, SearchAsyncTaskRespon
     }
 
     public void showSidebarTweet() {
-
+        // TODO Cambio para usar la nueva actividad de tweet
+        Intent intent = new Intent(mTweetTopics, TweetActivity.class);
+        mTweetTopics.startActivity(intent);
+        /*
         mTypeSidebar = TYPE_SIDEBAR_TWEET;
 
         mSidebarHead.removeAllViews();
@@ -2866,6 +2868,7 @@ public class TweetTopicsCore implements OnGestureListener, SearchAsyncTaskRespon
             animationLayoutIn(mSidebarContent, Utils.TYPE_ANIM_RIGHT);
             animationLayoutIn(mSidebarMenu, Utils.TYPE_ANIM_RIGHT);
         }
+        */
     }
 
     /*

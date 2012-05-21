@@ -18,6 +18,8 @@
 
         <activity android:name="api.PruebaLoaderActivity"></activity>
 
+        <activity android:name="TweetActivity" android:theme="@style/Theme.PageIndicatorDefaults"></activity>
+
 		<activity android:name="Users"></activity>
 		<activity android:name="TabGeneral"></activity>
 		<activity android:name="TabGeo"></activity>
