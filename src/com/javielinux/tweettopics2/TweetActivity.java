@@ -18,7 +18,7 @@ public class TweetActivity extends BaseActivity {
 
         setContentView(R.layout.tweet_activity);
 
-        fragmentAdapter = new TweetFragmentAdapter(getSupportFragmentManager());
+        fragmentAdapter = new TweetFragmentAdapter(getApplicationContext(),getSupportFragmentManager());
 
         pager = (ViewPager)findViewById(R.id.tweet_pager);
         pager.setAdapter(fragmentAdapter);

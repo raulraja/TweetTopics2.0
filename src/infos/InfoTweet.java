@@ -1,6 +1,7 @@
 package infos;
 
 import adapters.RowResponseList;
+import android.content.Context;
 import android.content.Intent;
 import android.database.CursorIndexOutOfBoundsException;
 import com.android.dataframework.DataFramework;
@@ -11,17 +12,21 @@ import com.javielinux.tweettopics2.TweetTopicsCore;
 import com.javielinux.tweettopics2.Utils;
 import com.javielinux.tweettopics2.Utils.URLContent;
 import com.javielinux.twitter.ConnectionManager;
-import twitter4j.Status;
-import twitter4j.Tweet;
-import twitter4j.TwitterException;
-import twitter4j.User;
+import twitter4j.*;
 
 import java.util.ArrayList;
 import java.util.Date;
 
 public class InfoTweet {
-	
-	public static final String START_URL_TWITTER = "http://twitter.com/#!/";
+
+    public static int TYPE_ENTITY = 0;
+    public static int TYPE_TWEET = 1;
+    public static int TYPE_STATUS = 2;
+    public static int TYPE_PUB = 3;
+    public static int TYPE_DIRECTMESSAGE = 4;
+    public static int TYPE_USER = 5;
+    public static int TYPE_MORE_TWEETS = 6;
+    public static final String START_URL_TWITTER = "http://twitter.com/#!/";
 	public static final String PREFIX_URL_TWITTER = "/status/";
 	
 	public static final int OUT_TRUE = 0;
@@ -48,18 +53,21 @@ public class InfoTweet {
 	private String source = "";
 	private String toUsername = "";
 	private long toUserId = 0;
-	private Date date = null;
+	private Date createAt = null;
 	private long toReplyId = 0;
 	private double latitude = 0;
 	private double longitude = 0;
 	private boolean favorited = false;
 	
 	private boolean retweet = false;
+    private boolean lastRead = false;
+    private boolean read = true;
 	
 	private String urlAvatarRetweet = "";
 	private String textRetweet = "";
 	private String usernameRetweet = "";
 	private String fullnameRetweet = "";
+    private String sourceRetweet = "";
 	
 	private String urlTweet = "";
 	
@@ -78,7 +86,7 @@ public class InfoTweet {
 		source = tweet.getSource();
 		toUsername = tweet.getToUser();
 		toUserId = tweet.getToUserId();
-		date = tweet.getCreatedAt();
+		createAt = tweet.getCreatedAt();
 		if (tweet.getGeoLocation()!=null) {
 			latitude = tweet.getGeoLocation().getLatitude();
 			longitude = tweet.getGeoLocation().getLongitude();
@@ -102,7 +110,7 @@ public class InfoTweet {
 		source = status.getSource();
 		toUsername = status.getInReplyToScreenName();
 		toUserId = status.getInReplyToUserId();
-		date = status.getCreatedAt();
+		createAt = status.getCreatedAt();
 		toReplyId = status.getInReplyToStatusId();
 		favorited = status.isFavorited();
 		if (status.getGeoLocation()!=null) {
@@ -115,47 +123,12 @@ public class InfoTweet {
 			textRetweet = status.getRetweetedStatus().getText();
 			usernameRetweet = status.getRetweetedStatus().getUser().getScreenName();
 			fullnameRetweet = status.getRetweetedStatus().getUser().getName();
+            sourceRetweet = status.getRetweetedStatus().getSource();
 		}
 		
 		urlTweet = "http://twitter.com/#!/" + username.toLowerCase() + PREFIX_URL_TWITTER + id;
 	}
-	/*
-	public InfoTweet(Cursor cursor) {
-		writeCursor(cursor);
-	}
-	
-	private void writeCursor(Cursor cursor) {
 
-		mTypeFrom = FROM_STATUS;
-		toReplyId = cursor.getLong(cursor.getColumnIndex("reply_tweet_id"));
-		favorited = cursor.getInt(cursor.getColumnIndex("is_favorite"))==1?true:false;
-		
-		idDB = cursor.getLong(cursor.getColumnIndex(DataFramework.KEY_ID));
-		id = cursor.getLong(cursor.getColumnIndex("tweet_id"));
-		urlAvatar = cursor.getString(cursor.getColumnIndex("url_avatar"));
-		userId = cursor.getLong(cursor.getColumnIndex("user_id"));
-		text = cursor.getString(cursor.getColumnIndex("text"));
-		username = cursor.getString(cursor.getColumnIndex("username"));
-		fullname = cursor.getString(cursor.getColumnIndex("fullname"));
-		source = cursor.getString(cursor.getColumnIndex("source"));
-		toUsername = cursor.getString(cursor.getColumnIndex("to_username"));
-		toUserId = cursor.getLong(cursor.getColumnIndex("to_user_id"));
-		date = new Date();
-		date.setTime(cursor.getLong(cursor.getColumnIndex("date")));
-		latitude = cursor.getDouble(cursor.getColumnIndex("latitude"));
-		longitude = cursor.getDouble(cursor.getColumnIndex("longitude"));
-
-		retweet = cursor.getInt(cursor.getColumnIndex("is_retweet"))==1?true:false;
-		if (retweet) {
-			urlAvatarRetweet = cursor.getString(cursor.getColumnIndex("retweet_url_avatar"));
-			textRetweet = cursor.getString(cursor.getColumnIndex("text"));
-			usernameRetweet = cursor.getString(cursor.getColumnIndex("retweet_username"));
-		}
-
-		
-		urlTweet = "http://twitter.com/#!/" + username.toLowerCase() + "/status/" + id;
-	}
-	*/
 	public InfoTweet(Entity entity) {
 		writeEntity(entity);
 	}
@@ -182,8 +155,8 @@ public class InfoTweet {
 		source = entity.getString("source");
 		toUsername = entity.getString("to_username");
 		toUserId = entity.getLong("to_user_id");
-		date = new Date();
-		date.setTime(entity.getLong("date"));
+		createAt = new Date();
+		createAt.setTime(entity.getLong("date"));
 		latitude = entity.getDouble("latitude");
 		longitude = entity.getDouble("longitude");
 		if (entity.getTable().equals("tweets_user")) {
@@ -215,7 +188,7 @@ public class InfoTweet {
 			source = user.getStatus().getSource();
 			toUsername = user.getStatus().getInReplyToScreenName();
 			toUserId = user.getStatus().getInReplyToUserId();
-			date = user.getStatus().getCreatedAt();
+			createAt = user.getStatus().getCreatedAt();
 			toReplyId = user.getStatus().getInReplyToStatusId();
 			if (user.getStatus().getGeoLocation()!=null) {
 				latitude = user.getStatus().getGeoLocation().getLatitude();
@@ -281,7 +254,7 @@ public class InfoTweet {
 	}
 
 	public Date getDate() {
-		return date;
+		return createAt;
 	}
 
 	public String getUrlAvatar() {
@@ -343,6 +316,10 @@ public class InfoTweet {
 	public String getUsernameRetweet() {
 		return usernameRetweet;
 	}
+
+    public String getSourceRetweet() {
+        return sourceRetweet;
+    }
 
 	public String getUrlTweet() {
 		return urlTweet;
@@ -556,12 +533,84 @@ public class InfoTweet {
 		return textHTMLFinal;
 	}
 
+    public void setTextHTMLFinal(String textHTMLFinal) {
+        this.textHTMLFinal = textHTMLFinal;
+    }
+
 	public String getTextFinal() {
 		return textFinal;
 	}
 
-	public ArrayList<URLContent> getContentURLs() {
+    public void setTextFinal(String textFinal) {
+        this.textFinal = textFinal;
+    }
+
+    public String getTextURLs() {
+        return textURLs;
+    }
+
+
+    public ArrayList<URLContent> getContentURLs() {
 		return urls;
 	}
-	
+
+    public String getTime(Context context) {
+        try {
+            return Utils.timeFromTweet(context, createAt);
+
+            /*if (type == TYPE_ENTITY) {
+                Date d = new Date();
+                d.setTime(mEntity.getLong("date"));
+                return Utils.timeFromTweet(cnt, d);
+            } else if (type == TYPE_TWEET) {
+                return Utils.timeFromTweet(cnt, mTweet.getCreatedAt());
+            } else if (type == TYPE_STATUS) {
+                return Utils.timeFromTweet(cnt, mStatus.getCreatedAt());
+            } else if (type == TYPE_DIRECTMESSAGE) {
+                return Utils.timeFromTweet(cnt, mDirect.getCreatedAt());
+            } else if (type == TYPE_USER) {
+                return Utils.timeFromTweet(cnt, mUser.getStatus().getCreatedAt());
+            }*/
+        } catch (Exception e) {
+
+        }
+        return "";
+    }
+
+    public boolean hasConversation() {
+
+        if (toReplyId > 0)
+            return true;
+
+        return false;
+    }
+
+    public boolean hasGeoLocation() {
+        if (latitude != 0) {
+            return true;
+        }
+
+        return false;
+    }
+
+    public long getRetweetCount() {
+        //TODO: Revisar getRetweetCount
+        return 0;
+    }
+
+    public void setLastRead(boolean lastRead) {
+        this.lastRead = lastRead;
+    }
+
+    public boolean isLastRead() {
+        return lastRead;
+    }
+
+    public void setRead(boolean read) {
+        this.read = read;
+    }
+
+    public boolean isRead() {
+        return read;
+    }
 }
