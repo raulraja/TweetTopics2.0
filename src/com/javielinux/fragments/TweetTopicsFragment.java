@@ -3,6 +3,7 @@ package com.javielinux.fragments;
 import adapters.TweetsAdapter;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,8 +36,6 @@ public class TweetTopicsFragment extends Fragment {
             DataFramework.getInstance().open(getActivity(), Utils.packageName);
 
             column_entity = new Entity("columns", column_id);
-            tweetsAdapter = new TweetsAdapter(getActivity());
-            getTweets();
 
             DataFramework.getInstance().close();
         } catch (Exception exception) {
@@ -44,7 +43,7 @@ public class TweetTopicsFragment extends Fragment {
         }
     }
 
-    private void getTweets() {
+    private ArrayList<InfoTweet> getTweets() {
 
         String whereType = "";
 
@@ -63,8 +62,12 @@ public class TweetTopicsFragment extends Fragment {
         ArrayList<Entity> tweets;
 
         try {
+            DataFramework.getInstance().open(getActivity(), Utils.packageName);
+
             tweets = DataFramework.getInstance().getEntityList("tweets_user", "user_tt_id = " + column_entity.getLong("user_id") + whereType, "date desc, has_more_tweets_down asc");
-        } catch (OutOfMemoryError er) {
+
+            DataFramework.getInstance().close();
+        } catch (Exception exception) {
             tweets = DataFramework.getInstance().getEntityList("tweets_user", "user_tt_id = " + column_entity.getLong("user_id") + whereType, "date desc, has_more_tweets_down asc", "0," + Utils.MAX_ROW_BYSEARCH);
         }
 
@@ -74,8 +77,7 @@ public class TweetTopicsFragment extends Fragment {
             infoTweets.add(new InfoTweet(tweets.get(i)));
         }
 
-        tweetsAdapter.addAll(infoTweets);
-        tweetsAdapter.notifyDataSetChanged();
+        return infoTweets;
     }
 
     @Override
@@ -85,10 +87,15 @@ public class TweetTopicsFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = View.inflate(getActivity(), R.layout.tweet_status_fragment, null);
-        ListView listView = (ListView) view.findViewById(R.id.tweet_status_listview);
 
+        Log.d("TweetTopics 2.0", "Generating adapter");
+        tweetsAdapter = new TweetsAdapter(getActivity(), getTweets(), -1);
+
+        View view = View.inflate(getActivity(), R.layout.tweettopics_fragment, null);
+        ListView listView = (ListView) view.findViewById(R.id.tweet_status_listview);
         listView.setAdapter(tweetsAdapter);
+
+        tweetsAdapter.notifyDataSetChanged();
 
         return view;
     }

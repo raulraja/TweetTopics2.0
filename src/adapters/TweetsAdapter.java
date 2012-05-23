@@ -2,6 +2,7 @@ package adapters;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
@@ -9,12 +10,9 @@ import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
 import com.javielinux.tweettopics2.*;
 import infos.InfoTweet;
-import layouts.TweetListItem;
 import layouts.TweetListViewItem;
-import twitter4j.User;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class TweetsAdapter extends ArrayAdapter<InfoTweet> {
 
@@ -45,26 +43,19 @@ public class TweetsAdapter extends ArrayAdapter<InfoTweet> {
     private ThemeManager themeManager;
     private int color_line;
 
-    public TweetsAdapter(Context context) {
-
-        super(context, android.R.layout.simple_list_item_1);
-        this.context = context;
-        this.infoTweetArrayList = new ArrayList<InfoTweet>();
-        this.last_tweet_id = -1;
-        this.position_tweet = Integer.parseInt(Utils.getPreference(context).getString("prf_positions_links", "1"));
-        themeManager = new ThemeManager(context);
-        color_line = themeManager.getColor("color_tweet_no_read");
-    }
-
     public TweetsAdapter(Context context, ArrayList<InfoTweet> infoTweetArrayList, long last_tweet_id) {
 
         super(context, android.R.layout.simple_list_item_1, infoTweetArrayList);
+
+        Log.d("TweetTopics 2.0", "Numero de elementos:" + infoTweetArrayList.size());
         this.context = context;
         this.infoTweetArrayList = infoTweetArrayList;
         this.last_tweet_id = last_tweet_id;
         this.position_tweet = Integer.parseInt(Utils.getPreference(context).getString("prf_positions_links", "1"));
         themeManager = new ThemeManager(context);
         color_line = themeManager.getColor("color_tweet_no_read");
+
+        notifyDataSetChanged();
     }
 
     public static ViewHolder generateViewHolder(View v) {
@@ -92,6 +83,7 @@ public class TweetsAdapter extends ArrayAdapter<InfoTweet> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
+        Log.d("TweetTopics 2.0", "Getting element " + position);
         InfoTweet infoTweet = getItem(position) ;
 
         try {
@@ -144,6 +136,8 @@ public class TweetsAdapter extends ArrayAdapter<InfoTweet> {
         if (infoTweetArrayList != null) {
             this.infoTweetArrayList.clear();
             this.infoTweetArrayList.addAll(infoTweetArrayList);
+
+            notifyDataSetChanged();
         }
     }
 
