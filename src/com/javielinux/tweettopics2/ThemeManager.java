@@ -45,6 +45,14 @@ public class ThemeManager {
     		mContext.setTheme(R.style.Theme_TwitterBlack);
     	}
 	}
+
+    public void setTranslucentTheme() {
+        if ( mTheme == 1 ) {
+            mContext.setTheme(R.style.Theme_Twitter_Translucent);
+        } else {
+            mContext.setTheme(R.style.Theme_TwitterBlack_Translucent);
+        }
+    }
 		
 	public int getResource(String resource){
 		int rsc = -1;

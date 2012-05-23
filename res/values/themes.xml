@@ -1,7 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <style name="Theme.Twitter.Translucent" parent="@style/Theme.Twitter">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation</item>
+    </style>
+
 	<style name="Theme.Twitter" parent="@android:style/Theme.Black">
-	
+
+        <!-- Tabs indicator -->
+        <item name="vpiTabPageIndicatorStyle">@style/Widget.TabPageIndicator</item>
+
 		<item name="color_tweet_usename">#ff000000</item>
 		<item name="color_tweet_source">#ffaaaaaa</item>
 		<item name="color_tweet_date">#ffaaaaaa</item>
@@ -55,8 +66,18 @@
         <item name="android:listViewStyle">@style/Widget.ListView</item>
 
 	</style>
+
+    <style name="Theme.TwitterBlack.Translucent" parent="@style/Theme.TwitterBlack">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation</item>
+    </style>
 	
 	<style name="Theme.TwitterBlack" parent="@android:style/Theme.Black">
+
+        <!-- Tabs indicator -->
+        <item name="vpiTabPageIndicatorStyle">@style/Widget.TabPageIndicator</item>
 	
 		<item name="color_tweet_usename">#ffffffff</item>
 		<item name="color_tweet_source">#ffbfbfbf</item>
@@ -111,5 +132,23 @@
         <item name="android:listViewStyle">@style/Widget.ListView</item>
 	
 	</style>
+
+
+    <style name="Widget.TabPageIndicator" parent="Widget">
+        <item name="android:gravity">center</item>
+        <item name="android:background">@drawable/vpi__tab_indicator</item>
+        <item name="android:paddingLeft">22dip</item>
+        <item name="android:paddingRight">22dip</item>
+        <item name="android:paddingTop">12dp</item>
+        <item name="android:paddingBottom">12dp</item>
+        <item name="android:textAppearance">@style/TextAppearance.TabPageIndicator</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:maxLines">1</item>
+    </style>
+
+    <style name="TextAppearance.TabPageIndicator" parent="Widget">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/vpi__dark_theme</item>
+    </style>
 	
 </resources>

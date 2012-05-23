@@ -7,17 +7,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
-import android.widget.TextView;
 import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
-import com.javielinux.fragmentadapter.TweetFragmentAdapter;
+import com.javielinux.fragmentadapter.TweetTopicsFragmentAdapter;
 import com.javielinux.tweettopics2.R;
 import com.javielinux.tweettopics2.Utils;
 import infos.InfoTweet;
 
 import java.util.ArrayList;
 
-public class TweetStatusFragment extends Fragment {
+public class TweetTopicsFragment extends Fragment {
 
     public static int TIMELINE = 0;
     public static int MENTIONS = 1;
@@ -28,7 +27,7 @@ public class TweetStatusFragment extends Fragment {
     private TweetsAdapter tweetsAdapter;
     private Entity column_entity;
 
-    public TweetStatusFragment(long column_id) {
+    public TweetTopicsFragment(long column_id) {
 
         super();
 
@@ -50,13 +49,13 @@ public class TweetStatusFragment extends Fragment {
         String whereType = "";
 
         switch (column_entity.getInt("type_id")) {
-            case TweetFragmentAdapter.TIMELINE:
+            case TweetTopicsFragmentAdapter.TIMELINE:
                 whereType = " AND type_id = " + TIMELINE;
                 break;
-            case TweetFragmentAdapter.MENTIONS:
+            case TweetTopicsFragmentAdapter.MENTIONS:
                 whereType = " AND type_id = " + MENTIONS;
                 break;
-            case TweetFragmentAdapter.DIRECT_MESSAGES:
+            case TweetTopicsFragmentAdapter.DIRECT_MESSAGES:
                 whereType = " AND (type_id = " + DIRECTMESSAGES + " OR type_id = " + SENT_DIRECTMESSAGES + ")";
                 break;
         }

@@ -1,17 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="#00000000"
+    android:id="@+id/layout_background_app"
     >
-    <LinearLayout
-                  android:orientation="vertical"
-                  android:layout_width="fill_parent"
-                  android:layout_height="fill_parent"
-                  android:paddingLeft="29dip"
-                  android:background="?attr/bg_sidebar"
-                  android:id="@+id/tweet_ll"
-            >
+
         <com.viewpagerindicator.TabPageIndicator
                 android:id="@+id/tweet_indicator"
                 android:layout_height="wrap_content"
@@ -23,5 +16,5 @@
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 />
-    </LinearLayout>
-</FrameLayout>
+
+</LinearLayout>

@@ -16,9 +16,9 @@
     	<activity android:name="com.javielinux.twitter.AuthorizationActivity"></activity>
 		<activity android:name="TabNewEditSearch"></activity>
 
-        <activity android:name="api.PruebaLoaderActivity"></activity>
+        <activity android:name="TweetTopicsActivity"></activity>
 
-        <activity android:name="TweetActivity" android:theme="@style/Theme.PageIndicatorDefaults"></activity>
+        <activity android:name="TweetActivity" android:theme="@android:style/Theme.Translucent"></activity>
 
 		<activity android:name="Users"></activity>
 		<activity android:name="TabGeneral"></activity>
