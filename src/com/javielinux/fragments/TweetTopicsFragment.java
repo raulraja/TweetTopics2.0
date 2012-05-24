@@ -12,6 +12,7 @@ import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
 import com.javielinux.fragmentadapter.TweetTopicsFragmentAdapter;
 import com.javielinux.tweettopics2.R;
+import com.javielinux.tweettopics2.TweetTopicsConstants;
 import com.javielinux.tweettopics2.Utils;
 import infos.InfoTweet;
 import layouts.PullToRefreshListView;
@@ -20,14 +21,9 @@ import java.util.ArrayList;
 
 public class TweetTopicsFragment extends Fragment {
 
-    public static int TIMELINE = 0;
-    public static int MENTIONS = 1;
-    public static int FAVORITES = 2;
-    public static int DIRECTMESSAGES = 3;
-    public static int SENT_DIRECTMESSAGES = 4;
-
     private TweetsAdapter tweetsAdapter;
     private Entity column_entity;
+    private Entity user_entity;
     private View view;
     private PullToRefreshListView listView;
 
@@ -39,6 +35,7 @@ public class TweetTopicsFragment extends Fragment {
             DataFramework.getInstance().open(getActivity(), Utils.packageName);
 
             column_entity = new Entity("columns", column_id);
+            user_entity = new Entity("users", column_entity.getLong("user_id"));
 
             DataFramework.getInstance().close();
         } catch (Exception exception) {
@@ -51,14 +48,14 @@ public class TweetTopicsFragment extends Fragment {
         String whereType = "";
 
         switch (column_entity.getInt("type_id")) {
-            case TweetTopicsFragmentAdapter.TIMELINE:
-                whereType = " AND type_id = " + TIMELINE;
+            case TweetTopicsConstants.COLUMN_TIMELINE:
+                whereType = " AND type_id = " + TweetTopicsConstants.TWEET_TYPE_TIMELINE;
                 break;
-            case TweetTopicsFragmentAdapter.MENTIONS:
-                whereType = " AND type_id = " + MENTIONS;
+            case TweetTopicsConstants.COLUMN_MENTIONS:
+                whereType = " AND type_id = " + TweetTopicsConstants.TWEET_TYPE_MENTIONS;
                 break;
-            case TweetTopicsFragmentAdapter.DIRECT_MESSAGES:
-                whereType = " AND (type_id = " + DIRECTMESSAGES + " OR type_id = " + SENT_DIRECTMESSAGES + ")";
+            case TweetTopicsConstants.COLUMN_DIRECT_MESSAGES:
+                whereType = " AND (type_id = " + TweetTopicsConstants.TWEET_TYPE_DIRECTMESSAGES + " OR type_id = " + TweetTopicsConstants.TWEET_TYPE_SENT_DIRECTMESSAGES + ")";
                 break;
         }
 

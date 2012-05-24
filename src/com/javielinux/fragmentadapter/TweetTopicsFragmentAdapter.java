@@ -15,23 +15,7 @@ import java.util.ArrayList;
 
 public class TweetTopicsFragmentAdapter extends FragmentPagerAdapter  {
 
-    public static final int MY_ACTIVITY = 0;
-    public static final int TIMELINE = 1;
-    public static final int MENTIONS = 2;
-    public static final int DIRECT_MESSAGES = 3;
-    public static final int FAVORITES = 4;
-    public static final int LIST_USER = 5;
-    public static final int YOUR_TWEETS_RETWEETED = 6;
-    public static final int RETWEETS_BY_YOU = 7;
-    public static final int RETWEETS_BY_OTHERS = 8;
-    public static final int TRENDING_TOPIC = 9;
-    public static final int SEARCH = 10;
-    public static final int SAVED_TWEETS = 11;
-    public static final int FOLLOWERS = 12;
-    public static final int FOLLOWINGS = 13;
-    public static final int TIMELINE_OF_USER = 14;
-
-    private static final String[] tweet_fragment_titles = new String[] { "My activity", "Timeline", "Mentions", "Direct messages", "Favorites", "User lists", "Your tweets retweeted", "Retweets by you", "Retweets by others", "Trending Topics", "Search", "Saved tweets", "Followers", "Followings", "Timeline of user" };
+    //private static final String[] tweet_fragment_titles = new String[] { "My activity", "Timeline", "Mentions", "Direct messages", "Favorites", "User lists", "Your tweets retweeted", "Retweets by you", "Retweets by others", "Trending Topics", "Search", "Saved tweets", "Followers", "Followings", "Timeline of user" };
 
     private Context context;
     private ArrayList<Entity> tweet_fragment_list;
@@ -73,7 +57,6 @@ public class TweetTopicsFragmentAdapter extends FragmentPagerAdapter  {
         }
         catch(Exception exception)
         {
-            Log.d("TweetTopics 2.0", exception.getMessage());
             return null;
         }
     }
@@ -85,6 +68,6 @@ public class TweetTopicsFragmentAdapter extends FragmentPagerAdapter  {
 
     @Override
     public CharSequence getPageTitle(int position) {
-        return tweet_fragment_titles[tweet_fragment_list.get(position).getInt("type_id")].toUpperCase();
+        return tweet_fragment_list.get(position).getString("description").toUpperCase();
     }
 }

@@ -1,6 +1,5 @@
 package api;
 
-
 import android.app.LoaderManager;
 import android.content.Context;
 import android.content.Loader;

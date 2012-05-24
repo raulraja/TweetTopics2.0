@@ -10,30 +10,25 @@ import android.util.Log;
 import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
 import com.javielinux.tweettopics2.R;
-import com.javielinux.tweettopics2.TweetTopicsCore;
+import com.javielinux.tweettopics2.TweetTopicsConstants;
 import com.javielinux.tweettopics2.Utils;
 import infos.InfoSaveTweets;
 import twitter4j.*;
 
 public class EntityTweetUser extends Entity {
-	/*
-	public static int TYPE_SICELASTID_NOUSE = 0;
-	public static int TYPE_SICELASTID_NORMAL = 1;
-	public static int TYPE_SICELASTID_NOTIFICATIONS = 2;
-	*/
 
 	private String mErrorLastQuery = "";
 	
-	private int mType = 0;
+	private int tweet_type = 0;
 	private long mLastIdNotification = 0;
 
 	public EntityTweetUser(Long id, int type) {
 		super("users", id);
-		mType = type;
+		this.tweet_type = type;
 	}
 	
 	public int getType() {
-		return mType;
+		return tweet_type;
 	}
 	
 	public String getErrorLastQuery() {
@@ -41,61 +36,78 @@ public class EntityTweetUser extends Entity {
 	}
 	
 	public String getFieldLastId() {
-		String out = "";
-		if (mType==TweetTopicsCore.TIMELINE) {
-			out = "last_timeline_id";
-		} else if (mType==TweetTopicsCore.MENTIONS) {
-			out = "last_mention_id";
-		} else if (mType==TweetTopicsCore.DIRECTMESSAGES) {
-			out = "last_direct_id";
-		} else if (mType==TweetTopicsCore.SENT_DIRECTMESSAGES) {
-			out = "last_sent_direct_id";
-		}
-		return out;
+
+        switch (tweet_type) {
+            case TweetTopicsConstants.TWEET_TYPE_TIMELINE:
+                return "last_timeline_id";
+            case TweetTopicsConstants.TWEET_TYPE_MENTIONS:
+                return "last_mention_id";
+            case TweetTopicsConstants.TWEET_TYPE_DIRECTMESSAGES:
+                return "last_direct_id";
+            case TweetTopicsConstants.TWEET_TYPE_SENT_DIRECTMESSAGES:
+                return "last_sent_direct_id";
+        }
+
+        return "";
+
 	}
 	
 	
 	public int getValueNewCount() {
-		return DataFramework.getInstance().getEntityListCount("tweets_user", "type_id = " + mType 
-   				+ " AND user_tt_id="+getId() + " AND tweet_id >'" + Utils.fillZeros(""+getString(getFieldLastId()))+"'");
+		return DataFramework.getInstance().getEntityListCount("tweets_user", "type_id=" + tweet_type 
+   				+ " AND user_tt_id=" + getId() + " AND tweet_id >'" + Utils.fillZeros(""+getString(getFieldLastId()))+"'");
 	}
 	
 	public int getValueCountFromId(long id) {
-		return DataFramework.getInstance().getEntityListCount("tweets_user", "type_id = " + mType 
-   				+ " AND user_tt_id="+getId() + " AND tweet_id >'" + Utils.fillZeros(""+id)+"'");
+		return DataFramework.getInstance().getEntityListCount("tweets_user", "type_id=" + tweet_type 
+   				+ " AND user_tt_id=" + getId() + " AND tweet_id >'" + Utils.fillZeros(""+id)+"'");
 	}
 	
 	public void saveValueLastIdFromDB() {
-		/*
-		if (mType==TweetTopicsCore.TIMELINE) {
-			String where = "type_id = " + TweetTopicsCore.TIMELINE + " AND user_tt_id="+getId();
-			Entity ent = DataFramework.getInstance().getTopEntity("tweets_user", where, "date desc");
-			if (ent!=null) {
-				long id = ent.getLong("tweet_id");
-				setValue("last_timeline_id", id+"");
-			}
-		} else if (mType==TweetTopicsCore.MENTIONS) {
-			String where = "type_id = " + TweetTopicsCore.MENTIONS + " AND user_tt_id="+getId();
-			Entity ent = DataFramework.getInstance().getTopEntity("tweets_user", where, "date desc");
-			if (ent!=null) {
-				long id = ent.getLong("tweet_id");
-				setValue("last_mention_id", id+"");
-			}
-		} else if (mType==TweetTopicsCore.DIRECTMESSAGES) {
-			String where = "type_id = " + TweetTopicsCore.DIRECTMESSAGES + " AND user_tt_id="+getId();
-			Entity ent = DataFramework.getInstance().getTopEntity("tweets_user", where, "date desc");
-			if (ent!=null) {
-				long id = ent.getLong("tweet_id");
-				setValue("last_direct_id", id+"");
-			}
-			where = "type_id = " + TweetTopicsCore.SENT_DIRECTMESSAGES + " AND user_tt_id="+getId();
-			ent = DataFramework.getInstance().getTopEntity("tweets_user", where, "date desc");
-			if (ent!=null) {
-				long id = ent.getLong("tweet_id");
-				setValue("last_sent_direct_id", id+"");
-			}
-		}
-		save();*/
+
+        String where ="";
+        Entity entity;
+        
+        switch (tweet_type) {
+            case TweetTopicsConstants.TWEET_TYPE_TIMELINE:
+                where = "type_id = " + TweetTopicsConstants.TWEET_TYPE_TIMELINE + " AND user_tt_id=" + getId();
+                entity = DataFramework.getInstance().getTopEntity("tweets_user", where, "date desc");
+
+                if (entity!=null) {
+                    long id = entity.getLong("tweet_id");
+                    setValue("last_timeline_id", id+"");
+                }
+                break;
+            case TweetTopicsConstants.TWEET_TYPE_MENTIONS:
+                where = "type_id = " + TweetTopicsConstants.TWEET_TYPE_MENTIONS + " AND user_tt_id=" + getId();
+                entity = DataFramework.getInstance().getTopEntity("tweets_user", where, "date desc");
+
+                if (entity!=null) {
+                    long id = entity.getLong("tweet_id");
+                    setValue("last_mention_id", id+"");
+                }
+                break;
+            case TweetTopicsConstants.TWEET_TYPE_DIRECTMESSAGES:
+			    where = "type_id = " + TweetTopicsConstants.TWEET_TYPE_DIRECTMESSAGES + " AND user_tt_id=" + getId();
+			    entity = DataFramework.getInstance().getTopEntity("tweets_user", where, "date desc");
+
+			    if (entity!=null) {
+				    long id = entity.getLong("tweet_id");
+				    setValue("last_direct_id", id+"");
+			    }
+                break;
+            case TweetTopicsConstants.TWEET_TYPE_SENT_DIRECTMESSAGES:
+			    where = "type_id = " + TweetTopicsConstants.TWEET_TYPE_SENT_DIRECTMESSAGES + " AND user_tt_id="+getId();
+			    entity = DataFramework.getInstance().getTopEntity("tweets_user", where, "date desc");
+
+			    if (entity!=null) {
+				    long id = entity.getLong("tweet_id");
+				    setValue("last_sent_direct_id", id+"");
+			    }
+                break;
+        }
+        
+        save();
 	}
 	
 	public void setValueLastId(String id) {
@@ -111,33 +123,35 @@ public class EntityTweetUser extends Entity {
 	}
 		
 	public String getTypeText() {
-		String out = "";
-		if (mType==TweetTopicsCore.TIMELINE) {
-			out = "timeline";
-		} else if (mType==TweetTopicsCore.MENTIONS) {
-			out = "menciones";
-		} else if (mType==TweetTopicsCore.DIRECTMESSAGES) {
-			out = "directos";
-		} else if (mType==TweetTopicsCore.SENT_DIRECTMESSAGES) {
-			out = "directos enviados";
+
+        switch (tweet_type) {
+		    case TweetTopicsConstants.TWEET_TYPE_TIMELINE:
+                return "timeline";
+            case TweetTopicsConstants.TWEET_TYPE_MENTIONS:
+			    return "menciones";
+            case TweetTopicsConstants.TWEET_TYPE_DIRECTMESSAGES:
+			    return "directos";
+            case TweetTopicsConstants.TWEET_TYPE_SENT_DIRECTMESSAGES:
+			    return "directos enviados";
 		}
-		return out;
+
+        return "";
 	}
 	
-	public InfoSaveTweets saveTweets(Context cnt, Twitter twitter, boolean saveNotifications) {
+	public InfoSaveTweets saveTweets(Context context, Twitter twitter, boolean saveNotifications) {
+
 		InfoSaveTweets out = new InfoSaveTweets();
+
 		try {
-			
-			//ArrayList<Entity> ents = DataFramework.getInstance().getEntityList("tweets_user", "type_id = " + mType + " AND user_tt_id="+getId(), "date desc");
-			String where = "type_id = " + mType + " AND user_tt_id="+getId();
+			String where = "type_id = " + tweet_type + " AND user_tt_id="+getId();
 			
 			int nResult = DataFramework.getInstance().getEntityListCount("tweets_user", where);
-			if (nResult>0) mLastIdNotification = DataFramework.getInstance().getTopEntity("tweets_user", where, "date desc").getLong("tweet_id");
+			if (nResult > 0) mLastIdNotification = DataFramework.getInstance().getTopEntity("tweets_user", where, "date desc").getLong("tweet_id");
 			
 			boolean breakTimeline = false;
 
-            PreferenceManager.setDefaultValues(cnt, R.xml.preferences, false);
-            SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(cnt);
+            PreferenceManager.setDefaultValues(context, R.xml.preferences, false);
+            SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
 
             int maxDownloadTweet = Integer.parseInt(pref.getString("prf_n_max_download", "60"));
 			
@@ -145,9 +159,9 @@ public class EntityTweetUser extends Entity {
 			ResponseList<twitter4j.DirectMessage> directs = null;
 			
 			if (mLastIdNotification>0) {
-				if (mType==TweetTopicsCore.TIMELINE) {	
+				if (tweet_type == TweetTopicsConstants.TWEET_TYPE_TIMELINE) {	
 
-                    if (maxDownloadTweet<=0) { // se descargan todos los tweets
+                    if (maxDownloadTweet <= 0) { // se descargan todos los tweets
 
                         Paging p = new Paging(1, 60);
                         p.setSinceId(mLastIdNotification);
@@ -184,28 +198,8 @@ public class EntityTweetUser extends Entity {
                             }
                         }
                     }
-					/*
-					Paging p = new Paging(1, MAX_DOWNLOAD_TWEETS);
-					p.setSinceId(mLastIdNotification);
 
-					try {
-						statii = twitter.getHomeTimeline(p);
-					} catch (OutOfMemoryError e) {
-						e.printStackTrace();
-					}
-					
-					// comprobar si hay más tweets
-					if (statii.size()>=MAX_DOWNLOAD_TWEETS-6) {
-						Paging pa = new Paging(1,10);
-						pa.setMaxId(statii.get(statii.size()-1).getId());
-						p.setSinceId(mLastIdNotification);
-						if (twitter.getHomeTimeline().size()>0) {
-							breakTimeline = true;
-						}
-					}
-
-		            */
-				} else if (mType==TweetTopicsCore.MENTIONS) {
+				} else if (tweet_type == TweetTopicsConstants.TWEET_TYPE_MENTIONS) {
 					
 					int page = 1;
 					ResponseList<twitter4j.Status> statuses = twitter.getMentions(new Paging(page, mLastIdNotification));
@@ -220,7 +214,7 @@ public class EntityTweetUser extends Entity {
 		            	statuses = twitter.getMentions(new Paging(page, mLastIdNotification));
 		            }
 					
-				} else if (mType==TweetTopicsCore.DIRECTMESSAGES) {
+				} else if (tweet_type == TweetTopicsConstants.TWEET_TYPE_DIRECTMESSAGES) {
 					
 					int page = 1;
 					ResponseList<twitter4j.DirectMessage> directses = twitter.getDirectMessages(new Paging(page, mLastIdNotification));
@@ -235,7 +229,7 @@ public class EntityTweetUser extends Entity {
 		            	directses = twitter.getDirectMessages(new Paging(page, mLastIdNotification));
 		            }
 					
-				} else if (mType==TweetTopicsCore.SENT_DIRECTMESSAGES) {
+				} else if (tweet_type == TweetTopicsConstants.TWEET_TYPE_SENT_DIRECTMESSAGES) {
 					
 					int page = 1;
 					ResponseList<twitter4j.DirectMessage> directses = twitter.getSentDirectMessages(new Paging(page, mLastIdNotification));
@@ -254,13 +248,13 @@ public class EntityTweetUser extends Entity {
 			} else {
 				try {
 					Log.d(Utils.TAG, "Primera carga de " + getTypeText());
-					if (mType==TweetTopicsCore.TIMELINE) {
+					if (tweet_type == TweetTopicsConstants.TWEET_TYPE_TIMELINE) {
 						statii = twitter.getHomeTimeline(new Paging(1, 40));
-					} else if (mType==TweetTopicsCore.MENTIONS) {
+					} else if (tweet_type == TweetTopicsConstants.TWEET_TYPE_MENTIONS) {
 						statii = twitter.getMentions(new Paging(1, 40));
-					} else if (mType==TweetTopicsCore.DIRECTMESSAGES) {
+					} else if (tweet_type == TweetTopicsConstants.TWEET_TYPE_DIRECTMESSAGES) {
 						directs = twitter.getDirectMessages();
-					} else if (mType==TweetTopicsCore.SENT_DIRECTMESSAGES) {
+					} else if (tweet_type == TweetTopicsConstants.TWEET_TYPE_SENT_DIRECTMESSAGES) {
 						directs = twitter.getSentDirectMessages();
 					}
 				} catch (OutOfMemoryError e) {
@@ -301,7 +295,7 @@ public class EntityTweetUser extends Entity {
 							if (u!=null) {
 								ContentValues args = new ContentValues();
 								args.put(DataFramework.KEY_ID, "" + fisrtId);
-								args.put("type_id", mType);
+								args.put("type_id", tweet_type);
 								args.put("user_tt_id", "" + getId());
 								if (u.getProfileImageURL()!=null) {
 									args.put("url_avatar", u.getProfileImageURL().toString());
@@ -366,8 +360,8 @@ public class EntityTweetUser extends Entity {
                         if (total>Utils.MAX_ROW_BYSEARCH && getValueNewCount()<Utils.MAX_ROW_BYSEARCH || total>Utils.MAX_ROW_BYSEARCH_FORCE) {
                             try {
                                 Log.d(Utils.TAG,"Limpiando base de datos de " + getTypeText() + " actualmente " + total + " registros");
-                                String date = DataFramework.getInstance().getEntityList("tweets_user", "type_id=" + mType + " and user_tt_id="+getId(), "date desc").get(Utils.MAX_ROW_BYSEARCH).getString("date");
-                                String sqldelete = "DELETE FROM tweets_user WHERE type_id=" + mType + " and user_tt_id="+getId() + " AND date  < '" + date + "'";
+                                String date = DataFramework.getInstance().getEntityList("tweets_user", "type_id=" + tweet_type + " and user_tt_id="+getId(), "date desc").get(Utils.MAX_ROW_BYSEARCH).getString("date");
+                                String sqldelete = "DELETE FROM tweets_user WHERE type_id=" + tweet_type + " and user_tt_id="+getId() + " AND date  < '" + date + "'";
                                 DataFramework.getInstance().getDB().execSQL(sqldelete);
                             } catch (OutOfMemoryError e) { }
                         }
@@ -414,7 +408,7 @@ public class EntityTweetUser extends Entity {
 							if (u!=null) {
 								ContentValues args = new ContentValues();
 								args.put(DataFramework.KEY_ID, "" + fisrtId);
-								args.put("type_id", mType);
+								args.put("type_id", tweet_type);
 								args.put("user_tt_id", "" + getId());
 								if (u.getProfileImageURL()!=null) {
 									args.put("url_avatar", u.getProfileImageURL().toString());
@@ -446,8 +440,8 @@ public class EntityTweetUser extends Entity {
 		
 						if (total>Utils.MAX_ROW_BYSEARCH && getValueNewCount()<Utils.MAX_ROW_BYSEARCH) {
 							Log.d(Utils.TAG,"Limpiando base de datos de " + getTypeText() + " actualmente " + total + " registros");
-							String date = DataFramework.getInstance().getEntityList("tweets_user", "type_id=" + mType + " and user_tt_id="+getId(), "date desc").get(Utils.MAX_ROW_BYSEARCH).getString("date");
-							String sqldelete = "DELETE FROM tweets_user WHERE type_id=" + mType + " and user_tt_id="+getId() + " AND date  < '" + date + "'";
+							String date = DataFramework.getInstance().getEntityList("tweets_user", "type_id=" + tweet_type + " and user_tt_id="+getId(), "date desc").get(Utils.MAX_ROW_BYSEARCH).getString("date");
+							String sqldelete = "DELETE FROM tweets_user WHERE type_id=" + tweet_type + " and user_tt_id="+getId() + " AND date  < '" + date + "'";
 							DataFramework.getInstance().getDB().execSQL(sqldelete);
 						}
 						
@@ -462,9 +456,6 @@ public class EntityTweetUser extends Entity {
 				}	
 				
 			}
-
-
-			
 		} catch (TwitterException e) {
 			e.printStackTrace();
     		RateLimitStatus rate = e.getRateLimitStatus();
