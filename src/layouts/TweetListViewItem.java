@@ -34,7 +34,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 public class TweetListViewItem extends RelativeLayout implements LoadImageAsyncTaskResponder {
-		
+
     private Context context;
 	private AsyncTask<String, Void, Void> latestLoadTask;
 	
@@ -208,7 +208,9 @@ public class TweetListViewItem extends RelativeLayout implements LoadImageAsyncT
 		viewHolder.tweetPhotoLayout.addView(img);
 	}
 	
-	public void setRow(final InfoTweet infoTweet, long lastTweetId, Context cnt, int pos, String currentUser) {
+	public void setRow(final InfoTweet infoTweet, long lastTweetId, Context cnt, int pos) {
+
+        context = cnt;
 
         ThemeManager themeManager = new ThemeManager(context);
 
@@ -288,7 +290,7 @@ public class TweetListViewItem extends RelativeLayout implements LoadImageAsyncT
 			viewHolder.screenName.setText(infoTweet.getUsername());
 			viewHolder.retweetLayout.setVisibility(View.GONE);
 		}
-		
+		/*
 		if (TweetTopicsCore.mTypeLastColumn == TweetTopicsCore.DIRECTMESSAGES) {
 			if (!infoTweet.getToUsername().equals("") && !infoTweet.getToUsername().equals(currentUser)) {
 				viewHolder.retweetLayout.setVisibility(View.VISIBLE);
@@ -297,7 +299,7 @@ public class TweetListViewItem extends RelativeLayout implements LoadImageAsyncT
 				viewHolder.retweetAvatar.setVisibility(View.GONE);
 			}			
 		}
-		
+		  */
 		viewHolder.screenName.setTextSize(Utils.getSizeTitles(cnt));
 				
 		viewHolder.dateText.setText(infoTweet.getTime(context));		

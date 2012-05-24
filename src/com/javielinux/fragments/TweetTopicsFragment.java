@@ -1,19 +1,20 @@
 package com.javielinux.fragments;
 
 import adapters.TweetsAdapter;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
 import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
 import com.javielinux.fragmentadapter.TweetTopicsFragmentAdapter;
 import com.javielinux.tweettopics2.R;
 import com.javielinux.tweettopics2.Utils;
 import infos.InfoTweet;
+import layouts.PullToRefreshListView;
 
 import java.util.ArrayList;
 
@@ -27,6 +28,8 @@ public class TweetTopicsFragment extends Fragment {
 
     private TweetsAdapter tweetsAdapter;
     private Entity column_entity;
+    private View view;
+    private PullToRefreshListView listView;
 
     public TweetTopicsFragment(long column_id) {
 
@@ -91,9 +94,12 @@ public class TweetTopicsFragment extends Fragment {
         Log.d("TweetTopics 2.0", "Generating adapter");
         tweetsAdapter = new TweetsAdapter(getActivity(), getTweets(), -1);
 
-        View view = View.inflate(getActivity(), R.layout.tweettopics_fragment, null);
-        ListView listView = (ListView) view.findViewById(R.id.tweet_status_listview);
-        listView.setAdapter(tweetsAdapter);
+        view = View.inflate(getActivity(), R.layout.tweettopics_fragment, null);
+        listView = (PullToRefreshListView) view.findViewById(R.id.tweet_status_listview);
+
+        listView.getAdapterView().setCacheColorHint(Color.TRANSPARENT);
+
+        listView.getAdapterView().setAdapter(tweetsAdapter);
 
         tweetsAdapter.notifyDataSetChanged();
 

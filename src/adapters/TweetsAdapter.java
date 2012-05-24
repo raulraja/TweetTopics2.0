@@ -8,7 +8,9 @@ import android.view.ViewGroup;
 import android.widget.*;
 import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
-import com.javielinux.tweettopics2.*;
+import com.javielinux.tweettopics2.R;
+import com.javielinux.tweettopics2.ThemeManager;
+import com.javielinux.tweettopics2.Utils;
 import infos.InfoTweet;
 import layouts.TweetListViewItem;
 
@@ -33,13 +35,11 @@ public class TweetsAdapter extends ArrayAdapter<InfoTweet> {
         public TextView retweetText;
     }
 
-    private Context context;
     private ArrayList<InfoTweet> infoTweetArrayList;
     private long last_tweet_id;
     private int position_tweet;
     private long selected_id = -1;
 
-    private Entity current_user;
     private ThemeManager themeManager;
     private int color_line;
 
@@ -48,7 +48,6 @@ public class TweetsAdapter extends ArrayAdapter<InfoTweet> {
         super(context, android.R.layout.simple_list_item_1, infoTweetArrayList);
 
         Log.d("TweetTopics 2.0", "Numero de elementos:" + infoTweetArrayList.size());
-        this.context = context;
         this.infoTweetArrayList = infoTweetArrayList;
         this.last_tweet_id = last_tweet_id;
         this.position_tweet = Integer.parseInt(Utils.getPreference(context).getString("prf_positions_links", "1"));
@@ -86,49 +85,46 @@ public class TweetsAdapter extends ArrayAdapter<InfoTweet> {
         Log.d("TweetTopics 2.0", "Getting element " + position);
         InfoTweet infoTweet = getItem(position) ;
 
-        try {
 
-            TweetListViewItem view;
+        TweetListViewItem view;
 
-            if (null == convertView) {
-                view = (TweetListViewItem) View.inflate(context, (position_tweet==1)?R.layout.tweet_list_item_1:R.layout.tweet_list_item_2, null);
+        if (null == convertView) {
+            //view = (TweetListViewItem) View.inflate(getContext(), (position_tweet==1)?R.layout.tweet_list_item_1:R.layout.tweet_list_item_2, null);
+            view = (TweetListViewItem) View.inflate(getContext(), R.layout.tweet_list_view_item, null);
+            view.setTag(generateViewHolder(view));
+        } else {
+            if(convertView instanceof TweetListViewItem) {
+                view = (TweetListViewItem) convertView;
+            } else {
+                view = (TweetListViewItem) View.inflate(getContext(), R.layout.tweet_list_view_item, null);
                 view.setTag(generateViewHolder(view));
-            } else {
-                if(convertView instanceof TweetListViewItem) {
-                    view = (TweetListViewItem) convertView;
-                } else {
-                    view = (TweetListViewItem) View.inflate(context, (position_tweet==1)?R.layout.tweet_list_item_1:R.layout.tweet_list_item_2, null);
-                    view.setTag(generateViewHolder(view));
-                }
             }
-
-            if (selected_id == position) {
-                view.setBackgroundDrawable(Utils.createGradientDrawableSelected(context, infoTweet.isRead() ? 0 : color_line));
-            } else if (TweetTopicsCore.mTypeLastColumn == TweetTopicsCore.TIMELINE && infoTweet.getText().toLowerCase().contains("@"+current_user.getString("name").toLowerCase())) {
-                view.setBackgroundDrawable(Utils.createGradientDrawableMention(context, infoTweet.isRead()?0:color_line));
-            } else if ((TweetTopicsCore.mTypeLastColumn == TweetTopicsCore.MENTIONS || TweetTopicsCore.mTypeLastColumn == TweetTopicsCore.TIMELINE) &&infoTweet.isFavorited()) {
-                view.setBackgroundDrawable(Utils.createGradientDrawableFavorite(context, infoTweet.isRead() ? 0 : color_line));
-            } else {
-                Entity color = DataFramework.getInstance().getTopEntity("colors", "type_id=2 and word=\""+infoTweet.getUsername()+"\"", "");
-                if (color!=null) {
-                    try {
-                        int c = Color.parseColor(themeManager.getColors().get(color.getEntity("type_color_id").getInt("pos")));
-                        view.setBackgroundDrawable(Utils.createStateListDrawable(context, c, infoTweet.isRead() ? 0 : color_line));
-                    } catch (Exception e) {
-                        view.setBackgroundDrawable(Utils.createStateListDrawable(context, themeManager.getColor("list_background_row_color"), infoTweet.isRead() ? 0 : color_line));
-                    }
-                } else {
-                    view.setBackgroundDrawable(Utils.createStateListDrawable(context, themeManager.getColor("list_background_row_color"), infoTweet.isRead() ? 0 : color_line));
-                }
-            }
-
-            view.setRow(infoTweet, last_tweet_id, context, position, current_user.getString("name"));
-
-            return view;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
         }
+
+        if (selected_id == position) {
+            view.setBackgroundDrawable(Utils.createGradientDrawableSelected(getContext(), infoTweet.isRead() ? 0 : color_line));
+        /*} else if (TweetTopicsCore.mTypeLastColumn == TweetTopicsCore.TIMELINE && infoTweet.getText().toLowerCase().contains("@"+current_user.getString("name").toLowerCase())) {
+            view.setBackgroundDrawable(Utils.createGradientDrawableMention(getContext(), infoTweet.isRead()?0:color_line));
+        } else if ((TweetTopicsCore.mTypeLastColumn == TweetTopicsCore.MENTIONS || TweetTopicsCore.mTypeLastColumn == TweetTopicsCore.TIMELINE) &&infoTweet.isFavorited()) {
+            view.setBackgroundDrawable(Utils.createGradientDrawableFavorite(getContext(), infoTweet.isRead() ? 0 : color_line));
+        */} else {
+            Entity color = DataFramework.getInstance().getTopEntity("colors", "type_id=2 and word=\""+infoTweet.getUsername()+"\"", "");
+            if (color!=null) {
+                try {
+                    int c = Color.parseColor(themeManager.getColors().get(color.getEntity("type_color_id").getInt("pos")));
+                    view.setBackgroundDrawable(Utils.createStateListDrawable(getContext(), c, infoTweet.isRead() ? 0 : color_line));
+                } catch (Exception e) {
+                    view.setBackgroundDrawable(Utils.createStateListDrawable(getContext(), themeManager.getColor("list_background_row_color"), infoTweet.isRead() ? 0 : color_line));
+                }
+            } else {
+                view.setBackgroundDrawable(Utils.createStateListDrawable(getContext(), themeManager.getColor("list_background_row_color"), infoTweet.isRead() ? 0 : color_line));
+            }
+        }
+
+        view.setRow(infoTweet, last_tweet_id, getContext(), position);
+
+        return view;
+
     }
 
     public void addElements(ArrayList<InfoTweet> infoTweetArrayList)
