@@ -1,17 +1,18 @@
 package api.response;
 
 import adapters.RowResponseList;
+import infos.InfoTweet;
 
 import java.util.ArrayList;
 
 public class LoadTypeStatusResponse implements BaseResponse {
 
-    private ArrayList<RowResponseList> rowResponseListArrayList;
+    private ArrayList<InfoTweet> infoTweetArrayList;
 
-    public ArrayList<RowResponseList> getRowResponseList() {
-        return rowResponseListArrayList;
+    public ArrayList<InfoTweet> getInfoTweetList() {
+        return infoTweetArrayList;
     }
-    public void setRowResponseList(ArrayList<RowResponseList> list) {
-        this.rowResponseListArrayList = list;
+    public void setInfoTweetList(ArrayList<InfoTweet> list) {
+        this.infoTweetArrayList = list;
     }
 }

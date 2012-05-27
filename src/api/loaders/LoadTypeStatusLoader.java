@@ -1,6 +1,5 @@
 package api.loaders;
 
-import adapters.RowResponseList;
 import android.content.Context;
 import api.AsynchronousLoader;
 import api.request.LoadTypeStatusRequest;
@@ -8,6 +7,7 @@ import api.response.BaseResponse;
 import api.response.ErrorResponse;
 import api.response.LoadTypeStatusResponse;
 import com.javielinux.twitter.ConnectionManager;
+import infos.InfoTweet;
 import twitter4j.*;
 
 import java.util.ArrayList;
@@ -44,7 +44,7 @@ public class LoadTypeStatusLoader extends AsynchronousLoader<BaseResponse> {
 
 		try {
             LoadTypeStatusResponse response = new LoadTypeStatusResponse();
-            ArrayList<RowResponseList> result = new ArrayList<RowResponseList>();
+            ArrayList<InfoTweet> result = new ArrayList<InfoTweet>();
 
             ConnectionManager.getInstance().open(getContext());
 
@@ -52,32 +52,32 @@ public class LoadTypeStatusLoader extends AsynchronousLoader<BaseResponse> {
                 ResponseList<Status> statii = ConnectionManager.getInstance().getTwitter().getFavorites();
 
                 for (int i=0; i<statii.size(); i++) {
-                    result.add(new RowResponseList(statii.get(i)));
+                    result.add(new InfoTweet(statii.get(i)));
                 }
             } else if (type == SEARCH_USERS) {
                 ResponseList<User> users = ConnectionManager.getInstance().getTwitter().searchUsers(user_search_text, 0);
 
                 for (User user : users) {
-                    RowResponseList row = new RowResponseList(user);
+                    InfoTweet row = new InfoTweet(user);
                     result.add(row);
                 }
             } else if (type == RETWEETED_BYME) {
 				ResponseList<Status> statii = ConnectionManager.getInstance().getTwitter().getRetweetedByMe();
 
 				for (int i=0; i<statii.size(); i++) {
-					result.add(new RowResponseList(statii.get(i)));
+					result.add(new InfoTweet(statii.get(i)));
 				}
 			} else if (type==RETWEETED_TOME) {
 				ResponseList<Status> statii = ConnectionManager.getInstance().getTwitter().getRetweetedToMe();
 
 				for (int i=0; i<statii.size(); i++) {
-					result.add(new RowResponseList(statii.get(i)));
+					result.add(new InfoTweet(statii.get(i)));
 				}
 			} else if (type==RETWEETED_OFME) {
 				ResponseList<Status> statii = ConnectionManager.getInstance().getTwitter().getRetweetsOfMe();
 
 				for (int i=0; i<statii.size(); i++) {
-					result.add(new RowResponseList(statii.get(i)));
+					result.add(new InfoTweet(statii.get(i)));
 				}
 			} else if (type==FOLLOWERS) {
                IDs followers_ids = ConnectionManager.getInstance().getTwitter().getFollowersIDs(user, -1);
@@ -101,7 +101,7 @@ public class LoadTypeStatusLoader extends AsynchronousLoader<BaseResponse> {
                 }
 
 				for (User user : users) {
-					RowResponseList row = new RowResponseList(user);
+					InfoTweet row = new InfoTweet(user);
 					result.add(row);
 				}
 			} else if (type==FRIENDS) {
@@ -125,22 +125,22 @@ public class LoadTypeStatusLoader extends AsynchronousLoader<BaseResponse> {
                 }
 
 				for (User user : users) {
-					RowResponseList row = new RowResponseList(user);
+					InfoTweet row = new InfoTweet(user);
 					result.add(row);
 				}
 			} else if (type==TIMELINE) {
 				ResponseList<twitter4j.Status> statii = ConnectionManager.getInstance().getTwitter().getHomeTimeline();
 				for (int i=0; i<statii.size(); i++) {
-					result.add(new RowResponseList(statii.get(i)));
+					result.add(new InfoTweet(statii.get(i)));
 				}
 			} else if (type==LIST) {
 				ResponseList<twitter4j.Status> statii = ConnectionManager.getInstance().getTwitter().getUserListStatuses(list_id, new Paging(1));
 				for (int i=0; i<statii.size(); i++) {
-					result.add(new RowResponseList(statii.get(i)));
+					result.add(new InfoTweet(statii.get(i)));
 				}
 			}
 
-            response.setRowResponseList(result);
+            response.setInfoTweetList(result);
             return response;
 
 		} catch (TwitterException e) {
