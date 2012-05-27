@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.widget.LinearLayout;
+import com.android.dataframework.DataFramework;
 import com.javielinux.fragmentadapter.TweetTopicsFragmentAdapter;
 import com.viewpagerindicator.TabPageIndicator;
 
@@ -19,6 +20,14 @@ public class TweetTopicsActivity extends BaseActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        try {
+            DataFramework.getInstance().open(this, Utils.packageName);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        Utils.setActivity(this);
 
         themeManager = new ThemeManager(this);
         themeManager.setTheme();
@@ -46,5 +55,10 @@ public class TweetTopicsActivity extends BaseActivity {
         themeManager.setColors();
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        DataFramework.getInstance().close();
+    }
 
 }

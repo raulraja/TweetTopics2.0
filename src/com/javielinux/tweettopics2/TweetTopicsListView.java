@@ -7,8 +7,9 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListAdapter;
 import android.widget.ListView;
-import layouts.PullToRefreshBase;
-import layouts.PullToRefreshListView;
+import com.handmark.pulltorefresh.library.PullToRefreshBase;
+import com.handmark.pulltorefresh.library.PullToRefreshListView;
+
 
 public class TweetTopicsListView {
 
@@ -43,7 +44,7 @@ public class TweetTopicsListView {
 	
 	public void setOnItemClickListener(OnItemClickListener listener) {
 		if (pullToRefresh) {
-			mPullToRefreshListView.getAdapterView().setOnItemClickListener(listener);
+			mPullToRefreshListView.getRefreshableView().setOnItemClickListener(listener);
 		} else {
 			mListView.setOnItemClickListener(listener);
 		}
@@ -51,7 +52,7 @@ public class TweetTopicsListView {
 	
 	public void setOnItemLongClickListener(OnItemLongClickListener listener) {
 		if (pullToRefresh) {
-			mPullToRefreshListView.getAdapterView().setOnItemLongClickListener(listener);
+			mPullToRefreshListView.getRefreshableView().setOnItemLongClickListener(listener);
 		} else {
 			mListView.setOnItemLongClickListener(listener);
 		}
@@ -67,7 +68,7 @@ public class TweetTopicsListView {
 	
 	public void setDivider(Drawable d) {
 		if (pullToRefresh) {
-			mPullToRefreshListView.getAdapterView().setDivider(d);
+			mPullToRefreshListView.getRefreshableView().setDivider(d);
 		} else {
 			mListView.setDivider(d);
 		}
@@ -75,7 +76,7 @@ public class TweetTopicsListView {
 	
 	public void setDividerHeight(int h) {
 		if (pullToRefresh) {
-			mPullToRefreshListView.getAdapterView().setDividerHeight(h);
+			mPullToRefreshListView.getRefreshableView().setDividerHeight(h);
 		} else {
 			mListView.setDividerHeight(h);
 		}
@@ -91,7 +92,7 @@ public class TweetTopicsListView {
 	
 	public void setCacheColorHint(int c) {
 		if (pullToRefresh) {
-			mPullToRefreshListView.getAdapterView().setCacheColorHint(c);
+			mPullToRefreshListView.getRefreshableView().setCacheColorHint(c);
 		} else {
 			mListView.setCacheColorHint(c);
 		}
@@ -100,7 +101,7 @@ public class TweetTopicsListView {
 	public void addFooterView(View v) {
 		try {
 			if (pullToRefresh) {
-				mPullToRefreshListView.getAdapterView().addFooterView(v);
+				mPullToRefreshListView.getRefreshableView().addFooterView(v);
 			} else {
 				mListView.addFooterView(v);
 			}
@@ -112,7 +113,7 @@ public class TweetTopicsListView {
 	public void removeFooterView(View v) {
 		try {
 			if (pullToRefresh) {
-				mPullToRefreshListView.getAdapterView().removeFooterView(v);
+				mPullToRefreshListView.getRefreshableView().removeFooterView(v);
 			} else {
 				mListView.removeFooterView(v);
 			}
@@ -123,7 +124,7 @@ public class TweetTopicsListView {
 	
 	public int getFirstVisiblePosition() {
 		if (pullToRefresh) {
-			return mPullToRefreshListView.getAdapterView().getFirstVisiblePosition();
+			return mPullToRefreshListView.getRefreshableView().getFirstVisiblePosition();
 		} else {
 			return mListView.getFirstVisiblePosition();
 		}
@@ -131,7 +132,7 @@ public class TweetTopicsListView {
 	
 	public void setAdapter(ListAdapter adapter) {
 		if (pullToRefresh) {
-			mPullToRefreshListView.getAdapterView().setAdapter(adapter);
+			mPullToRefreshListView.getRefreshableView().setAdapter(adapter);
 		} else {
 			mListView.setAdapter(adapter);
 		}
@@ -139,7 +140,7 @@ public class TweetTopicsListView {
 	
 	public void setSelection(int pos) {
 		if (pullToRefresh) {
-			mPullToRefreshListView.getAdapterView().setSelection(pos);
+			mPullToRefreshListView.getRefreshableView().setSelection(pos);
 		} else {
 			mListView.setSelection(pos);
 		}

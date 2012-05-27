@@ -36,10 +36,8 @@
     <orderEntry type="jdk" jdkName="Android 4.0.3 Google APIs (4)" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="libs" level="project" />
-    <orderEntry type="module" module-name="GreenDroid" exported="" />
     <orderEntry type="module" module-name="com_facebook_android" exported="" />
     <orderEntry type="module" module-name="Android-DataFramework" exported="" />
-    <orderEntry type="module" module-name="ActionBarSherlock" exported="" />
   </component>
 </module>
 

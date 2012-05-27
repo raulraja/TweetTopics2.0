@@ -4,11 +4,10 @@
     android:layout_height="fill_parent"
     android:layout_width="fill_parent">
 
-    <layouts.PullToRefreshListView
+    <com.handmark.pulltorefresh.library.PullToRefreshListView
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:id="@+id/tweet_status_listview"
-            android:fadingEdge="none"
             />
 
 </LinearLayout>

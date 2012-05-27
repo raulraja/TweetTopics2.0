@@ -1,6 +1,7 @@
 package com.javielinux.fragments;
 
 import adapters.TweetsAdapter;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -8,14 +9,16 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
-import com.javielinux.fragmentadapter.TweetTopicsFragmentAdapter;
+import com.handmark.pulltorefresh.library.PullToRefreshBase;
+import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.javielinux.tweettopics2.R;
+import com.javielinux.tweettopics2.TweetActivity;
 import com.javielinux.tweettopics2.TweetTopicsConstants;
 import com.javielinux.tweettopics2.Utils;
 import infos.InfoTweet;
-import layouts.PullToRefreshListView;
 
 import java.util.ArrayList;
 
@@ -62,12 +65,8 @@ public class TweetTopicsFragment extends Fragment {
         ArrayList<Entity> tweets;
 
         try {
-            DataFramework.getInstance().open(getActivity(), Utils.packageName);
-
             tweets = DataFramework.getInstance().getEntityList("tweets_user", "user_tt_id = " + column_entity.getLong("user_id") + whereType, "date desc, has_more_tweets_down asc");
-
-            DataFramework.getInstance().close();
-        } catch (Exception exception) {
+        } catch (OutOfMemoryError exception) {
             tweets = DataFramework.getInstance().getEntityList("tweets_user", "user_tt_id = " + column_entity.getLong("user_id") + whereType, "date desc, has_more_tweets_down asc", "0," + Utils.MAX_ROW_BYSEARCH);
         }
 
@@ -91,12 +90,31 @@ public class TweetTopicsFragment extends Fragment {
         Log.d("TweetTopics 2.0", "Generating adapter");
         tweetsAdapter = new TweetsAdapter(getActivity(), getTweets(), -1);
 
-        view = View.inflate(getActivity(), R.layout.tweettopics_fragment, null);
+        //view = View.inflate(getActivity(), R.layout.tweettopics_fragment, null);
+
+        view = inflater.inflate(R.layout.tweettopics_fragment, container, false);
+
         listView = (PullToRefreshListView) view.findViewById(R.id.tweet_status_listview);
 
-        listView.getAdapterView().setCacheColorHint(Color.TRANSPARENT);
+        listView.getRefreshableView().setCacheColorHint(Color.TRANSPARENT);
 
-        listView.getAdapterView().setAdapter(tweetsAdapter);
+        listView.getRefreshableView().setAdapter(tweetsAdapter);
+
+        listView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refresh();
+            }
+        });
+
+        listView.getRefreshableView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> arg0, View v, int position, long id) {
+                onListItemClick(v, position, id);
+            }
+
+        });
 
         tweetsAdapter.notifyDataSetChanged();
 
@@ -107,4 +125,17 @@ public class TweetTopicsFragment extends Fragment {
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
     }
+
+    public void refresh() {
+        listView.onRefreshComplete();
+    }
+
+
+    private void onListItemClick(View v, int position, long id) {
+
+        Intent intent = new Intent(getActivity(), TweetActivity.class);
+        getActivity().startActivity(intent);
+
+    }
+
 }
