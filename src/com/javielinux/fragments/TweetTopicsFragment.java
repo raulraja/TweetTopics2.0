@@ -1,6 +1,5 @@
 package com.javielinux.fragments;
 
-import adapters.RowResponseList;
 import adapters.TweetsAdapter;
 import android.app.LoaderManager;
 import android.content.Context;
@@ -13,11 +12,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import api.APIDelegate;
-import api.APITweetTopics;
-import api.request.LoadTypeStatusRequest;
-import api.response.ErrorResponse;
-import api.response.LoadTypeStatusResponse;
 import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
@@ -179,13 +173,6 @@ public class TweetTopicsFragment extends Fragment {
 
     public void reloadColumnUser(boolean firstIsLastPosition) {
         //TODO: reloadColumnUser
-        /*if (!app.isReloadUserTwitter()) {
-
-            if (firstIsLastPosition) {
-                mAdapterResponseList.firtsItemIsLastRead();
-            }
-            app.reloadUserTwitter();
-        }*/
     }
 
     public void showHideMessage() {
@@ -241,10 +228,10 @@ public class TweetTopicsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        Log.d("TweetTopics 2.0", "Generating adapter");
+        Log.d(Utils.TAG, "onCreateView: " + column_entity.getString("description"));
 
         tweetsAdapter = new TweetsAdapter(getActivity(), infoTweets, -1);
-        updateInfoTweet();
+        if (infoTweets.size()<=0) updateInfoTweet();
 
         markPositionLastReadAsLastReadId();
         //reloadNewMsgInAllColumns()
@@ -286,6 +273,7 @@ public class TweetTopicsFragment extends Fragment {
     private void onListItemClick(View v, int position, long id) {
 
         Intent intent = new Intent(getActivity(), TweetActivity.class);
+        intent.putExtra(TweetActivity.KEY_EXTRAS_TWEET, tweetsAdapter.getItem(position-1));
         getActivity().startActivity(intent);
 
     }

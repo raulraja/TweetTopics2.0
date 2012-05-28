@@ -4,6 +4,8 @@ import adapters.RowResponseList;
 import android.content.Context;
 import android.content.Intent;
 import android.database.CursorIndexOutOfBoundsException;
+import android.os.Parcel;
+import android.os.Parcelable;
 import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
 import com.javielinux.tweettopics2.NewStatus;
@@ -12,12 +14,15 @@ import com.javielinux.tweettopics2.TweetTopicsCore;
 import com.javielinux.tweettopics2.Utils;
 import com.javielinux.tweettopics2.Utils.URLContent;
 import com.javielinux.twitter.ConnectionManager;
-import twitter4j.*;
+import twitter4j.Status;
+import twitter4j.Tweet;
+import twitter4j.TwitterException;
+import twitter4j.User;
 
 import java.util.ArrayList;
 import java.util.Date;
 
-public class InfoTweet {
+public class InfoTweet implements Parcelable {
 
     public static int TYPE_ENTITY = 0;
     public static int TYPE_TWEET = 1;
@@ -613,4 +618,78 @@ public class InfoTweet {
     public boolean isRead() {
         return read;
     }
+
+    /*
+    Parcelable implement
+     */
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+
+        parcel.writeInt(mTypeFrom);
+        parcel.writeLong(id);
+        parcel.writeString(urlAvatar);
+        parcel.writeLong(userId);
+        parcel.writeString(text);
+        parcel.writeString(username);
+        parcel.writeString(fullname);
+        parcel.writeString(source);
+        parcel.writeString(toUsername);
+        parcel.writeLong(toUserId);
+        parcel.writeLong(createAt.getTime());
+        parcel.writeLong(toReplyId);
+        parcel.writeInt(favorited?1:0);
+        parcel.writeDouble(latitude);
+        parcel.writeDouble(longitude);
+        parcel.writeInt(retweet?1:0);
+        parcel.writeString(urlAvatarRetweet);
+        parcel.writeString(textRetweet);
+        parcel.writeString(usernameRetweet);
+        parcel.writeString(fullnameRetweet);
+        parcel.writeString(sourceRetweet);
+        parcel.writeString(urlTweet);
+    }
+
+    public static final Parcelable.Creator<InfoTweet> CREATOR
+            = new Parcelable.Creator<InfoTweet>() {
+        public InfoTweet createFromParcel(Parcel in) {
+            return new InfoTweet(in);
+        }
+
+        public InfoTweet[] newArray(int size) {
+            return new InfoTweet[size];
+        }
+    };
+
+    private InfoTweet(Parcel in) {
+        mTypeFrom = in.readInt();
+        id = in.readLong();
+        urlAvatar = in.readString();
+        userId = in.readLong();
+        text = in.readString();
+        username = in.readString();
+        fullname = in.readString();
+        source = in.readString();
+        toUsername = in.readString();
+        toUserId = in.readLong();
+        createAt = new Date(in.readLong());
+        toReplyId = in.readLong();
+        favorited = (in.readInt()==1);
+        latitude = in.readDouble();
+        longitude = in.readDouble();
+        retweet = (in.readInt()==1);
+        urlAvatarRetweet = in.readString();
+        textRetweet = in.readString();
+        usernameRetweet = in.readString();
+        fullnameRetweet = in.readString();
+        sourceRetweet = in.readString();
+        urlTweet = in.readString();
+
+    }
+
 }

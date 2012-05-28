@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.database.CursorIndexOutOfBoundsException;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -217,7 +218,10 @@ public class WidgetCounters2x1 extends AppWidgetProvider {
                 int totalMentions = 0;
                 int totalDirectMessages = 0;
 
-                Entity user_entity = new Entity("users", userId);
+                Entity user_entity = null;
+                try {
+                    user_entity = new Entity("users", userId);
+                } catch (CursorIndexOutOfBoundsException e) {}
 
 		    	if (user_entity!=null) {
                     views.setTextViewText(R.id.txt_user_name2x1, user_entity.getString("name"));

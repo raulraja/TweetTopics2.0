@@ -50,7 +50,7 @@ public class TweetsAdapter extends ArrayAdapter<InfoTweet> {
 
         super(context, android.R.layout.simple_list_item_1, infoTweetArrayList);
 
-        Log.d("TweetTopics 2.0", "Numero de elementos:" + infoTweetArrayList.size());
+        Log.d(Utils.TAG, "Numero de elementos: " + infoTweetArrayList.size());
         this.infoTweetArrayList = infoTweetArrayList;
         this.last_tweet_id = last_tweet_id;
         this.position_tweet = Integer.parseInt(Utils.getPreference(context).getString("prf_positions_links", "1"));
@@ -85,7 +85,7 @@ public class TweetsAdapter extends ArrayAdapter<InfoTweet> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        Log.d("TweetTopics 2.0", "Getting element " + position);
+        Log.d(Utils.TAG, "Getting element " + position);
         InfoTweet infoTweet = getItem(position) ;
 
 

@@ -9,6 +9,7 @@ import android.util.Log;
 import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
 import com.javielinux.fragments.TweetTopicsFragment;
+import com.javielinux.tweettopics2.Utils;
 
 import java.util.ArrayList;
 
@@ -43,7 +44,7 @@ public class TweetTopicsFragmentAdapter extends FragmentPagerAdapter  {
     public Fragment getItem(int index) {
         try
         {
-            Log.d("TweetTopics 2.0", "Cargando columna");
+            Log.d(Utils.TAG, "Cargando columna "+index+" : " +tweet_fragment_list.get(index).getString("description").toUpperCase());
             return new TweetTopicsFragment(context, loaderManager, tweet_fragment_list.get(index).getId());
         }
         catch(Exception exception)
