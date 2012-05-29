@@ -3,6 +3,8 @@
 
     <!-- v 2.0  -->
     <string name="create_columns">Crear columnas</string>
+    <string name="retry">Reintentar</string>
+    <string name="updating">Actualizando</string>
 
     <!-- v 1.72  -->
     <string name="show_retweeters">Mostrar retweeters</string>

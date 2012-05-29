@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.LinearLayout;
 import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
@@ -37,6 +38,10 @@ public class TweetTopicsFragment extends Fragment {
     private View view;
     private PullToRefreshListView listView;
 
+    private LinearLayout viewLoading;
+    private LinearLayout viewNoInternet;
+    private LinearLayout viewUpdate;
+
     private int positionLastRead = 0;
 
     public TweetTopicsFragment(Context context, LoaderManager loaderManager, long column_id) {
@@ -56,9 +61,15 @@ public class TweetTopicsFragment extends Fragment {
         }
     }
 
-    private void updateInfoTweet() {
+    private void preLoadInfoTweetIfIsNecessary() {
 
         EntityTweetUser entityTweetUser = new EntityTweetUser(user_entity.getId(), column_entity.getInt("type_id"));
+
+        if (column_entity.getInt("type_id")!=TweetTopicsConstants.COLUMN_TIMELINE &&
+                column_entity.getInt("type_id")!=TweetTopicsConstants.TWEET_TYPE_MENTIONS &&
+                column_entity.getInt("type_id")!=TweetTopicsConstants.TWEET_TYPE_DIRECTMESSAGES) {
+            return;
+        }
 
         String whereType = "";
 
@@ -79,7 +90,6 @@ public class TweetTopicsFragment extends Fragment {
 
         try {
             tweets = DataFramework.getInstance().getEntityList("tweets_user", "user_tt_id = " + column_entity.getLong("user_id") + whereType, "date desc, has_more_tweets_down asc");
-
         } catch (Exception exception) {
             tweets = DataFramework.getInstance().getEntityList("tweets_user", "user_tt_id = " + column_entity.getLong("user_id") + whereType, "date desc, has_more_tweets_down asc", "0," + Utils.MAX_ROW_BYSEARCH);
         }
@@ -170,6 +180,31 @@ public class TweetTopicsFragment extends Fragment {
         }
     }
 
+    public void showUpdating() {
+        viewUpdate.setVisibility(View.VISIBLE);
+    }
+
+    public void hideUpdating() {
+        viewUpdate.setVisibility(View.GONE);
+    }
+
+    public void showLoading() {
+        viewLoading.setVisibility(View.VISIBLE);
+        viewNoInternet.setVisibility(View.GONE);
+        listView.setVisibility(View.GONE);
+    }
+
+    public void showNoInternet() {
+        viewLoading.setVisibility(View.GONE);
+        viewNoInternet.setVisibility(View.VISIBLE);
+        listView.setVisibility(View.GONE);
+    }
+
+    public void showTweetsList() {
+        viewLoading.setVisibility(View.GONE);
+        viewNoInternet.setVisibility(View.GONE);
+        listView.setVisibility(View.VISIBLE);
+    }
 
     public void reloadColumnUser(boolean firstIsLastPosition) {
         //TODO: reloadColumnUser
@@ -226,15 +261,20 @@ public class TweetTopicsFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
-        Log.d(Utils.TAG, "onCreateView: " + column_entity.getString("description"));
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
         tweetsAdapter = new TweetsAdapter(getActivity(), infoTweets, -1);
-        if (infoTweets.size()<=0) updateInfoTweet();
+        preLoadInfoTweetIfIsNecessary();
 
-        markPositionLastReadAsLastReadId();
-        //reloadNewMsgInAllColumns()
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+        Log.d(Utils.TAG, "onCreateView: " + column_entity.getString("description") + " : " + infoTweets.size());
+
+        //markPositionLastReadAsLastReadId();
 
         view = View.inflate(getActivity(), R.layout.tweettopics_fragment, null);
 
@@ -254,7 +294,16 @@ public class TweetTopicsFragment extends Fragment {
             }
         });
 
-        tweetsAdapter.notifyDataSetChanged();
+        viewLoading = (LinearLayout) view.findViewById(R.id.tweet_view_loading);
+
+        viewNoInternet = (LinearLayout) view.findViewById(R.id.tweet_view_no_internet);
+
+        viewUpdate = (LinearLayout) view.findViewById(R.id.tweet_view_update);
+
+        if (infoTweets.size()<=0) {
+            showLoading();
+            // TODO llamar a internet para traer tweets ya que no hay
+        }
 
         return view;
     }
@@ -265,7 +314,7 @@ public class TweetTopicsFragment extends Fragment {
     }
 
     public void onRefreshMethod() {
-        updateInfoTweet();
+        preLoadInfoTweetIfIsNecessary();
         tweetsAdapter.notifyDataSetChanged();
         listView.onRefreshComplete();
     }
