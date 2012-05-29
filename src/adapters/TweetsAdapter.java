@@ -159,6 +159,25 @@ public class TweetsAdapter extends ArrayAdapter<InfoTweet> {
         return true;
     }
 
+    public void firtsItemIsLastRead() {
+        setNotifyOnChange(false);
+        try {
+            if (getCount()>0 && getLastReadPosition()>=0) {
+                for (int i=0; i<getCount(); i++) {
+                    ((InfoTweet)getItem(i)).setRead(true);
+                }
+                if (getLastReadPosition()<getCount()) {
+                    getItem(getLastReadPosition()).setLastRead(false);
+                }
+                getItem(0).setLastRead(true);
+                setLastReadPosition(0);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        notifyDataSetChanged();
+    }
+
     public void itemIsLastRead(int pos) {
         user_last_item_last_read = true;
         setNotifyOnChange(false);
