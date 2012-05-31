@@ -27,6 +27,8 @@
 		<item name="color_textbutton_general">#FFFFFFFF</item>
 		
 		<item name="color_textbutton_sidebar">#FF000000</item>
+
+        <item name="color_bgbutton_push_sidebar">#FF33b5e5</item>
 		
 		<item name="color_title_search">#FF000000</item>
 		
@@ -93,6 +95,8 @@
 		<item name="color_textbutton_general">#FFFFFFFF</item>
 		
 		<item name="color_textbutton_sidebar">#FFffffff</item>
+
+        <item name="color_bgbutton_push_sidebar">#FF33b5e5</item>
 		
 		<item name="color_title_search">#FF000000</item>
 		

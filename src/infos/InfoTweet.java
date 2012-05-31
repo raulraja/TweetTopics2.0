@@ -1,6 +1,7 @@
 package infos;
 
 import adapters.RowResponseList;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.database.CursorIndexOutOfBoundsException;
@@ -8,10 +9,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
-import com.javielinux.tweettopics2.NewStatus;
-import com.javielinux.tweettopics2.R;
-import com.javielinux.tweettopics2.TweetTopicsCore;
-import com.javielinux.tweettopics2.Utils;
+import com.javielinux.tweettopics2.*;
 import com.javielinux.tweettopics2.Utils.URLContent;
 import com.javielinux.twitter.ConnectionManager;
 import twitter4j.Status;
@@ -24,13 +22,6 @@ import java.util.Date;
 
 public class InfoTweet implements Parcelable {
 
-    public static int TYPE_ENTITY = 0;
-    public static int TYPE_TWEET = 1;
-    public static int TYPE_STATUS = 2;
-    public static int TYPE_PUB = 3;
-    public static int TYPE_DIRECTMESSAGE = 4;
-    public static int TYPE_USER = 5;
-    public static int TYPE_MORE_TWEETS = 6;
     public static final String START_URL_TWITTER = "http://twitter.com/#!/";
 	public static final String PREFIX_URL_TWITTER = "/status/";
 	
@@ -41,6 +32,7 @@ public class InfoTweet implements Parcelable {
 	public static final int FROM_TWEETS = 0;
 	public static final int FROM_STATUS = 1;
 	public static final int FROM_USER = 2;
+    public static final int FROM_SAVED_TWEET = 3;
 	
 	private int mTypeFrom = FROM_TWEETS;
 	
@@ -63,6 +55,8 @@ public class InfoTweet implements Parcelable {
 	private double latitude = 0;
 	private double longitude = 0;
 	private boolean favorited = false;
+
+    private int type_tweet = -1;
 	
 	private boolean retweet = false;
     private boolean lastRead = false;
@@ -141,10 +135,13 @@ public class InfoTweet implements Parcelable {
 	private void writeEntity(Entity entity) {
 		if (entity.getTable().equals("tweets")) {
 			mTypeFrom = FROM_TWEETS;
+        } else if (entity.getTable().equals("saved_tweets")) {
+            mTypeFrom = FROM_SAVED_TWEET;
 		} else {
 			mTypeFrom = FROM_STATUS;
 			toReplyId = entity.getLong("reply_tweet_id");
 			favorited = entity.getInt("is_favorite")==1?true:false;
+            type_tweet = entity.getInt("type_id");
 		}
 		idDB = entity.getId();
 		id = entity.getLong("tweet_id");
@@ -334,9 +331,9 @@ public class InfoTweet implements Parcelable {
 		mTweetTopicsCore.updateStatus(NewStatus.TYPE_NORMAL, "@"+getUsername(), this);
 	}
 	
-	public void goToReply(TweetTopicsCore mTweetTopicsCore) {
+	public void goToReply(Activity activity) {
 		if (TweetTopicsCore.isTypeList(TweetTopicsCore.TYPE_LIST_COLUMNUSER) && TweetTopicsCore.isTypeLastColumn(TweetTopicsCore.DIRECTMESSAGES)) {
-			mTweetTopicsCore.directMessage(getUsername());
+			TweetActions.directMessage(activity, getUsername());
 		} else {
 			ArrayList<String> users = Utils.pullLinksUsers(getText());
 			int count = users.size();
@@ -348,17 +345,17 @@ public class InfoTweet implements Parcelable {
 	    	}
 			
 			if (count>1) {
-				mTweetTopicsCore.getTweetTopics().showDialog(TweetTopicsCore.DIALOG_REPLY);
+                // TODO Show dialog Reply
+				//mTweetTopicsCore.getTweetTopics().showDialog(TweetTopicsCore.DIALOG_REPLY);
 			} else {
-				mTweetTopicsCore.updateStatus(NewStatus.TYPE_REPLY, "", this);
+                TweetActions.updateStatus(activity, NewStatus.TYPE_REPLY, "", this);
 			}
 		}
-		
-		mTweetTopicsCore.closeSidebar();
+
 	}
 	
-	public void goToRetweet(TweetTopicsCore mTweetTopicsCore) {
-		mTweetTopicsCore.showDialogRetweet();
+	public void goToRetweet(Activity activity) {
+        TweetActions.showDialogRetweet(activity, this);
 	}
 	
 	public int goToFavorite(TweetTopicsCore mTweetTopicsCore) {
@@ -489,37 +486,42 @@ public class InfoTweet implements Parcelable {
 	public boolean goToMarkLastReadId(TweetTopicsCore mTweetTopicsCore, int pos) {
 		return mTweetTopicsCore.markLastReadId(pos, getId());
 	}
-	
-	public boolean execByCode(String code, TweetTopicsCore mTweetTopicsCore, int pos) {
+
+    // TODO eliminar esta funcion
+    public boolean execByCode(String code, TweetTopicsCore mTweetTopicsCore, int pos) {
+        return false;
+    }
+
+	public boolean execByCode(String code, Activity activity, int pos) {
 		/*
 		"reply", "retweet", "lastread", "readafter",
 		"favorite", "share", "mention", "map",
 		"clipboard", "send_dm", "delete_tweet"};
 		*/
 		if (code.equals("reply")) {
-			this.goToReply(mTweetTopicsCore);
+			this.goToReply(activity);
 		} else if (code.equals("retweet")) {
-			this.goToRetweet(mTweetTopicsCore);
+			this.goToRetweet(activity);
 		} else if (code.equals("lastread")) {
-			return this.goToMarkLastReadId(mTweetTopicsCore, pos);
+			//return this.goToMarkLastReadId(mTweetTopicsCore, pos);
 		} else if (code.equals("readafter")) {
-			this.goToReadAfter(mTweetTopicsCore);
+			//this.goToReadAfter(mTweetTopicsCore);
 		} else if (code.equals("favorite")) {
-			this.goToFavorite(mTweetTopicsCore);
+            //this.goToFavorite(mTweetTopicsCore);
 		} else if (code.equals("share")) {
-			this.goToShare(mTweetTopicsCore);
+            //this.goToShare(mTweetTopicsCore);
 		} else if (code.equals("mention")) {
-			this.goToMention(mTweetTopicsCore);
+            //this.goToMention(mTweetTopicsCore);
 		} else if (code.equals("map")) {
-			this.goToMap(mTweetTopicsCore);
+            //this.goToMap(mTweetTopicsCore);
 		} else if (code.equals("clipboard")) {
-			this.goToClipboard(mTweetTopicsCore);
+            //this.goToClipboard(mTweetTopicsCore);
 		} else if (code.equals("send_dm")) {
-			this.goToSendDM(mTweetTopicsCore);
+            //this.goToSendDM(mTweetTopicsCore);
 		} else if (code.equals("delete_tweet")) {
-			this.goToDeleteTweet(mTweetTopicsCore);
+            //this.goToDeleteTweet(mTweetTopicsCore);
 		} else if (code.equals("delete_up_tweets")) {
-			this.goToDeleteTop(mTweetTopicsCore);
+            //this.goToDeleteTop(mTweetTopicsCore);
 		}
 		return false;
 	}
@@ -690,6 +692,18 @@ public class InfoTweet implements Parcelable {
         sourceRetweet = in.readString();
         urlTweet = in.readString();
 
+    }
+
+    public boolean isDm() {
+        return (type_tweet==3 || type_tweet==4);
+    }
+
+    public boolean isTimeline() {
+        return (type_tweet==1);
+    }
+
+    public boolean isSavedTweet() {
+        return (mTypeFrom == FROM_SAVED_TWEET);
     }
 
 }

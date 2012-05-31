@@ -1,11 +1,14 @@
 package com.javielinux.tweettopics2;
 
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.text.Html;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -19,6 +22,7 @@ import com.viewpagerindicator.TabPageIndicator;
 import infos.InfoTweet;
 
 import java.io.File;
+import java.util.ArrayList;
 
 public class TweetActivity extends BaseActivity {
 
@@ -115,9 +119,104 @@ public class TweetActivity extends BaseActivity {
         indicator = (TabPageIndicator)findViewById(R.id.tweet_indicator);
         indicator.setViewPager(pager);
 
-        ((LinearLayout)findViewById(R.id.tweet_ll)).setBackgroundResource((themeManager.getTheme()==1)?R.drawable.bg_sidebar:R.drawable.bg_sidebar_dark);
+        ((Button)findViewById(R.id.tweet_btn_reply)).setOnClickListener(clickReply);
+        ((Button)findViewById(R.id.tweet_btn_retweet)).setOnClickListener(clickRetweet);
+        ((Button)findViewById(R.id.tweet_btn_translate)).setOnClickListener(clickTranslate);
+        ((Button)findViewById(R.id.tweet_btn_more)).setOnClickListener(clickMore);
+
+        ((LinearLayout)findViewById(R.id.tweet_ll)).setBackgroundResource((themeManager.getTheme() == 1) ? R.drawable.bg_sidebar : R.drawable.bg_sidebar_dark);
 
     }
+
+    View.OnClickListener clickReply = new View.OnClickListener() {
+
+        @Override
+        public void onClick(View view) {
+            TweetActions.goToReply(TweetActivity.this, infoTweet);
+        }
+    };
+
+    View.OnClickListener clickRetweet = new View.OnClickListener() {
+
+        @Override
+        public void onClick(View view) {
+            TweetActions.showDialogRetweet(TweetActivity.this, infoTweet);
+        }
+    };
+
+    View.OnClickListener clickTranslate = new View.OnClickListener() {
+
+        @Override
+        public void onClick(View view) {
+            Utils.showMessage(TweetActivity.this, "TODO translate");
+        }
+    };
+
+    View.OnClickListener clickMore = new View.OnClickListener() {
+
+        @Override
+        public void onClick(View view) {
+
+            final ArrayList<String> arCode = new ArrayList<String>();
+            ArrayList<String> ar = new ArrayList<String>();
+
+            if (!infoTweet.isDm()) {
+                if (infoTweet.isSavedTweet())
+                    ar.add(getString(R.string.delete_read_after));
+                else
+                    ar.add(getString(R.string.create_read_after));
+                arCode.add("read_after");
+
+                ar.add(getString(R.string.send_direct_message));
+                arCode.add("send_dm");
+
+                ar.add(getString(R.string.view_map));
+                arCode.add("view_map");
+
+                ar.add(getString(R.string.show_retweeters));
+                arCode.add("show_retweeters");
+            }
+
+            // TODO Borrar tweet de un usuario
+             /*
+            if (infoTweet.isTimeline()) {
+                if (infoTweet.getUsername().equals(mTweetTopicsCore.getTweetTopics().getActiveUser().getString("name"))) {
+                    ar.add(getString(R.string.delete_tweet));
+                    arCode.add("delete_tweet");
+                }
+            }
+                 */
+            ar.add(getString(R.string.copy_to_clipboard));
+            arCode.add("copy_to_clipboard");
+
+            ar.add(getString(R.string.share));
+            arCode.add("share");
+
+            CharSequence[] c = new CharSequence[ar.size()];
+            for (int i=0; i<ar.size(); i++) {
+                c[i] = ar.get(i);
+            }
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(TweetActivity.this);
+            builder.setTitle(R.string.actions);
+            builder.setItems(c, new DialogInterface.OnClickListener() {
+
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    TweetActions.execByCode(arCode.get(which), TweetActivity.this, infoTweet);
+                }
+
+
+            });
+            builder.setNegativeButton(R.string.alert_dialog_cancel, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int whichButton) {
+                }
+            });
+            builder.create();
+            builder.show();
+        }
+    };
+
 
     @Override
     protected void onPause() {

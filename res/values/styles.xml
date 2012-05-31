@@ -91,6 +91,8 @@
     
     <style name="ButtonSidebar" parent="android:Widget.Button">
         <item name="android:textColor">?color_textbutton_sidebar</item>
+        <item name="android:background">@drawable/button_sidebar_background</item>
+        <item name="android:gravity">center_horizontal</item>
         <item name="android:textSize">11sp</item>
         <item name="android:paddingTop">5dip</item>
         <item name="android:paddingBottom">5dip</item>

@@ -53,6 +53,42 @@
 
         </RelativeLayout>
 
+        <LinearLayout android:layout_height="wrap_content"
+                      android:layout_width="fill_parent"
+                      android:id="@+id/tweet_actions_container">
+
+            <Button
+                    style="@style/ButtonSidebar"
+                    android:layout_weight="1"
+                    android:text="@string/reply"
+                    android:drawableTop="@drawable/icon_reply"
+                    android:id="@+id/tweet_btn_reply" android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"></Button>
+            <Button
+                    style="@style/ButtonSidebar"
+                    android:layout_weight="1"
+                    android:text="@string/retweet"
+                    android:drawableTop="@drawable/icon_retweet"
+                    android:id="@+id/tweet_btn_retweet" android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"></Button>
+            <Button
+                    style="@style/ButtonSidebar"
+                    android:layout_weight="1"
+                    android:text="@string/translate"
+                    android:drawableTop="@drawable/icon_translate"
+                    android:id="@+id/tweet_btn_translate" android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"></Button>
+
+            <Button
+                    style="@style/ButtonSidebar"
+                    android:layout_weight="1"
+                    android:text="@string/more"
+                    android:drawableTop="@drawable/icon_more"
+                    android:id="@+id/tweet_btn_more" android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"></Button>
+
+        </LinearLayout>
+
         <com.viewpagerindicator.TabPageIndicator
                 android:id="@+id/tweet_indicator"
                 android:layout_height="wrap_content"

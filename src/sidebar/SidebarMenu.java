@@ -221,14 +221,14 @@ public class SidebarMenu implements CheckConversationAsyncTaskResponder {
 	private void onClickButton1() {
 		InfoTweet it = mTweetTopicsCore.getCurrentInfoTweet();
 		if (it!=null) {
-			it.goToReply(mTweetTopicsCore);
+			//it.goToReply(mTweetTopicsCore);
 		}
 	}
 	
 	private void onClickButton2() {
 		InfoTweet it = mTweetTopicsCore.getCurrentInfoTweet();
 		if (it!=null) {
-			it.goToRetweet(mTweetTopicsCore);
+			//it.goToRetweet(mTweetTopicsCore);
 		}
 	}
 	
