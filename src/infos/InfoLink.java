@@ -4,6 +4,13 @@ import android.graphics.Bitmap;
 
 public class InfoLink {
 
+    public static final int IMAGE = 0;
+    public static final int VIDEO = 1;
+    public static final int GENERAL = 2;
+    public static final int TWEETOPICS_QR = 3;
+    public static final int TWEETOPICS_THEME = 4;
+    public static final int TWEET = 5;
+
 	private String title = "";
 	private String description = "";
 	private int durationVideo = 0;

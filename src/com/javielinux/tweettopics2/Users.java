@@ -294,7 +294,7 @@ public class Users extends BaseActivity {
 
         progressDialog.show();
 
-        APITweetTopics.execute(this, getLoaderManager(), new APIDelegate<ProfileImageResponse>() {
+        APITweetTopics.execute(this, getSupportLoaderManager(), new APIDelegate<ProfileImageResponse>() {
             @Override
             public void onResults(ProfileImageResponse result) {
                 progressDialog.cancel();
@@ -325,7 +325,7 @@ public class Users extends BaseActivity {
 
         progressDialog.show();
 
-        APITweetTopics.execute(this, getLoaderManager(), new APIDelegate<ProfileImageResponse>() {
+        APITweetTopics.execute(this, getSupportLoaderManager(), new APIDelegate<ProfileImageResponse>() {
             @Override
             public void onResults(ProfileImageResponse result) {
                 progressDialog.cancel();

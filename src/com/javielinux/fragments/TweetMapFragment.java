@@ -12,7 +12,7 @@ public class TweetMapFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = View.inflate(getActivity(), R.layout.tweet_links_fragment, null);
+        View view = View.inflate(getActivity(), R.layout.tweet_map_fragment, null);
         ((TextView)view.findViewById(R.id.text)).setText("Map");
         return view;
     }

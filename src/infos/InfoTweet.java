@@ -655,6 +655,7 @@ public class InfoTweet implements Parcelable {
         parcel.writeString(fullnameRetweet);
         parcel.writeString(sourceRetweet);
         parcel.writeString(urlTweet);
+        parcel.writeString(textHTMLFinal);
     }
 
     public static final Parcelable.Creator<InfoTweet> CREATOR
@@ -691,6 +692,7 @@ public class InfoTweet implements Parcelable {
         fullnameRetweet = in.readString();
         sourceRetweet = in.readString();
         urlTweet = in.readString();
+        textHTMLFinal = in.readString();
 
     }
 

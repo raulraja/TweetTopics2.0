@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    >
+
+    <RelativeLayout
+          android:id="@+id/tweet_links_row_container_image"
+          android:layout_width="fill_parent"
+          android:layout_height="fill_parent"
+          android:visibility="gone">
+
+        <ImageView  android:id="@+id/tweet_links_row_image"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"></ImageView>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+            android:id="@+id/tweet_links_row_container_video"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:visibility="gone">
+
+        <ImageView  android:id="@+id/tweet_links_row_video"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"></ImageView>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+            android:id="@+id/tweet_links_row_container_link"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:visibility="gone">
+
+        <ImageView  android:id="@+id/tweet_links_row_link_image"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"></ImageView>
+
+        <TextView
+                android:id="@+id/tweet_links_row_link_url"
+                android:layout_toRightOf="@id/tweet_links_row_link_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/TextLink" />
+
+        <TextView
+                android:id="@+id/tweet_links_row_link_title"
+                android:layout_toRightOf="@id/tweet_links_row_link_image"
+                android:layout_below="@id/tweet_links_row_link_url"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/TextTitle" />
+
+        <TextView
+                android:id="@+id/tweet_links_row_link_description"
+                android:layout_toRightOf="@id/tweet_links_row_link_title"
+                android:layout_below="@id/tweet_links_row_link_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/TextDescription" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+            android:id="@+id/tweet_links_row_container_user"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:visibility="gone">
+
+        <ImageView  android:id="@+id/tweet_links_row_user_avatar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"></ImageView>
+
+        <TextView
+                android:id="@+id/tweet_links_row_user_name"
+                android:layout_toRightOf="@id/tweet_links_row_link_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/TextTitle" />
+
+
+    </RelativeLayout>
+
+    <RelativeLayout
+            android:id="@+id/tweet_links_row_container_hashtag"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:visibility="gone">
+
+        <ImageView  android:id="@+id/tweet_links_row_hashtag_image"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"></ImageView>
+
+        <TextView
+                android:id="@+id/tweet_links_row_hashtag_name"
+                android:layout_toRightOf="@id/tweet_links_row_hashtag_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/TextTitle" />
+
+
+    </RelativeLayout>
+
+    <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:gravity="center"
+            android:visibility="gone"
+            android:id="@+id/tweet_links_row_container_loading"
+            >
+
+        <ProgressBar
+                android:layout_width="16sp"
+                android:layout_height="16sp"
+                android:indeterminate="true"
+                android:layout_marginRight="6sp"
+                />
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/loading"
+                />
+
+    </LinearLayout>
+
+</LinearLayout>

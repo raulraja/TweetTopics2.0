@@ -3,8 +3,10 @@ package com.javielinux.tweettopics2;
 import adapters.UsersAdapter;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.text.ClipboardManager;
 import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
 import infos.InfoTweet;
@@ -35,25 +37,70 @@ public class TweetActions {
         } else if (code.equals("lastread")) {
             //return this.goToMarkLastReadId(mTweetTopicsCore, pos);
         } else if (code.equals("readafter")) {
-            //this.goToReadAfter(mTweetTopicsCore);
+            saveTweet(activity, infoTweet);
         } else if (code.equals("favorite")) {
             //this.goToFavorite(mTweetTopicsCore);
         } else if (code.equals("share")) {
-            //this.goToShare(mTweetTopicsCore);
+            goToShare(activity, infoTweet);
         } else if (code.equals("mention")) {
-            //this.goToMention(mTweetTopicsCore);
-        } else if (code.equals("map")) {
-            //this.goToMap(mTweetTopicsCore);
+            goToMention(activity, infoTweet);
         } else if (code.equals("clipboard")) {
-            //this.goToClipboard(mTweetTopicsCore);
+            copyToClipboard(activity, infoTweet);
         } else if (code.equals("send_dm")) {
-            //this.goToSendDM(mTweetTopicsCore);
+            directMessage(activity, infoTweet.getUsername());
         } else if (code.equals("delete_tweet")) {
             //this.goToDeleteTweet(mTweetTopicsCore);
         } else if (code.equals("delete_up_tweets")) {
             //this.goToDeleteTop(mTweetTopicsCore);
         }
         return false;
+    }
+
+    public static void copyToClipboard(Activity activity, InfoTweet infoTweet) {
+        ClipboardManager clipboard = (ClipboardManager) activity.getSystemService(Context.CLIPBOARD_SERVICE);
+        clipboard.setText(infoTweet.getText());
+        Utils.showMessage(activity, activity.getString(R.string.copied_to_clipboard));
+    }
+
+    public static void goToMention(Activity activity, InfoTweet infoTweet) {
+        updateStatus(activity, NewStatus.TYPE_NORMAL, "@" + infoTweet.getUsername(), infoTweet);
+    }
+
+    public static void goToShare(Activity activity, InfoTweet infoTweet) {
+        Intent msg=new Intent(Intent.ACTION_SEND);
+        msg.putExtra(Intent.EXTRA_TEXT, infoTweet.getUsername() + ": " + infoTweet.getText());
+        msg.setType("text/plain");
+        activity.startActivity(msg);
+    }
+
+    public static void saveTweet(Activity activity, InfoTweet infoTweet) {
+        try {
+            if (TweetTopicsCore.isTypeList(TweetTopicsCore.TYPE_LIST_READAFTER)) {
+                Entity ent = new Entity("saved_tweets", infoTweet.getIdDB());
+                ent.delete();
+                // TODO borrar registro de la pantalla
+                Utils.showMessage(activity, activity.getString(R.string.favorite_delete));
+            } else {
+                Entity ent = new Entity("saved_tweets");
+                ent.setValue("url_avatar", infoTweet.getUrlAvatar());
+                ent.setValue("username", infoTweet.getUsername());
+                ent.setValue("user_id", infoTweet.getUserId());
+                ent.setValue("tweet_id", infoTweet.getId()+"");
+                ent.setValue("text", infoTweet.getText());
+                ent.setValue("text_urls", infoTweet.getTextURLs());
+                ent.setValue("source", infoTweet.getSource());
+                ent.setValue("to_username", infoTweet.getToUsername());
+                ent.setValue("to_user_id", infoTweet.getToUserId());
+                ent.setValue("date", infoTweet.getDate().getTime()+"");
+                ent.setValue("latitude", infoTweet.getLatitude());
+                ent.setValue("longitude", infoTweet.getLongitude());
+                ent.save();
+                Utils.showMessage(activity, activity.getString(R.string.favorite_save));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            Utils.showMessage(activity, activity.getString(R.string.favorite_no_save));
+        }
     }
 
     public static void goToReply(Activity activity, InfoTweet infoTweet) {

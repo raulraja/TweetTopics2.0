@@ -1,12 +1,12 @@
 package com.javielinux.fragments;
 
 import adapters.TweetsAdapter;
-import android.app.LoaderManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.LoaderManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,10 +15,8 @@ import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import api.APIDelegate;
 import api.APITweetTopics;
-import api.request.Export2HTMLRequest;
 import api.request.TwitterUserRequest;
 import api.response.ErrorResponse;
-import api.response.Export2HTMLResponse;
 import api.response.TwitterUserResponse;
 import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;

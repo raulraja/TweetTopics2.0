@@ -83,7 +83,7 @@ public class TweetActivity extends BaseActivity {
         if (file.exists()) {
             imgAvatar.setImageBitmap(BitmapFactory.decodeFile(file.getAbsolutePath()));
         } else {
-            APITweetTopics.execute(this, getLoaderManager(), new APIDelegate<LoadImageWidgetResponse>() {
+            APITweetTopics.execute(this, getSupportLoaderManager(), new APIDelegate<LoadImageWidgetResponse>() {
                 @Override
                 public void onResults(LoadImageWidgetResponse result) {
                     try {
@@ -111,7 +111,7 @@ public class TweetActivity extends BaseActivity {
         if (html.equals("")) html = Utils.toHTML(this, infoTweet.getText());
         txtText.setText(Html.fromHtml(html));
 
-        fragmentAdapter = new TweetFragmentAdapter(getSupportFragmentManager(), infoTweet);
+        fragmentAdapter = new TweetFragmentAdapter(this, getSupportFragmentManager(), infoTweet);
 
         pager = (ViewPager)findViewById(R.id.tweet_pager);
         pager.setAdapter(fragmentAdapter);

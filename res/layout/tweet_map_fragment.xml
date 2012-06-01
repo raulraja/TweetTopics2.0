@@ -5,10 +5,9 @@
     android:layout_height="fill_parent"
     >
 
-    <ListView
-            android:id="@+id/tweet_links_list"
+    <TextView
+            android:id="@+id/text"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:cacheColorHint="@android:color/transparent"
             />
 </LinearLayout>

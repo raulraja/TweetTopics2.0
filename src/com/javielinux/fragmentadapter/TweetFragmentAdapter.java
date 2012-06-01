@@ -1,11 +1,13 @@
 package com.javielinux.fragmentadapter;
 
+import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import com.javielinux.fragments.TweetConversationFragment;
 import com.javielinux.fragments.TweetLinksFragment;
 import com.javielinux.fragments.TweetMapFragment;
+import com.javielinux.tweettopics2.R;
 import com.javielinux.tweettopics2.Utils;
 import infos.InfoTweet;
 
@@ -22,24 +24,29 @@ public class TweetFragmentAdapter extends FragmentPagerAdapter  {
     private ArrayList<Integer> tweet_fragment_code = new ArrayList<Integer>();
     private ArrayList<String> tweet_fragment_titles = new ArrayList<String>();
 
-    public TweetFragmentAdapter(FragmentManager fragmentManager, InfoTweet infoTweet) {
+    private Context context;
+
+    public TweetFragmentAdapter(Context context, FragmentManager fragmentManager, InfoTweet infoTweet) {
         super(fragmentManager);
         this.infoTweet = infoTweet;
+
+        this.context = context;
+
         loadColumns();
     }
 
     void loadColumns() {
         if (Utils.pullLinks(infoTweet.getText()).size()>0) {
             tweet_fragment_code.add(TAB_LINKS);
-            tweet_fragment_titles.add("Links");
+            tweet_fragment_titles.add(context.getString(R.string.links));
         }
         if (infoTweet.hasConversation()) {
             tweet_fragment_code.add(TAB_CONVERSATION);
-            tweet_fragment_titles.add("Conversation");
+            tweet_fragment_titles.add(context.getString(R.string.conversation));
         }
         if (infoTweet.getLatitude()!=0 && infoTweet.getLongitude()!=0) {
             tweet_fragment_code.add(TAB_MAP);
-            tweet_fragment_titles.add("Map");
+            tweet_fragment_titles.add(context.getString(R.string.map));
         }
     }
 
@@ -47,7 +54,7 @@ public class TweetFragmentAdapter extends FragmentPagerAdapter  {
     @Override
     public Fragment getItem(int index) {
        if (tweet_fragment_code.get(index)==TAB_LINKS) {
-            return new TweetLinksFragment();
+            return new TweetLinksFragment(infoTweet);
        } else if (tweet_fragment_code.get(index)==TAB_CONVERSATION) {
            return new TweetConversationFragment();
        } else if (tweet_fragment_code.get(index)==TAB_MAP) {

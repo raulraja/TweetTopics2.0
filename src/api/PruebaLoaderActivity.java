@@ -43,7 +43,7 @@ public class PruebaLoaderActivity extends BaseActivity {
     }
 
     private void click() {
-        APITweetTopics.execute(this, this.getLoaderManager(), new APIDelegate<Export2HTMLResponse>() {
+        APITweetTopics.execute(this, this.getSupportLoaderManager(), new APIDelegate<Export2HTMLResponse>() {
             @Override
             public void onResults(Export2HTMLResponse result) {
                 text.setText("OnResult");

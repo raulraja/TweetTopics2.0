@@ -1,9 +1,9 @@
 package api;
 
-import android.app.LoaderManager;
 import android.content.Context;
-import android.content.Loader;
 import android.os.Bundle;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import api.loaders.*;
 import api.request.*;
 import api.response.BaseResponse;
