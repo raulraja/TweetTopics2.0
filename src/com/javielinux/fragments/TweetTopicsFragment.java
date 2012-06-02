@@ -227,7 +227,12 @@ public class TweetTopicsFragment extends Fragment {
                         tweets = DataFramework.getInstance().getEntityList("tweets_user", "user_tt_id = " + column_entity.getLong("user_id") + whereType, "date desc, has_more_tweets_down asc", "0," + Utils.MAX_ROW_BYSEARCH);
                     }
 
-                    int pos = 0;
+                    int pos = listView.getRefreshableView().getFirstVisiblePosition();
+                    int count = tweetsAdapter.appendNewer(tweets, -1);
+                    listView.getRefreshableView().setSelection(pos + count);
+                    tweetsAdapter.setLastReadPosition(tweetsAdapter.getLastReadPosition() + count);
+
+                    /*int pos = 0;
                     int count = 0;
                     boolean found = false;
                     int countHide = 0;
@@ -260,18 +265,18 @@ public class TweetTopicsFragment extends Fragment {
 
                             try {
                                 infoTweets.add(0, infoTweet);
-                                /*if (r.hasMoreTweetDown()) {
-                                    response.add(new RowResponseList(RowResponseList.TYPE_MORE_TWEETS));
-                                }*/
                                 count++;
                             } catch (OutOfMemoryError er) {
                                 i = tweets.size();
                             }
                         }
-                    }
+                    }*/
 
                     tweetsAdapter.notifyDataSetChanged();
                 }
+
+                if (viewLoading.getVisibility() == View.VISIBLE) showTweetsList();
+                if (viewUpdate.getVisibility() == View.VISIBLE) hideUpdating();
             }
 
             @Override

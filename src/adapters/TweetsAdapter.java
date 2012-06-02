@@ -8,9 +8,7 @@ import android.view.ViewGroup;
 import android.widget.*;
 import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
-import com.javielinux.tweettopics2.R;
-import com.javielinux.tweettopics2.ThemeManager;
-import com.javielinux.tweettopics2.Utils;
+import com.javielinux.tweettopics2.*;
 import infos.InfoTweet;
 import layouts.TweetListViewItem;
 
@@ -138,6 +136,65 @@ public class TweetsAdapter extends ArrayAdapter<InfoTweet> {
 
             notifyDataSetChanged();
         }
+    }
+
+    public int appendNewer(ArrayList<Entity> entityList, int column) {
+
+        setNotifyOnChange(false);
+
+        boolean isFirst = (getCount()<=0);
+
+        int count = 0;
+        int countHide = 0;
+
+        for (int i=entityList.size()-1; i>=0; i--) {
+
+            boolean delete = false;
+
+            if (i>0) {
+                if (entityList.get(i).getLong("tweet_id") == entityList.get(i-1).getLong("tweet_id")) {
+                    delete = true;
+                }
+            }
+
+            if (delete) {
+                try {
+                    entityList.get(i).delete();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } else {
+                if (column == TweetTopicsConstants.COLUMN_TIMELINE && Utils.hideUser.contains(entityList.get(i).getString("username").toLowerCase())) {
+                    countHide++;
+                } else if (column == TweetTopicsConstants.COLUMN_TIMELINE && Utils.isHideWordInText(entityList.get(i).getString("text").toLowerCase())) {
+                    countHide++;
+                } else if (column == TweetTopicsConstants.COLUMN_TIMELINE && Utils.isHideSourceInText(entityList.get(i).getString("source").toLowerCase())) { // fuente
+                    countHide++;
+                } else {
+                    InfoTweet infoTweet = new InfoTweet(entityList.get(i));
+
+                    /*if (infoTweet.hasMoreTweetDown()) {
+                        insert(new RowResponseList(RowResponseList.TYPE_MORE_TWEETS), 0);
+                    }*/
+
+                    if (isFirst) {
+                        infoTweet.setLastRead(true);
+                        isFirst = false;
+                    }
+                    infoTweet.setRead(false);
+                    insert(infoTweet, 0);
+                    count++;
+                }
+            }
+        }
+
+        this.addHideMessages(countHide);
+
+        Log.d(Utils.TAG, count + " mensajes insertados");
+
+        notifyDataSetChanged();
+
+        return count;
     }
 
     public void selectedRow(int pos) {
