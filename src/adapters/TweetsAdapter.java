@@ -11,6 +11,7 @@ import com.android.dataframework.Entity;
 import com.javielinux.tweettopics2.R;
 import com.javielinux.tweettopics2.ThemeManager;
 import com.javielinux.utils.ImageUtils;
+import com.javielinux.utils.TweetTopicsConstants;
 import com.javielinux.utils.Utils;
 import infos.InfoTweet;
 import layouts.TweetListViewItem;
