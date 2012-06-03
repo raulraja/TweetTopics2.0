@@ -7,7 +7,7 @@ import api.request.LoadLinkRequest;
 import api.response.BaseResponse;
 import api.response.ErrorResponse;
 import api.response.LoadLinkResponse;
-import com.javielinux.tweettopics2.Utils;
+import com.javielinux.utils.Utils;
 import infos.CacheData;
 import infos.InfoLink;
 import infos.InfoWeb;

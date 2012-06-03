@@ -12,7 +12,7 @@ import android.os.Bundle;
 import android.view.Window;
 import com.android.dataframework.DataFramework;
 import com.javielinux.tweettopics2.R;
-import com.javielinux.tweettopics2.Utils;
+import com.javielinux.utils.Utils;
 
 public class WidgetCountersConf2x1 extends Activity {
 	

@@ -93,6 +93,8 @@
 	
 	<color name="color_tweet_buttons_normal">#000000</color>
 	<color name="color_tweet_buttons_press">#795a05</color>
+
+    <color name="color_indicator_text">#ffffff</color>
 		
 	<!-- TEMA OSCURO -->
 	
@@ -136,5 +138,7 @@
 	
 	<color name="color_tweet_buttons_normal_dark">#ffffff</color>
 	<color name="color_tweet_buttons_press_dark">#795a05</color>
+
+    <color name="color_indicator_text_dark">#ffffff</color>
 	
 </resources>

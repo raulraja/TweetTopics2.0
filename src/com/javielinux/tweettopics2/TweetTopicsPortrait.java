@@ -17,6 +17,7 @@ import android.widget.SlidingDrawer.OnDrawerCloseListener;
 import android.widget.SlidingDrawer.OnDrawerOpenListener;
 import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
+import com.javielinux.utils.Utils;
 import database.EntitySearch;
 
 import java.util.ArrayList;

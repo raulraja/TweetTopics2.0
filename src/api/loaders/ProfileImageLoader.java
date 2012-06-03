@@ -9,8 +9,8 @@ import api.response.BaseResponse;
 import api.response.ErrorResponse;
 import api.response.ProfileImageResponse;
 import com.android.dataframework.Entity;
-import com.javielinux.tweettopics2.Utils;
 import com.javielinux.twitter.ConnectionManager;
+import com.javielinux.utils.Utils;
 import twitter4j.TwitterException;
 import twitter4j.User;
 

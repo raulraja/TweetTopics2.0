@@ -7,7 +7,7 @@ import api.response.BaseResponse;
 import api.response.ErrorResponse;
 import api.response.Export2HTMLResponse;
 import com.javielinux.tweettopics2.R;
-import com.javielinux.tweettopics2.Utils;
+import com.javielinux.utils.Utils;
 import infos.InfoTweet;
 
 import java.io.File;

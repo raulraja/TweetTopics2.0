@@ -28,9 +28,12 @@ import api.response.ProfileImageResponse;
 import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
 import com.javielinux.facebook.FacebookHandler;
-import com.javielinux.tweettopics2.Utils.BuyProDialogBuilder;
 import com.javielinux.twitter.AuthorizationActivity;
 import com.javielinux.twitter.ConnectionManager;
+import com.javielinux.utils.DialogUtils.BuyProDialogBuilder;
+import com.javielinux.utils.ImageUtils;
+import com.javielinux.utils.PreferenceUtils;
+import com.javielinux.utils.Utils;
 import preferences.Preferences;
 import twitter4j.TwitterException;
 
@@ -148,7 +151,7 @@ public class Users extends BaseActivity {
 
 
     private void refreshColorsListView() {
-        mListView.setDivider(Utils.createDividerDrawable(this, new ThemeManager(this).getColor("color_divider_tweet")));
+        mListView.setDivider(ImageUtils.createDividerDrawable(this, new ThemeManager(this).getColor("color_divider_tweet")));
         if (Utils.getPreference(this).getBoolean("prf_use_divider_tweet", true)) {
             mListView.setDividerHeight(2);
         } else {
@@ -575,13 +578,13 @@ public class Users extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        Utils.saveStatusWorkApp(this, true);
+        PreferenceUtils.saveStatusWorkApp(this, true);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        Utils.saveStatusWorkApp(this, false);
+        PreferenceUtils.saveStatusWorkApp(this, false);
     }
 
     @Override

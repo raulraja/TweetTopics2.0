@@ -8,7 +8,8 @@ import api.request.UploadTwitlongerRequest;
 import api.response.BaseResponse;
 import api.response.ErrorResponse;
 import api.response.UploadTwitlongerResponse;
-import com.javielinux.tweettopics2.Utils;
+import com.javielinux.utils.LocationUtils;
+import com.javielinux.utils.Utils;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
@@ -107,7 +108,7 @@ public class UploadTwitlongerLoader extends AsynchronousLoader<BaseResponse> {
             if (!textTwitLonger.equals("")) {
                 StatusUpdate statusUpdate = new StatusUpdate(textTwitLonger);
                 if (use_geolocation) {
-                    Location loc = Utils.getLastLocation(getContext());
+                    Location loc = LocationUtils.getLastLocation(getContext());
                     GeoLocation gl = new GeoLocation(loc.getLatitude(), loc.getLongitude());
                     statusUpdate.setLocation(gl);
                 }

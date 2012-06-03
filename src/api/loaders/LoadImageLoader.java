@@ -9,7 +9,7 @@ import api.AsynchronousLoader;
 import api.request.LoadImageRequest;
 import api.response.BaseResponse;
 import com.javielinux.tweettopics2.TweetTopicsCore;
-import com.javielinux.tweettopics2.Utils;
+import com.javielinux.utils.Utils;
 import infos.CacheData;
 import infos.InfoLink;
 

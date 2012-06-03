@@ -13,8 +13,9 @@ import com.android.dataframework.Entity;
 import com.javielinux.tweettopics2.NewStatus;
 import com.javielinux.tweettopics2.R;
 import com.javielinux.tweettopics2.UploadTweetQuick;
-import com.javielinux.tweettopics2.Utils;
 import com.javielinux.twitter.ConnectionManager;
+import com.javielinux.utils.LocationUtils;
+import com.javielinux.utils.Utils;
 import task.DirectMessageAsyncTask;
 import task.DirectMessageAsyncTask.DirectMessageAsyncTaskResponder;
 import task.ImageUploadAsyncTask;
@@ -138,7 +139,7 @@ public class ServiceTweetQuick extends Service implements UploadStatusAsyncTaskR
 				
 				for (String token : ar) {
 					if (token.equals("ADDRESS")) {
-						text += Utils.getAddressFromLastLocation(this);
+						text += LocationUtils.getAddressFromLastLocation(this);
 					} else if (token.equals("PHOTO")) {
 						text += imageUploadResult.url;
 					} else if (token.equals("COUNTER")) {

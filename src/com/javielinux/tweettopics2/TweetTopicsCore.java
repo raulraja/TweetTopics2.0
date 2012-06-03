@@ -32,6 +32,9 @@ import com.android.dataframework.Entity;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.javielinux.twitter.ConnectionManager;
 import com.javielinux.twitter.TwitterApplication;
+import com.javielinux.utils.ImageUtils;
+import com.javielinux.utils.PreferenceUtils;
+import com.javielinux.utils.Utils;
 import database.EntitySearch;
 import database.EntityTweetUser;
 import infos.*;
@@ -439,7 +442,7 @@ public class TweetTopicsCore implements OnGestureListener, SearchAsyncTaskRespon
                                     updateStatus(NewStatus.TYPE_NORMAL, mHashTagSelected, null);
                                 } else if (which == 4) {
                                     closeSidebar();
-                                    Utils.setDefaultTextInTweet(mTweetTopics, mHashTagSelected);
+                                    PreferenceUtils.setDefaultTextInTweet(mTweetTopics, mHashTagSelected);
                                 }
                             }
                         })
@@ -570,7 +573,7 @@ public class TweetTopicsCore implements OnGestureListener, SearchAsyncTaskRespon
             ((NotificationManager) mTweetTopics.getSystemService(Context.NOTIFICATION_SERVICE)).cancelAll();
         }
 
-        Utils.saveNotificationsApp(mTweetTopics, true);
+        PreferenceUtils.saveNotificationsApp(mTweetTopics, true);
 
         Utils.setActivity(mTweetTopics);
 
@@ -635,7 +638,7 @@ public class TweetTopicsCore implements OnGestureListener, SearchAsyncTaskRespon
         mLayoutList.addView(mListView.get());
 
         mFooterView = (LoadMoreListItem) mTweetTopics.getLayoutInflater().inflate(R.layout.load_more, null);
-        mFooterView.setBackgroundDrawable(Utils.createStateListDrawable(mTweetTopics, mThemeManager.getColor("list_background_row_color")));
+        mFooterView.setBackgroundDrawable(ImageUtils.createStateListDrawable(mTweetTopics, mThemeManager.getColor("list_background_row_color")));
         mFooterView.showFooterText();
 
         mSidebarTweet = (LinearLayout) mTweetTopics.findViewById(R.id.sidebar_menu_tweet);
@@ -791,7 +794,7 @@ public class TweetTopicsCore implements OnGestureListener, SearchAsyncTaskRespon
             }
         }
 
-        Utils.saveStatusWorkApp(mTweetTopics, true);
+        PreferenceUtils.saveStatusWorkApp(mTweetTopics, true);
         app.setOnFinishTwitterDownload(this);
 
         if (isFinishOnCreate) {
@@ -807,17 +810,17 @@ public class TweetTopicsCore implements OnGestureListener, SearchAsyncTaskRespon
             twitter = ConnectionManager.getInstance().getTwitterForceActiveUser();
         }
 
-        if (Utils.getShowHelp(mTweetTopics)) {
+        if (PreferenceUtils.getShowHelp(mTweetTopics)) {
             showHelp();
         } else {
-            Utils.showChangeLog(mTweetTopics);
+            PreferenceUtils.showChangeLog(mTweetTopics);
         }
 
     }
 
     protected void onPause() {
         mTweetTopics.unregisterReceiver(receiver);
-        Utils.saveStatusWorkApp(mTweetTopics, false);
+        PreferenceUtils.saveStatusWorkApp(mTweetTopics, false);
         app.setOnFinishTwitterDownload(null);
     }
 
@@ -1288,7 +1291,7 @@ public class TweetTopicsCore implements OnGestureListener, SearchAsyncTaskRespon
 
     private void createListView() {
         mListView = new TweetTopicsListView(mTweetTopics);
-        mListView.setDivider(Utils.createDividerDrawable(mTweetTopics, new ThemeManager(mTweetTopics).getColor("color_divider_tweet")));
+        mListView.setDivider(ImageUtils.createDividerDrawable(mTweetTopics, new ThemeManager(mTweetTopics).getColor("color_divider_tweet")));
         if (mTweetTopics.getPreference().getBoolean("prf_use_divider_tweet", true)) {
             mListView.setDividerHeight(2);
         } else {
@@ -1330,7 +1333,7 @@ public class TweetTopicsCore implements OnGestureListener, SearchAsyncTaskRespon
                         }
 
 
-                        ArrayList<String> codes = Utils.getArraySubMenuTweet(mTweetTopics);
+                        ArrayList<String> codes = PreferenceUtils.getArraySubMenuTweet(mTweetTopics);
                         if (codes.size() == 1) {
                             InfoTweet it = new InfoTweet(mAdapterResponseList.getItem(position));
                             if (it != null) {
@@ -1513,7 +1516,7 @@ public class TweetTopicsCore implements OnGestureListener, SearchAsyncTaskRespon
             builder.setMessage(R.string.dialog_exit_msg);
             builder.setPositiveButton(R.string.alert_dialog_ok, new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int whichButton) {
-                    Utils.saveNotificationsApp(mTweetTopics, false);
+                    PreferenceUtils.saveNotificationsApp(mTweetTopics, false);
                     mTweetTopics.finish();
                 }
             });
@@ -1984,22 +1987,22 @@ public class TweetTopicsCore implements OnGestureListener, SearchAsyncTaskRespon
         LayoutInflater factory = LayoutInflater.from(mTweetTopics);
         final View sizesFontView = factory.inflate(R.layout.alert_dialog_sizes_font, null);
 
-        ((TextView) sizesFontView.findViewById(R.id.txt_size_titles)).setText(mTweetTopics.getString(R.string.size_title) + " (" + Utils.getSizeTitles(mTweetTopics) + ")");
-        ((TextView) sizesFontView.findViewById(R.id.txt_size_text)).setText(mTweetTopics.getString(R.string.size_text) + " (" + Utils.getSizeText(mTweetTopics) + ")");
+        ((TextView) sizesFontView.findViewById(R.id.txt_size_titles)).setText(mTweetTopics.getString(R.string.size_title) + " (" + PreferenceUtils.getSizeTitles(mTweetTopics) + ")");
+        ((TextView) sizesFontView.findViewById(R.id.txt_size_text)).setText(mTweetTopics.getString(R.string.size_text) + " (" + PreferenceUtils.getSizeText(mTweetTopics) + ")");
 
         SeekBar sbSizeTitles = (SeekBar) sizesFontView.findViewById(R.id.sb_size_titles);
 
         sbSizeTitles.setMax(18);
-        sbSizeTitles.setProgress(Utils.getSizeTitles(mTweetTopics) - minValue);
+        sbSizeTitles.setProgress(PreferenceUtils.getSizeTitles(mTweetTopics) - minValue);
 
         sbSizeTitles.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
 
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 progress += minValue;
-                Utils.setSizeTitles(mTweetTopics, progress);
+                PreferenceUtils.setSizeTitles(mTweetTopics, progress);
                 //seekBar.setProgress(progress);
-                ((TextView) sizesFontView.findViewById(R.id.txt_size_titles)).setText(mTweetTopics.getString(R.string.size_title) + " (" + Utils.getSizeTitles(mTweetTopics) + ")");
+                ((TextView) sizesFontView.findViewById(R.id.txt_size_titles)).setText(mTweetTopics.getString(R.string.size_title) + " (" + PreferenceUtils.getSizeTitles(mTweetTopics) + ")");
                 mAdapterResponseList.notifyDataSetChanged();
             }
 
@@ -2015,16 +2018,16 @@ public class TweetTopicsCore implements OnGestureListener, SearchAsyncTaskRespon
 
         SeekBar sbSizeText = (SeekBar) sizesFontView.findViewById(R.id.sb_size_text);
         sbSizeText.setMax(18);
-        sbSizeText.setProgress(Utils.getSizeText(mTweetTopics) - minValue);
+        sbSizeText.setProgress(PreferenceUtils.getSizeText(mTweetTopics) - minValue);
 
         sbSizeText.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
 
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 progress += minValue;
-                Utils.setSizeText(mTweetTopics, progress);
+                PreferenceUtils.setSizeText(mTweetTopics, progress);
                 //seekBar.setProgress(progress);
-                ((TextView) sizesFontView.findViewById(R.id.txt_size_text)).setText(mTweetTopics.getString(R.string.size_text) + " (" + Utils.getSizeText(mTweetTopics) + ")");
+                ((TextView) sizesFontView.findViewById(R.id.txt_size_text)).setText(mTweetTopics.getString(R.string.size_text) + " (" + PreferenceUtils.getSizeText(mTweetTopics) + ")");
                 mAdapterResponseList.notifyDataSetChanged();
             }
 
@@ -4194,8 +4197,8 @@ public class TweetTopicsCore implements OnGestureListener, SearchAsyncTaskRespon
 
         closeSidebar();
 
-        if (Utils.getWoeidTT(mTweetTopics) > 0) {
-            showTrends(Utils.getWoeidTT(mTweetTopics));
+        if (PreferenceUtils.getWoeidTT(mTweetTopics) > 0) {
+            showTrends(PreferenceUtils.getWoeidTT(mTweetTopics));
         } else {
 
             progressDialog = new ProgressDialog(mTweetTopics);
@@ -4268,7 +4271,7 @@ public class TweetTopicsCore implements OnGestureListener, SearchAsyncTaskRespon
 
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                if (cb.isChecked()) Utils.setWoeidTT(mTweetTopics, woeid.get(which));
+                if (cb.isChecked()) PreferenceUtils.setWoeidTT(mTweetTopics, woeid.get(which));
                 showTrends(woeid.get(which));
             }
 
@@ -4364,10 +4367,10 @@ public class TweetTopicsCore implements OnGestureListener, SearchAsyncTaskRespon
 
 
             });
-            if (Utils.getWoeidTT(mTweetTopics) > 0) {
+            if (PreferenceUtils.getWoeidTT(mTweetTopics) > 0) {
                 builder.setNeutralButton(R.string.change_country, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
-                        Utils.setWoeidTT(mTweetTopics, 0);
+                        PreferenceUtils.setWoeidTT(mTweetTopics, 0);
                         showLocationsTrends();
                     }
                 });
@@ -4637,7 +4640,7 @@ public class TweetTopicsCore implements OnGestureListener, SearchAsyncTaskRespon
         ent.setValue("photos", "");
         ent.setValue("mode_tweetlonger", NewStatus.MODE_TL_NONE);
         ent.setValue("reply_tweet_id", "-1");
-        ent.setValue("use_geo", Utils.getGeo(mTweetTopics) ? "1" : "0");
+        ent.setValue("use_geo", PreferenceUtils.getGeo(mTweetTopics) ? "1" : "0");
         ent.save();
 
         mTweetTopics.startService(new Intent(mTweetTopics, ServiceUpdateStatus.class));

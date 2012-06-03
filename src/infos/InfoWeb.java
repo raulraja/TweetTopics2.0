@@ -2,7 +2,7 @@ package infos;
 
 import android.graphics.Bitmap;
 import android.util.Log;
-import com.javielinux.tweettopics2.Utils;
+import com.javielinux.utils.Utils;
 import org.htmlcleaner.CleanerProperties;
 import org.htmlcleaner.HtmlCleaner;
 import org.htmlcleaner.TagNode;

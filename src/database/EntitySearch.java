@@ -11,7 +11,8 @@ import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
 import com.javielinux.tweettopics2.R;
 import com.javielinux.tweettopics2.TweetTopicsCore;
-import com.javielinux.tweettopics2.Utils;
+import com.javielinux.utils.LocationUtils;
+import com.javielinux.utils.Utils;
 import infos.InfoSaveTweets;
 import twitter4j.*;
 
@@ -259,7 +260,7 @@ public class EntitySearch extends Entity {
 			}
 			
 			if (this.getInt("type_geo")==1) { // coordenadas del gps
-				Location loc = Utils.getLastLocation(cnt);
+				Location loc = LocationUtils.getLastLocation(cnt);
 				if (loc!=null) {
 					GeoLocation gl = new GeoLocation(loc.getLatitude(), loc.getLongitude());
 					String unit = Query.KILOMETERS;

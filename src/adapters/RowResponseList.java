@@ -2,8 +2,8 @@ package adapters;
 
 import android.content.Context;
 import com.android.dataframework.Entity;
-import com.javielinux.tweettopics2.Utils;
-import com.javielinux.tweettopics2.Utils.URLContent;
+import com.javielinux.utils.Utils;
+import com.javielinux.utils.Utils.URLContent;
 import infos.InfoTweet;
 import twitter4j.*;
 

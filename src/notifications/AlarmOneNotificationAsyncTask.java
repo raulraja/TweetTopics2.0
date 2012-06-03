@@ -17,8 +17,9 @@ import com.android.dataframework.Entity;
 import com.javielinux.tweettopics2.R;
 import com.javielinux.tweettopics2.TweetTopics;
 import com.javielinux.tweettopics2.TweetTopicsCore;
-import com.javielinux.tweettopics2.Utils;
 import com.javielinux.twitter.ConnectionManager;
+import com.javielinux.utils.PreferenceUtils;
+import com.javielinux.utils.Utils;
 import database.EntitySearch;
 import database.EntityTweetUser;
 import infos.InfoSaveTweets;
@@ -73,27 +74,27 @@ public class AlarmOneNotificationAsyncTask extends AsyncTask<Void, Void, Void> {
 	@Override
 	protected Void doInBackground(Void... args) {
 		try {
-			if (!Utils.getStatusWorkApp(mContext)) {
+			if (!PreferenceUtils.getStatusWorkApp(mContext)) {
 				searchUser();
 			}
-			if (!Utils.getStatusWorkApp(mContext)) {
+			if (!PreferenceUtils.getStatusWorkApp(mContext)) {
 				searchNotifications();
 			}
-			if (!Utils.getStatusWorkApp(mContext)) {
+			if (!PreferenceUtils.getStatusWorkApp(mContext)) {
 				writeADWLauncher();
 			}
 			
-			if (!Utils.getStatusWorkApp(mContext)) {
+			if (!PreferenceUtils.getStatusWorkApp(mContext)) {
 				shouldSendNotificationAndroid();
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			Utils.saveStatusWorkAlarm(mContext, false);
+            PreferenceUtils.saveStatusWorkAlarm(mContext, false);
 		} finally {
-			Utils.saveStatusWorkAlarm(mContext, false);
+            PreferenceUtils.saveStatusWorkAlarm(mContext, false);
 		}
-		
-		Utils.saveStatusWorkAlarm(mContext, false);
+
+        PreferenceUtils.saveStatusWorkAlarm(mContext, false);
 
         WidgetCounters2x1.updateAll(mContext);
 		WidgetCounters4x1.updateAll(mContext);
@@ -148,7 +149,7 @@ public class AlarmOneNotificationAsyncTask extends AsyncTask<Void, Void, Void> {
     	for (int i=0; i<users.size(); i++) {
     		try {
 
-    			if (!Utils.getStatusWorkApp(mContext)) {
+    			if (!PreferenceUtils.getStatusWorkApp(mContext)) {
     				loadUser(users.get(i).getId());
     				Log.d(Utils.TAG_ALARM, "Cargar en background usuario " + twitter.getScreenName());
     			}
@@ -157,7 +158,7 @@ public class AlarmOneNotificationAsyncTask extends AsyncTask<Void, Void, Void> {
     			
     			if (users.get(i).getInt("no_save_timeline")!=1) {
     				EntityTweetUser etuTimeline = new EntityTweetUser(users.get(i).getId(), TweetTopicsCore.TIMELINE);
-	    			if (!Utils.getStatusWorkApp(mContext) && mType!=OnAlarmReceiver.ALARM_ONLY_OTHERS) {
+	    			if (!PreferenceUtils.getStatusWorkApp(mContext) && mType!=OnAlarmReceiver.ALARM_ONLY_OTHERS) {
 	    				etuTimeline.saveTweets(mContext, twitter, true);
 	    			}
 	    			if (allUsers) {
@@ -169,7 +170,7 @@ public class AlarmOneNotificationAsyncTask extends AsyncTask<Void, Void, Void> {
     			
     			// MENTIONS
     			EntityTweetUser etuMentions = new EntityTweetUser(users.get(i).getId(), TweetTopicsCore.MENTIONS);    			
-    			if (!Utils.getStatusWorkApp(mContext) && mType!=OnAlarmReceiver.ALARM_ONLY_TIMELINE) {
+    			if (!PreferenceUtils.getStatusWorkApp(mContext) && mType!=OnAlarmReceiver.ALARM_ONLY_TIMELINE) {
     				InfoSaveTweets info = etuMentions.saveTweets(mContext, twitter, true);
     				if (info.getNewMessages()>0 && mentions) showNotification = true;
     			}
@@ -183,7 +184,7 @@ public class AlarmOneNotificationAsyncTask extends AsyncTask<Void, Void, Void> {
     			
     			// DIRECTOS
 				EntityTweetUser etuDMs = new EntityTweetUser(users.get(i).getId(), TweetTopicsCore.DIRECTMESSAGES);    			
-    			if (!Utils.getStatusWorkApp(mContext) && mType!=OnAlarmReceiver.ALARM_ONLY_TIMELINE) {
+    			if (!PreferenceUtils.getStatusWorkApp(mContext) && mType!=OnAlarmReceiver.ALARM_ONLY_TIMELINE) {
     				InfoSaveTweets info = etuDMs.saveTweets(mContext, twitter, true);
     				if (info.getNewMessages()>0 && dms) showNotification = true;
     			}
@@ -196,7 +197,7 @@ public class AlarmOneNotificationAsyncTask extends AsyncTask<Void, Void, Void> {
     			
     			// DIRECTOS ENVIADOS
     			
-    			if (!Utils.getStatusWorkApp(mContext) && mType!=OnAlarmReceiver.ALARM_ONLY_TIMELINE) {
+    			if (!PreferenceUtils.getStatusWorkApp(mContext) && mType!=OnAlarmReceiver.ALARM_ONLY_TIMELINE) {
     				EntityTweetUser etuSentDMs = new EntityTweetUser(users.get(i).getId(), TweetTopicsCore.SENT_DIRECTMESSAGES);
     				etuSentDMs.saveTweets(mContext, twitter, true);
     			}
@@ -220,7 +221,7 @@ public class AlarmOneNotificationAsyncTask extends AsyncTask<Void, Void, Void> {
 			List<Entity> searchs = DataFramework.getInstance().getEntityList("search");
 			
 			for (int i=0; i<searchs.size(); i++) {
-				if (searchs.get(i).getInt("notifications")==1 && !Utils.getStatusWorkApp(mContext)) {
+				if (searchs.get(i).getInt("notifications")==1 && !PreferenceUtils.getStatusWorkApp(mContext)) {
 					EntitySearch es = new EntitySearch(searchs.get(i).getId());
 					
 					InfoSaveTweets info = es.saveTweets(mContext, twitter, true);
@@ -243,7 +244,7 @@ public class AlarmOneNotificationAsyncTask extends AsyncTask<Void, Void, Void> {
 	
 	public void writeADWLauncher() {
     	
-    	if (!Utils.getStatusWorkApp(mContext)) {
+    	if (!PreferenceUtils.getStatusWorkApp(mContext)) {
 	    	boolean noread_adw = mPreferences.getBoolean("prf_no_read_adw", true);
 			
 	    	if (noread_adw) {
@@ -310,7 +311,7 @@ public class AlarmOneNotificationAsyncTask extends AsyncTask<Void, Void, Void> {
 		
 		//int total = mTotalSumMentions + mTotalSumDMs + mTotalSumSearches;
 		
-		if (showNotification && !Utils.getStatusWorkApp(mContext)) {
+		if (showNotification && !PreferenceUtils.getStatusWorkApp(mContext)) {
 			/*
 			boolean vibrate = mPreferences.getBoolean("prf_vibrate_notifications", true);
 			boolean sound = mPreferences.getBoolean("prf_sound_notifications", true);

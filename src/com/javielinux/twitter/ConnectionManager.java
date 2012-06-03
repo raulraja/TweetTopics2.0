@@ -8,7 +8,7 @@ import android.util.Log;
 import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
 import com.javielinux.tweettopics2.R;
-import com.javielinux.tweettopics2.Utils;
+import com.javielinux.utils.Utils;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;

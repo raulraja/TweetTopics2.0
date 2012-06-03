@@ -7,8 +7,8 @@ import api.response.BaseResponse;
 import api.response.DirectMessageResponse;
 import api.response.ErrorResponse;
 import com.javielinux.tweettopics2.NewStatus;
-import com.javielinux.tweettopics2.Utils;
 import com.javielinux.twitter.ConnectionManager;
+import com.javielinux.utils.Utils;
 import twitter4j.TwitterException;
 
 import java.util.ArrayList;

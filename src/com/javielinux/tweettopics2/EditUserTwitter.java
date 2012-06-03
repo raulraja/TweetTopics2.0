@@ -13,6 +13,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import com.android.dataframework.DataFramework;
 import com.javielinux.twitter.ConnectionManager;
+import com.javielinux.utils.Utils;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.User;

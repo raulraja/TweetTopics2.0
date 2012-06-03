@@ -8,7 +8,7 @@ import com.javielinux.fragments.TweetConversationFragment;
 import com.javielinux.fragments.TweetLinksFragment;
 import com.javielinux.fragments.TweetMapFragment;
 import com.javielinux.tweettopics2.R;
-import com.javielinux.tweettopics2.Utils;
+import com.javielinux.utils.Utils;
 import infos.InfoTweet;
 
 import java.util.ArrayList;

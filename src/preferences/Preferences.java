@@ -25,8 +25,14 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
-import com.javielinux.tweettopics2.*;
-import com.javielinux.tweettopics2.Utils.PersonalDialogBuilder;
+import com.javielinux.tweettopics2.AdjustImage;
+import com.javielinux.tweettopics2.R;
+import com.javielinux.tweettopics2.ThemeManager;
+import com.javielinux.tweettopics2.Users;
+import com.javielinux.utils.DialogUtils.PersonalDialogBuilder;
+import com.javielinux.utils.FileUtils;
+import com.javielinux.utils.PreferenceUtils;
+import com.javielinux.utils.Utils;
 import notifications.OnAlarmReceiver;
 import org.xmlpull.v1.XmlPullParserException;
 
@@ -115,7 +121,7 @@ public class Preferences extends PreferenceActivity {
 	    			try {
 	    				File f = new File(IMAGE_WALLPAPER);
 	    				if( f.exists() ) f.delete();
-						Utils.copy(media_path, IMAGE_WALLPAPER);
+						FileUtils.copy(media_path, IMAGE_WALLPAPER);
 						createWallpaper();
 					} catch (IOException e) {
 						e.printStackTrace();
@@ -389,8 +395,8 @@ public class Preferences extends PreferenceActivity {
 			public boolean onPreferenceClick(Preference preference) {
 	            LayoutInflater factory = LayoutInflater.from(Preferences.this);
 	            final View textEntryView = factory.inflate(R.layout.alert_dialog_username, null);
-	            ((TextView)textEntryView.findViewById(R.id.username_edit)).setText(Utils.getUsernameBitly(Preferences.this));
-	            ((TextView)textEntryView.findViewById(R.id.key_edit)).setText(Utils.getKeyBitly(Preferences.this));
+	            ((TextView)textEntryView.findViewById(R.id.username_edit)).setText(PreferenceUtils.getUsernameBitly(Preferences.this));
+	            ((TextView)textEntryView.findViewById(R.id.key_edit)).setText(PreferenceUtils.getKeyBitly(Preferences.this));
 	            
 	            AlertDialog.Builder builder = new AlertDialog.Builder(Preferences.this);
 	            builder.setTitle(R.string.bitly_key);
@@ -404,8 +410,8 @@ public class Preferences extends PreferenceActivity {
 	            });
 	            builder.setPositiveButton(R.string.alert_dialog_ok, new DialogInterface.OnClickListener() {
 	            	public void onClick(DialogInterface dialog, int whichButton) {
-	            		Utils.setUsernameBitly(Preferences.this, ((TextView)textEntryView.findViewById(R.id.username_edit)).getText().toString());
-	            		Utils.setKeyBitly(Preferences.this, ((TextView)textEntryView.findViewById(R.id.key_edit)).getText().toString());
+                        PreferenceUtils.setUsernameBitly(Preferences.this, ((TextView)textEntryView.findViewById(R.id.username_edit)).getText().toString());
+                        PreferenceUtils.setKeyBitly(Preferences.this, ((TextView)textEntryView.findViewById(R.id.key_edit)).getText().toString());
 	            	}
 	            });
 	            builder.create();
@@ -423,8 +429,8 @@ public class Preferences extends PreferenceActivity {
 			public boolean onPreferenceClick(Preference preference) {
 	            LayoutInflater factory = LayoutInflater.from(Preferences.this);
 	            final View textEntryView = factory.inflate(R.layout.alert_dialog_username, null);
-	            ((TextView)textEntryView.findViewById(R.id.username_edit)).setText(Utils.getUsernameKarmacracy(Preferences.this));
-	            ((TextView)textEntryView.findViewById(R.id.key_edit)).setText(Utils.getKeyKarmacracy(Preferences.this));
+	            ((TextView)textEntryView.findViewById(R.id.username_edit)).setText(PreferenceUtils.getUsernameKarmacracy(Preferences.this));
+	            ((TextView)textEntryView.findViewById(R.id.key_edit)).setText(PreferenceUtils.getKeyKarmacracy(Preferences.this));
 	            
 	            AlertDialog.Builder builder = new AlertDialog.Builder(Preferences.this);
 	            builder.setTitle(R.string.karmacracy_key);
@@ -438,8 +444,8 @@ public class Preferences extends PreferenceActivity {
 	            });
 	            builder.setPositiveButton(R.string.alert_dialog_ok, new DialogInterface.OnClickListener() {
 	            	public void onClick(DialogInterface dialog, int whichButton) {
-	            		Utils.setUsernameKarmacracy(Preferences.this, ((TextView)textEntryView.findViewById(R.id.username_edit)).getText().toString());
-	            		Utils.setKeyKarmacracy(Preferences.this, ((TextView)textEntryView.findViewById(R.id.key_edit)).getText().toString());
+                        PreferenceUtils.setUsernameKarmacracy(Preferences.this, ((TextView)textEntryView.findViewById(R.id.username_edit)).getText().toString());
+                        PreferenceUtils.setKeyKarmacracy(Preferences.this, ((TextView)textEntryView.findViewById(R.id.key_edit)).getText().toString());
 	            	}
 	            });
 	            builder.create();
@@ -853,9 +859,9 @@ public class Preferences extends PreferenceActivity {
     	loadColors();
     	
     	if (idType==0) {
-    		selectedColor(Utils.getColorMentions(Preferences.this));
+    		selectedColor(PreferenceUtils.getColorMentions(Preferences.this));
     	} else {
-    		selectedColor(Utils.getColorFavorited(Preferences.this));
+    		selectedColor(PreferenceUtils.getColorFavorited(Preferences.this));
     	}
     	
     	AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -866,9 +872,9 @@ public class Preferences extends PreferenceActivity {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				if (idType==0) {
-					Utils.setColorMentions(Preferences.this, mColorSelected);	
+                    PreferenceUtils.setColorMentions(Preferences.this, mColorSelected);
 				} else {
-					Utils.setColorFavorited(Preferences.this, mColorSelected);
+                    PreferenceUtils.setColorFavorited(Preferences.this, mColorSelected);
 				}
 			}
 			

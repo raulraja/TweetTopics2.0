@@ -5,7 +5,7 @@ import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
-import com.javielinux.tweettopics2.Utils;
+import com.javielinux.utils.Utils;
 
 public class WidgetTweets4x2 extends AppWidgetProvider {
 			

@@ -18,8 +18,8 @@ import android.widget.TextView;
 import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
 import com.javielinux.tweettopics2.R;
-import com.javielinux.tweettopics2.Utils;
-import com.javielinux.tweettopics2.Utils.PersonalDialogBuilder;
+import com.javielinux.utils.DialogUtils.PersonalDialogBuilder;
+import com.javielinux.utils.Utils;
 
 import java.util.Locale;
 

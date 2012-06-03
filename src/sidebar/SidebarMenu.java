@@ -10,7 +10,7 @@ import android.widget.Button;
 import com.javielinux.tweettopics2.R;
 import com.javielinux.tweettopics2.ThemeManager;
 import com.javielinux.tweettopics2.TweetTopicsCore;
-import com.javielinux.tweettopics2.Utils;
+import com.javielinux.utils.Utils;
 import infos.InfoTweet;
 import task.CheckConversationAsyncTask;
 import task.CheckConversationAsyncTask.CheckConversationAsyncTaskResponder;

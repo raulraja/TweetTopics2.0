@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import api.APIDelegate;
@@ -24,8 +25,8 @@ import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.javielinux.tweettopics2.R;
 import com.javielinux.tweettopics2.TweetActivity;
-import com.javielinux.tweettopics2.TweetTopicsConstants;
-import com.javielinux.tweettopics2.Utils;
+import com.javielinux.utils.TweetTopicsConstants;
+import com.javielinux.utils.Utils;
 import database.EntityTweetUser;
 import infos.InfoSaveTweets;
 import infos.InfoTweet;
@@ -50,6 +51,10 @@ public class TweetTopicsFragment extends Fragment {
 
     private int positionLastRead = 0;
 
+    private int typeUserColumn = 0;
+
+    private boolean flinging; // if user is doing scroll in listview
+
     public TweetTopicsFragment(Context context, LoaderManager loaderManager, long column_id) {
 
         super();
@@ -59,6 +64,13 @@ public class TweetTopicsFragment extends Fragment {
 
         try {
             column_entity = new Entity("columns", column_id);
+            if (column_entity.getInt("type_id")==TweetTopicsConstants.COLUMN_TIMELINE) {
+                typeUserColumn = TweetTopicsConstants.TWEET_TYPE_TIMELINE;
+            } else if (column_entity.getInt("type_id")==TweetTopicsConstants.COLUMN_MENTIONS) {
+                typeUserColumn = TweetTopicsConstants.TWEET_TYPE_MENTIONS;
+            } else if (column_entity.getInt("type_id")==TweetTopicsConstants.COLUMN_DIRECT_MESSAGES) {
+                typeUserColumn = TweetTopicsConstants.TWEET_TYPE_DIRECTMESSAGES;
+            }
             user_entity = new Entity("users", column_entity.getLong("user_id"));
             infoTweets = new ArrayList<InfoTweet>();
 
@@ -69,7 +81,7 @@ public class TweetTopicsFragment extends Fragment {
 
     private void preLoadInfoTweetIfIsNecessary() {
 
-        EntityTweetUser entityTweetUser = new EntityTweetUser(user_entity.getId(), column_entity.getInt("type_id"));
+        EntityTweetUser entityTweetUser = new EntityTweetUser(user_entity.getId(), typeUserColumn);
 
         if (column_entity.getInt("type_id")!=TweetTopicsConstants.COLUMN_TIMELINE &&
                 column_entity.getInt("type_id")!=TweetTopicsConstants.COLUMN_MENTIONS &&
@@ -132,7 +144,7 @@ public class TweetTopicsFragment extends Fragment {
                     countHide++;
                 } else {
                     InfoTweet infoTweet = new InfoTweet(tweets.get(i));
-
+                    Log.d(Utils.TAG,entityTweetUser.getFieldLastId() + " getValueLastId: "+entityTweetUser.getValueLastId() + " tweet_id: "+tweets.get(i).getLong("tweet_id"));
                     if (!found && entityTweetUser.getValueLastId() >= tweets.get(i).getLong("tweet_id")) {
                         infoTweet.setLastRead(true);
                         pos = count;
@@ -160,6 +172,11 @@ public class TweetTopicsFragment extends Fragment {
             }
 
         }
+
+        tweetsAdapter.setHideMessages(countHide);
+        tweetsAdapter.setLastReadPosition(pos);
+        positionLastRead = pos;
+
     }
 
     public void showUpdating() {
@@ -199,6 +216,10 @@ public class TweetTopicsFragment extends Fragment {
         APITweetTopics.execute(context, loaderManager, new APIDelegate<TwitterUserResponse>() {
             @Override
             public void onResults(TwitterUserResponse result) {
+
+                hideUpdating();
+                listView.onRefreshComplete();
+
                 InfoSaveTweets infoSaveTweets = result.getInfo();
 
                 if (infoSaveTweets.getNewMessages() > 0) {
@@ -227,19 +248,14 @@ public class TweetTopicsFragment extends Fragment {
                         tweets = DataFramework.getInstance().getEntityList("tweets_user", "user_tt_id = " + column_entity.getLong("user_id") + whereType, "date desc, has_more_tweets_down asc", "0," + Utils.MAX_ROW_BYSEARCH);
                     }
 
-                    int pos = listView.getRefreshableView().getFirstVisiblePosition();
-                    int count = tweetsAdapter.appendNewer(tweets, -1);
-                    listView.getRefreshableView().setSelection(pos + count);
-                    tweetsAdapter.setLastReadPosition(tweetsAdapter.getLastReadPosition() + count);
-
-                    /*int pos = 0;
+                    int firstVisible = listView.getRefreshableView().getFirstVisiblePosition();
                     int count = 0;
                     boolean found = false;
                     int countHide = 0;
                     boolean is_timeline = column_entity.getInt("type_id") ==  TweetTopicsConstants.COLUMN_TIMELINE;
                     EntityTweetUser entityTweetUser = new EntityTweetUser(user_entity.getId(), column_entity.getInt("type_id"));
 
-                    for (int i = 0; i < tweets.size(); i++) {
+                    for (int i = tweets.size()-1; i >=0; i--) {
                         if (is_timeline && Utils.hideUser.contains(tweets.get(i).getString("username").toLowerCase())) { // usuario
                             countHide++;
                         } else if (is_timeline && Utils.isHideWordInText(tweets.get(i).getString("text").toLowerCase())) { // palabra
@@ -251,13 +267,11 @@ public class TweetTopicsFragment extends Fragment {
 
                             if (!found && entityTweetUser.getValueLastId() >= tweets.get(i).getLong("tweet_id")) {
                                 infoTweet.setLastRead(true);
-                                pos = count;
                                 found = true;
                             }
 
                             if (i >= tweets.size() - 1 && !found) {
                                 infoTweet.setLastRead(true);
-                                pos = count;
                                 found = true;
                             }
 
@@ -265,18 +279,25 @@ public class TweetTopicsFragment extends Fragment {
 
                             try {
                                 infoTweets.add(0, infoTweet);
+                                /*if (r.hasMoreTweetDown()) {
+                                    response.add(new RowResponseList(RowResponseList.TYPE_MORE_TWEETS));
+                                }*/
                                 count++;
                             } catch (OutOfMemoryError er) {
                                 i = tweets.size();
                             }
                         }
-                    }*/
+                    }
+
+                    tweetsAdapter.addHideMessages(countHide);
+                    tweetsAdapter.setLastReadPosition(tweetsAdapter.getLastReadPosition() + count);
 
                     tweetsAdapter.notifyDataSetChanged();
-                }
 
-                if (viewLoading.getVisibility() == View.VISIBLE) showTweetsList();
-                if (viewUpdate.getVisibility() == View.VISIBLE) hideUpdating();
+                    listView.getRefreshableView().setSelection(firstVisible + count);
+
+                    showTweetsList();
+                }
             }
 
             @Override
@@ -360,7 +381,7 @@ public class TweetTopicsFragment extends Fragment {
         listView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                onRefreshMethod();
+                reloadColumnUser(false);
             }
         });
         listView.getRefreshableView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -370,18 +391,46 @@ public class TweetTopicsFragment extends Fragment {
             }
         });
 
+        listView.setOnScrollListener(new AbsListView.OnScrollListener() {
+
+            @Override
+            public void onScroll(AbsListView arg0, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                if (positionLastRead > firstVisibleItem) {
+                    positionLastRead = firstVisibleItem;
+                    if (firstVisibleItem==0) markPositionLastReadAsLastReadId();
+                }
+            }
+
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+                //if (scrollState == SCROLL_STATE_TOUCH_SCROLL) closeSidebar();
+
+                if (scrollState == SCROLL_STATE_TOUCH_SCROLL) {
+                    flinging = true;
+                }
+
+                if (scrollState != AbsListView.OnScrollListener.SCROLL_STATE_FLING && scrollState != SCROLL_STATE_TOUCH_SCROLL) {
+                    flinging = false;
+                    //TweetListItem.executeLoadTasks();
+                }
+            }
+
+        });
+
+        listView.getRefreshableView().setSelection(tweetsAdapter.getLastReadPosition());
+
         viewLoading = (LinearLayout) view.findViewById(R.id.tweet_view_loading);
         viewNoInternet = (LinearLayout) view.findViewById(R.id.tweet_view_no_internet);
         viewUpdate = (LinearLayout) view.findViewById(R.id.tweet_view_update);
 
         boolean getTweetsFromInternet = false;
 
-        if (column_entity.getInt("type_id") == TweetTopicsConstants.COLUMN_TIMELINE) {
+        if (infoTweets.size()<=0) {
+            showLoading();
+            getTweetsFromInternet = true;
+        } else {
+            if (column_entity.getInt("type_id") == TweetTopicsConstants.COLUMN_TIMELINE) {
 
-            if (infoTweets.size() <= 0) {
-                showLoading();
-                getTweetsFromInternet = true;
-            } else {
                 int minutes = Integer.parseInt(Utils.getPreference(context).getString("prf_time_refresh", "10"));
 
                 if (minutes > 0) {
@@ -393,14 +442,13 @@ public class TweetTopicsFragment extends Fragment {
                         getTweetsFromInternet = true;
                     }
                 }
+
             }
         }
 
         if (getTweetsFromInternet) {
             reloadColumnUser(false);
-        }
-
-        else {
+        } else {
             showHideMessage();
         }
 
@@ -412,12 +460,6 @@ public class TweetTopicsFragment extends Fragment {
         super.onSaveInstanceState(outState);
     }
 
-    public void onRefreshMethod() {
-        //preLoadInfoTweetIfIsNecessary();
-        reloadColumnUser(false);
-        tweetsAdapter.notifyDataSetChanged();
-        listView.onRefreshComplete();
-    }
 
     private void onListItemClick(View v, int position, long id) {
 

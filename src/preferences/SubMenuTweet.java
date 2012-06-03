@@ -3,7 +3,7 @@ package preferences;
 import android.app.Activity;
 import android.os.Bundle;
 import android.widget.ListView;
-import com.javielinux.tweettopics2.Utils;
+import com.javielinux.utils.Utils;
 import infos.InfoSubMenuTweet;
 
 import java.util.ArrayList;

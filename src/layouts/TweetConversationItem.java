@@ -8,7 +8,7 @@ import android.text.Html;
 import android.util.AttributeSet;
 import android.widget.RelativeLayout;
 import com.javielinux.tweettopics2.R;
-import com.javielinux.tweettopics2.Utils;
+import com.javielinux.utils.Utils;
 import task.LoadImageWidgetAsyncTask;
 import twitter4j.Status;
 

@@ -16,7 +16,11 @@ import android.view.View;
 import android.widget.RemoteViews;
 import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
-import com.javielinux.tweettopics2.*;
+import com.javielinux.tweettopics2.NewStatus;
+import com.javielinux.tweettopics2.R;
+import com.javielinux.tweettopics2.TweetTopics;
+import com.javielinux.tweettopics2.TweetTopicsCore;
+import com.javielinux.utils.Utils;
 import database.EntitySearch;
 
 import java.util.List;

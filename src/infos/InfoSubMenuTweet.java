@@ -2,7 +2,7 @@ package infos;
 
 import android.content.Context;
 import com.javielinux.tweettopics2.R;
-import com.javielinux.tweettopics2.Utils;
+import com.javielinux.utils.PreferenceUtils;
 
 public class InfoSubMenuTweet {
 
@@ -24,7 +24,7 @@ public class InfoSubMenuTweet {
 	
 	public InfoSubMenuTweet(Context cnt, String code) {
 		this.code = code;
-		value = Utils.getSubMenuTweet(cnt, code);
+		value = PreferenceUtils.getSubMenuTweet(cnt, code);
 		int pos = 0;
 		for (int i=0; i<codesSubMenuTweets.length; i++) {
 			if (codesSubMenuTweets[i].equals(code)) pos = i;

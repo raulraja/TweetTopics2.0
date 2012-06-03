@@ -15,6 +15,8 @@ import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
 import com.google.ads.AdRequest;
 import com.google.ads.AdView;
+import com.javielinux.utils.PreferenceUtils;
+import com.javielinux.utils.Utils;
 import database.EntitySearch;
 import infos.InfoSaveTweets;
 import task.SaveFirstTweetsAsyncTask;
@@ -464,13 +466,13 @@ public class TabNewEditSearch extends TabActivity implements SaveFirstTweetsAsyn
     @Override
     protected void onResume() {
     	super.onResume();
-    	Utils.saveStatusWorkApp(this, true);
+        PreferenceUtils.saveStatusWorkApp(this, true);
     }
     
     @Override
     protected void onPause() {
         super.onPause();
-        Utils.saveStatusWorkApp(this, false);
+        PreferenceUtils.saveStatusWorkApp(this, false);
     }
 
 }

@@ -10,6 +10,7 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
+import com.javielinux.utils.Utils;
 
 public class TabGeo extends Activity {
 	

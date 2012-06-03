@@ -20,7 +20,7 @@ import com.android.dataframework.Entity;
 import com.javielinux.tweettopics2.R;
 import com.javielinux.tweettopics2.TweetTopics;
 import com.javielinux.tweettopics2.TweetTopicsCore;
-import com.javielinux.tweettopics2.Utils;
+import com.javielinux.utils.Utils;
 
 public class WidgetCounters2x1 extends AppWidgetProvider {
 	@Override

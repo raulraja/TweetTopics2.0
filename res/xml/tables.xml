@@ -217,5 +217,6 @@
 
   <table name="type_columns" to-string="%description%" new-in-version="24">
     <field name="description" obligatory="true" type="text" size="64"/>
+    <field name="title" type="string-identifier" />
   </table>
  </database>

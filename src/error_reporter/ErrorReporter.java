@@ -8,8 +8,9 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Environment;
 import android.util.Log;
-import com.javielinux.tweettopics2.Utils;
 import com.javielinux.twitter.TwitterApplication;
+import com.javielinux.utils.PreferenceUtils;
+import com.javielinux.utils.Utils;
 
 import java.io.*;
 
@@ -28,7 +29,7 @@ public class ErrorReporter implements Thread.UncaughtExceptionHandler
     @Override
     public void uncaughtException(Thread thread, Throwable throwable) {
         Log.d(Utils.TAG,"Force Close in TweetTopics");
-        Utils.setFinishForceClose(app.getApplicationContext(), true);
+        PreferenceUtils.setFinishForceClose(app.getApplicationContext(), true);
         StringBuilder sb = new StringBuilder();
         sb.append("Package App: " + Utils.packageName);
         sb.append("\rVersion App: " + Utils.VERSION);

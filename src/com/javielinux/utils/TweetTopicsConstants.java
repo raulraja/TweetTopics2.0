@@ -1,4 +1,4 @@
-package com.javielinux.tweettopics2;
+package com.javielinux.utils;
 
 public class TweetTopicsConstants {
 

@@ -5,7 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import com.javielinux.tweettopics2.TabGeneral;
-import com.javielinux.tweettopics2.Utils;
+import com.javielinux.utils.Utils;
 import infos.InfoUsers;
 import twitter4j.RateLimitStatus;
 import twitter4j.ResponseList;

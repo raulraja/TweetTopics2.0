@@ -14,6 +14,9 @@ import android.view.MenuItem;
 import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
 import com.flurry.android.FlurryAgent;
+import com.javielinux.utils.DialogUtils;
+import com.javielinux.utils.PreferenceUtils;
+import com.javielinux.utils.Utils;
 import error_reporter.ErrorReporter;
 
 public class TweetTopics extends BaseActivity {
@@ -31,8 +34,8 @@ public class TweetTopics extends BaseActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if(Utils.getFinishForceClose(this)){
-            Utils.setFinishForceClose(this, false);
+        if(PreferenceUtils.getFinishForceClose(this)){
+            PreferenceUtils.setFinishForceClose(this, false);
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle(R.string.title_crash);
             builder.setMessage(R.string.msg_crash);
@@ -63,19 +66,19 @@ public class TweetTopics extends BaseActivity {
         
         mTweetTopicsOrientation.onCreate(savedInstanceState);
 
-        int access_count = Utils.getApplicationAccessCount(this);
+        int access_count = PreferenceUtils.getApplicationAccessCount(this);
 
         if (access_count <= 20) {
             if (access_count == 20) {
                 try {
-                    AlertDialog dialog = Utils.RateAppDialogBuilder.create(TweetTopics.this);
+                    AlertDialog dialog = DialogUtils.RateAppDialogBuilder.create(TweetTopics.this);
                     dialog.show();
                 } catch (PackageManager.NameNotFoundException e) {
                     e.printStackTrace();
                 }
             }
 
-            Utils.setApplicationAccessCount(this, access_count + 1);
+            PreferenceUtils.setApplicationAccessCount(this, access_count + 1);
         }
 		
     }

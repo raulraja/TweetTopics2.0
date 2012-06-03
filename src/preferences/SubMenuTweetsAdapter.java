@@ -6,7 +6,7 @@ import android.view.ViewGroup;
 import android.widget.*;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import com.javielinux.tweettopics2.R;
-import com.javielinux.tweettopics2.Utils;
+import com.javielinux.utils.PreferenceUtils;
 import infos.InfoSubMenuTweet;
 
 import java.util.ArrayList;
@@ -39,7 +39,7 @@ public class SubMenuTweetsAdapter extends ArrayAdapter<InfoSubMenuTweet> {
 
 			@Override
 			public void onCheckedChanged(CompoundButton buttonView,	boolean isChecked) {
-				Utils.setSubMenuTweet(buttonView.getContext(), buttonView.getTag().toString(), isChecked);
+                PreferenceUtils.setSubMenuTweet(buttonView.getContext(), buttonView.getTag().toString(), isChecked);
 			}
 			
 		});

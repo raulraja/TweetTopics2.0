@@ -1,7 +1,7 @@
 package infos;
 
 import android.util.Log;
-import com.javielinux.tweettopics2.Utils;
+import com.javielinux.utils.Utils;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;

@@ -8,7 +8,10 @@ import android.view.ViewGroup;
 import android.widget.*;
 import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
-import com.javielinux.tweettopics2.*;
+import com.javielinux.tweettopics2.R;
+import com.javielinux.tweettopics2.ThemeManager;
+import com.javielinux.utils.ImageUtils;
+import com.javielinux.utils.Utils;
 import infos.InfoTweet;
 import layouts.TweetListViewItem;
 
@@ -83,7 +86,6 @@ public class TweetsAdapter extends ArrayAdapter<InfoTweet> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        Log.d(Utils.TAG, "Getting element " + position);
         InfoTweet infoTweet = getItem(position) ;
 
 
@@ -103,7 +105,7 @@ public class TweetsAdapter extends ArrayAdapter<InfoTweet> {
         }
 
         if (selected_id == position) {
-            view.setBackgroundDrawable(Utils.createGradientDrawableSelected(getContext(), infoTweet.isRead() ? 0 : color_line));
+            view.setBackgroundDrawable(ImageUtils.createGradientDrawableSelected(getContext(), infoTweet.isRead() ? 0 : color_line));
         /*} else if (TweetTopicsCore.mTypeLastColumn == TweetTopicsCore.TIMELINE && infoTweet.getText().toLowerCase().contains("@"+current_user.getString("name").toLowerCase())) {
             view.setBackgroundDrawable(Utils.createGradientDrawableMention(getContext(), infoTweet.isRead()?0:color_line));
         } else if ((TweetTopicsCore.mTypeLastColumn == TweetTopicsCore.MENTIONS || TweetTopicsCore.mTypeLastColumn == TweetTopicsCore.TIMELINE) &&infoTweet.isFavorited()) {
@@ -113,12 +115,12 @@ public class TweetsAdapter extends ArrayAdapter<InfoTweet> {
             if (color!=null) {
                 try {
                     int c = Color.parseColor(themeManager.getColors().get(color.getEntity("type_color_id").getInt("pos")));
-                    view.setBackgroundDrawable(Utils.createStateListDrawable(getContext(), c, infoTweet.isRead() ? 0 : color_line));
+                    view.setBackgroundDrawable(ImageUtils.createStateListDrawable(getContext(), c, infoTweet.isRead() ? 0 : color_line));
                 } catch (Exception e) {
-                    view.setBackgroundDrawable(Utils.createStateListDrawable(getContext(), themeManager.getColor("list_background_row_color"), infoTweet.isRead() ? 0 : color_line));
+                    view.setBackgroundDrawable(ImageUtils.createStateListDrawable(getContext(), themeManager.getColor("list_background_row_color"), infoTweet.isRead() ? 0 : color_line));
                 }
             } else {
-                view.setBackgroundDrawable(Utils.createStateListDrawable(getContext(), themeManager.getColor("list_background_row_color"), infoTweet.isRead() ? 0 : color_line));
+                view.setBackgroundDrawable(ImageUtils.createStateListDrawable(getContext(), themeManager.getColor("list_background_row_color"), infoTweet.isRead() ? 0 : color_line));
             }
         }
 

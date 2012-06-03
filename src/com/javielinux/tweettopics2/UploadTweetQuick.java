@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
+import com.javielinux.utils.Utils;
 import preferences.ServiceTweetQuick;
 
 import java.util.ArrayList;

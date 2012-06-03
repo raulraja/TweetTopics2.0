@@ -6,7 +6,7 @@ import android.view.View;
 import android.widget.TextView;
 import com.javielinux.tweettopics2.R;
 import com.javielinux.tweettopics2.TweetTopicsCore;
-import com.javielinux.tweettopics2.Utils;
+import com.javielinux.utils.Utils;
 import infos.InfoTweet;
 
 import java.util.ArrayList;

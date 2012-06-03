@@ -6,6 +6,18 @@
     <string name="retry">Reintentar</string>
     <string name="updating">Actualizando</string>
 
+    <string name="my_activity">Mi actividad</string>
+    <string name="dms">Directos</string>
+    <string name="title_my_tweets">Mis retweeados</string>
+    <string name="title_my_retweets">Mis retweets</string>
+    <string name="title_retweet_others">Retweets</string>
+    <string name="searches">Búsquedas</string>
+    <string name="title_followers">Seguidores</string>
+    <string name="title_following">Amigos</string>
+    <string name="title_saved_tweets">Tweets</string>
+    <string name="title_saved_images">Imágenes</string>
+    <string name="title_saved_links">Enlaces</string>
+
     <!-- v 1.72  -->
     <string name="show_retweeters">Mostrar retweeters</string>
     <string name="txt_retweeters_title">Usuarios que han retweeteado</string>

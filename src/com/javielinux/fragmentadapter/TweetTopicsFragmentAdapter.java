@@ -9,7 +9,7 @@ import android.util.Log;
 import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
 import com.javielinux.fragments.TweetTopicsFragment;
-import com.javielinux.tweettopics2.Utils;
+import com.javielinux.utils.Utils;
 
 import java.util.ArrayList;
 
@@ -60,6 +60,6 @@ public class TweetTopicsFragmentAdapter extends FragmentPagerAdapter  {
 
     @Override
     public CharSequence getPageTitle(int position) {
-        return tweet_fragment_list.get(position).getString("description").toUpperCase();
+        return tweet_fragment_list.get(position).getEntity("type_id").getString("title").toUpperCase();
     }
 }

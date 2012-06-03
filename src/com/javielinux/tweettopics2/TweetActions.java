@@ -9,6 +9,8 @@ import android.content.Intent;
 import android.text.ClipboardManager;
 import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
+import com.javielinux.utils.PreferenceUtils;
+import com.javielinux.utils.Utils;
 import infos.InfoTweet;
 import preferences.RetweetsTypes;
 import updatestatus.ServiceUpdateStatus;
@@ -313,7 +315,7 @@ public class TweetActions {
         ent.setValue("photos", "");
         ent.setValue("mode_tweetlonger", NewStatus.MODE_TL_NONE);
         ent.setValue("reply_tweet_id", "-1");
-        ent.setValue("use_geo", Utils.getGeo(activity) ? "1" : "0");
+        ent.setValue("use_geo", PreferenceUtils.getGeo(activity) ? "1" : "0");
         ent.save();
 
         activity.startService(new Intent(activity, ServiceUpdateStatus.class));

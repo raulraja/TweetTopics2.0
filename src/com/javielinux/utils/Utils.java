@@ -1,38 +1,32 @@
-package com.javielinux.tweettopics2;
+package com.javielinux.utils;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
-import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.AssetManager;
 import android.graphics.*;
 import android.graphics.Bitmap.Config;
 import android.graphics.Paint.Align;
 import android.graphics.Path.Direction;
-import android.graphics.drawable.*;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.Shape;
-import android.location.*;
 import android.media.ExifInterface;
 import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.util.Log;
-import android.widget.ScrollView;
-import android.widget.TextView;
 import android.widget.Toast;
 import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
+import com.javielinux.tweettopics2.R;
+import com.javielinux.tweettopics2.ThemeManager;
 import com.javielinux.twitter.ConnectionManager;
 import error_reporter.ErrorReporter;
 import infos.CacheData;
 import infos.InfoLink;
-import infos.InfoSubMenuTweet;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
@@ -51,14 +45,12 @@ import twitter4j.MediaEntity;
 import twitter4j.TwitterAPIConfiguration;
 import twitter4j.TwitterException;
 import twitter4j.URLEntity;
-import widget.ServiceWidgetTweets4x2;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.*;
 import java.net.*;
-import java.nio.channels.FileChannel;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -69,10 +61,6 @@ import java.util.regex.Pattern;
 public class Utils {
 	
 	public static final String VERSION = "1.72";
-	
-	private static final String WORK_ALARM_KEY = "work_alarm"; // usado para saber si la alarma esta trabajando
-	private static final String WORK_APP_KEY = "work_app"; // usado para saber si la app esta abierta
-	private static final String NOTIFICATIONS_KEY = "notifications_app"; // usado cuando sales de la aplicacion
 
     public static final String EXTRA_CRASHED = "param_crash";
 
@@ -110,11 +98,7 @@ public class Utils {
 	public static final int TYPE_CIRCLE = 0;
 	public static final int TYPE_RECTANGLE = 1;
 	public static final int TYPE_BUBBLE = 2;
-	
-	public static final int NODE_TITLE = 0;
-	public static final int NODE_DESCRIPTION = 1;
-	public static final int NODE_IMAGE = 2;
-	
+
 	public static final int TYPE_LINK_IMAGE = 0;
 	public static final int TYPE_LINK_VIDEO = 1;
 	public static final int TYPE_LINK_GENERAL = 2;
@@ -212,527 +196,7 @@ public class Utils {
 		PreferenceManager.setDefaultValues(cnt, R.xml.preferences, false);
 		return PreferenceManager.getDefaultSharedPreferences(cnt);
 	}
-	
-	static public Location getLastLocation(Context cnt) {
-		LocationManager locationmanager = (LocationManager)cnt.getSystemService(Context.LOCATION_SERVICE);
-		Criteria criteria = new Criteria(); 
-		criteria.setAccuracy(Criteria.ACCURACY_FINE); 
-		criteria.setAltitudeRequired(false); 
-		criteria.setBearingRequired(false); 
-		criteria.setCostAllowed(true); 
-		criteria.setPowerRequirement(Criteria.POWER_LOW);
-		String provider = locationmanager.getBestProvider(criteria,true);
-		if (provider != null) { 
-			return locationmanager.getLastKnownLocation(provider);
-		}
-		return null;
-	}
-	
-	static public String getAddressFromLastLocation(Context cnt) {   
-		String address = "";
-		Geocoder geoCoder = new Geocoder(cnt, Locale.getDefault());
-		try {
-			Location loc = getLastLocation(cnt);
-			if (loc!=null) {
-				List<Address> addresses = geoCoder.getFromLocation(
-						loc.getLatitude(),
-						loc.getLongitude(), 1);
-		 
-				if (addresses.size() > 0) {
-					for (int i = 0; i < addresses.get(0).getMaxAddressLineIndex(); i++) {
-						address += addresses.get(0).getAddressLine(i) + " ";
-					}
-				}
-			}
-		} catch (IOException e) {        
-			e.printStackTrace();
-		} catch (Exception e) {        
-			e.printStackTrace();
-		} 
-		return address;
-	} 
-	
-   	public static void copy(String source, String destiny) throws IOException {
-   		try
-    	{
-	    	FileInputStream fis = new FileInputStream(source);
-	    	FileOutputStream fos = new FileOutputStream(destiny);
-	    	FileChannel channelSource = fis.getChannel();
-	    	FileChannel channelDestiny = fos.getChannel();
-	    	channelSource.transferTo(0, channelSource.size(), channelDestiny);
-	    	fis.close();
-	    	fos.close();
-    	}
-    	catch(Exception e)
-    	{
-    		Log.d(Utils.TAG, e.getClass().getName());
-    	}
-    }
 
-    public static boolean getFinishForceClose(Context cnt) {
-    	SharedPreferences prefs = cnt.getSharedPreferences(Utils.APPLICATION_PREFERENCES, Context.MODE_PRIVATE);
-        if (prefs.contains("force_close")) {
-        	return prefs.getBoolean("force_close", false);
-        } else {
-            Editor editor = prefs.edit();
-           	editor.putBoolean("force_close", false);
-            editor.commit();
-        	return false;
-        }
-    }
-
-    public static void setFinishForceClose(Context cnt, boolean value) {
-    	SharedPreferences prefs = cnt.getSharedPreferences(Utils.APPLICATION_PREFERENCES, Context.MODE_PRIVATE);
-    	Editor editor = prefs.edit();
-    	editor.putBoolean("force_close", value);
-    	editor.commit();
-    }
-   	
-    public static boolean getGeo(Context cnt) {
-    	SharedPreferences prefs = cnt.getSharedPreferences(Utils.APPLICATION_PREFERENCES, Context.MODE_PRIVATE);
-        if (prefs.contains("geo")) {
-        	return prefs.getBoolean("geo", false);
-        } else {
-            Editor editor = prefs.edit();
-           	editor.putBoolean("geo", false);
-            editor.commit();
-        	return false;
-        }
-    }
-    
-    public static void setGeo(Context cnt, boolean value) {
-    	SharedPreferences prefs = cnt.getSharedPreferences(Utils.APPLICATION_PREFERENCES, Context.MODE_PRIVATE);
-    	Editor editor = prefs.edit();
-    	editor.putBoolean("geo", value);
-    	editor.commit();
-    }
-   	
-    public static boolean getSubMenuTweet(Context cnt, String submenu) {
-    	String name = "submenutweet_"+submenu;
-    	SharedPreferences prefs = cnt.getSharedPreferences(Utils.APPLICATION_PREFERENCES, Context.MODE_PRIVATE);
-        if (prefs.contains(name)) {
-        	return prefs.getBoolean(name, false);
-        } else {
-        	boolean def = false;
-        	if (submenu.equals("reply") || submenu.equals("lastread") || submenu.equals("readafter")) def = true;
-        	
-            Editor editor = prefs.edit();
-           	editor.putBoolean(name, def);
-            editor.commit();
-        	return def;
-        }
-    }
-    
-    public static void setSubMenuTweet(Context cnt, String submenu, boolean value) {
-    	String name = "submenutweet_"+submenu;
-    	SharedPreferences prefs = cnt.getSharedPreferences(Utils.APPLICATION_PREFERENCES, Context.MODE_PRIVATE);
-    	Editor editor = prefs.edit();
-    	editor.putBoolean(name, value);
-    	editor.commit();
-    }
-    
-    public static ArrayList<String> getArraySubMenuTweet(Context cnt) {
-    	ArrayList<String> ar = new ArrayList<String>();
-    	for (int i=0; i<InfoSubMenuTweet.codesSubMenuTweets.length; i++) {
-    		if (getSubMenuTweet(cnt, InfoSubMenuTweet.codesSubMenuTweets[i])) {
-    			ar.add(InfoSubMenuTweet.codesSubMenuTweets[i]);
-    		}
-    	}
-    	return ar;
-    }
-
-    public static int getColorMentions(Context cnt) {
-    	SharedPreferences prefs = cnt.getSharedPreferences(Utils.APPLICATION_PREFERENCES, Context.MODE_PRIVATE);
-        if (prefs.contains("color_pos_mentions")) {
-        	return prefs.getInt("color_pos_mentions", 1);
-        } else {
-            Editor editor = prefs.edit();
-           	editor.putInt("color_pos_mentions", 1);
-            editor.commit();
-        	return 1;
-        }
-    }
-    
-    public static void setColorMentions(Context cnt, int pos) {
-    	SharedPreferences prefs = cnt.getSharedPreferences(Utils.APPLICATION_PREFERENCES, Context.MODE_PRIVATE);
-    	Editor editor = prefs.edit();
-    	editor.putInt("color_pos_mentions", pos);
-    	editor.commit();
-    }
-    
-    public static int getColorFavorited(Context cnt) {
-    	SharedPreferences prefs = cnt.getSharedPreferences(Utils.APPLICATION_PREFERENCES, Context.MODE_PRIVATE);
-        if (prefs.contains("color_pos_favorites")) {
-        	return prefs.getInt("color_pos_favorites", 0);
-        } else {
-            Editor editor = prefs.edit();
-           	editor.putInt("color_pos_favorites", 0);
-            editor.commit();
-        	return 0;
-        }
-    }
-    
-    public static void setColorFavorited(Context cnt, int pos) {
-    	SharedPreferences prefs = cnt.getSharedPreferences(Utils.APPLICATION_PREFERENCES, Context.MODE_PRIVATE);
-    	Editor editor = prefs.edit();
-    	editor.putInt("color_pos_favorites", pos);
-    	editor.commit();
-    }
-	
-    public static String getDefaultTextInTweet(Context cnt) {
-    	SharedPreferences prefs = cnt.getSharedPreferences(Utils.APPLICATION_PREFERENCES, Context.MODE_PRIVATE);
-        if (prefs.contains("default_text")) {
-        	return prefs.getString("default_text", "");
-        } else {
-            Editor editor = prefs.edit();
-           	editor.putString("default_text", "");
-            editor.commit();
-        	return "";
-        }
-    }
-    
-    public static void setDefaultTextInTweet(Context cnt, String text) {
-    	SharedPreferences prefs = cnt.getSharedPreferences(Utils.APPLICATION_PREFERENCES, Context.MODE_PRIVATE);
-    	Editor editor = prefs.edit();
-    	editor.putString("default_text", text);
-    	editor.commit();
-    }
-	
-    public static String getUsernameBitly(Context cnt) {
-    	SharedPreferences prefs = cnt.getSharedPreferences(Utils.APPLICATION_PREFERENCES, Context.MODE_PRIVATE);
-        if (prefs.contains("username_bitly")) {
-        	return prefs.getString("username_bitly", "");
-        } else {
-            Editor editor = prefs.edit();
-           	editor.putString("username_bitly", "");
-            editor.commit();
-        	return "";
-        }
-    }
-    
-    public static void setUsernameBitly(Context cnt, String username) {
-    	SharedPreferences prefs = cnt.getSharedPreferences(Utils.APPLICATION_PREFERENCES, Context.MODE_PRIVATE);
-    	Editor editor = prefs.edit();
-    	editor.putString("username_bitly", username);
-    	editor.commit();
-    }
-    
-    public static String getKeyBitly(Context cnt) {
-    	SharedPreferences prefs = cnt.getSharedPreferences(Utils.APPLICATION_PREFERENCES, Context.MODE_PRIVATE);
-        if (prefs.contains("key_bitly")) {
-        	return prefs.getString("key_bitly", "");
-        } else {
-            Editor editor = prefs.edit();
-           	editor.putString("key_bitly", "");
-            editor.commit();
-        	return "";
-        }
-    }
-    
-    public static void setKeyBitly(Context cnt, String key) {
-    	SharedPreferences prefs = cnt.getSharedPreferences(Utils.APPLICATION_PREFERENCES, Context.MODE_PRIVATE);
-    	Editor editor = prefs.edit();
-    	editor.putString("key_bitly", key);
-    	editor.commit();
-    }
-    
-    public static String getUsernameKarmacracy(Context cnt) {
-    	SharedPreferences prefs = cnt.getSharedPreferences(Utils.APPLICATION_PREFERENCES, Context.MODE_PRIVATE);
-        if (prefs.contains("username_karmacracy")) {
-        	return prefs.getString("username_karmacracy", "");
-        } else {
-            Editor editor = prefs.edit();
-           	editor.putString("username_karmacracy", "");
-            editor.commit();
-        	return "";
-        }
-    }
-    
-    public static void setUsernameKarmacracy(Context cnt, String username) {
-    	SharedPreferences prefs = cnt.getSharedPreferences(Utils.APPLICATION_PREFERENCES, Context.MODE_PRIVATE);
-    	Editor editor = prefs.edit();
-    	editor.putString("username_karmacracy", username);
-    	editor.commit();
-    }
-    
-    public static String getKeyKarmacracy(Context cnt) {
-    	SharedPreferences prefs = cnt.getSharedPreferences(Utils.APPLICATION_PREFERENCES, Context.MODE_PRIVATE);
-        if (prefs.contains("key_karmacracy")) {
-        	return prefs.getString("key_karmacracy", "");
-        } else {
-            Editor editor = prefs.edit();
-           	editor.putString("key_karmacracy", "");
-            editor.commit();
-        	return "";
-        }
-    }
-    
-    public static void setKeyKarmacracy(Context cnt, String key) {
-    	SharedPreferences prefs = cnt.getSharedPreferences(Utils.APPLICATION_PREFERENCES, Context.MODE_PRIVATE);
-    	Editor editor = prefs.edit();
-    	editor.putString("key_karmacracy", key);
-    	editor.commit();
-    }
-	/*
-    public static long getDateDeleteAvatars(Context cnt) {
-    	SharedPreferences prefs = cnt.getSharedPreferences(Utils.APPLICATION_PREFERENCES, Context.MODE_PRIVATE);
-        if (prefs.contains("date_detele_avatar")) {
-        	return prefs.getLong("date_detele_avatar", 14);
-        } else {
-            Editor editor = prefs.edit();
-           	editor.putLong("date_detele_avatar", -1);
-            editor.commit();
-        	return -1;
-        }
-    }
-    
-    public static void setDateDeleteAvatars(Context cnt, long time) {
-    	SharedPreferences prefs = cnt.getSharedPreferences(Utils.APPLICATION_PREFERENCES, Context.MODE_PRIVATE);
-    	Editor editor = prefs.edit();
-    	editor.putLong("date_detele_avatar", time);
-    	editor.commit();
-    }
-    */
-    public static long getDateApiConfiguration(Context cnt) {
-    	SharedPreferences prefs = cnt.getSharedPreferences(Utils.APPLICATION_PREFERENCES, Context.MODE_PRIVATE);
-        if (prefs.contains("date_api_conf")) {
-        	return prefs.getLong("date_api_conf", 14);
-        } else {
-            Editor editor = prefs.edit();
-           	editor.putLong("date_api_conf", -1);
-            editor.commit();
-        	return -1;
-        }
-    }
-    
-    public static void setDateApiConfiguration(Context cnt, long time) {
-    	SharedPreferences prefs = cnt.getSharedPreferences(Utils.APPLICATION_PREFERENCES, Context.MODE_PRIVATE);
-    	Editor editor = prefs.edit();
-    	editor.putLong("date_api_conf", time);
-    	editor.commit();
-    }
-    
-    public static int getShortURLLength(Context cnt) {
-    	SharedPreferences prefs = cnt.getSharedPreferences(Utils.APPLICATION_PREFERENCES, Context.MODE_PRIVATE);
-        if (prefs.contains("short_url_length")) {
-        	return prefs.getInt("short_url_length", 20);
-        } else {
-            Editor editor = prefs.edit();
-           	editor.putInt("short_url_length", 20);
-            editor.commit();
-        	return 0;
-        }
-    }
-    
-    public static void setShortURLLength(Context cnt, int shortURLLength) {
-    	SharedPreferences prefs = cnt.getSharedPreferences(Utils.APPLICATION_PREFERENCES, Context.MODE_PRIVATE);
-    	Editor editor = prefs.edit();
-    	editor.putInt("short_url_length", shortURLLength);
-    	editor.commit();
-    }
-    
-    public static int getShortURLLengthHttps(Context cnt) {
-    	SharedPreferences prefs = cnt.getSharedPreferences(Utils.APPLICATION_PREFERENCES, Context.MODE_PRIVATE);
-        if (prefs.contains("short_url_length_https")) {
-        	return prefs.getInt("short_url_length_https", 21);
-        } else {
-            Editor editor = prefs.edit();
-           	editor.putInt("short_url_length_https", 21);
-            editor.commit();
-        	return 0;
-        }
-    }
-    
-    public static void setShortURLLengthHttps(Context cnt, int shortURLLengthHttps) {
-    	SharedPreferences prefs = cnt.getSharedPreferences(Utils.APPLICATION_PREFERENCES, Context.MODE_PRIVATE);
-    	Editor editor = prefs.edit();
-    	editor.putInt("short_url_length_https", shortURLLengthHttps);
-    	editor.commit();
-    }
-    
-    public static int getWoeidTT(Context cnt) {
-    	SharedPreferences prefs = cnt.getSharedPreferences(Utils.APPLICATION_PREFERENCES, Context.MODE_PRIVATE);
-        if (prefs.contains("woeid")) {
-        	return prefs.getInt("woeid", 0);
-        } else {
-            Editor editor = prefs.edit();
-           	editor.putInt("woeid", 0);
-            editor.commit();
-        	return 0;
-        }
-    }
-    
-    public static void setWoeidTT(Context cnt, int woeid) {
-    	SharedPreferences prefs = cnt.getSharedPreferences(Utils.APPLICATION_PREFERENCES, Context.MODE_PRIVATE);
-    	Editor editor = prefs.edit();
-    	editor.putInt("woeid", woeid);
-    	editor.commit();
-    }
-    
-    public static int getSizeTitles(Context cnt) {
-    	SharedPreferences prefs = cnt.getSharedPreferences(Utils.APPLICATION_PREFERENCES, Context.MODE_PRIVATE);
-        if (prefs.contains("size_titles")) {
-        	return prefs.getInt("size_titles", 13);
-        } else {
-            Editor editor = prefs.edit();
-           	editor.putInt("size_titles", 13);
-            editor.commit();
-        	return 13;
-        }
-    }
-    
-    public static void setSizeTitles(Context cnt, int size) {
-    	if (size<6) size = 6;
-    	SharedPreferences prefs = cnt.getSharedPreferences(Utils.APPLICATION_PREFERENCES, Context.MODE_PRIVATE);
-    	Editor editor = prefs.edit();
-    	editor.putInt("size_titles", size);
-    	editor.commit();
-    }
-	
-    public static int getSizeTextNewStatus(Context cnt) {
-    	SharedPreferences prefs = cnt.getSharedPreferences(Utils.APPLICATION_PREFERENCES, Context.MODE_PRIVATE);
-        if (prefs.contains("size_text_new_status")) {
-        	return prefs.getInt("size_text_new_status", 14);
-        } else {
-            Editor editor = prefs.edit();
-           	editor.putInt("size_text_new_status", 14);
-            editor.commit();
-        	return 14;
-        }
-    }
-    
-    public static void setSizeTextNewStatus(Context cnt, int size) {
-    	if (size<10) size = 10;
-    	SharedPreferences prefs = cnt.getSharedPreferences(Utils.APPLICATION_PREFERENCES, Context.MODE_PRIVATE);
-    	Editor editor = prefs.edit();
-    	editor.putInt("size_text_new_status", size);
-    	editor.commit();
-    }
-	
-    public static int getSizeText(Context cnt) {
-    	SharedPreferences prefs = cnt.getSharedPreferences(Utils.APPLICATION_PREFERENCES, Context.MODE_PRIVATE);
-        if (prefs.contains("size_text")) {
-        	return prefs.getInt("size_text", 14);
-        } else {
-            Editor editor = prefs.edit();
-           	editor.putInt("size_text", 14);
-            editor.commit();
-        	return 14;
-        }
-    }
-    
-    public static void setSizeText(Context cnt, int size) {
-    	if (size<6) size = 6;
-    	SharedPreferences prefs = cnt.getSharedPreferences(Utils.APPLICATION_PREFERENCES, Context.MODE_PRIVATE);
-    	Editor editor = prefs.edit();
-    	editor.putInt("size_text", size);
-    	editor.commit();
-    }
-
-    public static int getApplicationAccessCount(Context cnt) {
-    	SharedPreferences prefs = cnt.getSharedPreferences(Utils.APPLICATION_PREFERENCES, Context.MODE_PRIVATE);
-        if (prefs.contains("application_access_count")) {
-        	return prefs.getInt("application_access_count", 1);
-        } else {
-            Editor editor = prefs.edit();
-           	editor.putInt("application_access_count", 1);
-            editor.commit();
-        	return 1;
-        }
-    }
-
-    public static void setApplicationAccessCount(Context cnt, int access_count) {
-    	if (access_count>20) access_count = 21;
-    	SharedPreferences prefs = cnt.getSharedPreferences(Utils.APPLICATION_PREFERENCES, Context.MODE_PRIVATE);
-    	Editor editor = prefs.edit();
-    	editor.putInt("application_access_count", access_count);
-    	editor.commit();
-    }
-
-    public static int getTypeWidget(Context cnt) {
-    	SharedPreferences prefs = cnt.getSharedPreferences(Utils.APPLICATION_PREFERENCES, Context.MODE_PRIVATE);
-        if (prefs.contains("type_widget")) {
-        	return prefs.getInt("type_widget", ServiceWidgetTweets4x2.TIMELINE);
-        } else {
-            Editor editor = prefs.edit();
-           	editor.putInt("type_widget", ServiceWidgetTweets4x2.TIMELINE);
-            editor.commit();
-        	return ServiceWidgetTweets4x2.TIMELINE;
-        }
-    }
-    
-    public static void setTypeWidget(Context cnt, int type) {
-    	SharedPreferences prefs = cnt.getSharedPreferences(Utils.APPLICATION_PREFERENCES, Context.MODE_PRIVATE);
-    	Editor editor = prefs.edit();
-    	editor.putInt("type_widget", type);
-    	editor.commit();
-    }
-    
-    public static long getIdSearchWidget(Context cnt) {
-    	SharedPreferences prefs = cnt.getSharedPreferences(Utils.APPLICATION_PREFERENCES, Context.MODE_PRIVATE);
-        if (prefs.contains("search_widget")) {
-        	return prefs.getLong("search_widget", 0);
-        } else {
-            Editor editor = prefs.edit();
-           	editor.putLong("search_widget", 0);
-            editor.commit();
-        	return Long.parseLong("0");
-        }
-    }
-    
-    public static void setIdSearchWidget(Context cnt, long search) {
-    	SharedPreferences prefs = cnt.getSharedPreferences(Utils.APPLICATION_PREFERENCES, Context.MODE_PRIVATE);
-    	Editor editor = prefs.edit();
-    	editor.putLong("search_widget", search);
-    	editor.commit();
-    }
-    
-	
-    public static boolean getShowHelp(Context cnt) {
-    	SharedPreferences prefs = cnt.getSharedPreferences(Utils.APPLICATION_PREFERENCES, Context.MODE_PRIVATE);
-        if (prefs.contains("show_help")) {
-        	return false;
-        } else {
-            Editor editor = prefs.edit();
-           	editor.putBoolean("show_help", false);
-            editor.commit();
-        	return true;
-        }
-    }
-    
-    public static void showChangeLog(Context cnt) {
-    	boolean showChangeLog = false;
-    	SharedPreferences prefs = cnt.getSharedPreferences(Utils.APPLICATION_PREFERENCES, Context.MODE_PRIVATE);
-        if (prefs.contains("version")) {
-        	if (!prefs.getString("version", VERSION).equals(VERSION)) {
-        		Editor editor = prefs.edit();
-               	editor.putString("version", VERSION);
-                editor.commit();
-                showChangeLog = true;
-        	}
-        } else {
-            Editor editor = prefs.edit();
-           	editor.putString("version", VERSION);
-            editor.commit();
-            showChangeLog = true;
-        }
-    	
-        if (showChangeLog) {
-        	OnChageVersion(cnt);
-			String file = "changelog_en.txt"; 
-			if (Locale.getDefault().getLanguage().equals("es")) {
-				file = "changelog_es.txt";
-			}
-			
-			try {
-				AlertDialog builder = PersonalDialogBuilder.create(cnt, cnt.getString(R.string.changelog), file);
-				builder.show();
-			} catch (NameNotFoundException e) {
-				e.printStackTrace();
-			}
-        }
-    }
-    
     static public boolean isOnline(Context context) {
     	try {
     		ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -742,87 +206,7 @@ public class Utils {
     	}
 	}
     
-    public static void OnChageVersion(Context cnt) {
-    	if (VERSION.equals("1.32")) {
-			ArrayList<String> colorsThemeWhite = new ArrayList<String>();
-			colorsThemeWhite.add("#e0c8ce");
-			colorsThemeWhite.add("#9be4e5");
-			colorsThemeWhite.add("#cdf3be");
-			colorsThemeWhite.add("#e1b8e3");
-			colorsThemeWhite.add("#f8da88");
-			colorsThemeWhite.add("#e3c2a7");
-			colorsThemeWhite.add("#e4e58f");
-			colorsThemeWhite.add("#b8c4e3");
-			
-	    	ArrayList<Entity> ents = DataFramework.getInstance().getEntityList("type_colors");
-	    	for (Entity ent : ents) {
-	    		if (!ent.getString("color").equals("")) {
-	    			int pos = colorsThemeWhite.indexOf(ent.getString("color"));
-	    			ent.setValue("color", "");
-	    			ent.setValue("pos", pos);
-	    			ent.save();
-	    		}
-	    	}
-    	}
-    	
-    	if (VERSION.equals("1.61")) {
-	    	ArrayList<Entity> ents = DataFramework.getInstance().getEntityList("tweets", "favorite=1");
-	    	for (Entity ent : ents) {
-    			Entity newent = new Entity("saved_tweets");
-    			newent.setValue("url_avatar", ent.getString("url_avatar"));
-    			newent.setValue("username", ent.getString("username"));
-    			newent.setValue("user_id", ent.getString("user_id"));
-    			newent.setValue("tweet_id", ent.getString("tweet_id"));
-    			newent.setValue("text", ent.getString("text"));
-    			newent.setValue("source", ent.getString("source"));
-    			newent.setValue("to_username", ent.getString("to_username"));
-    			newent.setValue("to_user_id", ent.getString("to_user_id"));
-    			newent.setValue("date", ent.getString("date"));
-    			newent.setValue("latitude", ent.getString("latitude"));
-    			newent.setValue("longitude", ent.getString("longitude"));
-    			newent.save();
-    			ent.delete();
-	    	}
-    	}
-    }
-    
-    public static boolean getStatusWorkAlarm(Context cnt) {
-    	SharedPreferences prefs = cnt.getSharedPreferences(Utils.APPLICATION_PREFERENCES, Context.MODE_PRIVATE);
-        if (prefs.contains(WORK_ALARM_KEY)) {
-        	return prefs.getBoolean(WORK_ALARM_KEY, false);
-        }
-        return false;
-    }
-    
-    public static void saveStatusWorkAlarm(Context cnt, boolean work) {
-    	SharedPreferences prefs = cnt.getSharedPreferences(Utils.APPLICATION_PREFERENCES, Context.MODE_PRIVATE);
-        Editor editor = prefs.edit();
-       	editor.putBoolean(WORK_ALARM_KEY, work);
-        editor.commit();
-    }
-    
-    public static boolean getStatusWorkApp(Context cnt) {
-    	SharedPreferences prefs = cnt.getSharedPreferences(Utils.APPLICATION_PREFERENCES, Context.MODE_PRIVATE);
-        if (prefs.contains(WORK_APP_KEY)) {
-        	return prefs.getBoolean(WORK_APP_KEY, false);
-        }
-        return false;
-    }
-    
-    public static void saveStatusWorkApp(Context cnt, boolean work) {
-    	SharedPreferences prefs = cnt.getSharedPreferences(Utils.APPLICATION_PREFERENCES, Context.MODE_PRIVATE);
-        Editor editor = prefs.edit();
-       	editor.putBoolean(WORK_APP_KEY, work);
-        editor.commit();
-    }	
-    
-    public static boolean getNotificationsApp(Context cnt) {
-    	SharedPreferences prefs = cnt.getSharedPreferences(Utils.APPLICATION_PREFERENCES, Context.MODE_PRIVATE);
-        if (prefs.contains(NOTIFICATIONS_KEY)) {
-        	return prefs.getBoolean(NOTIFICATIONS_KEY, true);
-        }
-        return true;
-    }
+
     
     public static int getLenghtTweet(String text, int shortURLLength, int shortURLLengthHttps) {
     	int length = text.length();
@@ -840,12 +224,7 @@ public class Utils {
 		return length;
     }
     
-    public static void saveNotificationsApp(Context cnt, boolean work) {
-    	SharedPreferences prefs = cnt.getSharedPreferences(Utils.APPLICATION_PREFERENCES, Context.MODE_PRIVATE);
-        Editor editor = prefs.edit();
-       	editor.putBoolean(NOTIFICATIONS_KEY, work);
-        editor.commit();
-    }	
+
     
     public static String toCapitalize(String s) {
         if (s.length() == 0) return s;
@@ -1188,9 +567,9 @@ public class Utils {
 	    */
 	static public void saveApiConfiguration(Context cnt) {
 		boolean todo = false;
-		long time = getDateApiConfiguration(cnt);
+		long time = PreferenceUtils.getDateApiConfiguration(cnt);
 		if (time<0) {
-			setDateApiConfiguration(cnt, new Date().getTime());
+            PreferenceUtils.setDateApiConfiguration(cnt, new Date().getTime());
 			todo = true;
 		} else {
 			Date dateToday = new Date();
@@ -1202,7 +581,7 @@ public class Utils {
 				String tomorrow = Utils.getTomorrow(calToday.get(Calendar.YEAR), (calToday.get(Calendar.MONTH)+1), calToday.get(Calendar.DATE));
 				try {
 					Date nextDate = format.parse(tomorrow + " 10:00");
-					setDateApiConfiguration(cnt, nextDate.getTime());
+                    PreferenceUtils.setDateApiConfiguration(cnt, nextDate.getTime());
 				} catch (ParseException e) {
 					e.printStackTrace();
 				}
@@ -1218,8 +597,8 @@ public class Utils {
 	        
 	        try {
 	        	TwitterAPIConfiguration api = ConnectionManager.getInstance().getTwitter().getAPIConfiguration();
-	        	setShortURLLength(cnt, api.getShortURLLength());
-	        	setShortURLLengthHttps(cnt, api.getShortURLLengthHttps());
+                PreferenceUtils.setShortURLLength(cnt, api.getShortURLLength());
+                PreferenceUtils.setShortURLLengthHttps(cnt, api.getShortURLLengthHttps());
 			} catch (TwitterException e1) {
 				e1.printStackTrace();
 			} catch (Exception e1) {
@@ -1743,9 +1122,9 @@ public class Utils {
     	if ( s == 1 ) { // bit.ly
     		String user = "tweettopics";
     		String key = "R_ba0652e93e7c9c527c016447d2e29091";
-    		if (!Utils.getUsernameBitly(context).equals("") && !Utils.getKeyBitly(context).equals("")) {
-    			user = Utils.getUsernameBitly(context);
-        		key = Utils.getKeyBitly(context);
+    		if (!PreferenceUtils.getUsernameBitly(context).equals("") && !PreferenceUtils.getKeyBitly(context).equals("")) {
+    			user = PreferenceUtils.getUsernameBitly(context);
+        		key = PreferenceUtils.getKeyBitly(context);
     		}
     		String url = "http://api.bit.ly/v3/shorten?login="+user+"&apiKey="+key+"&format=json&longUrl=" + URLEncoder.encode(link);
     		
@@ -1765,8 +1144,8 @@ public class Utils {
     		
     	} else { // karmacracy
     		// http://kcy.me/api/?u=javielinux&key=nyk1tjr20x&format=json&url=http://www.javielinux.com
-    		String user = Utils.getUsernameKarmacracy(context);
-    		String key = Utils.getKeyKarmacracy(context);
+    		String user = PreferenceUtils.getUsernameKarmacracy(context);
+    		String key = PreferenceUtils.getKeyKarmacracy(context);
     		
     		String url = "http://kcy.me/api/?u="+user+"&key="+key+"&format=json&url=" + URLEncoder.encode(link);
     		
@@ -3398,117 +2777,6 @@ public class Utils {
 		return shortURL(url);
 		
 	}
-	
-	public static Drawable createGradientDrawableSelected(Context cnt, int colorLine) {
-		ThemeManager theme = new ThemeManager(cnt);
-		
-		return createStateListDrawable(cnt, theme.getColor("tweet_color_selected"), colorLine);
-		/*
-		StateListDrawable states = new StateListDrawable();
-		
-		states.addState(new int[]{ -android.R.attr.state_window_focused }, createGradientDrawable( cnt,theme.getColor("tweet_color_selected"), false ) );
-		states.addState(new int[]{ android.R.attr.state_pressed }, createGradientDrawable( cnt, theme.getColor("tweet_color_selected"), true ) );
-		
-		return states;
-		*/
-		//return createGradientDrawable( cnt, theme.getColor("tweet_color_selected"), false );
-	}
-	
-	public static Drawable createGradientDrawableMention(Context cnt, int colorLine) {
-		ThemeManager theme = new ThemeManager(cnt);
-		
-		return createStateListDrawable(cnt, Color.parseColor(theme.getColors().get(getColorMentions(cnt))), colorLine);
-		/*
-		StateListDrawable states = new StateListDrawable();
-		
-		states.addState(new int[]{ -android.R.attr.state_window_focused }, createGradientDrawable( cnt, Color.parseColor(theme.getColors().get(getColorMentions(cnt))), false ) );
-		states.addState(new int[]{ android.R.attr.state_pressed }, createGradientDrawable( cnt, Color.parseColor(theme.getColors().get(getColorMentions(cnt))), true ) );
-		
-		return states;*/
-	}
-	
-	public static Drawable createGradientDrawableFavorite(Context cnt, int colorLine) {
-		ThemeManager theme = new ThemeManager(cnt);
-		
-		return createStateListDrawable(cnt, Color.parseColor(theme.getColors().get(getColorFavorited(cnt))), colorLine);
-		
-		/*StateListDrawable states = new StateListDrawable();
-		
-		states.addState(new int[]{ -android.R.attr.state_window_focused }, createGradientDrawable( cnt, Color.parseColor(theme.getColors().get(getColorFavorited(cnt))), false ) );
-		states.addState(new int[]{ android.R.attr.state_pressed }, createGradientDrawable( cnt, Color.parseColor(theme.getColors().get(getColorFavorited(cnt))), true ) );
-		
-		return states;*/
-
-		//return createGradientDrawable(Color.parseColor(getColorFavorited(cnt)));
-	}
-	
-	public static Drawable createStateListDrawable(Context cnt, int color) {		
-		return createStateListDrawable(cnt, color, 0);
-	}
-	
-	public static Drawable createStateListDrawable(Context cnt, int color, int colorLine) {		
-		StateListDrawable states = new StateListDrawable();
-		
-		states.addState(new int[]{ -android.R.attr.state_window_focused }, createBackgroundDrawable( cnt, color, false, colorLine ) );
-		states.addState(new int[]{ android.R.attr.state_pressed }, createBackgroundDrawable( cnt, color, true, 0 ) );
-		
-		return states;
-
-		//return createGradientDrawable(Color.parseColor(getColorFavorited(cnt)));
-	}
-	
-	public static Drawable createBackgroundDrawable(Context cnt, int color, boolean stroke, int colorLine) {
-		return createBackgroundDrawable(cnt, color, stroke, colorLine, GradientDrawable.Orientation.BOTTOM_TOP);
-	}
-	
-	public static Drawable createBackgroundDrawable(Context cnt, int color, boolean stroke, int colorLine, GradientDrawable.Orientation orientation) {
-		
-		int mBubbleColor = color;
-		int mBubbleColor2 = color;
-		if ( Utils.getPreference(cnt).getBoolean("prf_use_gradient", true)) {	
-	        float[] hsv = new float[3];
-	        Color.colorToHSV(mBubbleColor, hsv);
-	        if (hsv[2]-.08f>0) hsv[2]=hsv[2]-.08f;
-	        mBubbleColor2=Color.HSVToColor(hsv);
-		}
-        GradientDrawable mDrawable = new GradientDrawable(orientation,
-        		new int[] { mBubbleColor2, mBubbleColor, mBubbleColor });
-		mDrawable.setShape(GradientDrawable.RECTANGLE);
-		if (stroke) {
-			mDrawable.setStroke(2, cnt.getResources().getColor(R.color.button_focused_border) );
-		}
-		mDrawable.setGradientRadius((float)(Math.sqrt(2) * 60));
-		if (colorLine!=0 && !stroke && getPreference(cnt).getBoolean("prf_use_no_read", true)) {
-			Drawable[] d = new Drawable[2];
-			d[0] = new InsetDrawable(new ColorDrawable(colorLine), 4, 0, 0, 0);
-			Rect bounds = new Rect();
-			bounds.left = 4;
-			mDrawable.setBounds(bounds);
-			d[1] = mDrawable;
-			LayerDrawable layer = new LayerDrawable(d);
-			return layer;
-		} else {
-			return mDrawable;
-		}
-		
-	}
-	
-	public static Drawable createDividerDrawable(Context cnt, int color) {
-
-		int mBubbleColor = color;
-		int mBubbleColor2 = color;
-        float[] hsv = new float[3];
-        Color.colorToHSV(mBubbleColor, hsv);
-        if (hsv[2]-.08f>0) hsv[2]=hsv[2]-.08f;
-        mBubbleColor2=Color.HSVToColor(hsv);
-        GradientDrawable mDrawable = new GradientDrawable(GradientDrawable.Orientation.LEFT_RIGHT,
-        		new int[] { mBubbleColor2, mBubbleColor, mBubbleColor2 });
-		mDrawable.setShape(GradientDrawable.RECTANGLE);
-
-		mDrawable.setGradientRadius((float)(Math.sqrt(2) * 60));
-		return mDrawable;
-		
-	}
 
     public static void sendLastCrash(Activity cnt) {
         /*Intent msg=new Intent(Intent.ACTION_SEND);
@@ -3540,110 +2808,7 @@ public class Utils {
 	public static boolean isDev(Context context) {
 		return packageName.equals("com.javielinux.tweettopics");
 	}
-	
-	public static class PersonalDialogBuilder {
-		public static AlertDialog create( Context context, String title, String file ) throws NameNotFoundException {
-			
-			String aboutTitle = String.format(title);
 
-			String aboutText = Utils.getAsset(context, file);
-
-			ScrollView mainView=new ScrollView(context);
-
-			final TextView message = new TextView(context);
-
-			mainView.addView(message);
-
-			message.setPadding(5, 5, 5, 5);
-			message.setText(aboutText);
-			message.setTextColor(Color.WHITE);
-
-			return new AlertDialog.Builder(context)
-						.setTitle(aboutTitle)
-						.setCancelable(true)
-						.setIcon(R.drawable.icon)
-						.setPositiveButton(context.getString(android.R.string.ok), null).setView(mainView).create();
-
-		}
-	}
-	
-	public static class BuyProDialogBuilder {
-		public static AlertDialog create(final Context context) throws NameNotFoundException {
-			
-			String aboutTitle = String.format(context.getString(R.string.why_buy));
-			
-			String file = "buypro_en.txt"; 
-			if (Locale.getDefault().getLanguage().equals("es")) {
-				file = "buypro_es.txt";
-			}
-
-			String aboutText = Utils.getAsset(context, file);
-
-			ScrollView mainView=new ScrollView(context);
-
-			final TextView message = new TextView(context);
-
-			mainView.addView(message);
-
-			message.setPadding(5, 5, 5, 5);
-			message.setText(aboutText);
-			message.setTextColor(Color.WHITE);
-
-			return new AlertDialog.Builder(context)
-						.setTitle(aboutTitle)
-						.setCancelable(true)
-						.setIcon(R.drawable.icon)
-						.setPositiveButton(context.getString(R.string.buy_pro), new OnClickListener() {
-							@Override
-							public void onClick(DialogInterface dialog, int which) {
-								Uri uri = Uri.parse("market://search?q=pname:" + Utils.packageNamePRO);
-					            Intent buyProIntent = new Intent(Intent.ACTION_VIEW, uri);
-					            context.startActivity(buyProIntent);
-							}
-						})
-						.setNegativeButton(context.getString(android.R.string.cancel), null).setView(mainView).create();
-
-		}
-	}
-
-	public static class RateAppDialogBuilder {
-		public static AlertDialog create(final Context context) throws NameNotFoundException {
-            String aboutTitle = String.format(context.getString(R.string.rate_app_title));
-            String file = "rateapp_en.txt";
-
-            if (Locale.getDefault().getLanguage().equals("es")) {
-                file = "rateapp_es.txt";
-            }
-
-            String aboutText = Utils.getAsset(context, file);
-            ScrollView mainView=new ScrollView(context);
-
-            final TextView message = new TextView(context);
-
-            mainView.addView(message);
-            message.setPadding(5, 5, 5, 5);
-            message.setText(aboutText);
-            message.setTextColor(Color.WHITE);
-
-            return new AlertDialog.Builder(context)
-                    .setTitle(aboutTitle)
-                    .setCancelable(true)
-                    .setIcon(R.drawable.icon)
-                    .setPositiveButton(context.getString(R.string.rate_app), new OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            Uri uri = null;
-                            if (Utils.isLite(context))
-                                uri = Uri.parse("market://details?id=" + Utils.packageNamePRO);
-                            else
-                                uri = Uri.parse("market://details?id=" + Utils.packageName);
-                            Intent buyProIntent = new Intent(Intent.ACTION_VIEW, uri);
-                            context.startActivity(buyProIntent);
-                        }
-                    })
-                    .setNegativeButton(context.getString(android.R.string.cancel), null).setView(mainView).create();
-		}
-	}
 	
 	public static class FlushedInputStream extends FilterInputStream {
         public FlushedInputStream(InputStream inputStream) {

@@ -10,7 +10,8 @@ import android.widget.*;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
-import com.javielinux.tweettopics2.Utils.PersonalDialogBuilder;
+import com.javielinux.utils.DialogUtils.PersonalDialogBuilder;
+import com.javielinux.utils.Utils;
 
 import java.util.Locale;
 

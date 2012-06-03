@@ -8,7 +8,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.webkit.*;
 import com.javielinux.tweettopics2.R;
-import com.javielinux.tweettopics2.Utils;
+import com.javielinux.utils.PreferenceUtils;
+import com.javielinux.utils.Utils;
 import twitter4j.TwitterException;
 
 public class AuthorizationActivity extends Activity {
@@ -77,7 +78,7 @@ public class AuthorizationActivity extends Activity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		Utils.saveStatusWorkApp(this, true);
+        PreferenceUtils.saveStatusWorkApp(this, true);
 		
 		ConnectionManager.destroyInstance();
 		
@@ -104,7 +105,7 @@ public class AuthorizationActivity extends Activity {
     @Override
     protected void onPause() {
         super.onPause();
-        Utils.saveStatusWorkApp(this, false);
+        PreferenceUtils.saveStatusWorkApp(this, false);
     }
   
 }

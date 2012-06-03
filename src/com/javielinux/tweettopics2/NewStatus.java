@@ -30,7 +30,11 @@ import android.widget.*;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
-import com.javielinux.tweettopics2.Utils.BuyProDialogBuilder;
+import com.javielinux.utils.DialogUtils.BuyProDialogBuilder;
+import com.javielinux.utils.FileUtils;
+import com.javielinux.utils.LocationUtils;
+import com.javielinux.utils.PreferenceUtils;
+import com.javielinux.utils.Utils;
 import infos.InfoUsers;
 import layouts.AutoCompleteHashTagListItem;
 import layouts.AutoCompleteListItem;
@@ -183,7 +187,7 @@ public class NewStatus extends BaseActivity {
     	//mTxtUsername.setBackgroundColor(Color.parseColor("#99"+(mThemeManager.getTheme()==1?"FFFFFF":"000000")));
     	mTxtType.setBackgroundColor(Color.parseColor("#99"+(mThemeManager.getTheme()==1?"FFFFFF":"000000")));
     	
-    	if (Utils.getGeo(this))
+    	if (PreferenceUtils.getGeo(this))
     		mGeo.setImageDrawable(mThemeManager.getDrawableMainButton(R.drawable.gd_action_bar_geo, ThemeManager.TYPE_SELECTED));
     	else
     		mGeo.setImageDrawable(mThemeManager.getDrawableMainButton(R.drawable.gd_action_bar_geo, ThemeManager.TYPE_NORMAL));
@@ -362,8 +366,8 @@ public class NewStatus extends BaseActivity {
         
         Utils.saveApiConfiguration(this);
         
-        mShortURLLength = Utils.getShortURLLength(this);
-        mShortURLLengthHttps = Utils.getShortURLLengthHttps(this);
+        mShortURLLength = PreferenceUtils.getShortURLLength(this);
+        mShortURLLengthHttps = PreferenceUtils.getShortURLLengthHttps(this);
         
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
@@ -452,7 +456,7 @@ public class NewStatus extends BaseActivity {
     	
 		mText = (EditText) findViewById(R.id.text);
 		
-		mText.setTextSize(Utils.getSizeTextNewStatus(this));
+		mText.setTextSize(PreferenceUtils.getSizeTextNewStatus(this));
 
 		mText.addTextChangedListener(new TextWatcher() {
 				public void afterTextChanged (Editable s) {
@@ -531,8 +535,8 @@ public class NewStatus extends BaseActivity {
 
 				// comprobar si tenemos geoposicion
 				
-				if (Utils.getGeo(NewStatus.this)) {
-					Location loc = Utils.getLastLocation(NewStatus.this);
+				if (PreferenceUtils.getGeo(NewStatus.this)) {
+					Location loc = LocationUtils.getLastLocation(NewStatus.this);
 					if (loc == null) {
 						showDialog(DIALOG_NO_GEO);
 					} else {
@@ -570,13 +574,13 @@ public class NewStatus extends BaseActivity {
 
 			@Override
 			public void onClick(View v) {
-				if (Utils.getGeo(NewStatus.this)) {
+				if (PreferenceUtils.getGeo(NewStatus.this)) {
 					mGeo.setImageDrawable(mThemeManager.getDrawableMainButton(R.drawable.gd_action_bar_geo, ThemeManager.TYPE_NORMAL));
 					Utils.showShortMessage(NewStatus.this, NewStatus.this.getString(R.string.txt_geoloc_off));
-					Utils.setGeo(NewStatus.this, false);
+                    PreferenceUtils.setGeo(NewStatus.this, false);
 				} else {
 					mGeo.setImageDrawable(mThemeManager.getDrawableMainButton(R.drawable.gd_action_bar_geo, ThemeManager.TYPE_SELECTED));
-					Utils.setGeo(NewStatus.this, true);
+                    PreferenceUtils.setGeo(NewStatus.this, true);
 					Utils.showShortMessage(NewStatus.this, NewStatus.this.getString(R.string.txt_geoloc_on));
 				}
 			}
@@ -804,7 +808,7 @@ public class NewStatus extends BaseActivity {
     	
     	try {
     		Log.d(Utils.TAG, "Copiar " + image + " a " + Utils.appUploadImageDirectory + file);
-			Utils.copy(image, Utils.appUploadImageDirectory + file);
+			FileUtils.copy(image, Utils.appUploadImageDirectory + file);
             Utils.savePhotoInScale(this, Utils.appUploadImageDirectory + file);
 			mImages.add(file);
 			createThumbs();
@@ -865,7 +869,7 @@ public class NewStatus extends BaseActivity {
 	    		ent.setValue("reply_tweet_id",  "-1");
 	    	}
 	    	
-	    	ent.setValue("use_geo", Utils.getGeo(this)?"1":"0");
+	    	ent.setValue("use_geo", PreferenceUtils.getGeo(this)?"1":"0");
 	    	ent.save();
 	    	
 	    	startService(new Intent(this, ServiceUpdateStatus.class));
@@ -1062,7 +1066,7 @@ public class NewStatus extends BaseActivity {
     
 	private void populateFields() {
 		if (mType==TYPE_NORMAL) {
-			String def = Utils.getDefaultTextInTweet(this);
+			String def = PreferenceUtils.getDefaultTextInTweet(this);
 			if (def.length()>0) {
 				mText.setText(def+" "+mTextStatus);	
 			} else {
@@ -1190,20 +1194,20 @@ public class NewStatus extends BaseActivity {
     	LayoutInflater factory = LayoutInflater.from(this);
         final View sizesFontView = factory.inflate(R.layout.alert_dialog_sizes_newstatus, null);
                 
-        ((TextView)sizesFontView.findViewById(R.id.txt_size_text)).setText(getString(R.string.size_text) + " (" + Utils.getSizeTextNewStatus(this) + ")");
+        ((TextView)sizesFontView.findViewById(R.id.txt_size_text)).setText(getString(R.string.size_text) + " (" + PreferenceUtils.getSizeTextNewStatus(this) + ")");
                 
         SeekBar sbSizeText = (SeekBar)sizesFontView.findViewById(R.id.sb_size_text);
         sbSizeText.setMax(18);
-        sbSizeText.setProgress(Utils.getSizeTextNewStatus(this)-minValue);
+        sbSizeText.setProgress(PreferenceUtils.getSizeTextNewStatus(this)-minValue);
     	
         sbSizeText.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
 
 			@Override
 			public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
 				progress += minValue;
-				Utils.setSizeTextNewStatus(NewStatus.this, progress);
+                PreferenceUtils.setSizeTextNewStatus(NewStatus.this, progress);
 				//seekBar.setProgress(progress);
-		        ((TextView)sizesFontView.findViewById(R.id.txt_size_text)).setText(getString(R.string.size_text) + " (" + Utils.getSizeTextNewStatus(NewStatus.this) + ")");
+		        ((TextView)sizesFontView.findViewById(R.id.txt_size_text)).setText(getString(R.string.size_text) + " (" + PreferenceUtils.getSizeTextNewStatus(NewStatus.this) + ")");
 				mText.setTextSize(progress);
 			}
 
@@ -1405,7 +1409,7 @@ public class NewStatus extends BaseActivity {
     
     public void showDialogDefaultText() {
     	final EditText et = new EditText(this);
-    	et.setText(Utils.getDefaultTextInTweet(this));
+    	et.setText(PreferenceUtils.getDefaultTextInTweet(this));
     	AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setTitle(this.getString(R.string.dialog_default_text));
 		builder.setMessage(this.getString(R.string.dialog_default_text_msg));
@@ -1414,15 +1418,15 @@ public class NewStatus extends BaseActivity {
 
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-				Utils.setDefaultTextInTweet(NewStatus.this, et.getText().toString());		
+                PreferenceUtils.setDefaultTextInTweet(NewStatus.this, et.getText().toString());
 			}
 			
 		});
 		builder.setNeutralButton(R.string.clean, new DialogInterface.OnClickListener() {
 
 			@Override
-			public void onClick(DialogInterface dialog, int which) {	
-				Utils.setDefaultTextInTweet(NewStatus.this, "");	
+			public void onClick(DialogInterface dialog, int which) {
+                PreferenceUtils.setDefaultTextInTweet(NewStatus.this, "");
 			}
 			
 		});
@@ -1548,13 +1552,13 @@ public class NewStatus extends BaseActivity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		Utils.saveStatusWorkApp(this, true);
+        PreferenceUtils.saveStatusWorkApp(this, true);
 	}
     
     @Override
     protected void onPause() {
         super.onPause();
-        Utils.saveStatusWorkApp(this, false);
+        PreferenceUtils.saveStatusWorkApp(this, false);
     }
     
 	@Override

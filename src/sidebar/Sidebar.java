@@ -25,6 +25,7 @@ import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
 import com.javielinux.tweettopics2.*;
 import com.javielinux.twitter.ConnectionManager;
+import com.javielinux.utils.Utils;
 import infos.InfoLink;
 import infos.InfoTweet;
 import infos.InfoUsers;

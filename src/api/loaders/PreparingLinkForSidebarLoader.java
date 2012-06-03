@@ -6,7 +6,7 @@ import api.request.PreparingLinkForSidebarRequest;
 import api.response.BaseResponse;
 import api.response.ErrorResponse;
 import api.response.PreparingLinkForSidebarResponse;
-import com.javielinux.tweettopics2.Utils;
+import com.javielinux.utils.Utils;
 import infos.CacheData;
 
 public class PreparingLinkForSidebarLoader extends AsynchronousLoader<BaseResponse> {

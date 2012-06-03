@@ -22,8 +22,9 @@ import com.javielinux.facebook.FacebookHandler;
 import com.javielinux.tweettopics2.NewStatus;
 import com.javielinux.tweettopics2.R;
 import com.javielinux.tweettopics2.TweetTopicsCore;
-import com.javielinux.tweettopics2.Utils;
 import com.javielinux.twitter.ConnectionManager;
+import com.javielinux.utils.PreferenceUtils;
+import com.javielinux.utils.Utils;
 import task.*;
 import task.DirectMessageAsyncTask.DirectMessageAsyncTaskResponder;
 import task.ImageUploadAsyncTask.ImageUploadAsyncTaskResponder;
@@ -212,8 +213,8 @@ public class ServiceUpdateStatus extends Service implements UploadStatusAsyncTas
             if (mEntityStatus.getInt("type_id") == 3) { // retweet
                 retweetMessage();
             } else {
-                int shortURLLength = Utils.getShortURLLength(this);
-                int shortURLLengthHttps = Utils.getShortURLLengthHttps(this);
+                int shortURLLength = PreferenceUtils.getShortURLLength(this);
+                int shortURLLengthHttps = PreferenceUtils.getShortURLLengthHttps(this);
 
                 if (Utils.getLenghtTweet(mText, shortURLLength, shortURLLengthHttps)>140) {
                     if (mEntityStatus.getInt("type_id") == 1) { // normal

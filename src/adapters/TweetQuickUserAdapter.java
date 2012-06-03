@@ -8,7 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import com.android.dataframework.Entity;
 import com.javielinux.tweettopics2.R;
-import com.javielinux.tweettopics2.Utils;
+import com.javielinux.utils.Utils;
 
 import java.util.List;
 

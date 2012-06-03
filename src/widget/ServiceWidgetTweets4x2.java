@@ -19,8 +19,9 @@ import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
 import com.javielinux.tweettopics2.R;
 import com.javielinux.tweettopics2.TweetTopics;
-import com.javielinux.tweettopics2.Utils;
 import com.javielinux.twitter.ConnectionManager;
+import com.javielinux.utils.PreferenceUtils;
+import com.javielinux.utils.Utils;
 import database.EntitySearch;
 import infos.InfoImagesTweet;
 import infos.InfoTweet;
@@ -66,12 +67,12 @@ public class ServiceWidgetTweets4x2 extends Service {
 	        		if (intent.getExtras().containsKey("id_search")) {
 	        			mCurrentSearch = intent.getExtras().getLong("id_search");
 	        			mType = SEARCH;
-	        			Utils.setIdSearchWidget(context, mCurrentSearch);
-	        			Utils.setTypeWidget(context, mType);
+                        PreferenceUtils.setIdSearchWidget(context, mCurrentSearch);
+                        PreferenceUtils.setTypeWidget(context, mType);
 	        		}
 	        		if (intent.getExtras().containsKey("id_user")) {
 	        			mType = intent.getExtras().getInt("id_user");
-	        			Utils.setTypeWidget(context, mType);
+                        PreferenceUtils.setTypeWidget(context, mType);
 	        		}
 	        	} catch (Exception e) {
 	        		e.printStackTrace();
@@ -132,8 +133,8 @@ public class ServiceWidgetTweets4x2 extends Service {
     		e.printStackTrace();
     	}
 
-        Utils.setTypeWidget(this, TIMELINE);
-        Utils.setIdSearchWidget(this, 1);
+        PreferenceUtils.setTypeWidget(this, TIMELINE);
+        PreferenceUtils.setIdSearchWidget(this, 1);
 
     	ConnectionManager.getInstance().open(this);
     	
@@ -353,8 +354,8 @@ public class ServiceWidgetTweets4x2 extends Service {
     	mTweets.clear();
     	clearImagesTweets();
     	
-    	mType = Utils.getTypeWidget(cnt);
-    	mCurrentSearch = Utils.getIdSearchWidget(cnt);
+    	mType = PreferenceUtils.getTypeWidget(cnt);
+    	mCurrentSearch = PreferenceUtils.getIdSearchWidget(cnt);
     	
     	if (mType==TIMELINE || mType==MENTIONS) {
     		List<Entity> e = DataFramework.getInstance().getEntityList("users", "active=1");

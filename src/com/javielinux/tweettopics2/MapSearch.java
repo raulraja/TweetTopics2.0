@@ -6,6 +6,8 @@ import android.view.KeyEvent;
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapActivity;
 import com.google.android.maps.MapController;
+import com.javielinux.utils.PreferenceUtils;
+import com.javielinux.utils.Utils;
 
 public class MapSearch extends MapActivity {
 
@@ -76,13 +78,13 @@ public class MapSearch extends MapActivity {
     @Override
     protected void onResume() {
     	super.onResume();
-    	Utils.saveStatusWorkApp(this, true);
+        PreferenceUtils.saveStatusWorkApp(this, true);
     }
     
     @Override
     protected void onPause() {
         super.onPause();
-        Utils.saveStatusWorkApp(this, false);
+        PreferenceUtils.saveStatusWorkApp(this, false);
     }
 
 }

@@ -2,7 +2,7 @@ package task;
 
 import android.content.Context;
 import android.os.AsyncTask;
-import com.javielinux.tweettopics2.Utils;
+import com.javielinux.utils.Utils;
 import infos.InfoLink;
 import infos.InfoWeb;
 

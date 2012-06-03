@@ -9,7 +9,8 @@ import api.response.BaseResponse;
 import api.response.ErrorResponse;
 import api.response.UploadStatusResponse;
 import com.javielinux.tweettopics2.NewStatus;
-import com.javielinux.tweettopics2.Utils;
+import com.javielinux.utils.LocationUtils;
+import com.javielinux.utils.Utils;
 import twitter4j.GeoLocation;
 import twitter4j.StatusUpdate;
 import twitter4j.Twitter;
@@ -38,7 +39,7 @@ public class UploadStatusLoader extends AsynchronousLoader<BaseResponse> {
     private boolean updateText(String text, long tweet_id, boolean useGeo) {
         StatusUpdate statusUpdate = new StatusUpdate(text);
         if (useGeo) {
-            Location loc = Utils.getLastLocation(getContext());
+            Location loc = LocationUtils.getLastLocation(getContext());
             GeoLocation gl = new GeoLocation(loc.getLatitude(), loc.getLongitude());
             statusUpdate.setLocation(gl);
         }

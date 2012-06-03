@@ -9,7 +9,6 @@ import api.response.BaseResponse;
 import api.response.ErrorResponse;
 import api.response.SearchResponse;
 import com.javielinux.tweettopics2.TweetTopicsCore;
-import com.javielinux.tweettopics2.Utils;
 import com.javielinux.twitter.ConnectionManager;
 import database.EntitySearch;
 import infos.InfoSaveTweets;

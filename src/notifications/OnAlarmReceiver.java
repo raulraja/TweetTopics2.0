@@ -9,7 +9,8 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import com.javielinux.tweettopics2.R;
-import com.javielinux.tweettopics2.Utils;
+import com.javielinux.utils.PreferenceUtils;
+import com.javielinux.utils.Utils;
 
 
 public class OnAlarmReceiver {
@@ -104,8 +105,8 @@ public class OnAlarmReceiver {
         PendingIntent sender2 = PendingIntent.getBroadcast(cnt, 0, intent2, 0);
 
         am.cancel(sender2);
-        
-		Utils.saveStatusWorkAlarm(cnt, false);
+
+        PreferenceUtils.saveStatusWorkAlarm(cnt, false);
 
 	}
       

@@ -14,8 +14,8 @@ import api.response.LoadMoreTweetDownResponse;
 import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
 import com.javielinux.tweettopics2.TweetTopicsCore;
-import com.javielinux.tweettopics2.Utils;
 import com.javielinux.twitter.ConnectionManager;
+import com.javielinux.utils.Utils;
 import twitter4j.*;
 
 import java.util.ArrayList;

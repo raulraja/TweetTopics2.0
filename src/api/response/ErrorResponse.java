@@ -1,6 +1,6 @@
 package api.response;
 
-import com.javielinux.tweettopics2.Utils;
+import com.javielinux.utils.Utils;
 import twitter4j.RateLimitStatus;
 
 public class ErrorResponse implements BaseResponse {

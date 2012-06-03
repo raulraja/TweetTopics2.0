@@ -5,7 +5,8 @@ import android.location.Location;
 import android.os.AsyncTask;
 import android.util.Log;
 import com.javielinux.tweettopics2.NewStatus;
-import com.javielinux.tweettopics2.Utils;
+import com.javielinux.utils.LocationUtils;
+import com.javielinux.utils.Utils;
 import twitter4j.GeoLocation;
 import twitter4j.StatusUpdate;
 import twitter4j.Twitter;
@@ -37,7 +38,7 @@ public class UploadStatusAsyncTask extends AsyncTask<String, Void, Boolean> {
 	private boolean updateText(String text, long tweet_id, boolean useGeo) {
 		StatusUpdate su = new StatusUpdate(text);
 		if (useGeo) {
-			Location loc = Utils.getLastLocation(mContext);
+			Location loc = LocationUtils.getLastLocation(mContext);
 			GeoLocation gl = new GeoLocation(loc.getLatitude(), loc.getLongitude());
 			su.setLocation(gl);
 		}

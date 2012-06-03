@@ -15,6 +15,7 @@ import android.widget.ImageButton;
 import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
 import com.javielinux.twitter.ConnectionManager;
+import com.javielinux.utils.Utils;
 import task.ListUserTwitterAsyncTask;
 import task.ListUserTwitterAsyncTask.UserTwitterStatusAsyncTaskResponder;
 import twitter4j.Twitter;

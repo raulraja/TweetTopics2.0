@@ -9,7 +9,8 @@ import android.widget.TextView;
 import com.android.dataframework.Entity;
 import com.javielinux.tweettopics2.R;
 import com.javielinux.tweettopics2.ThemeManager;
-import com.javielinux.tweettopics2.Utils;
+import com.javielinux.utils.ImageUtils;
+import com.javielinux.utils.Utils;
 
 import java.util.List;
 
@@ -63,7 +64,7 @@ public class RowUserAdapter extends BaseAdapter {
 			v = convertView;
 		}
 		
-		v.setBackgroundDrawable(Utils.createStateListDrawable(mContext, new ThemeManager(mContext).getColor("list_background_row_color")));
+		v.setBackgroundDrawable(ImageUtils.createStateListDrawable(mContext, new ThemeManager(mContext).getColor("list_background_row_color")));
         
         ImageView img = (ImageView)v.findViewById(R.id.icon);
         try {

@@ -8,7 +8,7 @@ import api.request.LoadImageWidgetRequest;
 import api.response.BaseResponse;
 import api.response.ErrorResponse;
 import api.response.LoadImageWidgetResponse;
-import com.javielinux.tweettopics2.Utils;
+import com.javielinux.utils.Utils;
 
 import java.io.IOException;
 import java.net.MalformedURLException;

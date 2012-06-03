@@ -6,6 +6,7 @@ import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.preference.PreferenceManager;
+import com.javielinux.utils.Utils;
 
 import java.util.ArrayList;
 

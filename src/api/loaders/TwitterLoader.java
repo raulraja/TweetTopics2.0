@@ -8,8 +8,8 @@ import api.response.ErrorResponse;
 import api.response.TwitterResponse;
 import com.android.dataframework.Entity;
 import com.javielinux.tweettopics2.TweetTopicsCore;
-import com.javielinux.tweettopics2.Utils;
 import com.javielinux.twitter.ConnectionManager;
+import com.javielinux.utils.Utils;
 import database.EntityTweetUser;
 import infos.InfoSaveTweets;
 

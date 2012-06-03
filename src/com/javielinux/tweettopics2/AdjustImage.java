@@ -15,6 +15,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 import com.android.dataframework.DataFramework;
+import com.javielinux.utils.Utils;
 import org.xmlpull.v1.XmlPullParserException;
 import preferences.Preferences;
 import zoom.WrapMotionEvent;

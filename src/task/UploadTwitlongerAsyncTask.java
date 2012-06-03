@@ -4,7 +4,8 @@ import android.content.Context;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.util.Log;
-import com.javielinux.tweettopics2.Utils;
+import com.javielinux.utils.LocationUtils;
+import com.javielinux.utils.Utils;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
@@ -110,7 +111,7 @@ public class UploadTwitlongerAsyncTask extends AsyncTask<String, Void, Boolean> 
 			if (!textTwitLonger.equals("")) {
 				StatusUpdate su = new StatusUpdate(textTwitLonger);
 				if (useGeo) {
-					Location loc = Utils.getLastLocation(mContext);
+					Location loc = LocationUtils.getLastLocation(mContext);
 					GeoLocation gl = new GeoLocation(loc.getLatitude(), loc.getLongitude());
 					su.setLocation(gl);
 				}

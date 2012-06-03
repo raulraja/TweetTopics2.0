@@ -39,7 +39,7 @@ import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
-import com.javielinux.tweettopics2.Utils;
+import com.javielinux.utils.Utils;
 
 public class ColorDialog {
 	

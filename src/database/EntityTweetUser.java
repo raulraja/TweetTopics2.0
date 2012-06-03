@@ -10,8 +10,8 @@ import android.util.Log;
 import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
 import com.javielinux.tweettopics2.R;
-import com.javielinux.tweettopics2.TweetTopicsConstants;
-import com.javielinux.tweettopics2.Utils;
+import com.javielinux.utils.TweetTopicsConstants;
+import com.javielinux.utils.Utils;
 import infos.InfoSaveTweets;
 import twitter4j.*;
 

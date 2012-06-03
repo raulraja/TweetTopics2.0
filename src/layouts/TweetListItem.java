@@ -18,7 +18,8 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import com.javielinux.tweettopics2.R;
 import com.javielinux.tweettopics2.TweetTopicsCore;
-import com.javielinux.tweettopics2.Utils;
+import com.javielinux.utils.PreferenceUtils;
+import com.javielinux.utils.Utils;
 import infos.CacheData;
 import infos.InfoLink;
 import task.LoadImageAsyncTask;
@@ -256,7 +257,7 @@ public class TweetListItem extends RelativeLayout implements LoadImageAsyncTaskR
 		}
 		
 		viewHolder.statusText.setText(Html.fromHtml(html));
-		viewHolder.statusText.setTextSize(Utils.getSizeText(cnt));
+		viewHolder.statusText.setTextSize(PreferenceUtils.getSizeText(cnt));
 		
 		int typeInfo = Integer.parseInt(Utils.preference.getString("prf_username_right", "2"));
 		String data = "";
@@ -270,7 +271,7 @@ public class TweetListItem extends RelativeLayout implements LoadImageAsyncTaskR
 			data = row.getFullname();
 		}
 		viewHolder.sourceText.setText(data);
-		viewHolder.sourceText.setTextSize(Utils.getSizeTitles(cnt)-1);
+		viewHolder.sourceText.setTextSize(PreferenceUtils.getSizeTitles(cnt)-1);
 		
 		if (row.isRetweet()) {
 			viewHolder.retweetLayout.setVisibility(View.VISIBLE);
@@ -292,10 +293,10 @@ public class TweetListItem extends RelativeLayout implements LoadImageAsyncTaskR
 			}			
 		}
 		
-		viewHolder.screenName.setTextSize(Utils.getSizeTitles(cnt));
+		viewHolder.screenName.setTextSize(PreferenceUtils.getSizeTitles(cnt));
 				
 		viewHolder.dateText.setText(row.getTime(tt.getTweetTopics()));		
-		viewHolder.dateText.setTextSize(Utils.getSizeTitles(cnt)-4);
+		viewHolder.dateText.setTextSize(PreferenceUtils.getSizeTitles(cnt)-4);
 
 		if (null != latestLoadTask) {
 			if (latestLoadTasks.contains(latestLoadTask)) latestLoadTasks.remove(latestLoadTask);
@@ -431,10 +432,10 @@ public class TweetListItem extends RelativeLayout implements LoadImageAsyncTaskR
         viewHolder.dateText.setTextColor(Color.parseColor("#"+tt.getThemeManager().getStringColor("color_tweet_date")));
 		
 		viewHolder.screenName.setText(status.getUser().getScreenName());
-        viewHolder.screenName.setTextSize(Utils.getSizeTitles(tt.getTweetTopics()));
+        viewHolder.screenName.setTextSize(PreferenceUtils.getSizeTitles(tt.getTweetTopics()));
 
 		viewHolder.statusText.setText(Html.fromHtml(Utils.toHTML(tt.getTweetTopics(), text)));
-        viewHolder.statusText.setTextSize(Utils.getSizeText(tt.getTweetTopics()));
+        viewHolder.statusText.setTextSize(PreferenceUtils.getSizeText(tt.getTweetTopics()));
 		
 		if (status.getGeoLocation()!=null) {
 			viewHolder.tagMap.setVisibility(View.VISIBLE);
@@ -451,7 +452,7 @@ public class TweetListItem extends RelativeLayout implements LoadImageAsyncTaskR
 		}
 
 		viewHolder.sourceText.setText(data);
-        viewHolder.sourceText.setTextSize(Utils.getSizeTitles(tt.getTweetTopics())-1);
+        viewHolder.sourceText.setTextSize(PreferenceUtils.getSizeTitles(tt.getTweetTopics())-1);
 		
 		viewHolder.avatarView.setOnClickListener(new OnClickListener() {
 
@@ -463,7 +464,7 @@ public class TweetListItem extends RelativeLayout implements LoadImageAsyncTaskR
 		});
 				
 		viewHolder.dateText.setText(Utils.timeFromTweet(tt.getTweetTopics(), status.getCreatedAt()));
-        viewHolder.dateText.setTextSize(Utils.getSizeTitles(tt.getTweetTopics())-4);
+        viewHolder.dateText.setTextSize(PreferenceUtils.getSizeTitles(tt.getTweetTopics())-4);
 		
 		viewHolder.retweetLayout.setVisibility(View.GONE);
 		

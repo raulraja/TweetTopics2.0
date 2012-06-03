@@ -10,7 +10,7 @@ import android.widget.ArrayAdapter;
 import com.javielinux.tweettopics2.R;
 import com.javielinux.tweettopics2.ThemeManager;
 import com.javielinux.tweettopics2.TweetTopicsCore;
-import com.javielinux.tweettopics2.Utils;
+import com.javielinux.utils.ImageUtils;
 import layouts.TweetListItem;
 import twitter4j.ResponseList;
 import twitter4j.Status;
@@ -48,9 +48,9 @@ public class StatusListAdapter extends ArrayAdapter<Status> {
 			v = (TweetListItem) convertView;
 		}
 		if (mSelectedId==position) {
-			v.setBackgroundDrawable(Utils.createGradientDrawableSelected(mContext, 0));
+			v.setBackgroundDrawable(ImageUtils.createGradientDrawableSelected(mContext, 0));
 		} else {
-			v.setBackgroundDrawable(Utils.createStateListDrawable(mContext, new ThemeManager(mContext).getColor("list_background_row_color")));
+			v.setBackgroundDrawable(ImageUtils.createStateListDrawable(mContext, new ThemeManager(mContext).getColor("list_background_row_color")));
 		}
 		v.setStatus((Status) getItem(position), mTweetTopicsCore, position);
 		return v;

@@ -1,6 +1,6 @@
 package infos;
 
-import com.javielinux.tweettopics2.Utils;
+import com.javielinux.utils.Utils;
 import twitter4j.RateLimitStatus;
 
 

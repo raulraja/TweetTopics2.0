@@ -4,66 +4,87 @@
 	
 	<row table="type_columns" id="1">
 		<field name="description" value="My activity" />
+        <field name="title" value="my_activity" />
 	</row>
 
     <row table="type_columns" id="2">
         <field name="description" value="Timeline" />
+        <field name="title" value="timeline" />
     </row>
 
     <row table="type_columns" id="3">
         <field name="description" value="Mentions" />
+        <field name="title" value="mentions" />
     </row>
 
     <row table="type_columns" id="4">
         <field name="description" value="Direct messages" />
+        <field name="title" value="dms" />
     </row>
 
     <row table="type_columns" id="5">
         <field name="description" value="Favorites" />
+        <field name="title" value="favorites" />
     </row>
 
     <row table="type_columns" id="6">
         <field name="description" value="List user" />
+        <field name="title" value="list" />
     </row>
 
     <row table="type_columns" id="7">
         <field name="description" value="Your tweets, retweeted" />
+        <field name="title" value="title_my_tweets" />
     </row>
 
     <row table="type_columns" id="8">
         <field name="description" value="Retweets by you" />
+        <field name="title" value="title_my_retweets" />
     </row>
 
     <row table="type_columns" id="9">
         <field name="description" value="Retweets by others" />
+        <field name="title" value="title_retweet_others" />
     </row>
 
     <row table="type_columns" id="10">
         <field name="description" value="Trending topic" />
+        <field name="title" value="trending_topics" />
     </row>
 
     <row table="type_columns" id="11">
         <field name="description" value="Search" />
+        <field name="title" value="searches" />
     </row>
 
     <row table="type_columns" id="12">
-        <field name="description" value="Saved tweets" />
+        <field name="description" value="Followers" />
+        <field name="title" value="title_followers" />
     </row>
 
     <row table="type_columns" id="13">
-        <field name="description" value="Followers" />
+        <field name="description" value="Followings" />
+        <field name="title" value="title_following" />
     </row>
 
     <row table="type_columns" id="14">
-        <field name="description" value="Followings" />
+        <field name="description" value="Timeline of user" />
+        <field name="title" value="timeline" />
     </row>
 
     <row table="type_columns" id="15">
-        <field name="description" value="Followings" />
+        <field name="description" value="Saved tweets" />
+        <field name="title" value="title_saved_tweets" />
     </row>
 
     <row table="type_columns" id="16">
-        <field name="description" value="Timeline of user" />
+        <field name="description" value="Saved images" />
+        <field name="title" value="title_saved_images" />
+    </row>
+
+    <row table="type_columns" id="17">
+        <field name="description" value="Saved links" />
+        <field name="title" value="title_saved_links" />
     </row>
 
 </values>

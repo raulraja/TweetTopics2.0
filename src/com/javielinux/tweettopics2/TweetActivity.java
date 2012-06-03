@@ -18,6 +18,7 @@ import api.request.LoadImageWidgetRequest;
 import api.response.ErrorResponse;
 import api.response.LoadImageWidgetResponse;
 import com.javielinux.fragmentadapter.TweetFragmentAdapter;
+import com.javielinux.utils.Utils;
 import com.viewpagerindicator.TabPageIndicator;
 import infos.InfoTweet;
 

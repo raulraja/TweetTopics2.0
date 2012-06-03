@@ -11,7 +11,7 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
 import com.javielinux.tweettopics2.R;
-import com.javielinux.tweettopics2.Utils;
+import com.javielinux.utils.Utils;
 import tweetprogrammed.OnAlarmReceiverTweetProgrammed;
 
 import java.util.ArrayList;

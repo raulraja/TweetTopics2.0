@@ -8,7 +8,8 @@ import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import com.javielinux.tweettopics2.R;
-import com.javielinux.tweettopics2.Utils;
+import com.javielinux.utils.PreferenceUtils;
+import com.javielinux.utils.Utils;
 import notifications.AlarmAsyncTask.AlarmAsyncTaskResponder;
 
 public class Alarm1 extends BroadcastReceiver implements AlarmAsyncTaskResponder {
@@ -20,8 +21,8 @@ public class Alarm1 extends BroadcastReceiver implements AlarmAsyncTaskResponder
 		SharedPreferences preference = PreferenceManager.getDefaultSharedPreferences(context);
 		int minutes = Integer.parseInt(preference.getString("prf_time_notifications", "15"));
     	
-    	if ( (minutes>0) && (Utils.getNotificationsApp(context)) ) {
-	    	if (!Utils.getStatusWorkApp(context)) {
+    	if ( (minutes>0) && (PreferenceUtils.getNotificationsApp(context)) ) {
+	    	if (!PreferenceUtils.getStatusWorkApp(context)) {
 	    		
 	    		int type = intent.getIntExtra("type", OnAlarmReceiver.ALARM_ALL);
 	    		
@@ -34,8 +35,8 @@ public class Alarm1 extends BroadcastReceiver implements AlarmAsyncTaskResponder
 	    		}
    
 		    	if (task!=null) task.cancel(true);
-		    	
-		    	Utils.saveStatusWorkAlarm(context, true);
+
+                PreferenceUtils.saveStatusWorkAlarm(context, true);
 		    	if (preference.getBoolean("prf_notif_type_one_notification", false)) {
 		    		task = new AlarmOneNotificationAsyncTask(this, context, type).execute();
 		    	} else {

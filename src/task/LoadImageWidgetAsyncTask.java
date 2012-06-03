@@ -3,7 +3,7 @@ package task;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
-import com.javielinux.tweettopics2.Utils;
+import com.javielinux.utils.Utils;
 
 import java.io.IOException;
 import java.net.MalformedURLException;

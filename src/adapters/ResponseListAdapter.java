@@ -14,7 +14,8 @@ import com.google.ads.AdView;
 import com.javielinux.tweettopics2.R;
 import com.javielinux.tweettopics2.ThemeManager;
 import com.javielinux.tweettopics2.TweetTopicsCore;
-import com.javielinux.tweettopics2.Utils;
+import com.javielinux.utils.ImageUtils;
+import com.javielinux.utils.Utils;
 import layouts.LoadMoreBreakListItem;
 import layouts.TweetListItem;
 
@@ -101,7 +102,7 @@ public class ResponseListAdapter extends ArrayAdapter<RowResponseList> {
 		return v;*/
 				
 		LoadMoreBreakListItem v = (LoadMoreBreakListItem) mTweetTopicsCore.getTweetTopics().getLayoutInflater().inflate(R.layout.load_more_break, null);
-		v.setBackgroundDrawable(Utils.createStateListDrawable(mContext, mThemeManager.getColor("color_load_more_break")));
+		v.setBackgroundDrawable(ImageUtils.createStateListDrawable(mContext, mThemeManager.getColor("color_load_more_break")));
 		v.showText();
 		try {
 			RowResponseList prev = getItem(position-1);
@@ -200,22 +201,22 @@ public class ResponseListAdapter extends ArrayAdapter<RowResponseList> {
 			}
 			
 			if (mSelectedId==position) {
-				v.setBackgroundDrawable(Utils.createGradientDrawableSelected(mContext, response.isRead()?0:mColorLine));
+				v.setBackgroundDrawable(ImageUtils.createGradientDrawableSelected(mContext, response.isRead()?0:mColorLine));
 			} else if (TweetTopicsCore.mTypeLastColumn == TweetTopicsCore.TIMELINE && response.getText().toLowerCase().contains("@"+mCurrentUser.getString("name").toLowerCase())) {
-				v.setBackgroundDrawable(Utils.createGradientDrawableMention(mContext, response.isRead()?0:mColorLine));
+				v.setBackgroundDrawable(ImageUtils.createGradientDrawableMention(mContext, response.isRead()?0:mColorLine));
 			} else if ((TweetTopicsCore.mTypeLastColumn == TweetTopicsCore.MENTIONS || TweetTopicsCore.mTypeLastColumn == TweetTopicsCore.TIMELINE) &&response.isFavorited()) {
-				v.setBackgroundDrawable(Utils.createGradientDrawableFavorite(mContext, response.isRead()?0:mColorLine));
+				v.setBackgroundDrawable(ImageUtils.createGradientDrawableFavorite(mContext, response.isRead()?0:mColorLine));
 			} else {
 				Entity color = DataFramework.getInstance().getTopEntity("colors", "type_id=2 and word=\""+response.getUsername()+"\"", "");
 				if (color!=null) {
 					try {
 						int c = Color.parseColor( mThemeManager.getColors().get( color.getEntity("type_color_id").getInt("pos") ) );
-						v.setBackgroundDrawable(Utils.createStateListDrawable(mContext, c, response.isRead()?0:mColorLine));
+						v.setBackgroundDrawable(ImageUtils.createStateListDrawable(mContext, c, response.isRead()?0:mColorLine));
 					} catch (Exception e) {
-						v.setBackgroundDrawable(Utils.createStateListDrawable(mContext, mThemeManager.getColor("list_background_row_color"), response.isRead()?0:mColorLine));
+						v.setBackgroundDrawable(ImageUtils.createStateListDrawable(mContext, mThemeManager.getColor("list_background_row_color"), response.isRead()?0:mColorLine));
 					}
 				} else {
-					v.setBackgroundDrawable(Utils.createStateListDrawable(mContext, mThemeManager.getColor("list_background_row_color"), response.isRead()?0:mColorLine));
+					v.setBackgroundDrawable(ImageUtils.createStateListDrawable(mContext, mThemeManager.getColor("list_background_row_color"), response.isRead()?0:mColorLine));
 				}
 			}	
 			

@@ -20,7 +20,7 @@ import com.facebook.android.Facebook;
 import com.facebook.android.Facebook.DialogListener;
 import com.facebook.android.FacebookError;
 import com.javielinux.tweettopics2.Users;
-import com.javielinux.tweettopics2.Utils;
+import com.javielinux.utils.Utils;
 import org.json.JSONObject;
 
 import java.io.FileOutputStream;
