@@ -77,7 +77,7 @@ public class TweetActions {
 
     public static void saveTweet(Activity activity, InfoTweet infoTweet) {
         try {
-            if (TweetTopicsCore.isTypeList(TweetTopicsCore.TYPE_LIST_READAFTER)) {
+            if (infoTweet.isSavedTweet()) {
                 Entity ent = new Entity("saved_tweets", infoTweet.getIdDB());
                 ent.delete();
                 // TODO borrar registro de la pantalla

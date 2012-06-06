@@ -1,7 +1,6 @@
 package infos;
 
 import android.graphics.Bitmap;
-import com.javielinux.tweettopics2.TweetTopicsCore;
 import com.javielinux.utils.Utils;
 
 import java.util.HashMap;
@@ -43,58 +42,31 @@ public class CacheData {
 	public static HashMap<String,Bitmap> mCacheAvatars_Users = new HashMap<String,Bitmap>();
 	public static HashMap<String,InfoLink> mCacheImages_Users = new HashMap<String,InfoLink>();
 	
-	public static HashMap<String,Bitmap> mCacheAvatars_Other = new HashMap<String,Bitmap>();
-	public static HashMap<String,InfoLink> mCacheImages_Other = new HashMap<String,InfoLink>();
-	
 	
 	public static void clearChace_Users() {
 		mCacheAvatars_Users.clear();
 		mCacheImages_Users.clear();
 	}
 	
-	public static void clearChace_Others() {
-		mCacheAvatars_Other.clear();
-		mCacheImages_Other.clear();
-	}
-	
 	public static void putCacheAvatars(String avatar, Bitmap bmp) {
-		if (TweetTopicsCore.isTypeList(TweetTopicsCore.TYPE_LIST_COLUMNUSER)) {
-			mCacheAvatars_Users.put(avatar, bmp);
-		} else {
-			mCacheAvatars_Other.put(avatar, bmp);
-		}
+		mCacheAvatars_Users.put(avatar, bmp);
 	}
 	
 	public static void putCacheImages(String image, InfoLink il) {
-		if (TweetTopicsCore.isTypeList(TweetTopicsCore.TYPE_LIST_COLUMNUSER)) {
-			mCacheImages_Users.put(image, il);
-		} else {
-			mCacheImages_Other.put(image, il);
-		}
+		mCacheImages_Users.put(image, il);
 	}
 	
 	public static HashMap<String,Bitmap> getCacheAvatars() {
-		if (TweetTopicsCore.isTypeList(TweetTopicsCore.TYPE_LIST_COLUMNUSER)) {
-			return mCacheAvatars_Users;
-		} else {
-			return mCacheAvatars_Other;
-		}
+		return mCacheAvatars_Users;
 	}
 	
 	public static HashMap<String,InfoLink> getCacheImages() {
-		if (TweetTopicsCore.isTypeList(TweetTopicsCore.TYPE_LIST_COLUMNUSER)) {
-			return mCacheImages_Users;
-		} else {
-			return mCacheImages_Other;
-		}
+		return mCacheImages_Users;
 	}
 	
 	public static InfoLink getInfoLinkCaches(String link) {
 		if (CacheData.mCacheImages_Users.containsKey(link)) {
 			return CacheData.mCacheImages_Users.get(link);		
-		}
-		if (CacheData.mCacheImages_Other.containsKey(link)) {
-			return CacheData.mCacheImages_Other.get(link);			
 		}
 		return null;
 	}

@@ -18,7 +18,6 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import com.javielinux.tweettopics2.R;
 import com.javielinux.tweettopics2.ThemeManager;
-import com.javielinux.tweettopics2.TweetTopicsCore;
 import com.javielinux.utils.PreferenceUtils;
 import com.javielinux.utils.Utils;
 import infos.CacheData;
@@ -243,7 +242,9 @@ public class TweetListViewItem extends RelativeLayout implements LoadImageAsyncT
 		} else {
 			viewHolder.lastReadLayout.setBackgroundColor(Color.TRANSPARENT);
 		}
-		
+
+        // TODO mostrar el numero de retweets
+		/*
 		if (TweetTopicsCore.isTypeList(TweetTopicsCore.TYPE_LIST_RETWEETS)) {
 			if (infoTweet.getRetweetCount()>0) {
 				viewHolder.tagAvatar.setImageBitmap(Utils.getBitmapNumber(cnt, (int)infoTweet.getRetweetCount(), Color.RED, Utils.TYPE_BUBBLE, 12));
@@ -251,7 +252,7 @@ public class TweetListViewItem extends RelativeLayout implements LoadImageAsyncT
 				viewHolder.tagAvatar.setImageBitmap(null);
 			}
 		}
-		
+		 */
 		if (infoTweet.hasGeoLocation()) {
 			viewHolder.tagMap.setVisibility(View.VISIBLE);
 		} else {

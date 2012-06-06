@@ -1,6 +1,5 @@
 package api.response;
 
-import adapters.RowResponseList;
 import infos.InfoTweet;
 
 import java.util.ArrayList;

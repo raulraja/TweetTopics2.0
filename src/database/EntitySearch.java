@@ -10,7 +10,6 @@ import android.util.Log;
 import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
 import com.javielinux.tweettopics2.R;
-import com.javielinux.tweettopics2.TweetTopicsCore;
 import com.javielinux.utils.LocationUtils;
 import com.javielinux.utils.Utils;
 import infos.InfoSaveTweets;
@@ -276,13 +275,11 @@ public class EntitySearch extends Entity {
 		SharedPreferences preference = PreferenceManager.getDefaultSharedPreferences(cnt);
 		
 		query.setRpp(Integer.parseInt(preference.getString("prf_n_result", "40")));
-		
-		if (!TweetTopicsCore.isGenericSearch) {
-			String lang = "";
-			if (!this.getString("lang").equals("")) lang = this.getString("lang");
-			if (!lang.equals("all")) query.setLang(lang);
-		}
-		
+
+        String lang = "";
+        if (!this.getString("lang").equals("")) lang = this.getString("lang");
+        if (!lang.equals("all")) query.setLang(lang);
+
 		// obtener desde donde quiero hacer la consulta
 		
 		if (getInt("notifications")==1) {

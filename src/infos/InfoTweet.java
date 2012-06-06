@@ -1,24 +1,13 @@
 package infos;
 
-import adapters.RowResponseList;
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
-import android.database.CursorIndexOutOfBoundsException;
 import android.os.Parcel;
 import android.os.Parcelable;
-import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
-import com.javielinux.tweettopics2.NewStatus;
-import com.javielinux.tweettopics2.R;
-import com.javielinux.tweettopics2.TweetActions;
-import com.javielinux.tweettopics2.TweetTopicsCore;
-import com.javielinux.twitter.ConnectionManager;
 import com.javielinux.utils.Utils;
 import com.javielinux.utils.Utils.URLContent;
 import twitter4j.Status;
 import twitter4j.Tweet;
-import twitter4j.TwitterException;
 import twitter4j.User;
 
 import java.util.ArrayList;
@@ -203,33 +192,7 @@ public class InfoTweet implements Parcelable {
 		} catch (Exception e) {
 		}
 	}
-	
-	public InfoTweet(RowResponseList row) {
-		
-		if (row.getContentURLs()!=null) {
-			urls = row.getContentURLs();
-		}
-		
-		if (row.getType()==RowResponseList.TYPE_ENTITY) {
-			writeEntity(row.getEntity());
-		}
-		if (row.getType()==RowResponseList.TYPE_TWEET) {
-			writeTweet(row.getTweet());
-		}
-		if (row.getType()==RowResponseList.TYPE_STATUS) {
-			writeStatus(row.getStatus());
-		}
-		if (row.getType()==RowResponseList.TYPE_USER) {
-			writeUser(row.getUser());
-		}
-		
-		if (!row.getTextFinal().equals("")) {
-			textFinal = row.getTextFinal();
-		}
-		if (!row.getHTMLTextFinal().equals("")) {
-			textHTMLFinal = row.getHTMLTextFinal();
-		}
-	}
+
 
 	public long getId() {
 		return id;
@@ -330,215 +293,7 @@ public class InfoTweet implements Parcelable {
 	public String getUrlTweet() {
 		return urlTweet;
 	}
-	
-	public void goToMention(TweetTopicsCore mTweetTopicsCore) {
-		mTweetTopicsCore.updateStatus(NewStatus.TYPE_NORMAL, "@"+getUsername(), this);
-	}
-	
-	public void goToReply(Activity activity) {
-		if (TweetTopicsCore.isTypeList(TweetTopicsCore.TYPE_LIST_COLUMNUSER) && TweetTopicsCore.isTypeLastColumn(TweetTopicsCore.DIRECTMESSAGES)) {
-			TweetActions.directMessage(activity, getUsername());
-		} else {
-			ArrayList<String> users = Utils.pullLinksUsers(getText());
-			int count = users.size();
-			if (!users.contains("@"+getUsername())) count++;
 
-			Entity e = DataFramework.getInstance().getTopEntity("users", "active=1", "");
-	    	if (e!=null) {
-	    		if (users.contains("@"+e.getString("name"))) count--;	
-	    	}
-			
-			if (count>1) {
-                // TODO Show dialog Reply
-				//mTweetTopicsCore.getTweetTopics().showDialog(TweetTopicsCore.DIALOG_REPLY);
-			} else {
-                TweetActions.updateStatus(activity, NewStatus.TYPE_REPLY, "", this);
-			}
-		}
-
-	}
-	
-	public void goToRetweet(Activity activity) {
-        TweetActions.showDialogRetweet(activity, this);
-	}
-	
-	public int goToFavorite(TweetTopicsCore mTweetTopicsCore) {
-		try {
-
-			int out = OUT_ERROR; 
-			
-			ConnectionManager.getInstance().open(mTweetTopicsCore.getTweetTopics());
-			
-			if (mTweetTopicsCore.isFavoritedSelected()) {
-				if (getTypeFrom()==InfoTweet.FROM_STATUS && getIdDB()>0) {
-					Entity ent = new Entity("tweets_user", getIdDB());
-					ent.setValue("is_favorite", 0);
-					ent.save();
-				}
-				ConnectionManager.getInstance().getTwitter().destroyFavorite(getId());
-
-				out = OUT_FALSE; 
-				//mBtSidebar3.setCompoundDrawablesWithIntrinsicBounds(null, mTweetTopicsCore.getThemeManager().getDrawableTweetButton(R.drawable.icon_favorite, ThemeManager.TYPE_OFF), null, null);
-				Utils.showMessage(mTweetTopicsCore.getTweetTopics(), mTweetTopicsCore.getTweetTopics().getString(R.string.favorite_delete));
-			} else {
-				if (getTypeFrom()==InfoTweet.FROM_STATUS && getIdDB()>0) {
-                    try {
-					    Entity ent = new Entity("tweets_user", getIdDB());
-					    ent.setValue("is_favorite", 1);
-					    ent.save();
-                    } catch (CursorIndexOutOfBoundsException e) {
-                        e.printStackTrace();
-                    }
-				}
-				ConnectionManager.getInstance().getTwitter().createFavorite(getId());
-				out = OUT_TRUE;
-				//mBtSidebar3.setCompoundDrawablesWithIntrinsicBounds(null, mTweetTopicsCore.getThemeManager().getDrawableTweetButton(R.drawable.icon_favorite, ThemeManager.TYPE_NORMAL), null, null);
-				Utils.showMessage(mTweetTopicsCore.getTweetTopics(), mTweetTopicsCore.getTweetTopics().getString(R.string.favorite_save));
-			}
-			mTweetTopicsCore.setFavoritedSelected(!mTweetTopicsCore.isFavoritedSelected());
-			mTweetTopicsCore.refreshAdapters();
-			
-			return out;
-			
-		} catch (TwitterException e) {
-			e.printStackTrace();
-			Utils.showMessage(mTweetTopicsCore.getTweetTopics(), mTweetTopicsCore.getTweetTopics().getString(R.string.favorite_no_save));
-			return OUT_ERROR;
-		}
-	}
-	
-	public void goToReadAfter(TweetTopicsCore mTweetTopicsCore) {
-		try {
-			if (TweetTopicsCore.isTypeList(TweetTopicsCore.TYPE_LIST_READAFTER)) {
-				Entity ent = new Entity("saved_tweets", getIdDB());
-				ent.delete();
-				mTweetTopicsCore.toDoReadAfter();
-				Utils.showMessage(mTweetTopicsCore.getTweetTopics(), mTweetTopicsCore.getTweetTopics().getString(R.string.favorite_delete));
-			} else {
-				Entity ent = new Entity("saved_tweets");
-				ent.setValue("url_avatar", getUrlAvatar());
-				ent.setValue("username", getUsername());
-				ent.setValue("user_id", getUserId());
-				ent.setValue("tweet_id", getId()+"");
-				ent.setValue("text", getText());
-				ent.setValue("text_urls", textURLs);
-				ent.setValue("source", getSource());
-				ent.setValue("to_username", getToUsername());
-				ent.setValue("to_user_id", getToUserId());
-				ent.setValue("date", getDate().getTime()+"");
-				ent.setValue("latitude", getLatitude());
-				ent.setValue("longitude", getLongitude());
-				ent.save();
-				Utils.showMessage(mTweetTopicsCore.getTweetTopics(), mTweetTopicsCore.getTweetTopics().getString(R.string.favorite_save));
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			Utils.showMessage(mTweetTopicsCore.getTweetTopics(), mTweetTopicsCore.getTweetTopics().getString(R.string.favorite_no_save));
-		}
-	}
-	
-	public void goToSendDM(TweetTopicsCore mTweetTopicsCore) {
-		mTweetTopicsCore.directMessage(getUsername());
-	}
-	
-	public void goToDeleteTweet(TweetTopicsCore mTweetTopicsCore) {
-		if (TweetTopicsCore.isTypeList(TweetTopicsCore.TYPE_LIST_COLUMNUSER)) {
-			if (getUsername().equals(mTweetTopicsCore.getTweetTopics().getActiveUser().getString("name"))) {
-				ConnectionManager.getInstance().open(mTweetTopicsCore.getTweetTopics());
-				try {
-					if (TweetTopicsCore.isTypeList(TweetTopicsCore.TYPE_LIST_COLUMNUSER) && TweetTopicsCore.isTypeLastColumn(TweetTopicsCore.DIRECTMESSAGES)) {
-						ConnectionManager.getInstance().getTwitter().destroyDirectMessage(getId());
-					} else {
-						ConnectionManager.getInstance().getTwitter().destroyStatus(getId());
-					}
-					if (getIdDB()>0) {
-						Entity ent = new Entity ("tweets_user", getIdDB());
-						ent.delete();
-					}
-					Utils.showMessage(mTweetTopicsCore.getTweetTopics(), mTweetTopicsCore.getTweetTopics().getString(R.string.delete_tweet_correct));
-					mTweetTopicsCore.refreshAdapters();
-				} catch (TwitterException e) {
-					e.printStackTrace();
-					Utils.showMessage(mTweetTopicsCore.getTweetTopics(), mTweetTopicsCore.getTweetTopics().getString(R.string.delete_tweet_problem));
-				} catch (Exception e) {
-					e.printStackTrace();
-					Utils.showMessage(mTweetTopicsCore.getTweetTopics(), mTweetTopicsCore.getTweetTopics().getString(R.string.delete_tweet_problem));
-				}
-			} else {
-				Utils.showMessage(mTweetTopicsCore.getTweetTopics(), mTweetTopicsCore.getTweetTopics().getString(R.string.option_no_available));
-			}
-		} else {
-			Utils.showMessage(mTweetTopicsCore.getTweetTopics(), mTweetTopicsCore.getTweetTopics().getString(R.string.option_no_available));
-		}
-	}
-	
-	public void goToMap(TweetTopicsCore mTweetTopicsCore) {
-		mTweetTopicsCore.showMap(this);
-	}
-	
-	public void goToClipboard(TweetTopicsCore mTweetTopicsCore) {
-		mTweetTopicsCore.copyToClipboard(getText());
-	}
-	
-	public void goToShare(TweetTopicsCore mTweetTopicsCore) {
-		Intent msg=new Intent(Intent.ACTION_SEND);
-        msg.putExtra(Intent.EXTRA_TEXT, getUsername() + ": " + getText());
-        msg.setType("text/plain");
-        mTweetTopicsCore.getTweetTopics().startActivity(msg);
-	}
-	
-	public boolean goToMarkLastReadId(TweetTopicsCore mTweetTopicsCore, int pos) {
-		return mTweetTopicsCore.markLastReadId(pos, getId());
-	}
-
-    // TODO eliminar esta funcion
-    public boolean execByCode(String code, TweetTopicsCore mTweetTopicsCore, int pos) {
-        return false;
-    }
-
-	public boolean execByCode(String code, Activity activity, int pos) {
-		/*
-		"reply", "retweet", "lastread", "readafter",
-		"favorite", "share", "mention", "map",
-		"clipboard", "send_dm", "delete_tweet"};
-		*/
-		if (code.equals("reply")) {
-			this.goToReply(activity);
-		} else if (code.equals("retweet")) {
-			this.goToRetweet(activity);
-		} else if (code.equals("lastread")) {
-			//return this.goToMarkLastReadId(mTweetTopicsCore, pos);
-		} else if (code.equals("readafter")) {
-			//this.goToReadAfter(mTweetTopicsCore);
-		} else if (code.equals("favorite")) {
-            //this.goToFavorite(mTweetTopicsCore);
-		} else if (code.equals("share")) {
-            //this.goToShare(mTweetTopicsCore);
-		} else if (code.equals("mention")) {
-            //this.goToMention(mTweetTopicsCore);
-		} else if (code.equals("map")) {
-            //this.goToMap(mTweetTopicsCore);
-		} else if (code.equals("clipboard")) {
-            //this.goToClipboard(mTweetTopicsCore);
-		} else if (code.equals("send_dm")) {
-            //this.goToSendDM(mTweetTopicsCore);
-		} else if (code.equals("delete_tweet")) {
-            //this.goToDeleteTweet(mTweetTopicsCore);
-		} else if (code.equals("delete_up_tweets")) {
-            //this.goToDeleteTop(mTweetTopicsCore);
-		}
-		return false;
-	}
-	
-	public void goToDeleteTop(TweetTopicsCore mTweetTopicsCore) {
-		Entity e = DataFramework.getInstance().getTopEntity("users", "active=1", "");
-		if (e!=null) {
-			Entity ent = new Entity("tweets_user", getIdDB());
-			String date = ent.getString("date");
-			String sqldelete = "DELETE FROM tweets_user WHERE type_id= 0 and user_tt_id="+e.getId() + " AND date > '" + date + "'";
-			DataFramework.getInstance().getDB().execSQL(sqldelete);
-		}
-	}
 
 	public String getTextHTMLFinal() {
 		return textHTMLFinal;

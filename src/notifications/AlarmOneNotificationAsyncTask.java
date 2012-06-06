@@ -15,10 +15,10 @@ import android.util.Log;
 import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
 import com.javielinux.tweettopics2.R;
-import com.javielinux.tweettopics2.TweetTopics;
-import com.javielinux.tweettopics2.TweetTopicsCore;
+import com.javielinux.tweettopics2.TweetTopicsActivity;
 import com.javielinux.twitter.ConnectionManager;
 import com.javielinux.utils.PreferenceUtils;
+import com.javielinux.utils.TweetTopicsConstants;
 import com.javielinux.utils.Utils;
 import database.EntitySearch;
 import database.EntityTweetUser;
@@ -157,7 +157,7 @@ public class AlarmOneNotificationAsyncTask extends AsyncTask<Void, Void, Void> {
     			// TIMELINE
     			
     			if (users.get(i).getInt("no_save_timeline")!=1) {
-    				EntityTweetUser etuTimeline = new EntityTweetUser(users.get(i).getId(), TweetTopicsCore.TIMELINE);
+    				EntityTweetUser etuTimeline = new EntityTweetUser(users.get(i).getId(), TweetTopicsConstants.TWEET_TYPE_TIMELINE);
 	    			if (!PreferenceUtils.getStatusWorkApp(mContext) && mType!=OnAlarmReceiver.ALARM_ONLY_OTHERS) {
 	    				etuTimeline.saveTweets(mContext, twitter, true);
 	    			}
@@ -169,7 +169,7 @@ public class AlarmOneNotificationAsyncTask extends AsyncTask<Void, Void, Void> {
     			}
     			
     			// MENTIONS
-    			EntityTweetUser etuMentions = new EntityTweetUser(users.get(i).getId(), TweetTopicsCore.MENTIONS);    			
+    			EntityTweetUser etuMentions = new EntityTweetUser(users.get(i).getId(), TweetTopicsConstants.TWEET_TYPE_MENTIONS);
     			if (!PreferenceUtils.getStatusWorkApp(mContext) && mType!=OnAlarmReceiver.ALARM_ONLY_TIMELINE) {
     				InfoSaveTweets info = etuMentions.saveTweets(mContext, twitter, true);
     				if (info.getNewMessages()>0 && mentions) showNotification = true;
@@ -183,7 +183,7 @@ public class AlarmOneNotificationAsyncTask extends AsyncTask<Void, Void, Void> {
 				}
     			
     			// DIRECTOS
-				EntityTweetUser etuDMs = new EntityTweetUser(users.get(i).getId(), TweetTopicsCore.DIRECTMESSAGES);    			
+				EntityTweetUser etuDMs = new EntityTweetUser(users.get(i).getId(), TweetTopicsConstants.TWEET_TYPE_DIRECTMESSAGES);
     			if (!PreferenceUtils.getStatusWorkApp(mContext) && mType!=OnAlarmReceiver.ALARM_ONLY_TIMELINE) {
     				InfoSaveTweets info = etuDMs.saveTweets(mContext, twitter, true);
     				if (info.getNewMessages()>0 && dms) showNotification = true;
@@ -198,7 +198,7 @@ public class AlarmOneNotificationAsyncTask extends AsyncTask<Void, Void, Void> {
     			// DIRECTOS ENVIADOS
     			
     			if (!PreferenceUtils.getStatusWorkApp(mContext) && mType!=OnAlarmReceiver.ALARM_ONLY_TIMELINE) {
-    				EntityTweetUser etuSentDMs = new EntityTweetUser(users.get(i).getId(), TweetTopicsCore.SENT_DIRECTMESSAGES);
+    				EntityTweetUser etuSentDMs = new EntityTweetUser(users.get(i).getId(), TweetTopicsConstants.TWEET_TYPE_SENT_DIRECTMESSAGES);
     				etuSentDMs.saveTweets(mContext, twitter, true);
     			}
     			
@@ -359,7 +359,7 @@ public class AlarmOneNotificationAsyncTask extends AsyncTask<Void, Void, Void> {
     private void setMood(int moodId, String text, int type) {
         Notification notification = new Notification(moodId, text, System.currentTimeMillis());
         notification.flags = Notification.FLAG_AUTO_CANCEL;
-        Intent i = new Intent(mContext, TweetTopics.class);
+        Intent i = new Intent(mContext, TweetTopicsActivity.class);
         //if (search_id>0) i.putExtra("notification_from_search_id", search_id);
         
         if (type>=0) i.putExtra("notification_from_type", type);

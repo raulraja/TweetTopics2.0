@@ -18,7 +18,7 @@ import android.widget.RemoteViews;
 import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
 import com.javielinux.tweettopics2.R;
-import com.javielinux.tweettopics2.TweetTopics;
+import com.javielinux.tweettopics2.TweetTopicsActivity;
 import com.javielinux.twitter.ConnectionManager;
 import com.javielinux.utils.PreferenceUtils;
 import com.javielinux.utils.Utils;
@@ -421,7 +421,7 @@ public class ServiceWidgetTweets4x2 extends Service {
 	    	}
 	    	
 	    	if (data.equals(Uri.parse(Utils.URI_SCHEME + "://command/app"))) {
-				Intent i = new Intent(context, TweetTopics.class);
+				Intent i = new Intent(context, TweetTopicsActivity.class);
 				i.setAction(Intent.ACTION_VIEW);
 				i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 				context.startActivity(i);

@@ -21,9 +21,9 @@ import com.facebook.android.FacebookError;
 import com.javielinux.facebook.FacebookHandler;
 import com.javielinux.tweettopics2.NewStatus;
 import com.javielinux.tweettopics2.R;
-import com.javielinux.tweettopics2.TweetTopicsCore;
 import com.javielinux.twitter.ConnectionManager;
 import com.javielinux.utils.PreferenceUtils;
+import com.javielinux.utils.TweetTopicsConstants;
 import com.javielinux.utils.Utils;
 import task.*;
 import task.DirectMessageAsyncTask.DirectMessageAsyncTaskResponder;
@@ -191,7 +191,7 @@ public class ServiceUpdateStatus extends Service implements UploadStatusAsyncTas
                 }
                 ((NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE)).cancel(ID_NOTIFICATION);
                 Intent update = new Intent();
-                update.putExtra("refresh-column", TweetTopicsCore.TIMELINE);
+                update.putExtra("refresh-column", TweetTopicsConstants.TWEET_TYPE_TIMELINE);
                 update.setAction(Intent.ACTION_VIEW);
                 sendOrderedBroadcast(update, null);
             }

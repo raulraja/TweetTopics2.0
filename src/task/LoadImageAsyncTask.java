@@ -5,7 +5,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.util.Log;
-import com.javielinux.tweettopics2.TweetTopicsCore;
 import com.javielinux.utils.Utils;
 import infos.CacheData;
 import infos.InfoLink;
@@ -37,22 +36,14 @@ public class LoadImageAsyncTask extends AsyncTask<String, Void, Void> {
 		Bitmap bmp = null;
 
 		try {
-			if (TweetTopicsCore.isTypeList(TweetTopicsCore.TYPE_LIST_COLUMNUSER)) {
-				File file = Utils.getFileForSaveURL(context, u);
-				if (!file.exists()) {
-					bmp = Utils.saveAvatar(u, file);
-				} else {
-					bmp = BitmapFactory.decodeFile(file.getAbsolutePath());
-					/*if (bmp==null) { // lo intentamos de nuevo
-						file.delete();
-						bmp = Utils.saveAvatar(u, file);
-					}  */
-				}
-				
-			} else {
-				bmp = Utils.getAvatar(u);
 
-			}
+            File file = Utils.getFileForSaveURL(context, u);
+            if (!file.exists()) {
+                bmp = Utils.saveAvatar(u, file);
+            } else {
+                bmp = BitmapFactory.decodeFile(file.getAbsolutePath());
+            }
+
 
 		} catch (Exception e) {
 			e.printStackTrace();

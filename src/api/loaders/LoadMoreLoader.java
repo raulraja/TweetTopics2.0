@@ -1,18 +1,11 @@
 package api.loaders;
 
 
-import adapters.RowResponseList;
 import android.content.Context;
 import api.AsynchronousLoader;
 import api.request.LoadMoreRequest;
 import api.response.BaseResponse;
-import api.response.ErrorResponse;
 import api.response.LoadMoreResponse;
-import com.javielinux.tweettopics2.TweetTopicsCore;
-import com.javielinux.twitter.ConnectionManager;
-import twitter4j.*;
-
-import java.util.ArrayList;
 
 public class LoadMoreLoader extends AsynchronousLoader<BaseResponse> {
 
@@ -26,9 +19,12 @@ public class LoadMoreLoader extends AsynchronousLoader<BaseResponse> {
     @Override
     public BaseResponse loadInBackground() {
 
-        try {
+        // TODO esto hay que hacerlo... hasta los cojones ya
+
+        //try {
 
             LoadMoreResponse response = new LoadMoreResponse();
+            /*
             ArrayList<RowResponseList> result = new ArrayList<RowResponseList>();
 
             ConnectionManager.getInstance().open(getContext());
@@ -69,15 +65,16 @@ public class LoadMoreLoader extends AsynchronousLoader<BaseResponse> {
             }
 
             response.setResult(result);
+            */
 
             return response;
 
-        } catch (TwitterException e) {
+        /*} catch (TwitterException e) {
             e.printStackTrace();
             ErrorResponse errorResponse = new ErrorResponse();
             errorResponse.setError(e, e.getMessage());
             return errorResponse;
-        }
+        }  */
 
     }
 

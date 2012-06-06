@@ -1,30 +1,22 @@
 package api.loaders;
 
-import adapters.ResponseListAdapter;
-import adapters.RowResponseList;
 import android.content.Context;
 import api.AsynchronousLoader;
 import api.request.SearchRequest;
 import api.response.BaseResponse;
 import api.response.ErrorResponse;
 import api.response.SearchResponse;
-import com.javielinux.tweettopics2.TweetTopicsCore;
 import com.javielinux.twitter.ConnectionManager;
 import database.EntitySearch;
 import infos.InfoSaveTweets;
-import twitter4j.*;
-
-import java.util.ArrayList;
 
 public class SearchLoader extends AsynchronousLoader<BaseResponse> {
 
-    private TweetTopicsCore tweetTopicsCore;
     private EntitySearch entitySearch;
 
     public SearchLoader(Context context, SearchRequest request) {
         super(context);
 
-        this.tweetTopicsCore = request.getTweetTopicsCore();
         this.entitySearch = request.getEntitySearch();
     }
 
@@ -37,12 +29,13 @@ public class SearchLoader extends AsynchronousLoader<BaseResponse> {
             ConnectionManager.getInstance().open(getContext());
 
             if (entitySearch.getInt("notifications")==1) {
-                tweetTopicsCore.setTypeList(TweetTopicsCore.TYPE_LIST_SEARCH_NOTIFICATIONS);
                 response.setInfoSaveTweets(entitySearch.saveTweets(getContext(), ConnectionManager.getInstance().getTwitter(), false));
             } else {
-                tweetTopicsCore.setTypeList(TweetTopicsCore.TYPE_LIST_SEARCH);
                 response.setInfoSaveTweets(new InfoSaveTweets());
 
+                // TODO Cargas el infoTweet con todos los tweets
+
+                /*
                 ArrayList<RowResponseList> rowResponseLists = new ArrayList<RowResponseList>();
 
                 if (entitySearch.isUser()) {
@@ -62,10 +55,12 @@ public class SearchLoader extends AsynchronousLoader<BaseResponse> {
                 }
 
                 response.setListAdapter(new ResponseListAdapter(getContext(), tweetTopicsCore, rowResponseLists, entitySearch.getLong("last_tweet_id")));
+
+                */
             }
 
             return response;
-        } catch (TwitterException e) {
+        /*} catch (TwitterException e) {
             e.printStackTrace();
             ErrorResponse response = new ErrorResponse();
             response.setError(e, e.getMessage());
@@ -76,7 +71,7 @@ public class SearchLoader extends AsynchronousLoader<BaseResponse> {
                 response.setRateError(rate);
             }
 
-            return response;
+            return response;  */
         } catch (Exception e) {
             e.printStackTrace();
             ErrorResponse response = new ErrorResponse();

@@ -1,24 +1,11 @@
 package api.loaders;
 
 
-import adapters.RowResponseList;
-import android.content.ContentValues;
 import android.content.Context;
-import android.database.Cursor;
-import android.database.SQLException;
 import api.AsynchronousLoader;
 import api.request.LoadMoreTweetDownRequest;
 import api.response.BaseResponse;
-import api.response.ErrorResponse;
 import api.response.LoadMoreTweetDownResponse;
-import com.android.dataframework.DataFramework;
-import com.android.dataframework.Entity;
-import com.javielinux.tweettopics2.TweetTopicsCore;
-import com.javielinux.twitter.ConnectionManager;
-import com.javielinux.utils.Utils;
-import twitter4j.*;
-
-import java.util.ArrayList;
 
 public class LoadMoreTweetDownLoader extends AsynchronousLoader<BaseResponse> {
 
@@ -32,10 +19,14 @@ public class LoadMoreTweetDownLoader extends AsynchronousLoader<BaseResponse> {
     @Override
     public BaseResponse loadInBackground() {
 
+        // TODO esto hay que rehacerlo
+
         LoadMoreTweetDownResponse response = new LoadMoreTweetDownResponse();
 
         response.setPos(request.getPos());
 
+        return response;
+        /*
         ArrayList<RowResponseList> tweets = new ArrayList<RowResponseList>();
         try {
 
@@ -64,46 +55,6 @@ public class LoadMoreTweetDownLoader extends AsynchronousLoader<BaseResponse> {
                     }
                 }
 
-                /*
-				int page = 1;
-				Paging p = new Paging(page,60);
-				p.setMaxId(maxId);
-				if (sinceId>0) p.setSinceId(sinceId);
-
-				ResponseList<twitter4j.Status> statuses = ConnectionManager.getInstance().getTwitter().getHomeTimeline(p);
-				statii = statuses;
-
-				while (statuses.size()>0) {
-					statuses.clear();
-					page++;
-					p = new Paging(page,60);
-					p.setMaxId(maxId);
-					if (sinceId>0) p.setSinceId(sinceId);
-					statuses = ConnectionManager.getInstance().getTwitter().getHomeTimeline(p);
-					statii.addAll(statuses);
-				}
-				 */
-                /*
-                    Paging p = new Paging(1,60);
-                    p.setMaxId(maxId);
-                    if (sinceId>0) p.setSinceId(sinceId);
-
-                    ResponseList<twitter4j.Status> statuses = ConnectionManager.getInstance().getTwitter().getHomeTimeline(p);
-
-                    while (statuses.size()>1) {
-                        //Log.d(Utils.TAG, "tam statuses: " + statuses.size());
-                        if (statii==null) {
-                            statii = statuses;
-                        } else {
-                            statuses.remove(0);
-                            statii.addAll(statuses);
-                        }
-                        Paging ps = new Paging(1,60);
-                        ps.setMaxId(statii.get(statii.size()-1).getId());
-                        if (sinceId>0) ps.setSinceId(sinceId);
-                        statuses = ConnectionManager.getInstance().getTwitter().getHomeTimeline(ps);
-                    }
-                    */
             } else {
 
                 Paging p = new Paging(1,request.getCount());
@@ -121,22 +72,6 @@ public class LoadMoreTweetDownLoader extends AsynchronousLoader<BaseResponse> {
                     }
                 }
 
-                /*
-                    Paging p = new Paging(1, count);
-                    p.setMaxId(maxId);
-                    if (sinceId>0) p.setSinceId(sinceId);
-
-                    statii = ConnectionManager.getInstance().getTwitter().getHomeTimeline(p);
-
-                    if (statii.size()>=count-6) {
-                        Paging pa = new Paging(1,10);
-                        pa.setMaxId(statii.get(statii.size()-1).getId());
-                        if (sinceId>0) p.setSinceId(sinceId);
-                        if (ConnectionManager.getInstance().getTwitter().getHomeTimeline().size()>0) {
-                            result.hasMoreTweets = true;
-                        }
-                    }
-                    */
             }
 
             if (statii!=null) {
@@ -257,7 +192,7 @@ public class LoadMoreTweetDownLoader extends AsynchronousLoader<BaseResponse> {
             return errorResponse;
         }
 
-
+         */
 
     }
 

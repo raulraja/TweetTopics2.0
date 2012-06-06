@@ -8,7 +8,6 @@ import android.util.Log;
 import api.AsynchronousLoader;
 import api.request.LoadImageRequest;
 import api.response.BaseResponse;
-import com.javielinux.tweettopics2.TweetTopicsCore;
 import com.javielinux.utils.Utils;
 import infos.CacheData;
 import infos.InfoLink;
@@ -50,18 +49,14 @@ public class LoadImageLoader extends AsynchronousLoader<BaseResponse> {
         Bitmap bmp = null;
 
         try {
-            if (TweetTopicsCore.isTypeList(TweetTopicsCore.TYPE_LIST_COLUMNUSER)) {
-                File file = Utils.getFileForSaveURL(getContext(), u);
-                if (!file.exists()) {
-                    bmp = Utils.saveAvatar(u, file);
-                } else {
-                    bmp = BitmapFactory.decodeFile(file.getAbsolutePath());
-                }
 
+            File file = Utils.getFileForSaveURL(getContext(), u);
+            if (!file.exists()) {
+                bmp = Utils.saveAvatar(u, file);
             } else {
-                bmp = Utils.getAvatar(u);
-
+                bmp = BitmapFactory.decodeFile(file.getAbsolutePath());
             }
+
 
         } catch (Exception e) {
             e.printStackTrace();
