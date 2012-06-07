@@ -7,7 +7,7 @@ import api.response.BaseResponse;
 import api.response.DirectMessageResponse;
 import api.response.ErrorResponse;
 import com.javielinux.tweettopics2.NewStatus;
-import com.javielinux.twitter.ConnectionManager;
+import com.javielinux.twitter.ConnectionManager2;
 import com.javielinux.utils.Utils;
 import twitter4j.TwitterException;
 
@@ -15,15 +15,11 @@ import java.util.ArrayList;
 
 public class DirectMessageLoader extends AsynchronousLoader<BaseResponse> {
 
-    private int modeTweetLonger = 0;
-    private String text = "";
-    private String user = "";
+    private DirectMessageRequest request;
 
     public DirectMessageLoader(Context context, DirectMessageRequest request) {
         super(context);
-        modeTweetLonger = request.getModeTweetLonger();
-        text = request.getText();
-        user = request.getUser();
+        this.request = request;
     }
 
     @Override
@@ -31,12 +27,12 @@ public class DirectMessageLoader extends AsynchronousLoader<BaseResponse> {
 
         try {
             DirectMessageResponse response = new DirectMessageResponse();
-            if (modeTweetLonger == NewStatus.MODE_TL_NONE) {
-                ConnectionManager.getInstance().getTwitter().sendDirectMessage(user, text);
+            if (request.getModeTweetLonger() == NewStatus.MODE_TL_NONE) {
+                ConnectionManager2.getInstance().getTwitter(request.getUserId()).sendDirectMessage(request.getUser(), request.getText());
             } else {
-                ArrayList<String> ar = Utils.getDivide140(text, "");
+                ArrayList<String> ar = Utils.getDivide140(request.getText(), "");
                 for (String t : ar) {
-                    ConnectionManager.getInstance().getTwitter().sendDirectMessage(user, t);
+                    ConnectionManager2.getInstance().getTwitter(request.getUserId()).sendDirectMessage(request.getUser(), t);
                 }
             }
             response.setSent(true);

@@ -18,10 +18,6 @@ public class InfoTweet implements Parcelable {
     public static final String START_URL_TWITTER = "http://twitter.com/#!/";
 	public static final String PREFIX_URL_TWITTER = "/status/";
 	
-	public static final int OUT_TRUE = 0;
-	public static final int OUT_FALSE = 1;
-	public static final int OUT_ERROR = 2;
-	
 	public static final int FROM_TWEETS = 0;
 	public static final int FROM_STATUS = 1;
 	public static final int FROM_USER = 2;

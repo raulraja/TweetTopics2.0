@@ -16,7 +16,7 @@ import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
 import com.javielinux.tweettopics2.R;
 import com.javielinux.tweettopics2.TweetTopicsActivity;
-import com.javielinux.twitter.ConnectionManager;
+import com.javielinux.twitter.ConnectionManager2;
 import com.javielinux.utils.PreferenceUtils;
 import com.javielinux.utils.TweetTopicsConstants;
 import com.javielinux.utils.Utils;
@@ -64,8 +64,8 @@ public class AlarmOneNotificationAsyncTask extends AsyncTask<Void, Void, Void> {
 		
 		mType = type;
 
-        ConnectionManager.getInstance().open(mContext);
-        twitter = ConnectionManager.getInstance().getTwitter();
+        ConnectionManager2.getInstance().open(mContext);
+        twitter = ConnectionManager2.getInstance().getAnonymousTwitter();
     			
     	PreferenceManager.setDefaultValues(mContext, R.xml.preferences, false);
     	mPreferences = PreferenceManager.getDefaultSharedPreferences(mContext);
@@ -123,7 +123,7 @@ public class AlarmOneNotificationAsyncTask extends AsyncTask<Void, Void, Void> {
 	}
 	
 	public void loadUser(long id) {
-		twitter = ConnectionManager.getInstance().getTwitter(id, false);
+		twitter = ConnectionManager2.getInstance().getTwitter(id);
 	}
 	
 	public void searchUser() {

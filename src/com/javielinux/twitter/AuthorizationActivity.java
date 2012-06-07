@@ -28,7 +28,7 @@ public class AuthorizationActivity extends Activity {
 				if (null != token) {
 					webView.setVisibility(View.INVISIBLE);
 					try {
-						ConnectionManager.getInstance().finalizeOAuthentication(uri);
+						ConnectionManager2.getInstance().finalizeOAuthentication(uri);
 					} catch (TwitterException e) {
 						e.printStackTrace();
 					}
@@ -80,15 +80,15 @@ public class AuthorizationActivity extends Activity {
 		super.onResume();
         PreferenceUtils.saveStatusWorkApp(this, true);
 		
-		ConnectionManager.destroyInstance();
+		ConnectionManager2.destroyInstance();
 		
-		ConnectionManager.getInstance().open(this);
+		ConnectionManager2.getInstance().open(this);
     	
-        ConnectionManager.getInstance().setNetworkConfig(network);
+        ConnectionManager2.getInstance().setNetworkConfig(network);
         
         String authUrl = null;
 		try {
-			authUrl = ConnectionManager.getInstance().getAuthenticationURL();
+			authUrl = ConnectionManager2.getInstance().getAuthenticationURL();
 		} catch (TwitterException e) {
 			e.printStackTrace();
 		}		

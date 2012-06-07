@@ -39,7 +39,7 @@ public class TweetTopicsFragment extends Fragment {
     private Context context;
     private LoaderManager loaderManager;
     private TweetsAdapter tweetsAdapter;
-    private ArrayList<InfoTweet> infoTweets;
+    private ArrayList<InfoTweet> infoTweets = new ArrayList<InfoTweet>();;
     private Entity column_entity;
     private Entity user_entity;
     private View view;
@@ -62,21 +62,16 @@ public class TweetTopicsFragment extends Fragment {
         this.context = context;
         this.loaderManager = loaderManager;
 
-        try {
-            column_entity = new Entity("columns", column_id);
-            if (column_entity.getInt("type_id")==TweetTopicsConstants.COLUMN_TIMELINE) {
-                typeUserColumn = TweetTopicsConstants.TWEET_TYPE_TIMELINE;
-            } else if (column_entity.getInt("type_id")==TweetTopicsConstants.COLUMN_MENTIONS) {
-                typeUserColumn = TweetTopicsConstants.TWEET_TYPE_MENTIONS;
-            } else if (column_entity.getInt("type_id")==TweetTopicsConstants.COLUMN_DIRECT_MESSAGES) {
-                typeUserColumn = TweetTopicsConstants.TWEET_TYPE_DIRECTMESSAGES;
-            }
-            user_entity = new Entity("users", column_entity.getLong("user_id"));
-            infoTweets = new ArrayList<InfoTweet>();
-
-        } catch (Exception exception) {
-            exception.printStackTrace();
+        column_entity = new Entity("columns", column_id);
+        if (column_entity.getInt("type_id")==TweetTopicsConstants.COLUMN_TIMELINE) {
+            typeUserColumn = TweetTopicsConstants.TWEET_TYPE_TIMELINE;
+        } else if (column_entity.getInt("type_id")==TweetTopicsConstants.COLUMN_MENTIONS) {
+            typeUserColumn = TweetTopicsConstants.TWEET_TYPE_MENTIONS;
+        } else if (column_entity.getInt("type_id")==TweetTopicsConstants.COLUMN_DIRECT_MESSAGES) {
+            typeUserColumn = TweetTopicsConstants.TWEET_TYPE_DIRECTMESSAGES;
         }
+        user_entity = new Entity("users", column_entity.getLong("user_id"));
+
     }
 
     private void preLoadInfoTweetIfIsNecessary() {
@@ -220,6 +215,8 @@ public class TweetTopicsFragment extends Fragment {
                 hideUpdating();
                 listView.onRefreshComplete();
 
+                showTweetsList();
+
                 InfoSaveTweets infoSaveTweets = result.getInfo();
 
                 if (infoSaveTweets.getNewMessages() > 0) {
@@ -296,13 +293,13 @@ public class TweetTopicsFragment extends Fragment {
 
                     listView.getRefreshableView().setSelection(firstVisible + count);
 
-                    showTweetsList();
                 }
             }
 
             @Override
             public void onError(ErrorResponse error) {
                 error.getError().printStackTrace();
+                showNoInternet();
             }
         }, new TwitterUserRequest(column_entity.getInt("type_id"), user_entity));
     }

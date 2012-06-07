@@ -6,7 +6,7 @@ import api.request.SearchRequest;
 import api.response.BaseResponse;
 import api.response.ErrorResponse;
 import api.response.SearchResponse;
-import com.javielinux.twitter.ConnectionManager;
+import com.javielinux.twitter.ConnectionManager2;
 import database.EntitySearch;
 import infos.InfoSaveTweets;
 
@@ -26,10 +26,10 @@ public class SearchLoader extends AsynchronousLoader<BaseResponse> {
         try {
             SearchResponse response = new SearchResponse();
 
-            ConnectionManager.getInstance().open(getContext());
+            ConnectionManager2.getInstance().open(getContext());
 
             if (entitySearch.getInt("notifications")==1) {
-                response.setInfoSaveTweets(entitySearch.saveTweets(getContext(), ConnectionManager.getInstance().getTwitter(), false));
+                response.setInfoSaveTweets(entitySearch.saveTweets(getContext(), ConnectionManager2.getInstance().getAnonymousTwitter(), false));
             } else {
                 response.setInfoSaveTweets(new InfoSaveTweets());
 

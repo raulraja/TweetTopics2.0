@@ -6,7 +6,7 @@ import api.request.UserListsRequest;
 import api.response.BaseResponse;
 import api.response.ErrorResponse;
 import api.response.UserListsResponse;
-import com.javielinux.twitter.ConnectionManager;
+import com.javielinux.twitter.ConnectionManager2;
 import twitter4j.ResponseList;
 import twitter4j.TwitterException;
 import twitter4j.UserList;
@@ -19,16 +19,12 @@ public class UserListsLoader extends AsynchronousLoader<BaseResponse> {
     public static int SHOW_TWEETS = 1;
     public static int SHOW_TWEETS_FOLLOWINGLIST = 2;
 
-    private int action;
-    private String addUser;
-    private String user;
+    private UserListsRequest request;
 
     public UserListsLoader(Context context, UserListsRequest request) {
         super(context);
 
-        this.action = request.getAction();
-        this.addUser = request.getAddUser();
-        this.user = request.getUser();
+        this.request = request;
     }
 
     @Override
@@ -37,17 +33,17 @@ public class UserListsLoader extends AsynchronousLoader<BaseResponse> {
         try {
             UserListsResponse response = new UserListsResponse();
 
-            ConnectionManager.getInstance().open(getContext());
+            ConnectionManager2.getInstance().open(getContext());
 
-            response.action = action;
-            response.addUser = addUser;
+            response.action = request.getAction();
+            response.addUser = request.getAddUser();
 
-            if (action == SHOW_TWEETS) {
-                    response.setUserList(ConnectionManager.getInstance().getTwitter().getAllUserLists(user));
-            } else if (action == SHOW_TWEETS_FOLLOWINGLIST) {
-                    response.setUserList(ConnectionManager.getInstance().getTwitter().getUserListMemberships(user, -1));
+            if (request.getAction() == SHOW_TWEETS) {
+                    response.setUserList(ConnectionManager2.getInstance().getTwitter(request.getUserId()).getAllUserLists(request.getUser()));
+            } else if (request.getAction() == SHOW_TWEETS_FOLLOWINGLIST) {
+                    response.setUserList(ConnectionManager2.getInstance().getTwitter(request.getUserId()).getUserListMemberships(request.getUser(), -1));
             } else {
-                ResponseList<UserList> responseList = ConnectionManager.getInstance().getTwitter().getAllUserLists(user);
+                ResponseList<UserList> responseList = ConnectionManager2.getInstance().getTwitter(request.getUserId()).getAllUserLists(request.getUser());
                 ArrayList<UserList> deleteList = new ArrayList<UserList>();
 
                 for (UserList ul : responseList) {

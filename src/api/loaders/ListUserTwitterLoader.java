@@ -10,7 +10,7 @@ import api.request.ListUserTwitterRequest;
 import api.response.BaseResponse;
 import api.response.ErrorResponse;
 import api.response.ListUserTwitterResponse;
-import com.javielinux.twitter.ConnectionManager;
+import com.javielinux.twitter.ConnectionManager2;
 import com.javielinux.utils.Utils;
 import infos.InfoUsers;
 import twitter4j.RateLimitStatus;
@@ -37,7 +37,7 @@ public class ListUserTwitterLoader extends AsynchronousLoader<BaseResponse> {
             ListUserTwitterResponse response = new ListUserTwitterResponse();
 
             ArrayList<InfoUsers> ar = new ArrayList<InfoUsers>();
-            ResponseList<User> users = ConnectionManager.getInstance().getTwitter().searchUsers(request.getUser(), 0);
+            ResponseList<User> users = ConnectionManager2.getInstance().getTwitter(request.getUserId()).searchUsers(request.getUser(), 0);
             for (int i=0; i<users.size(); i++) {
                 InfoUsers u = new InfoUsers();
                 u.setName(users.get(i).getScreenName());

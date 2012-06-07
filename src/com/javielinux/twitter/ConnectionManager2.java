@@ -37,8 +37,10 @@ public class ConnectionManager2 {
     private Twitter anonymousTwitter;
 
 	private HashMap<Long, Twitter> twitters = new HashMap<Long, Twitter>();
-	private RequestToken requestToken;
-	private AccessToken accessToken;
+
+    private Twitter twitterOAuth;
+	private RequestToken requestTokenOAuth;
+	private AccessToken accessTokenOAuth;
 
 	private String oAuthAccessToken;
 	private String oAuthAccessTokenSecret;
@@ -64,10 +66,13 @@ public class ConnectionManager2 {
 	
 	public void open(Context cnt) {
 		context = cnt;
-        loadFromDB();
+       // loadFromDB();
 	}
 	
 	public Twitter getTwitter(long id) {
+        if (!twitters.containsKey(id)) {
+            twitters.put(id, loadUser(id));
+        }
 		return twitters.get(id);
 	}
 
@@ -79,20 +84,14 @@ public class ConnectionManager2 {
     }
 
     public void loadFromDB() {
-        try {
-            DataFramework.getInstance().open(context, Utils.packageName);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
         ArrayList<Entity> users = DataFramework.getInstance().getEntityList("users");
         for (Entity user: users) {
             if (!twitters.containsKey(user.getId())) {
-                loadUser(user.getId());
+                twitters.put(user.getId(), loadUser(user.getId()));
             }
         }
 
-        DataFramework.getInstance().close();
     }
 
     public void forceLoadFromDB() {
@@ -132,82 +131,82 @@ public class ConnectionManager2 {
 	public String getCurrentNetwork() {
 		return currentNetwork;
 	}
-	
+
 	public String getAuthenticationURL() throws TwitterException {
-				
-		Twitter twitter = new TwitterFactory().getInstance();
+
+        twitterOAuth = new TwitterFactory().getInstance();
 		//twitter.setOAuthConsumer(config.getConsumerKey(), config.getConsumerSecret());
-				
-		requestToken = twitter.getOAuthRequestToken();//AuthorizationActivity.TWITTER_HOST);
-		
-		Log.d(Utils.TAG, "Redirigiendo a " + requestToken.getAuthorizationURL());
-		
-		return requestToken.getAuthorizationURL();
+
+		requestTokenOAuth = twitterOAuth.getOAuthRequestToken();//AuthorizationActivity.TWITTER_HOST);
+
+		Log.d(Utils.TAG, "Redirigiendo a " + requestTokenOAuth.getAuthorizationURL());
+
+		return requestTokenOAuth.getAuthorizationURL();
 	}
 
-	public void finalizeOAuthentication(Uri uri, Twitter twitter) throws TwitterException {
+	public void finalizeOAuthentication(Uri uri) throws TwitterException {
 		String verifier = uri.getQueryParameter("oauth_verifier");
-		accessToken = twitter.getOAuthAccessToken(requestToken,verifier);
-		oAuthAccessToken = accessToken.getToken();
-		oAuthAccessTokenSecret = accessToken.getTokenSecret();		
-		twitter.setOAuthAccessToken(accessToken);
-		
-		storeAccessToken(twitter);
+		accessTokenOAuth = twitterOAuth.getOAuthAccessToken(requestTokenOAuth,verifier);
+		oAuthAccessToken = accessTokenOAuth.getToken();
+		oAuthAccessTokenSecret = accessTokenOAuth.getTokenSecret();
+        twitterOAuth.setOAuthAccessToken(accessTokenOAuth);
+
+		storeAccessToken(twitterOAuth);
 	}
-	
-	public void storeAccessToken(Twitter twitter) {
-		
+
+	private void storeAccessToken(Twitter twitter) {
+
         try {
             DataFramework.getInstance().open(context, Utils.packageName);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        
-        String where = KEY_AUTH_KEY + " = '" + accessToken.getToken() + "' AND " + KEY_AUTH_SECRET_KEY + " = '" + accessToken.getTokenSecret() + "'";
-        
+
+        String where = KEY_AUTH_KEY + " = '" + accessTokenOAuth.getToken() + "' AND " + KEY_AUTH_SECRET_KEY + " = '" + accessTokenOAuth.getTokenSecret() + "'";
+
         List<Entity> e = DataFramework.getInstance().getEntityList("users", where);
-                
+
         if (e.size()==0) {
         	DataFramework.getInstance().getDB().execSQL("UPDATE users SET active = 0");
-        	
+
 	        Entity ent = new Entity("users");
 	        ent.setValue("service", currentNetwork);
 	        try {
 				ent.setValue("name", twitter.getScreenName());
 				ent.setValue("user_id", twitter.getId());
-				
-				ent.setValue(KEY_AUTH_KEY, accessToken.getToken());
-		        ent.setValue(KEY_AUTH_SECRET_KEY, accessToken.getTokenSecret());
-	        	
+
+				ent.setValue(KEY_AUTH_KEY, accessTokenOAuth.getToken());
+		        ent.setValue(KEY_AUTH_SECRET_KEY, accessTokenOAuth.getTokenSecret());
+
 			} catch (IllegalStateException e1) {
 				e1.printStackTrace();
 			} catch (TwitterException e1) {
 				e1.printStackTrace();
 			}
-	        
+
 
         	ent.setValue("active", 1);
-        	
+
         	ent.setValue("last_timeline_id", 0);
         	ent.setValue("last_mention_id", 0);
         	ent.setValue("last_direct_id", 0);
-        	
+
 			ent.save();
-			
+
 			mIdUserDB = ent.getId();
-			
+
 			try {
 				User user = twitter.showUser(ent.getInt("user_id"));
-				
+
 				Bitmap avatar = BitmapFactory.decodeStream(new Utils.FlushedInputStream(user.getProfileImageURL().openStream()));
-				
+
 				if (avatar!=null) {
 					String file = Utils.getFileAvatar(ent.getId());
 					FileOutputStream out = new FileOutputStream(file);
 					avatar.compress(Bitmap.CompressFormat.JPEG, 90, out);
 					avatar.recycle();
 				}
-				
+
 			} catch (IllegalStateException ex) {
 				ex.printStackTrace();
 			} catch (TwitterException ex) {
@@ -217,9 +216,9 @@ public class ConnectionManager2 {
 			} catch (Exception ex) {
 				ex.printStackTrace();
 			}
-			
+
         }
-		
+
 		DataFramework.getInstance().close();
 	}
 	
@@ -227,13 +226,8 @@ public class ConnectionManager2 {
 
         Twitter twitter = null;
 
-        Entity ent = null;
-        
-        if (id<0) {
-        	ent = DataFramework.getInstance().getTopEntity("users", "active=1", "");
-		} else {
-			ent = new Entity("users", id);
-		}
+
+        Entity ent = new Entity("users", id);
         
         if (ent!=null) {
         	
@@ -253,11 +247,7 @@ public class ConnectionManager2 {
 			setNetworkConfig(service);
 			String accessToken = ent.getString(KEY_AUTH_KEY);
 	        String accessTokenSecret = ent.getString(KEY_AUTH_SECRET_KEY);
-	        //long userId = ent.getLong("user_id");
-	
-	        DataFramework.getInstance().close();
-	        
-	        //AccessToken at = new AccessToken(accessToken, accessTokenSecret, userId);
+
             AccessToken at = new AccessToken(accessToken, accessTokenSecret);
 	        
 	        twitter = new TwitterFactory().getInstance(at);
@@ -277,12 +267,12 @@ public class ConnectionManager2 {
 		return CALLBACKURL;
 	}
 
-	public RequestToken getRequestToken() {
-		return requestToken;
+	public RequestToken getRequestTokenOAuth() {
+		return requestTokenOAuth;
 	}
 
-	public AccessToken getAccessToken() {
-		return accessToken;
+	public AccessToken getAccessTokenOAuth() {
+		return accessTokenOAuth;
 	}
 
 	public String getOAuthToken() {

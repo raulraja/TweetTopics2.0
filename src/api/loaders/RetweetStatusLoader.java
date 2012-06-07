@@ -6,18 +6,18 @@ import api.request.RetweetStatusRequest;
 import api.response.BaseResponse;
 import api.response.ErrorResponse;
 import api.response.RetweetStatusResponse;
-import com.javielinux.twitter.ConnectionManager;
+import com.javielinux.twitter.ConnectionManager2;
 import twitter4j.TwitterException;
 
 public class RetweetStatusLoader extends AsynchronousLoader<BaseResponse> {
 
-    private long id = 0;
+    private RetweetStatusRequest request;
 
     public RetweetStatusLoader(Context context, RetweetStatusRequest request) {
 
         super(context);
 
-        this.id = request.getId();
+        this.request = request;
     }
 
     @Override
@@ -28,8 +28,8 @@ public class RetweetStatusLoader extends AsynchronousLoader<BaseResponse> {
 		try {
             RetweetStatusResponse response = new RetweetStatusResponse();
 
-			ConnectionManager.getInstance().open(getContext());
-			ConnectionManager.getInstance().getTwitter().retweetStatus(id);
+			ConnectionManager2.getInstance().open(getContext());
+			ConnectionManager2.getInstance().getTwitter(request.getUserId()).retweetStatus(request.getId());
 
             response.setReady(true);
             return response;

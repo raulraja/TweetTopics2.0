@@ -1,16 +1,14 @@
 package api.response;
 
-import infos.InfoUsers;
-
 public class LoadTranslateTweetResponse implements BaseResponse {
 
-    private InfoUsers infoUsers;
+    private String text;
 
-    public InfoUsers getInfoUsers() {
-        return infoUsers;
+    public String getText() {
+        return text;
     }
 
-    public void setInfoUsers(InfoUsers infoUsers) {
-        this.infoUsers = infoUsers;
+    public void setText(String text) {
+        this.text = text;
     }
 }

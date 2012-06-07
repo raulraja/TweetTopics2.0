@@ -1,29 +1,24 @@
 package api.loaders;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import api.AsynchronousLoader;
 import api.request.LoadTranslateTweetRequest;
 import api.response.BaseResponse;
 import api.response.ErrorResponse;
 import api.response.LoadTranslateTweetResponse;
-import com.javielinux.twitter.ConnectionManager;
 import com.javielinux.utils.Utils;
 import com.memetix.mst.language.Language;
 import com.memetix.mst.translate.Translate;
-import infos.InfoUsers;
-import twitter4j.Status;
 import twitter4j.TwitterException;
 
 public class LoadTranslateTweetLoader extends AsynchronousLoader<BaseResponse> {
 
-    private long id = 0;
+    private LoadTranslateTweetRequest request;
 
     public LoadTranslateTweetLoader(Context context, LoadTranslateTweetRequest request) {
         super(context);
 
-        this.id = request.getId();
+        this.request = request;
     }
 
     @Override
@@ -31,17 +26,6 @@ public class LoadTranslateTweetLoader extends AsynchronousLoader<BaseResponse> {
 
     	try {
             LoadTranslateTweetResponse response = new LoadTranslateTweetResponse();
-            InfoUsers infoUsers = new InfoUsers();
-
-			ConnectionManager.getInstance().open(getContext());
-
-			Status status = ConnectionManager.getInstance().getTwitter().showStatus(id);
-			infoUsers.setName(status.getUser().getScreenName());
-			infoUsers.setFollowers(status.getUser().getFollowersCount());
-			infoUsers.setFollowing(status.getUser().getFriendsCount());
-			infoUsers.setTweets(status.getUser().getStatusesCount());
-			infoUsers.setTextTweet(status.getText());
-			infoUsers.setDateTweet(status.getCreatedAt());
 
 			String lang = Utils.preference.getString("prf_translate", "es");
 
@@ -67,27 +51,7 @@ public class LoadTranslateTweetLoader extends AsynchronousLoader<BaseResponse> {
             } else if (lang.equals("id")) {
                language = Language.INDONESIAN;
             }
-
-            String text = Translate.execute(status.getText(), language);
-
-			infoUsers.setTextTweetTranslate(text);
-
-			try {
-				Bitmap bmp = BitmapFactory.decodeStream(new Utils.FlushedInputStream(status.getUser().getProfileImageURL().openStream()));
-				infoUsers.setAvatar(Bitmap.createScaledBitmap(bmp, 48, 48, true));
-			} catch (OutOfMemoryError exception) {
-				exception.printStackTrace();
-                ErrorResponse errorResponse = new ErrorResponse();
-                errorResponse.setError(exception,exception.getMessage());
-                return errorResponse;
-			} catch (Exception exception) {
-				exception.printStackTrace();
-                ErrorResponse errorResponse = new ErrorResponse();
-                errorResponse.setError(exception, exception.getMessage());
-                return errorResponse;
-			}
-
-            response.setInfoUsers(infoUsers);
+            response.setText(Translate.execute(request.getText(), language));
             return response;
 
 		} catch (TwitterException twitterException) {

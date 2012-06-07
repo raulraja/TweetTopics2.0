@@ -29,7 +29,7 @@ import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
 import com.javielinux.facebook.FacebookHandler;
 import com.javielinux.twitter.AuthorizationActivity;
-import com.javielinux.twitter.ConnectionManager;
+import com.javielinux.twitter.ConnectionManager2;
 import com.javielinux.utils.DialogUtils.BuyProDialogBuilder;
 import com.javielinux.utils.ImageUtils;
 import com.javielinux.utils.PreferenceUtils;
@@ -41,7 +41,6 @@ import twitter4j.TwitterException;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.util.List;
 
 public class Users extends BaseActivity {
 
@@ -88,7 +87,7 @@ public class Users extends BaseActivity {
             e.printStackTrace();
         }
 
-        ConnectionManager.getInstance().open(this);
+        ConnectionManager2.getInstance().open(this);
 
         Entity e = DataFramework.getInstance().getTopEntity("users", "active=1", "");
         if (e != null) {
@@ -351,11 +350,6 @@ public class Users extends BaseActivity {
     public void deleteUser() {
         if (idUser > 0) {
             Entity ent = new Entity("users", idUser);
-            boolean loaduser = false;
-            if (ent.getInt("active") == 1) {
-                loaduser = true;
-                idUserAux = -1;
-            }
 
             String sqlTweetsDelete = "DELETE FROM tweets_user WHERE user_tt_id=" + ent.getId();
             DataFramework.getInstance().getDB().execSQL(sqlTweetsDelete);
@@ -365,12 +359,6 @@ public class Users extends BaseActivity {
 
             ent.delete();
 
-            if (loaduser) {
-                List<Entity> listUser = DataFramework.getInstance().getEntityList("users");
-                if (listUser.size() > 0) {
-                    loadUser(((Entity) listUser.get(0)).getId());
-                }
-            }
             fillData();
         }
     }
@@ -383,11 +371,6 @@ public class Users extends BaseActivity {
             return super.onKeyDown(keyCode, event);
         }
         return super.onKeyDown(keyCode, event);
-    }
-
-    public void loadUser(long id) {
-        ConnectionManager.getInstance().getTwitter(id, true);
-        fillData();
     }
 
     public void showDialogBuyPro() {
@@ -498,9 +481,8 @@ public class Users extends BaseActivity {
 
                     // create friend
                     if (boxInvite.isChecked()) {
-                        loadUser(e.getId());
                         try {
-                            ConnectionManager.getInstance().getTwitter().createFriendship("tweettopics_app");
+                            ConnectionManager2.getInstance().getTwitter(e.getId()).createFriendship("tweettopics_app");
                         } catch (TwitterException e1) {
                             e1.printStackTrace();
                         }

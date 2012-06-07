@@ -9,7 +9,7 @@ import api.response.ErrorResponse;
 import api.response.GetUserListResponse;
 import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
-import com.javielinux.twitter.ConnectionManager;
+import com.javielinux.twitter.ConnectionManager2;
 import twitter4j.ResponseList;
 import twitter4j.UserList;
 
@@ -29,13 +29,13 @@ public class GetUserListLoader extends AsynchronousLoader<BaseResponse> {
 
             GetUserListResponse response = new GetUserListResponse();
 
-            ConnectionManager.getInstance().open(getContext());
+            ConnectionManager2.getInstance().open(getContext());
 
             // Delete user list from database for updating the info
             String sql_delete_user_list = "DELETE FROM user_lists WHERE user_id="+ request.getEntity().getInt("user_id") + " AND type_id=1";
             DataFramework.getInstance().getDB().execSQL(sql_delete_user_list);
 
-            ResponseList<UserList> user_list = ConnectionManager.getInstance().getTwitter().getAllUserLists(request.getEntity().getString("name"));
+            ResponseList<UserList> user_list = ConnectionManager2.getInstance().getTwitter(request.getEntity().getInt("user_id")).getAllUserLists(request.getEntity().getString("name"));
 
             for (int i = 0; i < user_list.size(); i++) {
                 Entity user_list_entity = new Entity("user_lists");
@@ -56,7 +56,7 @@ public class GetUserListLoader extends AsynchronousLoader<BaseResponse> {
             String sql_delete_user_following_list = "DELETE FROM user_lists WHERE user_id="+ request.getEntity().getInt("user_id") + " AND type_id=2";
             DataFramework.getInstance().getDB().execSQL(sql_delete_user_following_list);
 
-            ResponseList<UserList> user_following_list = ConnectionManager.getInstance().getTwitter().getUserListMemberships(request.getEntity().getString("name"), -1);
+            ResponseList<UserList> user_following_list = ConnectionManager2.getInstance().getTwitter(request.getEntity().getInt("user_id")).getUserListMemberships(request.getEntity().getString("name"), -1);
 
             for (int i = 0; i < user_following_list.size(); i++) {
                 Entity user_list_entity = new Entity("user_lists");

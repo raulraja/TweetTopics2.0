@@ -14,7 +14,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
-import com.javielinux.twitter.ConnectionManager;
+import com.javielinux.twitter.ConnectionManager2;
 import com.javielinux.utils.Utils;
 import task.ListUserTwitterAsyncTask;
 import task.ListUserTwitterAsyncTask.UserTwitterStatusAsyncTaskResponder;
@@ -52,9 +52,9 @@ public class TabGeneral extends Activity implements UserTwitterStatusAsyncTaskRe
             e.printStackTrace();
         }
         
-        ConnectionManager.getInstance().open(this);
+        ConnectionManager2.getInstance().open(this);
 
-        twitter = ConnectionManager.getInstance().getTwitter();
+        twitter = ConnectionManager2.getInstance().getAnonymousTwitter();
         
         String name = "";
         String search = "";

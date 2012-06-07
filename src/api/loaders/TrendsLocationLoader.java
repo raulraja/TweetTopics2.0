@@ -6,7 +6,7 @@ import api.request.TrendsLocationRequest;
 import api.response.BaseResponse;
 import api.response.ErrorResponse;
 import api.response.TrendsLocationResponse;
-import com.javielinux.twitter.ConnectionManager;
+import com.javielinux.twitter.ConnectionManager2;
 import twitter4j.TwitterException;
 
 public class TrendsLocationLoader extends AsynchronousLoader<BaseResponse> {
@@ -20,9 +20,9 @@ public class TrendsLocationLoader extends AsynchronousLoader<BaseResponse> {
         try {
             TrendsLocationResponse response = new TrendsLocationResponse();
 
-            ConnectionManager.getInstance().open(getContext());
+            ConnectionManager2.getInstance().open(getContext());
 
-            response.setLocationList(ConnectionManager.getInstance().getTwitter().getAvailableTrends());
+            response.setLocationList(ConnectionManager2.getInstance().getAnonymousTwitter().getAvailableTrends());
             return response;
         } catch (TwitterException e) {
             e.printStackTrace();

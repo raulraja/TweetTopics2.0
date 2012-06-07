@@ -23,7 +23,7 @@ import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
 import com.javielinux.tweettopics2.R;
 import com.javielinux.tweettopics2.ThemeManager;
-import com.javielinux.twitter.ConnectionManager;
+import com.javielinux.twitter.ConnectionManager2;
 import error_reporter.ErrorReporter;
 import infos.CacheData;
 import infos.InfoLink;
@@ -593,10 +593,10 @@ public class Utils {
 
 			Log.d(Utils.TAG, "Cargar configuración");
 			
-	        ConnectionManager.getInstance().open(cnt);
+	        ConnectionManager2.getInstance().open(cnt);
 	        
 	        try {
-	        	TwitterAPIConfiguration api = ConnectionManager.getInstance().getTwitter().getAPIConfiguration();
+	        	TwitterAPIConfiguration api = ConnectionManager2.getInstance().getAnonymousTwitter().getAPIConfiguration();
                 PreferenceUtils.setShortURLLength(cnt, api.getShortURLLength());
                 PreferenceUtils.setShortURLLengthHttps(cnt, api.getShortURLLengthHttps());
 			} catch (TwitterException e1) {

@@ -10,7 +10,7 @@ import api.response.ErrorResponse;
 import api.response.LoadUserResponse;
 import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
-import com.javielinux.twitter.ConnectionManager;
+import com.javielinux.twitter.ConnectionManager2;
 import com.javielinux.utils.Utils;
 import infos.InfoUsers;
 import twitter4j.TwitterException;
@@ -20,12 +20,12 @@ import java.io.File;
 
 public class LoadUserLoader extends AsynchronousLoader<BaseResponse> {
 
-    private String user = "";
+    private LoadUserRequest request;
 
     public LoadUserLoader(Context context, LoadUserRequest request) {
         super(context);
 
-        this.user = request.getUser();
+        this.request = request;
     }
 
     @Override
@@ -35,8 +35,6 @@ public class LoadUserLoader extends AsynchronousLoader<BaseResponse> {
             LoadUserResponse response = new LoadUserResponse();
             InfoUsers infoUsers = new InfoUsers();
 
-            DataFramework.getInstance().open(getContext(), Utils.packageName);
-
 	        Entity user_entity = DataFramework.getInstance().getTopEntity("users", "active=1", "");
             String screenName = "";
 
@@ -44,14 +42,12 @@ public class LoadUserLoader extends AsynchronousLoader<BaseResponse> {
 	        	screenName = user_entity.getString("name");
 	        }
 
-	        DataFramework.getInstance().close();
+			ConnectionManager2.getInstance().open(getContext());
 
-			ConnectionManager.getInstance().open(getContext());
+			User user_data = ConnectionManager2.getInstance().getTwitter(request.getUserId()).showUser(request.getUser());
 
-			User user_data = ConnectionManager.getInstance().getTwitter().showUser(user);
-
-			infoUsers.setFollower(ConnectionManager.getInstance().getTwitter().existsFriendship(user, screenName));
-			infoUsers.setFriend(ConnectionManager.getInstance().getTwitter().existsFriendship(screenName, user));
+			infoUsers.setFollower(ConnectionManager2.getInstance().getTwitter(request.getUserId()).existsFriendship(request.getUser(), screenName));
+			infoUsers.setFriend(ConnectionManager2.getInstance().getTwitter(request.getUserId()).existsFriendship(screenName, request.getUser()));
 
 			infoUsers.setName(user_data.getScreenName());
 			infoUsers.setFullname(user_data.getName());

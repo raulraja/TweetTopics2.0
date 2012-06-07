@@ -2,12 +2,14 @@ package api.request;
 
 public class LoadTypeStatusRequest implements BaseRequest {
 
+    private long userId = 0;
     private int type = 0;
     private String user_search_text = "";
     private String user = "";
     private int list_id = 0;
 
-    public LoadTypeStatusRequest(int type, String user, String user_search_text, int list_id) {
+    public LoadTypeStatusRequest(long userId, int type, String user, String user_search_text, int list_id) {
+        this.userId = userId;
         this.type = type;
         this.user = user;
         this.user_search_text = user_search_text;
@@ -40,5 +42,13 @@ public class LoadTypeStatusRequest implements BaseRequest {
     }
     public void setListId(int list_id) {
         this.list_id = list_id;
+    }
+
+    public long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(long userId) {
+        this.userId = userId;
     }
 }

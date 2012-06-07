@@ -7,16 +7,16 @@ import api.request.GetConversationRequest;
 import api.response.BaseResponse;
 import api.response.ErrorResponse;
 import api.response.GetConversationResponse;
-import com.javielinux.twitter.ConnectionManager;
+import com.javielinux.twitter.ConnectionManager2;
 import twitter4j.TwitterException;
 
 public class GetConversationLoader extends AsynchronousLoader<BaseResponse> {
 
-    private long id = 0;
+    private GetConversationRequest request;
 
     public GetConversationLoader(Context context, GetConversationRequest request) {
         super(context);
-        id = request.getId();
+        this.request = request;
     }
 
     @Override
@@ -26,8 +26,8 @@ public class GetConversationLoader extends AsynchronousLoader<BaseResponse> {
 
             GetConversationResponse response = new GetConversationResponse();
 
-            ConnectionManager.getInstance().open(getContext());
-            twitter4j.Status status = ConnectionManager.getInstance().getTwitter().showStatus(id);
+            ConnectionManager2.getInstance().open(getContext());
+            twitter4j.Status status = ConnectionManager2.getInstance().getTwitter(request.getUserId()).showStatus(request.getId());
 
             response.setConversationStatus(status);
 

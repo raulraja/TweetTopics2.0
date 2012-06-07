@@ -9,7 +9,7 @@ import api.response.BaseResponse;
 import api.response.ErrorResponse;
 import api.response.ProfileImageResponse;
 import com.android.dataframework.Entity;
-import com.javielinux.twitter.ConnectionManager;
+import com.javielinux.twitter.ConnectionManager2;
 import com.javielinux.utils.Utils;
 import twitter4j.TwitterException;
 import twitter4j.User;
@@ -24,28 +24,26 @@ public class ProfileImageLoader extends AsynchronousLoader<BaseResponse> {
     public static final int CHANGE_AVATAR = 1;
     public static final int REFRESH_AVATAR = 2;
 
-    private int action = 0;
-    private long user_id = 0;
+    private ProfileImageRequest request;
 
     public ProfileImageLoader(Context context, ProfileImageRequest request) {
         super(context);
 
-        this.action = request.getAction();
-        this.user_id = request.getUserId();
+        this.request = request;
     }
 
     private String getURLNewAvatar() {
-		return Utils.appDirectory + "aux_avatar_" + user_id + ".jpg";
+		return Utils.appDirectory + "aux_avatar_" + request.getUserId() + ".jpg";
 	}
 
     private boolean refreshAvatar() {
 
-    	if (user_id > 0) {
+    	if (request.getUserId() > 0) {
             try {
-                Entity ent = new Entity("users", user_id);
-                User user = ConnectionManager.getInstance().getTwitter().showUser(ent.getInt("user_id"));
+                Entity ent = new Entity("users", request.getUserId());
+                User user = ConnectionManager2.getInstance().getTwitter(request.getUserId()).showUser(ent.getInt("user_id"));
                 Bitmap avatar = BitmapFactory.decodeStream(new Utils.FlushedInputStream(user.getProfileImageURL().openStream()));
-				String file = Utils.getFileAvatar(user_id);
+				String file = Utils.getFileAvatar(request.getUserId());
 
 				FileOutputStream out = new FileOutputStream(file);
 				avatar.compress(Bitmap.CompressFormat.JPEG, 90, out);
@@ -74,7 +72,7 @@ public class ProfileImageLoader extends AsynchronousLoader<BaseResponse> {
 
     private boolean changeAvatar() {
 
-    	if (user_id > 0) {
+    	if (request.getUserId() > 0) {
             try {
                 String file_path = getURLNewAvatar();
 
@@ -93,10 +91,10 @@ public class ProfileImageLoader extends AsynchronousLoader<BaseResponse> {
                     scaled_bitmap.recycle();
                 }
 
-                User user = ConnectionManager.getInstance().getTwitter().updateProfileImage(new FileInputStream(file_path));
+                User user = ConnectionManager2.getInstance().getTwitter(request.getUserId()).updateProfileImage(new FileInputStream(file_path));
 
                 Bitmap avatar = BitmapFactory.decodeFile(file_path);
-                String avatar_file_path = Utils.getFileAvatar(user_id);
+                String avatar_file_path = Utils.getFileAvatar(request.getUserId());
 
 				FileOutputStream out = new FileOutputStream(avatar_file_path);
 				avatar.compress(Bitmap.CompressFormat.JPEG, 90, out);
@@ -132,7 +130,7 @@ public class ProfileImageLoader extends AsynchronousLoader<BaseResponse> {
 		try {
             boolean result = false;
 
-            switch (action) {
+            switch (request.getAction()) {
                 case CHANGE_AVATAR:
                     result = changeAvatar();
                     break;

@@ -6,7 +6,7 @@ import api.request.TrendsRequest;
 import api.response.BaseResponse;
 import api.response.ErrorResponse;
 import api.response.TrendsResponse;
-import com.javielinux.twitter.ConnectionManager;
+import com.javielinux.twitter.ConnectionManager2;
 import twitter4j.TwitterException;
 
 public class TrendsLoader extends AsynchronousLoader<BaseResponse> {
@@ -22,10 +22,10 @@ public class TrendsLoader extends AsynchronousLoader<BaseResponse> {
     @Override
     public BaseResponse loadInBackground() {
         try {
-            ConnectionManager.getInstance().open(getContext());
+            ConnectionManager2.getInstance().open(getContext());
 
             TrendsResponse response = new TrendsResponse();
-            response.setTrends(ConnectionManager.getInstance().getTwitter().getLocationTrends(location_id).getTrends());
+            response.setTrends(ConnectionManager2.getInstance().getAnonymousTwitter().getLocationTrends(location_id).getTrends());
             return response;
         } catch (TwitterException e) {
             e.printStackTrace();

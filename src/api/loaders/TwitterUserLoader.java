@@ -7,7 +7,7 @@ import api.response.BaseResponse;
 import api.response.ErrorResponse;
 import api.response.TwitterUserResponse;
 import com.android.dataframework.Entity;
-import com.javielinux.twitter.ConnectionManager;
+import com.javielinux.twitter.ConnectionManager2;
 import com.javielinux.utils.TweetTopicsConstants;
 import com.javielinux.utils.Utils;
 import database.EntityTweetUser;
@@ -32,7 +32,7 @@ public class TwitterUserLoader extends AsynchronousLoader<BaseResponse> {
 
         try {
             EntityTweetUser entityTweetUser = new EntityTweetUser(user_id, TweetTopicsConstants.TWEET_TYPE_TIMELINE);
-            infoSaveTweets = entityTweetUser.saveTweets(getContext(), ConnectionManager.getInstance().getTwitter(), false);
+            infoSaveTweets = entityTweetUser.saveTweets(getContext(), ConnectionManager2.getInstance().getTwitter(current_user.getId()), false);
         } catch (Exception e) {
             e.printStackTrace();
             if (infoSaveTweets == null) {
@@ -52,7 +52,7 @@ public class TwitterUserLoader extends AsynchronousLoader<BaseResponse> {
 
         try {
             EntityTweetUser entityTweetUser = new EntityTweetUser(user_id, TweetTopicsConstants.TWEET_TYPE_MENTIONS);
-            infoSaveTweets = entityTweetUser.saveTweets(getContext(), ConnectionManager.getInstance().getTwitter(), false);
+            infoSaveTweets = entityTweetUser.saveTweets(getContext(), ConnectionManager2.getInstance().getTwitter(current_user.getId()), false);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -74,10 +74,10 @@ public class TwitterUserLoader extends AsynchronousLoader<BaseResponse> {
         try {
             // TODO: Comprobar este código
             EntityTweetUser entityTweetUser = new EntityTweetUser(user_id, TweetTopicsConstants.TWEET_TYPE_DIRECTMESSAGES);
-            infoSaveTweets = entityTweetUser.saveTweets(getContext(), ConnectionManager.getInstance().getTwitter(), false);
+            infoSaveTweets = entityTweetUser.saveTweets(getContext(), ConnectionManager2.getInstance().getTwitter(current_user.getId()), false);
 
             EntityTweetUser entityTweetUser_send = new EntityTweetUser(user_id, TweetTopicsConstants.TWEET_TYPE_SENT_DIRECTMESSAGES);
-            infoSaveTweets = entityTweetUser_send.saveTweets(getContext(), ConnectionManager.getInstance().getTwitter(), false);
+            infoSaveTweets = entityTweetUser_send.saveTweets(getContext(), ConnectionManager2.getInstance().getTwitter(current_user.getId()), false);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -99,7 +99,7 @@ public class TwitterUserLoader extends AsynchronousLoader<BaseResponse> {
         try {
             TwitterUserResponse response = new TwitterUserResponse();
 
-            ConnectionManager.getInstance().open(getContext());
+            ConnectionManager2.getInstance().open(getContext());
 
             response.setUserId(current_user.getId());
             response.setColumn(column);
@@ -117,9 +117,9 @@ public class TwitterUserLoader extends AsynchronousLoader<BaseResponse> {
             return response;
         } catch (Exception e) {
             e.printStackTrace();
-            ErrorResponse response = new ErrorResponse();
-            response.setError(e, e.getMessage());
-            return response;
+            ErrorResponse errorResponse = new ErrorResponse();
+            errorResponse.setError(e, e.getMessage());
+            return errorResponse;
         }
     }
 }

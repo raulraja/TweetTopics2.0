@@ -8,7 +8,7 @@ import api.response.BaseResponse;
 import api.response.ErrorResponse;
 import api.response.ImageUploadResponse;
 import com.javielinux.tweettopics2.R;
-import com.javielinux.twitter.ConnectionManager;
+import com.javielinux.twitter.ConnectionManager2;
 import com.javielinux.utils.Utils;
 import twitter4j.TwitterException;
 import twitter4j.conf.Configuration;
@@ -82,8 +82,8 @@ public class ImageUploadLoader extends AsynchronousLoader<BaseResponse> {
             ConfigurationBuilder confBuild = new ConfigurationBuilder();
             confBuild.setOAuthConsumerKey(consumerKey);
             confBuild.setOAuthConsumerSecret(consumerSecretKey);
-            confBuild.setOAuthAccessToken(ConnectionManager.getInstance().getTwitter().getOAuthAccessToken().getToken());
-            confBuild.setOAuthAccessTokenSecret(ConnectionManager.getInstance().getTwitter().getOAuthAccessToken().getTokenSecret());
+            confBuild.setOAuthAccessToken(ConnectionManager2.getInstance().getTwitter(request.getUserId()).getOAuthAccessToken().getToken());
+            confBuild.setOAuthAccessTokenSecret(ConnectionManager2.getInstance().getTwitter(request.getUserId()).getOAuthAccessToken().getTokenSecret());
             if (type==1) {
             } else if (type==2) {
                 confBuild.setMediaProviderAPIKey("e3533af853e8f63a0018a2c63d7ee69f");

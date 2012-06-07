@@ -21,7 +21,7 @@ import com.facebook.android.FacebookError;
 import com.javielinux.facebook.FacebookHandler;
 import com.javielinux.tweettopics2.NewStatus;
 import com.javielinux.tweettopics2.R;
-import com.javielinux.twitter.ConnectionManager;
+import com.javielinux.twitter.ConnectionManager2;
 import com.javielinux.utils.PreferenceUtils;
 import com.javielinux.utils.TweetTopicsConstants;
 import com.javielinux.utils.Utils;
@@ -79,7 +79,7 @@ public class ServiceUpdateStatus extends Service implements UploadStatusAsyncTas
             e.printStackTrace();
         }
 
-        ConnectionManager.getInstance().open(this);
+        ConnectionManager2.getInstance().open(this);
 
         Log.d(Utils.TAG, "Creando nuevo estado");
 
@@ -167,7 +167,7 @@ public class ServiceUpdateStatus extends Service implements UploadStatusAsyncTas
 
     private void launchTasks() {
         if (mPhotos.size()>0) {
-            twitter = ConnectionManager.getInstance().getTwitter(mUsersId.get(0), false);
+            twitter = ConnectionManager2.getInstance().getTwitter(mUsersId.get(0));
             try {
                 setMood(this.getString(R.string.update_status_uploading_image), false);
             } catch (Resources.NotFoundException e) {
@@ -181,7 +181,6 @@ public class ServiceUpdateStatus extends Service implements UploadStatusAsyncTas
                 sendTweet(mUsersId.get(0));
             } else {
                 deleteTweet();
-                ConnectionManager.getInstance().getTwitterForceActiveUser();
                 try {
                     setMood(this.getString(R.string.update_status_correct), false);
                 } catch (Resources.NotFoundException e) {
@@ -208,7 +207,7 @@ public class ServiceUpdateStatus extends Service implements UploadStatusAsyncTas
         if (ent.getString("service").equals("facebook")) {
             updateStatusFacebook();
         } else {
-            twitter = ConnectionManager.getInstance().getTwitter(id, false);
+            twitter = ConnectionManager2.getInstance().getTwitter(id);
 
             if (mEntityStatus.getInt("type_id") == 3) { // retweet
                 retweetMessage();

@@ -6,7 +6,7 @@ import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
-import com.javielinux.twitter.ConnectionManager;
+import com.javielinux.twitter.ConnectionManager2;
 import com.javielinux.utils.Utils;
 import infos.InfoUsers;
 import twitter4j.TwitterException;
@@ -49,12 +49,12 @@ public class LoadUserAsyncTask extends AsyncTask<String, Void, InfoUsers> {
 	        
 	        DataFramework.getInstance().close();
 			
-			ConnectionManager.getInstance().open(mContext);
+			ConnectionManager2.getInstance().open(mContext);
 			
-			User u = ConnectionManager.getInstance().getTwitter().showUser(args[0]);
+			User u = ConnectionManager2.getInstance().getTwitter(ent.getId()).showUser(args[0]);
 			
-			iu.setFollower(ConnectionManager.getInstance().getTwitter().existsFriendship(args[0], screenName));
-			iu.setFriend(ConnectionManager.getInstance().getTwitter().existsFriendship(screenName, args[0]));
+			iu.setFollower(ConnectionManager2.getInstance().getTwitter(ent.getId()).existsFriendship(args[0], screenName));
+			iu.setFriend(ConnectionManager2.getInstance().getTwitter(ent.getId()).existsFriendship(screenName, args[0]));
 			
 			/*IDs ids = TweetTopicsCore.twitter.getFriendsIDs(-1);
 			iu.setFriend(false);

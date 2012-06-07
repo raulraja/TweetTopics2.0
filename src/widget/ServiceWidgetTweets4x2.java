@@ -19,7 +19,7 @@ import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
 import com.javielinux.tweettopics2.R;
 import com.javielinux.tweettopics2.TweetTopicsActivity;
-import com.javielinux.twitter.ConnectionManager;
+import com.javielinux.twitter.ConnectionManager2;
 import com.javielinux.utils.PreferenceUtils;
 import com.javielinux.utils.Utils;
 import database.EntitySearch;
@@ -136,9 +136,9 @@ public class ServiceWidgetTweets4x2 extends Service {
         PreferenceUtils.setTypeWidget(this, TIMELINE);
         PreferenceUtils.setIdSearchWidget(this, 1);
 
-    	ConnectionManager.getInstance().open(this);
+    	ConnectionManager2.getInstance().open(this);
     	
-        twitter = ConnectionManager.getInstance().getTwitter();
+        twitter = ConnectionManager2.getInstance().getAnonymousTwitter();
     	
     	try {
         	DataFramework.getInstance().open(this, Utils.packageName);
@@ -440,7 +440,7 @@ public class ServiceWidgetTweets4x2 extends Service {
     }
     
 	public void loadUser(long id) {
-		twitter = ConnectionManager.getInstance().getTwitter(id, false);
+		twitter = ConnectionManager2.getInstance().getTwitter(id);
 	}
     
     private void prev() {

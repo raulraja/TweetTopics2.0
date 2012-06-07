@@ -2,12 +2,14 @@ package api.request;
 
 public class DirectMessageRequest implements BaseRequest {
 
+    private long userId = 0;
     private int modeTweetLonger = 0;
     private String text = "";
     private String user = "";
 
-    public DirectMessageRequest(int modeTweetLonger, String user, String text) {
+    public DirectMessageRequest(long userId, int modeTweetLonger, String user, String text) {
         this.modeTweetLonger = modeTweetLonger;
+        this.userId = userId;
         this.user = user;
         this.text = text;
     }
@@ -35,5 +37,13 @@ public class DirectMessageRequest implements BaseRequest {
 
     public void setUser(String user) {
         this.user = user;
+    }
+
+    public long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(long userId) {
+        this.userId = userId;
     }
 }

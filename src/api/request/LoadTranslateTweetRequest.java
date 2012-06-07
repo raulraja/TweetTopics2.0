@@ -2,17 +2,18 @@ package api.request;
 
 public class LoadTranslateTweetRequest implements BaseRequest {
 
-    private long id = 0;
+    private String text = "";
 
-    public LoadTranslateTweetRequest(long id) {
-        this.id = id;
+    public LoadTranslateTweetRequest(String text) {
+        this.text = text;
     }
 
-    public long getId() {
-        return id;
+
+    public String getText() {
+        return text;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setText(String text) {
+        this.text = text;
     }
 }
