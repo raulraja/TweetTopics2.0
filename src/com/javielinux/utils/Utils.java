@@ -1309,85 +1309,90 @@ public class Utils {
     	}
     	return false;
     }
+
+    static public boolean isLinkImage(String link) {
+        // mytubo.net
+        if (link.contains("mytubo.net")) {
+            return true;
+        }
+
+        // imgur.com
+        if (link.contains("imgur.com")) {
+            return true;
+        }
+
+        // instagr.am
+        if (link.contains("instagr.am")) {
+            return true;
+        }
+
+        // lightbox
+        if (link.contains("lightbox")) {
+            return true;
+        }
+
+        // vvcap
+        if (link.contains("vvcap")) {
+            return true;
+        }
+
+        // twitpic
+        if (link.contains("twitpic")) {
+            return true;
+        }
+
+        // picplz.com
+        if (link.contains("picplz")) {
+            return true;
+        }
+
+        // plixi
+        if (link.contains("plixi")) {
+            return true;
+        }
+
+        // yfrog
+
+        if (link.contains("yfrog")) {
+            return true;
+        }
+
+        // vimeo
+        if (link.contains("vimeo")) {
+            return true;
+        }
+
+        // twitgoo
+        if (link.contains("twitgoo")) {
+            return true;
+        }
+
+        // twitvid
+
+        if (link.contains("twitvid")) {
+            return true;
+        }
+
+        // youtube
+
+        if (link.contains("youtube")) {
+            return true;
+        }
+
+        if (link.contains("youtu.be")) {
+            return true;
+        }
+
+        return false;
+    }
+
     
     static public boolean hasImagesTweet(String text) {
     	ArrayList<String> links = pullLinks(text);
     	for (int i=0; i<links.size(); i++) {
     		String link = links.get(i);
     		if ( (!link.startsWith("#")) && (!link.startsWith("@")) ) {
-    			
-    			// mytubo.net
-    			if (link.contains("mytubo.net")) {
-    				return true;
-    			}
-    			
-    			// imgur.com
-    			if (link.contains("imgur.com")) {
-    				return true;
-    			}
-    			
-    			// instagr.am	
-    			if (link.contains("instagr.am")) {
-    				return true;
-    			}
-    			
-    			// lightbox	
-    			if (link.contains("lightbox")) {
-    				return true;
-    			}
-
-                // vvcap
-                if (link.contains("vvcap")) {
-                    return true;
-                }
-    			
-    			// twitpic	
-    			if (link.contains("twitpic")) {
-    				return true;
-    			}
-    			
-    			// picplz.com	
-    			if (link.contains("picplz")) {
-    				return true;
-    			}
-    			    			
-    			// plixi	
-    			if (link.contains("plixi")) {
-    				return true;
-    			}
-    			
-    			// yfrog
-    			
-    			if (link.contains("yfrog")) {
-    				return true;
-    			}
-    			
-    			// vimeo	
-    			if (link.contains("vimeo")) {
-    				return true;
-    			}
-    			
-    			// twitgoo	
-    			if (link.contains("twitgoo")) {
-    				return true;
-    			}
-    			
-    			// twitvid
-    			
-    			if (link.contains("twitvid")) {
-    				return true;
-    			}
-    			
-    			// youtube
-    			
-    			if (link.contains("youtube")) {
-    				return true;
-    			}
-    			
-    			if (link.contains("youtu.be")) {
-    				return true;
-    			}
-    			
+                if (isLinkImage(link)) return true;
     		}
     		
     	}

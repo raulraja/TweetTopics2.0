@@ -27,6 +27,7 @@ public class LoadImageLoader extends AsynchronousLoader<BaseResponse> {
     public BaseResponse loadInBackground() {
 
         for (String avatar : request.getSearchAvatars()) {
+            Log.d(Utils.TAG,"Descargar avatar: " + avatar);
             Bitmap bmp = downloadImage(avatar);
 
             if (bmp!=null) {
@@ -35,6 +36,7 @@ public class LoadImageLoader extends AsynchronousLoader<BaseResponse> {
         }
 
         for (String image : request.getSearchImages()) {
+            Log.d(Utils.TAG,"Descargar image: " + image);
             InfoLink il = Utils.getThumbTweet(image);
             if (il!=null) {
                 CacheData.putCacheImages(image, il);

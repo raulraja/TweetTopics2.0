@@ -2,6 +2,7 @@ package adapters;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.support.v4.app.LoaderManager;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,14 @@ import java.util.ArrayList;
 
 public class TweetsAdapter extends ArrayAdapter<InfoTweet> {
 
+    public boolean isFlinging() {
+        return flinging;
+    }
+
+    public void setFlinging(boolean flinging) {
+        this.flinging = flinging;
+    }
+
     public static class ViewHolder {
         public ImageView avatarView;
         public ImageView tagAvatar;
@@ -29,7 +38,7 @@ public class TweetsAdapter extends ArrayAdapter<InfoTweet> {
         public TextView statusText;
         public TextView sourceText;
         public TextView dateText;
-        public LinearLayout tweetPhotoLayout;
+        public ImageView tweetPhotoImg;
         public RelativeLayout lastReadLayout;
         public LinearLayout retweetLayout;
         public ImageView retweetAvatar;
@@ -38,8 +47,6 @@ public class TweetsAdapter extends ArrayAdapter<InfoTweet> {
     }
 
     private ArrayList<InfoTweet> infoTweetArrayList;
-    private long last_tweet_id;
-    private int position_tweet;
     private long selected_id = -1;
     private int hide_messages = 0;
     private boolean user_last_item_last_read = false;
@@ -48,18 +55,25 @@ public class TweetsAdapter extends ArrayAdapter<InfoTweet> {
     private ThemeManager themeManager;
     private int color_line;
 
-    public TweetsAdapter(Context context, ArrayList<InfoTweet> infoTweetArrayList, long last_tweet_id) {
+    private LoaderManager loaderManager;
+
+    private boolean flinging = false;
+
+    private String usernameColumn;
+
+    public TweetsAdapter(Context context, LoaderManager loaderManager, ArrayList<InfoTweet> infoTweetArrayList, String usernameColumn) {
 
         super(context, android.R.layout.simple_list_item_1, infoTweetArrayList);
 
         Log.d(Utils.TAG, "Numero de elementos: " + infoTweetArrayList.size());
         this.infoTweetArrayList = infoTweetArrayList;
-        this.last_tweet_id = last_tweet_id;
-        this.position_tweet = Integer.parseInt(Utils.getPreference(context).getString("prf_positions_links", "1"));
+        this.usernameColumn = usernameColumn;
+
+        this.loaderManager = loaderManager;
+
         themeManager = new ThemeManager(context);
         color_line = themeManager.getColor("color_tweet_no_read");
 
-        notifyDataSetChanged();
     }
 
     public static ViewHolder generateViewHolder(View v) {
@@ -74,7 +88,7 @@ public class TweetsAdapter extends ArrayAdapter<InfoTweet> {
         viewHolder.statusText = (TextView)v.findViewById(R.id.tweet_text);
         viewHolder.dateText = (TextView)v.findViewById(R.id.tweet_date);
         viewHolder.sourceText = (TextView)v.findViewById(R.id.tweet_source);
-        viewHolder.tweetPhotoLayout = (LinearLayout)v.findViewById(R.id.tweet_photo_layout);
+        viewHolder.tweetPhotoImg = (ImageView)v.findViewById(R.id.tweet_photo_img);
         viewHolder.lastReadLayout = (RelativeLayout)v.findViewById(R.id.lastread_layout);
         viewHolder.retweetLayout = (LinearLayout)v.findViewById(R.id.retweet_layout);
         viewHolder.retweetAvatar = (ImageView)v.findViewById(R.id.retweet_avatar);
@@ -125,7 +139,7 @@ public class TweetsAdapter extends ArrayAdapter<InfoTweet> {
             }
         }
 
-        view.setRow(infoTweet, last_tweet_id, getContext(), position);
+        view.setRow(infoTweet, getContext(), loaderManager, this, usernameColumn);
 
         return view;
 

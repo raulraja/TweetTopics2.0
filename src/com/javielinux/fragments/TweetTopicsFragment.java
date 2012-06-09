@@ -53,8 +53,6 @@ public class TweetTopicsFragment extends Fragment {
 
     private int typeUserColumn = 0;
 
-    private boolean flinging; // if user is doing scroll in listview
-
     public TweetTopicsFragment(Context context, LoaderManager loaderManager, long column_id) {
 
         super();
@@ -139,7 +137,6 @@ public class TweetTopicsFragment extends Fragment {
                     countHide++;
                 } else {
                     InfoTweet infoTweet = new InfoTweet(tweets.get(i));
-                    Log.d(Utils.TAG,entityTweetUser.getFieldLastId() + " getValueLastId: "+entityTweetUser.getValueLastId() + " tweet_id: "+tweets.get(i).getLong("tweet_id"));
                     if (!found && entityTweetUser.getValueLastId() >= tweets.get(i).getLong("tweet_id")) {
                         infoTweet.setLastRead(true);
                         pos = count;
@@ -358,7 +355,7 @@ public class TweetTopicsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        tweetsAdapter = new TweetsAdapter(getActivity(), infoTweets, -1);
+        tweetsAdapter = new TweetsAdapter(getActivity(), getLoaderManager(), infoTweets, user_entity.getString("name"));
         preLoadInfoTweetIfIsNecessary();
 
     }
@@ -403,11 +400,11 @@ public class TweetTopicsFragment extends Fragment {
                 //if (scrollState == SCROLL_STATE_TOUCH_SCROLL) closeSidebar();
 
                 if (scrollState == SCROLL_STATE_TOUCH_SCROLL) {
-                    flinging = true;
+                    tweetsAdapter.setFlinging(true);
                 }
 
                 if (scrollState != AbsListView.OnScrollListener.SCROLL_STATE_FLING && scrollState != SCROLL_STATE_TOUCH_SCROLL) {
-                    flinging = false;
+                    tweetsAdapter.setFlinging(false);
                     //TweetListItem.executeLoadTasks();
                 }
             }
