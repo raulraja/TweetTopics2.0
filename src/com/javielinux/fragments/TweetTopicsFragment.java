@@ -25,7 +25,7 @@ import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.javielinux.tweettopics2.R;
 import com.javielinux.tweettopics2.TweetActivity;
-import com.javielinux.utils.TweetTopicsConstants;
+import com.javielinux.utils.TweetTopicsUtils;
 import com.javielinux.utils.Utils;
 import database.EntityTweetUser;
 import infos.InfoSaveTweets;
@@ -53,6 +53,8 @@ public class TweetTopicsFragment extends Fragment {
 
     private int typeUserColumn = 0;
 
+    private boolean flinging = false;
+
     public TweetTopicsFragment(Context context, LoaderManager loaderManager, long column_id) {
 
         super();
@@ -61,12 +63,12 @@ public class TweetTopicsFragment extends Fragment {
         this.loaderManager = loaderManager;
 
         column_entity = new Entity("columns", column_id);
-        if (column_entity.getInt("type_id")==TweetTopicsConstants.COLUMN_TIMELINE) {
-            typeUserColumn = TweetTopicsConstants.TWEET_TYPE_TIMELINE;
-        } else if (column_entity.getInt("type_id")==TweetTopicsConstants.COLUMN_MENTIONS) {
-            typeUserColumn = TweetTopicsConstants.TWEET_TYPE_MENTIONS;
-        } else if (column_entity.getInt("type_id")==TweetTopicsConstants.COLUMN_DIRECT_MESSAGES) {
-            typeUserColumn = TweetTopicsConstants.TWEET_TYPE_DIRECTMESSAGES;
+        if (column_entity.getInt("type_id")== TweetTopicsUtils.COLUMN_TIMELINE) {
+            typeUserColumn = TweetTopicsUtils.TWEET_TYPE_TIMELINE;
+        } else if (column_entity.getInt("type_id")== TweetTopicsUtils.COLUMN_MENTIONS) {
+            typeUserColumn = TweetTopicsUtils.TWEET_TYPE_MENTIONS;
+        } else if (column_entity.getInt("type_id")== TweetTopicsUtils.COLUMN_DIRECT_MESSAGES) {
+            typeUserColumn = TweetTopicsUtils.TWEET_TYPE_DIRECTMESSAGES;
         }
         user_entity = new Entity("users", column_entity.getLong("user_id"));
 
@@ -76,24 +78,24 @@ public class TweetTopicsFragment extends Fragment {
 
         EntityTweetUser entityTweetUser = new EntityTweetUser(user_entity.getId(), typeUserColumn);
 
-        if (column_entity.getInt("type_id")!=TweetTopicsConstants.COLUMN_TIMELINE &&
-                column_entity.getInt("type_id")!=TweetTopicsConstants.COLUMN_MENTIONS &&
-                column_entity.getInt("type_id")!=TweetTopicsConstants.COLUMN_DIRECT_MESSAGES) {
+        if (column_entity.getInt("type_id")!= TweetTopicsUtils.COLUMN_TIMELINE &&
+                column_entity.getInt("type_id")!= TweetTopicsUtils.COLUMN_MENTIONS &&
+                column_entity.getInt("type_id")!= TweetTopicsUtils.COLUMN_DIRECT_MESSAGES) {
             return;
         }
 
         String whereType = "";
 
         switch (column_entity.getInt("type_id")) {
-            case TweetTopicsConstants.COLUMN_TIMELINE:
+            case TweetTopicsUtils.COLUMN_TIMELINE:
                 Utils.fillHide();
-                whereType = " AND type_id = " + TweetTopicsConstants.TWEET_TYPE_TIMELINE;
+                whereType = " AND type_id = " + TweetTopicsUtils.TWEET_TYPE_TIMELINE;
                 break;
-            case TweetTopicsConstants.COLUMN_MENTIONS:
-                whereType = " AND type_id = " + TweetTopicsConstants.TWEET_TYPE_MENTIONS;
+            case TweetTopicsUtils.COLUMN_MENTIONS:
+                whereType = " AND type_id = " + TweetTopicsUtils.TWEET_TYPE_MENTIONS;
                 break;
-            case TweetTopicsConstants.COLUMN_DIRECT_MESSAGES:
-                whereType = " AND (type_id = " + TweetTopicsConstants.TWEET_TYPE_DIRECTMESSAGES + " OR type_id = " + TweetTopicsConstants.TWEET_TYPE_SENT_DIRECTMESSAGES + ")";
+            case TweetTopicsUtils.COLUMN_DIRECT_MESSAGES:
+                whereType = " AND (type_id = " + TweetTopicsUtils.TWEET_TYPE_DIRECTMESSAGES + " OR type_id = " + TweetTopicsUtils.TWEET_TYPE_SENT_DIRECTMESSAGES + ")";
                 break;
         }
 
@@ -127,7 +129,7 @@ public class TweetTopicsFragment extends Fragment {
                     exception.printStackTrace();
                 }
             } else {
-                boolean is_timeline = column_entity.getInt("type_id") ==  TweetTopicsConstants.COLUMN_TIMELINE;
+                boolean is_timeline = column_entity.getInt("type_id") ==  TweetTopicsUtils.COLUMN_TIMELINE;
 
                 if (is_timeline && Utils.hideUser.contains(tweets.get(i).getString("username").toLowerCase())) { // usuario
                     countHide++;
@@ -171,6 +173,18 @@ public class TweetTopicsFragment extends Fragment {
 
     }
 
+    public boolean isFlinging() {
+        return flinging;
+    }
+
+    public void setFlinging(boolean flinging) {
+        this.flinging = flinging;
+        if (!flinging) {
+            markPositionLastReadAsLastReadId();
+            tweetsAdapter.notifyDataSetChanged();
+        }
+    }
+
     public void showUpdating() {
         viewUpdate.setVisibility(View.VISIBLE);
     }
@@ -199,11 +213,13 @@ public class TweetTopicsFragment extends Fragment {
 
     public void reloadColumnUser(boolean firstIsLastPosition) {
 
-        if (column_entity.getInt("type_id")!=TweetTopicsConstants.COLUMN_TIMELINE &&
-                column_entity.getInt("type_id")!=TweetTopicsConstants.COLUMN_MENTIONS &&
-                column_entity.getInt("type_id")!=TweetTopicsConstants.COLUMN_DIRECT_MESSAGES) {
+        if (column_entity.getInt("type_id")!= TweetTopicsUtils.COLUMN_TIMELINE &&
+                column_entity.getInt("type_id")!= TweetTopicsUtils.COLUMN_MENTIONS &&
+                column_entity.getInt("type_id")!= TweetTopicsUtils.COLUMN_DIRECT_MESSAGES) {
             return;
         }
+
+        Log.d(Utils.TAG,"reloadColumnUser : " + column_entity.getInt("type_id"));
 
         APITweetTopics.execute(context, loaderManager, new APIDelegate<TwitterUserResponse>() {
             @Override
@@ -220,15 +236,15 @@ public class TweetTopicsFragment extends Fragment {
                     String whereType = "";
 
                     switch (column_entity.getInt("type_id")) {
-                        case TweetTopicsConstants.COLUMN_TIMELINE:
+                        case TweetTopicsUtils.COLUMN_TIMELINE:
                             Utils.fillHide();
-                            whereType = " AND type_id = " + TweetTopicsConstants.TWEET_TYPE_TIMELINE;
+                            whereType = " AND type_id = " + TweetTopicsUtils.TWEET_TYPE_TIMELINE;
                             break;
-                        case TweetTopicsConstants.COLUMN_MENTIONS:
-                            whereType = " AND type_id = " + TweetTopicsConstants.TWEET_TYPE_MENTIONS;
+                        case TweetTopicsUtils.COLUMN_MENTIONS:
+                            whereType = " AND type_id = " + TweetTopicsUtils.TWEET_TYPE_MENTIONS;
                             break;
-                        case TweetTopicsConstants.COLUMN_DIRECT_MESSAGES:
-                            whereType = " AND (type_id = " + TweetTopicsConstants.TWEET_TYPE_DIRECTMESSAGES + " OR type_id = " + TweetTopicsConstants.TWEET_TYPE_SENT_DIRECTMESSAGES + ")";
+                        case TweetTopicsUtils.COLUMN_DIRECT_MESSAGES:
+                            whereType = " AND (type_id = " + TweetTopicsUtils.TWEET_TYPE_DIRECTMESSAGES + " OR type_id = " + TweetTopicsUtils.TWEET_TYPE_SENT_DIRECTMESSAGES + ")";
                             break;
                     }
 
@@ -246,7 +262,7 @@ public class TweetTopicsFragment extends Fragment {
                     int count = 0;
                     boolean found = false;
                     int countHide = 0;
-                    boolean is_timeline = column_entity.getInt("type_id") ==  TweetTopicsConstants.COLUMN_TIMELINE;
+                    boolean is_timeline = column_entity.getInt("type_id") ==  TweetTopicsUtils.COLUMN_TIMELINE;
                     EntityTweetUser entityTweetUser = new EntityTweetUser(user_entity.getId(), column_entity.getInt("type_id"));
 
                     for (int i = tweets.size()-1; i >=0; i--) {
@@ -296,9 +312,10 @@ public class TweetTopicsFragment extends Fragment {
             @Override
             public void onError(ErrorResponse error) {
                 error.getError().printStackTrace();
+                listView.onRefreshComplete();
                 showNoInternet();
             }
-        }, new TwitterUserRequest(column_entity.getInt("type_id"), user_entity));
+        }, new TwitterUserRequest(column_entity.getInt("type_id"), user_entity.getId()));
     }
 
     public void showHideMessage() {
@@ -320,15 +337,15 @@ public class TweetTopicsFragment extends Fragment {
                         long id = tweetsAdapter.getItem(positionLastRead).getId();
                         if (user_entity != null) {
                             switch (column_entity.getInt("type_id")) {
-                                case TweetTopicsConstants.COLUMN_TIMELINE:
+                                case TweetTopicsUtils.COLUMN_TIMELINE:
                                     user_entity.setValue("last_timeline_id", id + "");
                                     user_entity.save();
                                     break;
-                                case TweetTopicsConstants.COLUMN_MENTIONS:
+                                case TweetTopicsUtils.COLUMN_MENTIONS:
                                     user_entity.setValue("last_mention_id", id + "");
                                     user_entity.save();
                                     break;
-                                case TweetTopicsConstants.COLUMN_DIRECT_MESSAGES:
+                                case TweetTopicsUtils.COLUMN_DIRECT_MESSAGES:
                                     user_entity.setValue("last_direct_id", id + "");
                                     user_entity.save();
                                     break;
@@ -355,7 +372,7 @@ public class TweetTopicsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        tweetsAdapter = new TweetsAdapter(getActivity(), getLoaderManager(), infoTweets, user_entity.getString("name"));
+        tweetsAdapter = new TweetsAdapter(getActivity(), getLoaderManager(), infoTweets, user_entity.getString("name"), (int)column_entity.getId());
         preLoadInfoTweetIfIsNecessary();
 
     }
@@ -400,18 +417,17 @@ public class TweetTopicsFragment extends Fragment {
                 //if (scrollState == SCROLL_STATE_TOUCH_SCROLL) closeSidebar();
 
                 if (scrollState == SCROLL_STATE_TOUCH_SCROLL) {
-                    tweetsAdapter.setFlinging(true);
+                    setFlinging(true);
                 }
 
                 if (scrollState != AbsListView.OnScrollListener.SCROLL_STATE_FLING && scrollState != SCROLL_STATE_TOUCH_SCROLL) {
-                    tweetsAdapter.setFlinging(false);
-                    //TweetListItem.executeLoadTasks();
+                    setFlinging(false);
                 }
             }
 
         });
 
-        listView.getRefreshableView().setSelection(tweetsAdapter.getLastReadPosition());
+        listView.getRefreshableView().setSelection(tweetsAdapter.getLastReadPosition()+1);
 
         viewLoading = (LinearLayout) view.findViewById(R.id.tweet_view_loading);
         viewNoInternet = (LinearLayout) view.findViewById(R.id.tweet_view_no_internet);
@@ -423,7 +439,7 @@ public class TweetTopicsFragment extends Fragment {
             showLoading();
             getTweetsFromInternet = true;
         } else {
-            if (column_entity.getInt("type_id") == TweetTopicsConstants.COLUMN_TIMELINE) {
+            if (column_entity.getInt("type_id") == TweetTopicsUtils.COLUMN_TIMELINE) {
 
                 int minutes = Integer.parseInt(Utils.getPreference(context).getString("prf_time_refresh", "10"));
 

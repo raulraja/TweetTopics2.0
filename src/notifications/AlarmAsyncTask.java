@@ -18,7 +18,7 @@ import com.javielinux.tweettopics2.R;
 import com.javielinux.tweettopics2.TweetTopicsActivity;
 import com.javielinux.twitter.ConnectionManager2;
 import com.javielinux.utils.PreferenceUtils;
-import com.javielinux.utils.TweetTopicsConstants;
+import com.javielinux.utils.TweetTopicsUtils;
 import com.javielinux.utils.Utils;
 import database.EntitySearch;
 import database.EntityTweetUser;
@@ -160,17 +160,9 @@ public class AlarmAsyncTask extends AsyncTask<Void, Void, Void> {
 	}
 	
 	public void searchUser() {
-		
-        long idActive = -1;
-        
+
     	List<Entity> users = DataFramework.getInstance().getEntityList("users", "service is null or service = \"twitter.com\"");
-    	for (int i=0; i<users.size(); i++) {
-   			if (users.get(i).getInt("active")==1) {
-   				idActive = users.get(i).getId();
-   			}
-    	}
-    	
-    	boolean allUsers = mPreferences.getBoolean("prf_no_read_adw_all_users", false);
+
     	boolean timeline = mPreferences.getBoolean("prf_notif_in_timeline", false);
     	boolean mentions = mPreferences.getBoolean("prf_notif_in_mentions", true);
     	boolean dms = mPreferences.getBoolean("prf_notif_in_direct", true);
@@ -189,56 +181,48 @@ public class AlarmAsyncTask extends AsyncTask<Void, Void, Void> {
     			un.id = users.get(i).getId();
     			
     			// TIMELINE
-    			
-    			if (users.get(i).getInt("no_save_timeline")!=1) {
-    				EntityTweetUser etuTimeline = new EntityTweetUser(users.get(i).getId(), TweetTopicsConstants.TWEET_TYPE_TIMELINE);
+
+                if (TweetTopicsUtils.hasColumn(users.get(i).getId(), TweetTopicsUtils.COLUMN_TIMELINE)) {
+    				EntityTweetUser etuTimeline = new EntityTweetUser(users.get(i).getId(), TweetTopicsUtils.TWEET_TYPE_TIMELINE);
 	    			if (!PreferenceUtils.getStatusWorkApp(mContext) && mType!=OnAlarmReceiver.ALARM_ONLY_OTHERS) {
 	    				InfoSaveTweets info = etuTimeline.saveTweets(mContext, twitter, true);
 	    				if (info.getNewMessages()>0 && timeline) un.show = true;
 	    			}
-    				if (allUsers) {
-    					mTotalTimelineADW += etuTimeline.getValueNewCount();
-    				} else {
-    					if (idActive==users.get(i).getId()) mTotalTimelineADW += etuTimeline.getValueNewCount();
-    				}
+   					mTotalTimelineADW += etuTimeline.getValueNewCount();
     				if (timeline) un.mTotalTimeline = etuTimeline.getValueNewCount();
 	    			
     			}
     			
     			// MENTIONS
-    			
-    			EntityTweetUser etuMentions = new EntityTweetUser(users.get(i).getId(), TweetTopicsConstants.TWEET_TYPE_MENTIONS);
-    			if (!PreferenceUtils.getStatusWorkApp(mContext) && mType!=OnAlarmReceiver.ALARM_ONLY_TIMELINE) {
-    				InfoSaveTweets info = etuMentions.saveTweets(mContext, twitter, true);
-    				if (info.getNewMessages()>0 && mentions) un.show = true;
-    			}
 
-				if (mentions) un.mTotalMentions = etuMentions.getValueNewCount();
-				if (allUsers) {
-					mTotalMentionsADW += etuMentions.getValueNewCount();
-				} else {
-					if (idActive==users.get(i).getId()) mTotalMentionsADW += etuMentions.getValueNewCount();
-				}
+                if (TweetTopicsUtils.hasColumn(users.get(i).getId(), TweetTopicsUtils.COLUMN_MENTIONS)) {
+                    EntityTweetUser etuMentions = new EntityTweetUser(users.get(i).getId(), TweetTopicsUtils.TWEET_TYPE_MENTIONS);
+                    if (!PreferenceUtils.getStatusWorkApp(mContext) && mType!=OnAlarmReceiver.ALARM_ONLY_TIMELINE) {
+                        InfoSaveTweets info = etuMentions.saveTweets(mContext, twitter, true);
+                        if (info.getNewMessages()>0 && mentions) un.show = true;
+                    }
+
+                    if (mentions) un.mTotalMentions = etuMentions.getValueNewCount();
+                    mTotalMentionsADW += etuMentions.getValueNewCount();
+                }
     			
     			// DIRECTOS
-    			
-				EntityTweetUser etuDMs = new EntityTweetUser(users.get(i).getId(), TweetTopicsConstants.TWEET_TYPE_DIRECTMESSAGES);
-    			if (!PreferenceUtils.getStatusWorkApp(mContext) && mType!=OnAlarmReceiver.ALARM_ONLY_TIMELINE) {
-    				InfoSaveTweets info = etuDMs.saveTweets(mContext, twitter, true);
-    				if (info.getNewMessages()>0 && dms) un.show = true;
-    			}
-    			if (dms) un.mTotalDMs = etuDMs.getValueNewCount();
-				
-				if (allUsers) {
-					mTotalDMsAWD += etuDMs.getValueNewCount();
-				} else {
-					if (idActive==users.get(i).getId()) mTotalDMsAWD += etuDMs.getValueNewCount();
-				}
+
+                if (TweetTopicsUtils.hasColumn(users.get(i).getId(), TweetTopicsUtils.COLUMN_DIRECT_MESSAGES)) {
+                    EntityTweetUser etuDMs = new EntityTweetUser(users.get(i).getId(), TweetTopicsUtils.TWEET_TYPE_DIRECTMESSAGES);
+                    if (!PreferenceUtils.getStatusWorkApp(mContext) && mType!=OnAlarmReceiver.ALARM_ONLY_TIMELINE) {
+                        InfoSaveTweets info = etuDMs.saveTweets(mContext, twitter, true);
+                        if (info.getNewMessages()>0 && dms) un.show = true;
+                    }
+                    if (dms) un.mTotalDMs = etuDMs.getValueNewCount();
+
+                    mTotalDMsAWD += etuDMs.getValueNewCount();
+                }
     			
     			// DIRECTOS ENVIADOS
     			
     			if (!PreferenceUtils.getStatusWorkApp(mContext) && mType!=OnAlarmReceiver.ALARM_ONLY_TIMELINE) {
-    				EntityTweetUser etuSentDMs = new EntityTweetUser(users.get(i).getId(), TweetTopicsConstants.TWEET_TYPE_SENT_DIRECTMESSAGES);
+    				EntityTweetUser etuSentDMs = new EntityTweetUser(users.get(i).getId(), TweetTopicsUtils.TWEET_TYPE_SENT_DIRECTMESSAGES);
     				etuSentDMs.saveTweets(mContext, twitter, true);
     			}
     			

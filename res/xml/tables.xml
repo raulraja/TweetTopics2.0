@@ -205,7 +205,7 @@
     <field name="full_name" obligatory="true" type="text" size="128" new-in-version="22" />
   </table>
 
-  <table name="columns" to-string="%description%" new-in-version="24">
+  <table name="columns" to-string="%description%" new-in-version="24" backup="no">
     <field name="description" obligatory="true" type="text" size="64"/>
     <field name="type_id" obligatory="true" type="foreign-key" foreign-table="type_columns" />
     <field name="position" obligatory="true" type="int" />
@@ -215,7 +215,7 @@
     <field name="search_id" type="foreign-key" foreign-table="search" />
   </table>
 
-  <table name="type_columns" to-string="%description%" new-in-version="24">
+  <table name="type_columns" to-string="%description%" new-in-version="24" backup="no">
     <field name="description" obligatory="true" type="text" size="64"/>
     <field name="title" type="string-identifier" />
     <field name="fragment" type="string" />

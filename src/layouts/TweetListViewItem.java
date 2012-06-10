@@ -275,22 +275,26 @@ public class TweetListViewItem extends RelativeLayout {
         linkForImage = getBestLink(links);
 
         if (linkForImage.equals("")) {
-            viewHolder.tweetPhotoImg.setVisibility(GONE);
+            viewHolder.tweetPhotoImgContainer.setVisibility(GONE);
         } else {
 
-            viewHolder.tweetPhotoImg.setVisibility(VISIBLE);
+            viewHolder.tweetPhotoImgContainer.setVisibility(VISIBLE);
 
             if (links.size()>1) {
-                viewHolder.tweetPhotoImg.setBackgroundResource(R.drawable.container_image_multiple);
+                viewHolder.tweetPhotoImgContainer.setBackgroundResource(R.drawable.container_image_multiple);
             } else {
-                viewHolder.tweetPhotoImg.setBackgroundResource(R.drawable.container_image_simple);
+                viewHolder.tweetPhotoImgContainer.setBackgroundResource(R.drawable.container_image_simple);
             }
 
             InfoLink infoLink = searchImage(linkForImage);
 
             if (infoLink==null) {
                 if (Utils.isLinkImage(linkForImage)) {
-                    viewHolder.tweetPhotoImg.setImageResource(R.drawable.icon_tweet_image);
+                    if (Utils.isLinkVideo(linkForImage)) {
+                        viewHolder.tweetPhotoImg.setImageResource(R.drawable.icon_tweet_video);
+                    } else {
+                        viewHolder.tweetPhotoImg.setImageResource(R.drawable.icon_tweet_image);
+                    }
                     searchImages.add(linkForImage);
                 } else {
                     if (linkForImage.startsWith("@")) {
@@ -332,7 +336,7 @@ public class TweetListViewItem extends RelativeLayout {
                         if (infoLink.getBitmapThumb()!=null) viewHolder.tweetPhotoImg.setImageBitmap(infoLink.getBitmapThumb());
                     }
 
-                    tweetsAdapter.notifyDataSetChanged();
+                    //tweetsAdapter.notifyDataSetChanged();
 
                 }
 

@@ -33,7 +33,7 @@ import com.javielinux.twitter.ConnectionManager2;
 import com.javielinux.utils.DialogUtils.BuyProDialogBuilder;
 import com.javielinux.utils.ImageUtils;
 import com.javielinux.utils.PreferenceUtils;
-import com.javielinux.utils.TweetTopicsConstants;
+import com.javielinux.utils.TweetTopicsUtils;
 import com.javielinux.utils.Utils;
 import preferences.Preferences;
 import twitter4j.TwitterException;
@@ -450,7 +450,7 @@ public class Users extends BaseActivity {
                     // choices
                     int count = DataFramework.getInstance().getEntityListCount("columns", "") + 1;
                     if (isChoices[0]) {
-                        Entity type = new Entity("type_columns", (long)TweetTopicsConstants.COLUMN_TIMELINE);
+                        Entity type = new Entity("type_columns", (long) TweetTopicsUtils.COLUMN_TIMELINE);
                         Entity timeline = new Entity("columns");
                         timeline.setValue("description", type.getString("description"));
                         timeline.setValue("type_id", type);
@@ -460,7 +460,7 @@ public class Users extends BaseActivity {
                         count++;
                     }
                     if (isChoices[1]) {
-                        Entity type = new Entity("type_columns", (long)TweetTopicsConstants.COLUMN_MENTIONS);
+                        Entity type = new Entity("type_columns", (long) TweetTopicsUtils.COLUMN_MENTIONS);
                         Entity mentions = new Entity("columns");
                         mentions.setValue("description", type.getString("description"));
                         mentions.setValue("type_id", type);
@@ -470,7 +470,7 @@ public class Users extends BaseActivity {
                         count++;
                     }
                     if (isChoices[2]) {
-                        Entity type = new Entity("type_columns", (long)TweetTopicsConstants.COLUMN_DIRECT_MESSAGES);
+                        Entity type = new Entity("type_columns", (long) TweetTopicsUtils.COLUMN_DIRECT_MESSAGES);
                         Entity dms = new Entity("columns");
                         dms.setValue("description", type.getString("description"));
                         dms.setValue("type_id", type);

@@ -1,15 +1,13 @@
 package api.request;
 
-import com.android.dataframework.Entity;
-
 public class TwitterUserRequest implements BaseRequest {
 
     private int column;
-    private Entity user;
+    private long userId;
 
-    public TwitterUserRequest(int column, Entity user) {
+    public TwitterUserRequest(int column, long userId) {
         this.column = column;
-        this.user = user;
+        this.userId = userId;
     }
 
     public int getColumn() {
@@ -19,11 +17,12 @@ public class TwitterUserRequest implements BaseRequest {
         this.column = column;
     }
 
-    public Entity getUser() {
-        return user;
-    }
-    public void setUser(Entity user) {
-        this.user = user;
+
+    public long getUserId() {
+        return userId;
     }
 
+    public void setUserId(long userId) {
+        this.userId = userId;
+    }
 }

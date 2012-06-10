@@ -19,7 +19,7 @@ import com.android.dataframework.Entity;
 import com.javielinux.tweettopics2.NewStatus;
 import com.javielinux.tweettopics2.R;
 import com.javielinux.tweettopics2.TweetTopicsActivity;
-import com.javielinux.utils.TweetTopicsConstants;
+import com.javielinux.utils.TweetTopicsUtils;
 import com.javielinux.utils.Utils;
 import database.EntitySearch;
 
@@ -243,14 +243,14 @@ public class WidgetCounters4x1 extends AppWidgetProvider {
 		    	if (e!=null) {
 	
 		    		if (e.getInt("no_save_timeline")!=1) {
-		    			totalTimeline = DataFramework.getInstance().getEntityListCount("tweets_user", "type_id = " + TweetTopicsConstants.TWEET_TYPE_TIMELINE
+		    			totalTimeline = DataFramework.getInstance().getEntityListCount("tweets_user", "type_id = " + TweetTopicsUtils.TWEET_TYPE_TIMELINE
 		       				+ " AND user_tt_id="+e.getId() + " AND tweet_id >'" + Utils.fillZeros(""+e.getString("last_timeline_id"))+"'");
 		    		}
 	
-		    		totalMentions = DataFramework.getInstance().getEntityListCount("tweets_user", "type_id = " + TweetTopicsConstants.TWEET_TYPE_MENTIONS
+		    		totalMentions = DataFramework.getInstance().getEntityListCount("tweets_user", "type_id = " + TweetTopicsUtils.TWEET_TYPE_MENTIONS
 		       				+ " AND user_tt_id="+e.getId() + " AND tweet_id >'" + Utils.fillZeros(""+e.getString("last_mention_id"))+"'");
 	
-		    		totalDirectMessages = DataFramework.getInstance().getEntityListCount("tweets_user", "type_id = " + TweetTopicsConstants.TWEET_TYPE_DIRECTMESSAGES
+		    		totalDirectMessages = DataFramework.getInstance().getEntityListCount("tweets_user", "type_id = " + TweetTopicsUtils.TWEET_TYPE_DIRECTMESSAGES
 		       				+ " AND user_tt_id="+e.getId() + " AND tweet_id >'" + Utils.fillZeros(""+e.getString("last_direct_id"))+"'");
 	
 		    	}
@@ -332,7 +332,7 @@ public class WidgetCounters4x1 extends AppWidgetProvider {
 			i.setAction(Intent.ACTION_VIEW);
 			i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			i.putExtra("start_user_id", userId+"");
-			i.putExtra("start_column", TweetTopicsConstants.TWEET_TYPE_TIMELINE+"");
+			i.putExtra("start_column", TweetTopicsUtils.TWEET_TYPE_TIMELINE+"");
 			context.startActivity(i);
 		}
 		
@@ -341,7 +341,7 @@ public class WidgetCounters4x1 extends AppWidgetProvider {
 			i.setAction(Intent.ACTION_VIEW);
 			i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			i.putExtra("start_user_id", userId+"");
-			i.putExtra("start_column", TweetTopicsConstants.TWEET_TYPE_MENTIONS+"");
+			i.putExtra("start_column", TweetTopicsUtils.TWEET_TYPE_MENTIONS+"");
 			context.startActivity(i);		
 		}
 		
@@ -350,7 +350,7 @@ public class WidgetCounters4x1 extends AppWidgetProvider {
 			i.setAction(Intent.ACTION_VIEW);
 			i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			i.putExtra("start_user_id", userId+"");
-			i.putExtra("start_column", TweetTopicsConstants.TWEET_TYPE_DIRECTMESSAGES+"");
+			i.putExtra("start_column", TweetTopicsUtils.TWEET_TYPE_DIRECTMESSAGES+"");
 			context.startActivity(i);		
 		}
 		

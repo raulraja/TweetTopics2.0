@@ -18,7 +18,7 @@ import com.javielinux.tweettopics2.R;
 import com.javielinux.tweettopics2.TweetTopicsActivity;
 import com.javielinux.twitter.ConnectionManager2;
 import com.javielinux.utils.PreferenceUtils;
-import com.javielinux.utils.TweetTopicsConstants;
+import com.javielinux.utils.TweetTopicsUtils;
 import com.javielinux.utils.Utils;
 import database.EntitySearch;
 import database.EntityTweetUser;
@@ -132,17 +132,9 @@ public class AlarmOneNotificationAsyncTask extends AsyncTask<Void, Void, Void> {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        
-        long idActive = -1;
-        
+
     	List<Entity> users = DataFramework.getInstance().getEntityList("users", "service is null or service = \"twitter.com\"");
-    	for (int i=0; i<users.size(); i++) {
-   			if (users.get(i).getInt("active")==1) {
-   				idActive = users.get(i).getId();
-   			}
-    	}
-    	
-    	boolean allUsers = mPreferences.getBoolean("prf_no_read_adw_all_users", false);
+
     	boolean mentions = mPreferences.getBoolean("prf_notif_in_mentions", true);
     	boolean dms = mPreferences.getBoolean("prf_notif_in_direct", true);
     	
@@ -156,49 +148,42 @@ public class AlarmOneNotificationAsyncTask extends AsyncTask<Void, Void, Void> {
     			
     			// TIMELINE
     			
-    			if (users.get(i).getInt("no_save_timeline")!=1) {
-    				EntityTweetUser etuTimeline = new EntityTweetUser(users.get(i).getId(), TweetTopicsConstants.TWEET_TYPE_TIMELINE);
+    			if (TweetTopicsUtils.hasColumn(users.get(i).getId(), TweetTopicsUtils.COLUMN_TIMELINE)) {
+    				EntityTweetUser etuTimeline = new EntityTweetUser(users.get(i).getId(), TweetTopicsUtils.TWEET_TYPE_TIMELINE);
 	    			if (!PreferenceUtils.getStatusWorkApp(mContext) && mType!=OnAlarmReceiver.ALARM_ONLY_OTHERS) {
 	    				etuTimeline.saveTweets(mContext, twitter, true);
 	    			}
-	    			if (allUsers) {
-    					mTotalTimelineADW += etuTimeline.getValueNewCount();
-    				} else {
-    					if (idActive==users.get(i).getId()) mTotalTimelineADW += etuTimeline.getValueNewCount();
-    				}
+   					mTotalTimelineADW += etuTimeline.getValueNewCount();
     			}
     			
     			// MENTIONS
-    			EntityTweetUser etuMentions = new EntityTweetUser(users.get(i).getId(), TweetTopicsConstants.TWEET_TYPE_MENTIONS);
-    			if (!PreferenceUtils.getStatusWorkApp(mContext) && mType!=OnAlarmReceiver.ALARM_ONLY_TIMELINE) {
-    				InfoSaveTweets info = etuMentions.saveTweets(mContext, twitter, true);
-    				if (info.getNewMessages()>0 && mentions) showNotification = true;
-    			}
-				if (mentions) mTotalSumMentions += etuMentions.getValueNewCount();
-				
-				if (allUsers) {
-					mTotalMentionsADW += etuMentions.getValueNewCount();
-				} else {
-					if (idActive==users.get(i).getId()) mTotalMentionsADW += etuMentions.getValueNewCount();
-				}
+
+                if (TweetTopicsUtils.hasColumn(users.get(i).getId(), TweetTopicsUtils.COLUMN_MENTIONS)) {
+                    EntityTweetUser etuMentions = new EntityTweetUser(users.get(i).getId(), TweetTopicsUtils.TWEET_TYPE_MENTIONS);
+                    if (!PreferenceUtils.getStatusWorkApp(mContext) && mType!=OnAlarmReceiver.ALARM_ONLY_TIMELINE) {
+                        InfoSaveTweets info = etuMentions.saveTweets(mContext, twitter, true);
+                        if (info.getNewMessages()>0 && mentions) showNotification = true;
+                    }
+                    if (mentions) mTotalSumMentions += etuMentions.getValueNewCount();
+
+                    mTotalMentionsADW += etuMentions.getValueNewCount();
+                }
     			
     			// DIRECTOS
-				EntityTweetUser etuDMs = new EntityTweetUser(users.get(i).getId(), TweetTopicsConstants.TWEET_TYPE_DIRECTMESSAGES);
-    			if (!PreferenceUtils.getStatusWorkApp(mContext) && mType!=OnAlarmReceiver.ALARM_ONLY_TIMELINE) {
-    				InfoSaveTweets info = etuDMs.saveTweets(mContext, twitter, true);
-    				if (info.getNewMessages()>0 && dms) showNotification = true;
-    			}
-    			if (dms) mTotalSumDMs += etuDMs.getValueNewCount();
-				if (allUsers) {
-					mTotalDMsAWD += etuDMs.getValueNewCount();
-				} else {
-					if (idActive==users.get(i).getId()) mTotalDMsAWD += etuDMs.getValueNewCount();
-				}
+                if (TweetTopicsUtils.hasColumn(users.get(i).getId(), TweetTopicsUtils.COLUMN_DIRECT_MESSAGES)) {
+                    EntityTweetUser etuDMs = new EntityTweetUser(users.get(i).getId(), TweetTopicsUtils.TWEET_TYPE_DIRECTMESSAGES);
+                    if (!PreferenceUtils.getStatusWorkApp(mContext) && mType!=OnAlarmReceiver.ALARM_ONLY_TIMELINE) {
+                        InfoSaveTweets info = etuDMs.saveTweets(mContext, twitter, true);
+                        if (info.getNewMessages()>0 && dms) showNotification = true;
+                    }
+                    if (dms) mTotalSumDMs += etuDMs.getValueNewCount();
+                    mTotalDMsAWD += etuDMs.getValueNewCount();
+                }
     			
     			// DIRECTOS ENVIADOS
     			
     			if (!PreferenceUtils.getStatusWorkApp(mContext) && mType!=OnAlarmReceiver.ALARM_ONLY_TIMELINE) {
-    				EntityTweetUser etuSentDMs = new EntityTweetUser(users.get(i).getId(), TweetTopicsConstants.TWEET_TYPE_SENT_DIRECTMESSAGES);
+    				EntityTweetUser etuSentDMs = new EntityTweetUser(users.get(i).getId(), TweetTopicsUtils.TWEET_TYPE_SENT_DIRECTMESSAGES);
     				etuSentDMs.saveTweets(mContext, twitter, true);
     			}
     			
@@ -308,47 +293,8 @@ public class AlarmOneNotificationAsyncTask extends AsyncTask<Void, Void, Void> {
 	}
 	
 	public void shouldSendNotificationAndroid() {
-		
-		//int total = mTotalSumMentions + mTotalSumDMs + mTotalSumSearches;
-		
-		if (showNotification && !PreferenceUtils.getStatusWorkApp(mContext)) {
-			/*
-			boolean vibrate = mPreferences.getBoolean("prf_vibrate_notifications", true);
-			boolean sound = mPreferences.getBoolean("prf_sound_notifications", true);
-			
-			AudioManager audioManager = ((AudioManager)mContext.getSystemService(Context.AUDIO_SERVICE));
-			
-			if (vibrate && audioManager.getVibrateSetting(AudioManager.VIBRATE_TYPE_NOTIFICATION)!=AudioManager.VIBRATE_SETTING_OFF) {
-				int mode = Integer.parseInt(mPreferences.getString("prf_time_vibrate", "3"));
-				if (mode==1) {
-					((Vibrator) mContext.getSystemService(Context.VIBRATOR_SERVICE)).vibrate(500);
-				}
-				if (mode==2) {
-					((Vibrator) mContext.getSystemService(Context.VIBRATOR_SERVICE)).vibrate(1000);
-				}
-				if (mode==3) {
-					long[] pattern = { 0, 500, 200, 500, 200 };
-					((Vibrator) mContext.getSystemService(Context.VIBRATOR_SERVICE)).vibrate(pattern, -1);  
-				}
-				if (mode==4) {
-					long[] pattern = { 0, 250, 200, 250, 200, 250, 200, 250, 200 };
-					((Vibrator) mContext.getSystemService(Context.VIBRATOR_SERVICE)).vibrate(pattern, -1);  
-				}
-			}
-			// sonar
-			if (sound && audioManager.getStreamVolume(AudioManager.STREAM_NOTIFICATION)>0) {
-				Ringtone rt = null;
-				String lringtone = mPreferences.getString("prf_ringtone", "");
-				if ( lringtone != "" ) {
-					rt = RingtoneManager.getRingtone(mContext, Uri.parse(lringtone)); 			 	   		 		     
-				} else {
-					rt = RingtoneManager.getRingtone(mContext, RingtoneManager.getActualDefaultRingtoneUri(mContext, RingtoneManager.TYPE_NOTIFICATION)); 
-				}
 
-				if (rt!=null) if (!rt.isPlaying()) rt.play();
-                //Ringtone rt = RingtoneManager.getRingtone(this, RingtoneManager.getActualDefaultRingtoneUri(this, RingtoneManager.TYPE_NOTIFICATION));
-                //if (!rt.isPlaying()) rt.play();
-			}*/
+		if (showNotification && !PreferenceUtils.getStatusWorkApp(mContext)) {
 			String text = mContext.getString(R.string.notif_mentions) + ": " + mTotalSumMentions + " " + mContext.getString(R.string.notif_directs) + ": " + mTotalSumDMs + " " + mContext.getString(R.string.notif_searches) + ": " + mTotalSearchesAWD;
 			setMood(R.drawable.ic_stat_notification, text, -1);
 		}
@@ -408,7 +354,7 @@ public class AlarmOneNotificationAsyncTask extends AsyncTask<Void, Void, Void> {
 					
 		}
         
-        ((NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE)).notify(R.layout.tweet_list, notification);
+        ((NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE)).notify(R.layout.tweettopics_activity, notification);
     }
 
 }

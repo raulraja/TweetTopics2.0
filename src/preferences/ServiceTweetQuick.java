@@ -223,7 +223,7 @@ public class ServiceTweetQuick extends Service implements UploadStatusAsyncTaskR
         notification.setLatestEventInfo(this, this.getText(R.string.app_name), text, contentIntent);
         
         
-        ((NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE)).notify(R.layout.tweet_list, notification);
+        ((NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE)).notify(R.layout.tweettopics_activity, notification);
     }
 	
 }

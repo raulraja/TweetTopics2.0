@@ -80,13 +80,21 @@
                     style="@style/TweetText"
                     />
 
-            <ImageView android:layout_width="45dp"
-                          android:layout_height="43dp"
-                          android:scaleType="centerCrop"
-                          android:layout_margin="4dp"
-                          android:orientation="vertical"
-                          android:gravity="center_horizontal"
-                          android:id="@+id/tweet_photo_img" />
+            <LinearLayout android:layout_width="wrap_content"
+                          android:layout_height="wrap_content"
+                          android:id="@+id/tweet_photo_img_container"
+                          android:layout_marginLeft="4dp"
+                          android:layout_marginRight="4dp"
+                          android:layout_marginTop="2dp"
+                          android:gravity="center"
+                    >
+
+                <ImageView android:layout_width="29dp"
+                              android:layout_height="27dp"
+                              android:scaleType="centerCrop"
+                              android:id="@+id/tweet_photo_img" />
+
+            </LinearLayout>
 
         </LinearLayout>
 

@@ -10,7 +10,7 @@ import android.util.Log;
 import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
 import com.javielinux.tweettopics2.R;
-import com.javielinux.utils.TweetTopicsConstants;
+import com.javielinux.utils.TweetTopicsUtils;
 import com.javielinux.utils.Utils;
 import infos.InfoSaveTweets;
 import twitter4j.*;
@@ -38,13 +38,13 @@ public class EntityTweetUser extends Entity {
 	public String getFieldLastId() {
 
         switch (tweet_type) {
-            case TweetTopicsConstants.TWEET_TYPE_TIMELINE:
+            case TweetTopicsUtils.TWEET_TYPE_TIMELINE:
                 return "last_timeline_id";
-            case TweetTopicsConstants.TWEET_TYPE_MENTIONS:
+            case TweetTopicsUtils.TWEET_TYPE_MENTIONS:
                 return "last_mention_id";
-            case TweetTopicsConstants.TWEET_TYPE_DIRECTMESSAGES:
+            case TweetTopicsUtils.TWEET_TYPE_DIRECTMESSAGES:
                 return "last_direct_id";
-            case TweetTopicsConstants.TWEET_TYPE_SENT_DIRECTMESSAGES:
+            case TweetTopicsUtils.TWEET_TYPE_SENT_DIRECTMESSAGES:
                 return "last_sent_direct_id";
         }
 
@@ -69,8 +69,8 @@ public class EntityTweetUser extends Entity {
         Entity entity;
         
         switch (tweet_type) {
-            case TweetTopicsConstants.TWEET_TYPE_TIMELINE:
-                where = "type_id = " + TweetTopicsConstants.TWEET_TYPE_TIMELINE + " AND user_tt_id=" + getId();
+            case TweetTopicsUtils.TWEET_TYPE_TIMELINE:
+                where = "type_id = " + TweetTopicsUtils.TWEET_TYPE_TIMELINE + " AND user_tt_id=" + getId();
                 entity = DataFramework.getInstance().getTopEntity("tweets_user", where, "date desc");
 
                 if (entity!=null) {
@@ -78,8 +78,8 @@ public class EntityTweetUser extends Entity {
                     setValue("last_timeline_id", id+"");
                 }
                 break;
-            case TweetTopicsConstants.TWEET_TYPE_MENTIONS:
-                where = "type_id = " + TweetTopicsConstants.TWEET_TYPE_MENTIONS + " AND user_tt_id=" + getId();
+            case TweetTopicsUtils.TWEET_TYPE_MENTIONS:
+                where = "type_id = " + TweetTopicsUtils.TWEET_TYPE_MENTIONS + " AND user_tt_id=" + getId();
                 entity = DataFramework.getInstance().getTopEntity("tweets_user", where, "date desc");
 
                 if (entity!=null) {
@@ -87,8 +87,8 @@ public class EntityTweetUser extends Entity {
                     setValue("last_mention_id", id+"");
                 }
                 break;
-            case TweetTopicsConstants.TWEET_TYPE_DIRECTMESSAGES:
-			    where = "type_id = " + TweetTopicsConstants.TWEET_TYPE_DIRECTMESSAGES + " AND user_tt_id=" + getId();
+            case TweetTopicsUtils.TWEET_TYPE_DIRECTMESSAGES:
+			    where = "type_id = " + TweetTopicsUtils.TWEET_TYPE_DIRECTMESSAGES + " AND user_tt_id=" + getId();
 			    entity = DataFramework.getInstance().getTopEntity("tweets_user", where, "date desc");
 
 			    if (entity!=null) {
@@ -96,8 +96,8 @@ public class EntityTweetUser extends Entity {
 				    setValue("last_direct_id", id+"");
 			    }
                 break;
-            case TweetTopicsConstants.TWEET_TYPE_SENT_DIRECTMESSAGES:
-			    where = "type_id = " + TweetTopicsConstants.TWEET_TYPE_SENT_DIRECTMESSAGES + " AND user_tt_id="+getId();
+            case TweetTopicsUtils.TWEET_TYPE_SENT_DIRECTMESSAGES:
+			    where = "type_id = " + TweetTopicsUtils.TWEET_TYPE_SENT_DIRECTMESSAGES + " AND user_tt_id="+getId();
 			    entity = DataFramework.getInstance().getTopEntity("tweets_user", where, "date desc");
 
 			    if (entity!=null) {
@@ -125,13 +125,13 @@ public class EntityTweetUser extends Entity {
 	public String getTypeText() {
 
         switch (tweet_type) {
-		    case TweetTopicsConstants.TWEET_TYPE_TIMELINE:
+		    case TweetTopicsUtils.TWEET_TYPE_TIMELINE:
                 return "timeline";
-            case TweetTopicsConstants.TWEET_TYPE_MENTIONS:
+            case TweetTopicsUtils.TWEET_TYPE_MENTIONS:
 			    return "menciones";
-            case TweetTopicsConstants.TWEET_TYPE_DIRECTMESSAGES:
+            case TweetTopicsUtils.TWEET_TYPE_DIRECTMESSAGES:
 			    return "directos";
-            case TweetTopicsConstants.TWEET_TYPE_SENT_DIRECTMESSAGES:
+            case TweetTopicsUtils.TWEET_TYPE_SENT_DIRECTMESSAGES:
 			    return "directos enviados";
 		}
 
@@ -159,7 +159,7 @@ public class EntityTweetUser extends Entity {
 			ResponseList<twitter4j.DirectMessage> directs = null;
 			
 			if (mLastIdNotification>0) {
-				if (tweet_type == TweetTopicsConstants.TWEET_TYPE_TIMELINE) {	
+				if (tweet_type == TweetTopicsUtils.TWEET_TYPE_TIMELINE) {
 
                     if (maxDownloadTweet <= 0) { // se descargan todos los tweets
 
@@ -199,7 +199,7 @@ public class EntityTweetUser extends Entity {
                         }
                     }
 
-				} else if (tweet_type == TweetTopicsConstants.TWEET_TYPE_MENTIONS) {
+				} else if (tweet_type == TweetTopicsUtils.TWEET_TYPE_MENTIONS) {
 					
 					int page = 1;
 					ResponseList<twitter4j.Status> statuses = twitter.getMentions(new Paging(page, mLastIdNotification));
@@ -214,7 +214,7 @@ public class EntityTweetUser extends Entity {
 		            	statuses = twitter.getMentions(new Paging(page, mLastIdNotification));
 		            }
 					
-				} else if (tweet_type == TweetTopicsConstants.TWEET_TYPE_DIRECTMESSAGES) {
+				} else if (tweet_type == TweetTopicsUtils.TWEET_TYPE_DIRECTMESSAGES) {
 					
 					int page = 1;
 					ResponseList<twitter4j.DirectMessage> directses = twitter.getDirectMessages(new Paging(page, mLastIdNotification));
@@ -229,7 +229,7 @@ public class EntityTweetUser extends Entity {
 		            	directses = twitter.getDirectMessages(new Paging(page, mLastIdNotification));
 		            }
 					
-				} else if (tweet_type == TweetTopicsConstants.TWEET_TYPE_SENT_DIRECTMESSAGES) {
+				} else if (tweet_type == TweetTopicsUtils.TWEET_TYPE_SENT_DIRECTMESSAGES) {
 					
 					int page = 1;
 					ResponseList<twitter4j.DirectMessage> directses = twitter.getSentDirectMessages(new Paging(page, mLastIdNotification));
@@ -248,13 +248,13 @@ public class EntityTweetUser extends Entity {
 			} else {
 				try {
 					Log.d(Utils.TAG, "Primera carga de " + getTypeText());
-					if (tweet_type == TweetTopicsConstants.TWEET_TYPE_TIMELINE) {
+					if (tweet_type == TweetTopicsUtils.TWEET_TYPE_TIMELINE) {
 						statii = twitter.getHomeTimeline(new Paging(1, 40));
-					} else if (tweet_type == TweetTopicsConstants.TWEET_TYPE_MENTIONS) {
+					} else if (tweet_type == TweetTopicsUtils.TWEET_TYPE_MENTIONS) {
 						statii = twitter.getMentions(new Paging(1, 40));
-					} else if (tweet_type == TweetTopicsConstants.TWEET_TYPE_DIRECTMESSAGES) {
+					} else if (tweet_type == TweetTopicsUtils.TWEET_TYPE_DIRECTMESSAGES) {
 						directs = twitter.getDirectMessages();
-					} else if (tweet_type == TweetTopicsConstants.TWEET_TYPE_SENT_DIRECTMESSAGES) {
+					} else if (tweet_type == TweetTopicsUtils.TWEET_TYPE_SENT_DIRECTMESSAGES) {
 						directs = twitter.getSentDirectMessages();
 					}
 				} catch (OutOfMemoryError e) {

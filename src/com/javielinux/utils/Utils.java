@@ -1386,6 +1386,26 @@ public class Utils {
         return false;
     }
 
+    static public boolean isLinkVideo(String link) {
+
+        // vimeo
+        if (link.contains("vimeo")) {
+            return true;
+        }
+
+        // youtube
+
+        if (link.contains("youtube")) {
+            return true;
+        }
+
+        if (link.contains("youtu.be")) {
+            return true;
+        }
+
+        return false;
+    }
+
     
     static public boolean hasImagesTweet(String text) {
     	ArrayList<String> links = pullLinks(text);

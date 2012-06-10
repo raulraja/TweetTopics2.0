@@ -12,7 +12,7 @@ import com.android.dataframework.Entity;
 import com.javielinux.tweettopics2.R;
 import com.javielinux.tweettopics2.ThemeManager;
 import com.javielinux.utils.ImageUtils;
-import com.javielinux.utils.TweetTopicsConstants;
+import com.javielinux.utils.TweetTopicsUtils;
 import com.javielinux.utils.Utils;
 import infos.InfoTweet;
 import layouts.TweetListViewItem;
@@ -20,14 +20,6 @@ import layouts.TweetListViewItem;
 import java.util.ArrayList;
 
 public class TweetsAdapter extends ArrayAdapter<InfoTweet> {
-
-    public boolean isFlinging() {
-        return flinging;
-    }
-
-    public void setFlinging(boolean flinging) {
-        this.flinging = flinging;
-    }
 
     public static class ViewHolder {
         public ImageView avatarView;
@@ -38,6 +30,7 @@ public class TweetsAdapter extends ArrayAdapter<InfoTweet> {
         public TextView statusText;
         public TextView sourceText;
         public TextView dateText;
+        public LinearLayout tweetPhotoImgContainer;
         public ImageView tweetPhotoImg;
         public RelativeLayout lastReadLayout;
         public LinearLayout retweetLayout;
@@ -57,17 +50,17 @@ public class TweetsAdapter extends ArrayAdapter<InfoTweet> {
 
     private LoaderManager loaderManager;
 
-    private boolean flinging = false;
-
     private String usernameColumn;
+    private int column;
 
-    public TweetsAdapter(Context context, LoaderManager loaderManager, ArrayList<InfoTweet> infoTweetArrayList, String usernameColumn) {
+    public TweetsAdapter(Context context, LoaderManager loaderManager, ArrayList<InfoTweet> infoTweetArrayList, String usernameColumn, int column) {
 
         super(context, android.R.layout.simple_list_item_1, infoTweetArrayList);
 
         Log.d(Utils.TAG, "Numero de elementos: " + infoTweetArrayList.size());
         this.infoTweetArrayList = infoTweetArrayList;
         this.usernameColumn = usernameColumn;
+        this.column = column;
 
         this.loaderManager = loaderManager;
 
@@ -89,6 +82,7 @@ public class TweetsAdapter extends ArrayAdapter<InfoTweet> {
         viewHolder.dateText = (TextView)v.findViewById(R.id.tweet_date);
         viewHolder.sourceText = (TextView)v.findViewById(R.id.tweet_source);
         viewHolder.tweetPhotoImg = (ImageView)v.findViewById(R.id.tweet_photo_img);
+        viewHolder.tweetPhotoImgContainer = (LinearLayout)v.findViewById(R.id.tweet_photo_img_container);
         viewHolder.lastReadLayout = (RelativeLayout)v.findViewById(R.id.lastread_layout);
         viewHolder.retweetLayout = (LinearLayout)v.findViewById(R.id.retweet_layout);
         viewHolder.retweetAvatar = (ImageView)v.findViewById(R.id.retweet_avatar);
@@ -121,11 +115,11 @@ public class TweetsAdapter extends ArrayAdapter<InfoTweet> {
 
         if (selected_id == position) {
             view.setBackgroundDrawable(ImageUtils.createGradientDrawableSelected(getContext(), infoTweet.isRead() ? 0 : color_line));
-        /*} else if (TweetTopicsCore.mTypeLastColumn == TweetTopicsCore.TIMELINE && infoTweet.getText().toLowerCase().contains("@"+current_user.getString("name").toLowerCase())) {
-            view.setBackgroundDrawable(Utils.createGradientDrawableMention(getContext(), infoTweet.isRead()?0:color_line));
-        } else if ((TweetTopicsCore.mTypeLastColumn == TweetTopicsCore.MENTIONS || TweetTopicsCore.mTypeLastColumn == TweetTopicsCore.TIMELINE) &&infoTweet.isFavorited()) {
-            view.setBackgroundDrawable(Utils.createGradientDrawableFavorite(getContext(), infoTweet.isRead() ? 0 : color_line));
-        */} else {
+        } else if (column == TweetTopicsUtils.COLUMN_TIMELINE && infoTweet.getText().toLowerCase().contains("@"+usernameColumn.toLowerCase())) {
+            view.setBackgroundDrawable(ImageUtils.createGradientDrawableMention(getContext(), infoTweet.isRead()?0:color_line));
+        } else if ((column == TweetTopicsUtils.COLUMN_MENTIONS || column == TweetTopicsUtils.COLUMN_TIMELINE) &&infoTweet.isFavorited()) {
+            view.setBackgroundDrawable(ImageUtils.createGradientDrawableFavorite(getContext(), infoTweet.isRead() ? 0 : color_line));
+        } else {
             Entity color = DataFramework.getInstance().getTopEntity("colors", "type_id=2 and word=\""+infoTweet.getUsername()+"\"", "");
             if (color!=null) {
                 try {
@@ -181,11 +175,11 @@ public class TweetsAdapter extends ArrayAdapter<InfoTweet> {
                     e.printStackTrace();
                 }
             } else {
-                if (column == TweetTopicsConstants.COLUMN_TIMELINE && Utils.hideUser.contains(entityList.get(i).getString("username").toLowerCase())) {
+                if (column == TweetTopicsUtils.COLUMN_TIMELINE && Utils.hideUser.contains(entityList.get(i).getString("username").toLowerCase())) {
                     countHide++;
-                } else if (column == TweetTopicsConstants.COLUMN_TIMELINE && Utils.isHideWordInText(entityList.get(i).getString("text").toLowerCase())) {
+                } else if (column == TweetTopicsUtils.COLUMN_TIMELINE && Utils.isHideWordInText(entityList.get(i).getString("text").toLowerCase())) {
                     countHide++;
-                } else if (column == TweetTopicsConstants.COLUMN_TIMELINE && Utils.isHideSourceInText(entityList.get(i).getString("source").toLowerCase())) { // fuente
+                } else if (column == TweetTopicsUtils.COLUMN_TIMELINE && Utils.isHideSourceInText(entityList.get(i).getString("source").toLowerCase())) { // fuente
                     countHide++;
                 } else {
                     InfoTweet infoTweet = new InfoTweet(entityList.get(i));

@@ -1,6 +1,9 @@
 package com.javielinux.utils;
 
-public class TweetTopicsConstants {
+import com.android.dataframework.DataFramework;
+import com.android.dataframework.Entity;
+
+public class TweetTopicsUtils {
 
     public static final int COLUMN_TIMELINE = 1;
     public static final int COLUMN_MENTIONS = 2;
@@ -26,4 +29,15 @@ public class TweetTopicsConstants {
     public static final int TWEET_TYPE_FAVORITES = 2;
     public static final int TWEET_TYPE_DIRECTMESSAGES = 3;
     public static final int TWEET_TYPE_SENT_DIRECTMESSAGES = 4;
+
+
+    public static boolean hasColumn(long userId, int column) {
+        for (Entity entityColumn : DataFramework.getInstance().getEntityList("columns")) {
+            if (entityColumn.getLong("user_id") == userId && entityColumn.getInt("type_id")==column) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }
