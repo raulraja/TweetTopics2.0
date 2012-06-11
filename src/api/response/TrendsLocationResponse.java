@@ -13,4 +13,9 @@ public class TrendsLocationResponse implements BaseResponse {
     public void setLocationList(ResponseList<Location> location_list) {
         this.location_list = location_list;
     }
+
+    @Override
+    public boolean isError() {
+        return false;
+    }
 }

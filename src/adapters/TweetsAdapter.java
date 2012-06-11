@@ -39,6 +39,8 @@ public class TweetsAdapter extends ArrayAdapter<InfoTweet> {
         public TextView retweetText;
     }
 
+    private boolean flinging = false;
+
     private ArrayList<InfoTweet> infoTweetArrayList;
     private long selected_id = -1;
     private int hide_messages = 0;
@@ -52,6 +54,14 @@ public class TweetsAdapter extends ArrayAdapter<InfoTweet> {
 
     private String usernameColumn;
     private int column;
+
+    public boolean isFlinging() {
+        return flinging;
+    }
+
+    public void setFlinging(boolean flinging) {
+        this.flinging = flinging;
+    }
 
     public TweetsAdapter(Context context, LoaderManager loaderManager, ArrayList<InfoTweet> infoTweetArrayList, String usernameColumn, int column) {
 

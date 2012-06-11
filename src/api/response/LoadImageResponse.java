@@ -1,7 +1,7 @@
 package api.response;
 
 
-public class LoadMoreResponse implements BaseResponse {
+public class LoadImageResponse implements BaseResponse {
 
     @Override
     public boolean isError() {

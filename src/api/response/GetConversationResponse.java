@@ -13,4 +13,9 @@ public class GetConversationResponse implements BaseResponse {
     public void setConversationStatus(Status conversationStatus) {
         this.conversationStatus = conversationStatus;
     }
+
+    @Override
+    public boolean isError() {
+        return false;  //To change body of implemented methods use File | Settings | File Templates.
+    }
 }

@@ -20,4 +20,9 @@ public class LoadMoreTweetDownResponse implements BaseResponse {
     public void setHasMoreTweets(boolean hasMoreTweets) {
         this.hasMoreTweets = hasMoreTweets;
     }
+
+    @Override
+    public boolean isError() {
+        return false;
+    }
 }

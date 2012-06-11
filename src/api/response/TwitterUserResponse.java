@@ -29,4 +29,9 @@ public class TwitterUserResponse implements BaseResponse {
     public void setColumn(int column) {
         this.column = column;
     }
+
+    @Override
+    public boolean isError() {
+        return false;  //To change body of implemented methods use File | Settings | File Templates.
+    }
 }

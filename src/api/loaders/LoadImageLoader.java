@@ -8,6 +8,7 @@ import android.util.Log;
 import api.AsynchronousLoader;
 import api.request.LoadImageRequest;
 import api.response.BaseResponse;
+import api.response.LoadImageResponse;
 import com.javielinux.utils.Utils;
 import infos.CacheData;
 import infos.InfoLink;
@@ -43,7 +44,7 @@ public class LoadImageLoader extends AsynchronousLoader<BaseResponse> {
             }
         }
 
-        return null;
+        return new LoadImageResponse();
 
     }
 

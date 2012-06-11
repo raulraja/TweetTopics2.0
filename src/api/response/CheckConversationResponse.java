@@ -13,4 +13,9 @@ public class CheckConversationResponse implements BaseResponse {
     public void setStatus(Status status) {
         this.status = status;
     }
+
+    @Override
+    public boolean isError() {
+        return false;  //To change body of implemented methods use File | Settings | File Templates.
+    }
 }

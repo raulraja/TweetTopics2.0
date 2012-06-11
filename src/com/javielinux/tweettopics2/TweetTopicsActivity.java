@@ -103,7 +103,7 @@ public class TweetTopicsActivity extends BaseActivity {
 
         setContentView(R.layout.tweettopics_activity);
 
-        fragmentAdapter = new TweetTopicsFragmentAdapter(getApplicationContext(), getSupportLoaderManager(), getSupportFragmentManager());
+        fragmentAdapter = new TweetTopicsFragmentAdapter(getSupportFragmentManager());
 
         pager = (ViewPager)findViewById(R.id.tweet_pager);
         pager.setAdapter(fragmentAdapter);

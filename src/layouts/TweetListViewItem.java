@@ -14,11 +14,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import api.APIDelegate;
-import api.APITweetTopics;
-import api.request.LoadImageRequest;
-import api.response.BaseResponse;
-import api.response.ErrorResponse;
 import com.javielinux.tweettopics2.R;
 import com.javielinux.tweettopics2.ThemeManager;
 import com.javielinux.utils.PreferenceUtils;
@@ -288,7 +283,9 @@ public class TweetListViewItem extends RelativeLayout {
 
             InfoLink infoLink = searchImage(linkForImage);
 
-            if (infoLink==null) {
+            if (infoLink!=null && infoLink.getBitmapThumb()!=null) {
+                viewHolder.tweetPhotoImg.setImageBitmap(infoLink.getBitmapThumb());
+            } else {
                 if (Utils.isLinkImage(linkForImage)) {
                     if (Utils.isLinkVideo(linkForImage)) {
                         viewHolder.tweetPhotoImg.setImageResource(R.drawable.icon_tweet_video);
@@ -305,13 +302,12 @@ public class TweetListViewItem extends RelativeLayout {
                         viewHolder.tweetPhotoImg.setImageResource(R.drawable.icon_tweet_link);
                     }
                 }
-            } else {
-                viewHolder.tweetPhotoImg.setImageBitmap(infoLink.getBitmapThumb());
             }
         }
 
 		if (searchImages.size()+searchAvatars.size()>0) {
             Log.d(Utils.TAG,"Execute Loader IMAGE");
+            /*
             APITweetTopics.execute(getContext(), loaderManager, new APIDelegate<BaseResponse>() {
 
                 @Override
@@ -336,7 +332,7 @@ public class TweetListViewItem extends RelativeLayout {
                         if (infoLink.getBitmapThumb()!=null) viewHolder.tweetPhotoImg.setImageBitmap(infoLink.getBitmapThumb());
                     }
 
-                    //tweetsAdapter.notifyDataSetChanged();
+                    if (!tweetsAdapter.isFlinging()) tweetsAdapter.notifyDataSetChanged();
 
                 }
 
@@ -344,7 +340,7 @@ public class TweetListViewItem extends RelativeLayout {
                 public void onError(ErrorResponse error) {
                 }
             }, new LoadImageRequest(searchAvatars, searchImages));
-
+             */
 		}
 
 	}

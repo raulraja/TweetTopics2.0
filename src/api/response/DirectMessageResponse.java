@@ -11,4 +11,9 @@ public class DirectMessageResponse implements BaseResponse {
     public void setSent(boolean sent) {
         this.sent = sent;
     }
+
+    @Override
+    public boolean isError() {
+        return false;
+    }
 }

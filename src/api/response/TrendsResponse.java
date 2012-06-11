@@ -12,4 +12,9 @@ public class TrendsResponse implements BaseResponse {
     public void setTrends(Trend[] trend_list) {
         this.trend_list = trend_list;
     }
+
+    @Override
+    public boolean isError() {
+        return false;  //To change body of implemented methods use File | Settings | File Templates.
+    }
 }

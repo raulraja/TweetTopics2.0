@@ -26,84 +26,118 @@ public class APILoader implements LoaderManager.LoaderCallbacks {
     
     public void execute(BaseRequest baseRequest) {
         this.baseRequest = baseRequest;
-        if (loaderManager.getLoader(id)==null) {
-            loaderManager.initLoader(id, null, this);
-        } else {
-            loaderManager.restartLoader(id, null, this);
+        try {
+            if (loaderManager.getLoader(id)==null) {
+                loaderManager.initLoader(id, null, this);
+            } else {
+                loaderManager.restartLoader(id, null, this);
+            }
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
         }
     }
 
 
     @Override
     public Loader onCreateLoader(int i, Bundle bundle) {
+        AsynchronousLoader<BaseResponse> loader = null;
         switch (i) {
             case APITweetTopics.KEY_CHECK_CONVERSATION:
-                return new CheckConversationLoader(context, (CheckConversationRequest)baseRequest);
+                loader = new CheckConversationLoader(context, (CheckConversationRequest)baseRequest);
+                break;
             case APITweetTopics.KEY_CONVERSATION:
-                return new ConversationLoader(context, (ConversationRequest)baseRequest);
+                loader = new ConversationLoader(context, (ConversationRequest)baseRequest);
+                break;
             case APITweetTopics.KEY_DIRECT_MESSAGE:
-                return new DirectMessageLoader(context, (DirectMessageRequest)baseRequest);
+                loader = new DirectMessageLoader(context, (DirectMessageRequest)baseRequest);
+                break;
             case APITweetTopics.KEY_EXPORT_HTML:
-                return new Export2HTMLLoader(context, (Export2HTMLRequest)baseRequest);
+                loader = new Export2HTMLLoader(context, (Export2HTMLRequest)baseRequest);
+                break;
             case APITweetTopics.KEY_GET_CONVERSATION:
-                return new GetConversationLoader(context, (GetConversationRequest)baseRequest);
+                loader = new GetConversationLoader(context, (GetConversationRequest)baseRequest);
+                break;
             case APITweetTopics.KEY_GET_USER_LIST:
-                return new GetUserListLoader(context, (GetUserListRequest)baseRequest);
+                loader = new GetUserListLoader(context, (GetUserListRequest)baseRequest);
+                break;
             case APITweetTopics.KEY_IMAGE_UPLOAD:
-                return new ImageUploadLoader(context, (ImageUploadRequest)baseRequest);
+                loader = new ImageUploadLoader(context, (ImageUploadRequest)baseRequest);
+                break;
             case APITweetTopics.KEY_LIST_USER_TWITTER:
-                return new ListUserTwitterLoader(context, (ListUserTwitterRequest)baseRequest);
+                loader = new ListUserTwitterLoader(context, (ListUserTwitterRequest)baseRequest);
+                break;
             case APITweetTopics.KEY_LOAD_IMAGE:
-                return new LoadImageLoader(context, (LoadImageRequest)baseRequest);
+                loader = new LoadImageLoader(context, (LoadImageRequest)baseRequest);
+                break;
             case APITweetTopics.KEY_LOAD_IMAGE_AUTO_COMPLETE:
-                return new LoadImageAutoCompleteLoader(context, (LoadImageAutoCompleteRequest)baseRequest);
+                loader = new LoadImageAutoCompleteLoader(context, (LoadImageAutoCompleteRequest)baseRequest);
+                break;
             case APITweetTopics.KEY_LOAD_IMAGE_WIDGET:
-                return new LoadImageWidgetLoader(context, (LoadImageWidgetRequest)baseRequest);
+                loader = new LoadImageWidgetLoader(context, (LoadImageWidgetRequest)baseRequest);
+                break;
             case APITweetTopics.KEY_LOAD_LINK:
-                return new LoadLinkLoader(context, (LoadLinkRequest)baseRequest);
+                loader = new LoadLinkLoader(context, (LoadLinkRequest)baseRequest);
+                break;
             case APITweetTopics.KEY_LOAD_MORE:
-                return new LoadMoreLoader(context, (LoadMoreRequest)baseRequest);
+                loader = new LoadMoreLoader(context, (LoadMoreRequest)baseRequest);
+                break;
             case APITweetTopics.KEY_LOAD_MORE_TWEET_DOWNLOADER:
-                return new LoadMoreTweetDownLoader(context, (LoadMoreTweetDownRequest)baseRequest);
+                loader = new LoadMoreTweetDownLoader(context, (LoadMoreTweetDownRequest)baseRequest);
+                break;
             case APITweetTopics.KEY_LOAD_TRANSLATE_TWEET:
-                return new LoadTranslateTweetLoader(context, (LoadTranslateTweetRequest)baseRequest);
+                loader = new LoadTranslateTweetLoader(context, (LoadTranslateTweetRequest)baseRequest);
+                break;
             case APITweetTopics.KEY_LOAD_TYPE_STATUS:
-                return new LoadTypeStatusLoader(context, (LoadTypeStatusRequest)baseRequest);
+                loader = new LoadTypeStatusLoader(context, (LoadTypeStatusRequest)baseRequest);
+                break;
             case APITweetTopics.KEY_LOAD_USER:
-                return new LoadUserLoader(context, (LoadUserRequest)baseRequest);
+                loader = new LoadUserLoader(context, (LoadUserRequest)baseRequest);
+                break;
             case APITweetTopics.KEY_PREPARING_LINK_FOR_SIDEBAR:
-                return new PreparingLinkForSidebarLoader(context, (PreparingLinkForSidebarRequest)baseRequest);
+                loader = new PreparingLinkForSidebarLoader(context, (PreparingLinkForSidebarRequest)baseRequest);
+                break;
             case APITweetTopics.KEY_PROFILE_IMAGE:
-                return new ProfileImageLoader(context, (ProfileImageRequest)baseRequest);
+                loader = new ProfileImageLoader(context, (ProfileImageRequest)baseRequest);
+                break;
             case APITweetTopics.KEY_RETWEET_STATUS:
-                return new RetweetStatusLoader(context, (RetweetStatusRequest)baseRequest);
+                loader = new RetweetStatusLoader(context, (RetweetStatusRequest)baseRequest);
+                break;
             case APITweetTopics.KEY_SAVE_FIRST_TWEETS:
-                return new SaveFirstTweetsLoader(context, (SaveFirstTweetsRequest)baseRequest);
+                loader = new SaveFirstTweetsLoader(context, (SaveFirstTweetsRequest)baseRequest);
+                break;
             case APITweetTopics.KEY_SEARCH:
-                return new SearchLoader(context, (SearchRequest)baseRequest);
+                loader = new SearchLoader(context, (SearchRequest)baseRequest);
+                break;
             case APITweetTopics.KEY_STATUS_RETWEETEERS:
-                return new StatusRetweetersLoader(context, (StatusRetweetersRequest)baseRequest);
+                loader = new StatusRetweetersLoader(context, (StatusRetweetersRequest)baseRequest);
+                break;
             case APITweetTopics.KEY_TRENDS:
-                return new TrendsLoader(context, (TrendsRequest)baseRequest);
+                loader = new TrendsLoader(context, (TrendsRequest)baseRequest);
+                break;
             case APITweetTopics.KEY_TRENDS_LOCATION:
-                return new TrendsLocationLoader(context, (TrendsLocationRequest)baseRequest);
+                loader = new TrendsLocationLoader(context, (TrendsLocationRequest)baseRequest);
+                break;
             case APITweetTopics.KEY_TWITTER_USER:
-                return new TwitterUserLoader(context, (TwitterUserRequest)baseRequest);
+                loader = new TwitterUserLoader(context, (TwitterUserRequest)baseRequest);
+                break;
             case APITweetTopics.KEY_UPLOAD_STATUS:
-                return new UploadStatusLoader(context, (UploadStatusRequest)baseRequest);
+                loader = new UploadStatusLoader(context, (UploadStatusRequest)baseRequest);
+                break;
             case APITweetTopics.KEY_UPLOAD_TWIT_LONGER:
-                return new UploadTwitlongerLoader(context, (UploadTwitlongerRequest)baseRequest);
+                loader = new UploadTwitlongerLoader(context, (UploadTwitlongerRequest)baseRequest);
+                break;
             case APITweetTopics.KEY_USER_LISTS:
-                return new UserListsLoader(context, (UserListsRequest)baseRequest);
+                loader = new UserListsLoader(context, (UserListsRequest)baseRequest);
+                break;
         }
-        return null;
+        return loader;
     }
 
     @Override
     public void onLoadFinished(Loader loader, Object o) {
         BaseResponse result = (BaseResponse) o;
 
-        if (result instanceof ErrorResponse) {
+        if (result.isError()) {
             delegate.onError((ErrorResponse)result);
         } else {
             delegate.onResults(result);

@@ -12,4 +12,9 @@ public class LoadUserResponse implements BaseResponse {
     public void setInfoUsers(InfoUsers infoUsers) {
         this.infoUsers = infoUsers;
     }
+
+    @Override
+    public boolean isError() {
+        return false;
+    }
 }

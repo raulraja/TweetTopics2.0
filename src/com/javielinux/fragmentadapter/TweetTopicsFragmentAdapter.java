@@ -19,11 +19,8 @@ public class TweetTopicsFragmentAdapter extends FragmentPagerAdapter  {
     private LoaderManager loaderManager;
     private ArrayList<Entity> tweet_fragment_list;
 
-    public TweetTopicsFragmentAdapter(Context context, LoaderManager loaderManager, FragmentManager fragmentManager) {
+    public TweetTopicsFragmentAdapter(FragmentManager fragmentManager) {
         super(fragmentManager);
-
-        this.context = context;
-        this.loaderManager = loaderManager;
 
         FillColumnList();
     }
@@ -45,7 +42,9 @@ public class TweetTopicsFragmentAdapter extends FragmentPagerAdapter  {
         try
         {
             Log.d(Utils.TAG, "Cargando columna "+index+" : " +tweet_fragment_list.get(index).getString("description").toUpperCase());
-            return new TweetTopicsFragment(context, loaderManager, tweet_fragment_list.get(index).getId());
+            TweetTopicsFragment frg = new TweetTopicsFragment();
+            frg.init(tweet_fragment_list.get(index).getId());
+            return frg;
         }
         catch(Exception exception)
         {

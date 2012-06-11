@@ -12,4 +12,9 @@ public class SaveFirstTweetsResponse implements BaseResponse {
     public void setInfoSaveTweets(InfoSaveTweets infoSaveTweets) {
         this.infoSaveTweets = infoSaveTweets;
     }
+
+    @Override
+    public boolean isError() {
+        return false;
+    }
 }

@@ -13,4 +13,9 @@ public class LoadImageAutoCompleteResponse implements BaseResponse {
     public void setBitmap(Bitmap bitmap) {
         this.bitmap = bitmap;
     }
+
+    @Override
+    public boolean isError() {
+        return false;  //To change body of implemented methods use File | Settings | File Templates.
+    }
 }

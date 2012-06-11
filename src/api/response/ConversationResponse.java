@@ -15,4 +15,9 @@ public class ConversationResponse implements BaseResponse {
     public void setTweets(ArrayList<Status> tweets) {
         this.tweets = tweets;
     }
+
+    @Override
+    public boolean isError() {
+        return false;  //To change body of implemented methods use File | Settings | File Templates.
+    }
 }

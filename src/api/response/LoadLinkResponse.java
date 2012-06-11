@@ -13,4 +13,9 @@ public class LoadLinkResponse implements BaseResponse {
     public void setInfoLink(InfoLink infoLink) {
         this.infoLink = infoLink;
     }
+
+    @Override
+    public boolean isError() {
+        return false;  //To change body of implemented methods use File | Settings | File Templates.
+    }
 }

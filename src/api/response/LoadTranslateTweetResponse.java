@@ -11,4 +11,9 @@ public class LoadTranslateTweetResponse implements BaseResponse {
     public void setText(String text) {
         this.text = text;
     }
+
+    @Override
+    public boolean isError() {
+        return false;
+    }
 }

@@ -43,4 +43,8 @@ public class ErrorResponse implements BaseResponse {
         this.rateError = rateError;
     }
 
+    @Override
+    public boolean isError() {
+        return true;
+    }
 }

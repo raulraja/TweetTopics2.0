@@ -10,4 +10,9 @@ public class GetUserListResponse implements BaseResponse {
     public void setReady(boolean ready) {
         this.ready = ready;
     }
+
+    @Override
+    public boolean isError() {
+        return false;
+    }
 }

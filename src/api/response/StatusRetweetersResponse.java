@@ -13,4 +13,9 @@ public class StatusRetweetersResponse implements BaseResponse {
     public void setUserList(ResponseList<User> responseList) {
         this.responseList = responseList;
     }
+
+    @Override
+    public boolean isError() {
+        return false;
+    }
 }
