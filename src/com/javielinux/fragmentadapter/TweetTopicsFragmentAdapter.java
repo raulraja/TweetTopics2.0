@@ -1,10 +1,8 @@
 package com.javielinux.fragmentadapter;
 
-import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.LoaderManager;
 import android.util.Log;
 import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
@@ -15,8 +13,6 @@ import java.util.ArrayList;
 
 public class TweetTopicsFragmentAdapter extends FragmentPagerAdapter  {
 
-    private Context context;
-    private LoaderManager loaderManager;
     private ArrayList<Entity> tweet_fragment_list;
 
     public TweetTopicsFragmentAdapter(FragmentManager fragmentManager) {
@@ -39,17 +35,8 @@ public class TweetTopicsFragmentAdapter extends FragmentPagerAdapter  {
 
     @Override
     public Fragment getItem(int index) {
-        try
-        {
-            Log.d(Utils.TAG, "Cargando columna "+index+" : " +tweet_fragment_list.get(index).getString("description").toUpperCase());
-            TweetTopicsFragment frg = new TweetTopicsFragment();
-            frg.init(tweet_fragment_list.get(index).getId());
-            return frg;
-        }
-        catch(Exception exception)
-        {
-            return null;
-        }
+        Log.d(Utils.TAG, "Creando columna "+index+" : " +tweet_fragment_list.get(index).getString("description").toUpperCase());
+        return new TweetTopicsFragment(tweet_fragment_list.get(index).getId());
     }
 
     @Override

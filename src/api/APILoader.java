@@ -4,33 +4,35 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
+import android.util.Log;
 import api.loaders.*;
 import api.request.*;
 import api.response.BaseResponse;
 import api.response.ErrorResponse;
+import com.javielinux.utils.Utils;
 
 public class APILoader implements LoaderManager.LoaderCallbacks {
 
     private Context context;
     private APIDelegate delegate;
     private LoaderManager loaderManager;
-    private int id;
     private BaseRequest baseRequest;
 
-    public APILoader(Context context, LoaderManager loaderManager, APIDelegate apiDelegate, int id) {
+    public APILoader(Context context, LoaderManager loaderManager, APIDelegate apiDelegate) {
         this.context = context;
         this.loaderManager = loaderManager;
         this.delegate = apiDelegate;
-        this.id = id;
     }
     
     public void execute(BaseRequest baseRequest) {
         this.baseRequest = baseRequest;
         try {
-            if (loaderManager.getLoader(id)==null) {
-                loaderManager.initLoader(id, null, this);
+            if (loaderManager.getLoader(baseRequest.hashCode())==null) {
+                Log.d(Utils.TAG, "initLoader: " + baseRequest.hashCode());
+                loaderManager.initLoader(baseRequest.hashCode(), null, this);
             } else {
-                loaderManager.restartLoader(id, null, this);
+                Log.d(Utils.TAG, "restartLoader: " + baseRequest.hashCode());
+                loaderManager.restartLoader(baseRequest.hashCode(), null, this);
             }
         } catch (IllegalStateException e) {
             e.printStackTrace();
@@ -41,95 +43,67 @@ public class APILoader implements LoaderManager.LoaderCallbacks {
     @Override
     public Loader onCreateLoader(int i, Bundle bundle) {
         AsynchronousLoader<BaseResponse> loader = null;
-        switch (i) {
-            case APITweetTopics.KEY_CHECK_CONVERSATION:
-                loader = new CheckConversationLoader(context, (CheckConversationRequest)baseRequest);
-                break;
-            case APITweetTopics.KEY_CONVERSATION:
-                loader = new ConversationLoader(context, (ConversationRequest)baseRequest);
-                break;
-            case APITweetTopics.KEY_DIRECT_MESSAGE:
-                loader = new DirectMessageLoader(context, (DirectMessageRequest)baseRequest);
-                break;
-            case APITweetTopics.KEY_EXPORT_HTML:
-                loader = new Export2HTMLLoader(context, (Export2HTMLRequest)baseRequest);
-                break;
-            case APITweetTopics.KEY_GET_CONVERSATION:
-                loader = new GetConversationLoader(context, (GetConversationRequest)baseRequest);
-                break;
-            case APITweetTopics.KEY_GET_USER_LIST:
-                loader = new GetUserListLoader(context, (GetUserListRequest)baseRequest);
-                break;
-            case APITweetTopics.KEY_IMAGE_UPLOAD:
-                loader = new ImageUploadLoader(context, (ImageUploadRequest)baseRequest);
-                break;
-            case APITweetTopics.KEY_LIST_USER_TWITTER:
-                loader = new ListUserTwitterLoader(context, (ListUserTwitterRequest)baseRequest);
-                break;
-            case APITweetTopics.KEY_LOAD_IMAGE:
-                loader = new LoadImageLoader(context, (LoadImageRequest)baseRequest);
-                break;
-            case APITweetTopics.KEY_LOAD_IMAGE_AUTO_COMPLETE:
-                loader = new LoadImageAutoCompleteLoader(context, (LoadImageAutoCompleteRequest)baseRequest);
-                break;
-            case APITweetTopics.KEY_LOAD_IMAGE_WIDGET:
-                loader = new LoadImageWidgetLoader(context, (LoadImageWidgetRequest)baseRequest);
-                break;
-            case APITweetTopics.KEY_LOAD_LINK:
-                loader = new LoadLinkLoader(context, (LoadLinkRequest)baseRequest);
-                break;
-            case APITweetTopics.KEY_LOAD_MORE:
-                loader = new LoadMoreLoader(context, (LoadMoreRequest)baseRequest);
-                break;
-            case APITweetTopics.KEY_LOAD_MORE_TWEET_DOWNLOADER:
-                loader = new LoadMoreTweetDownLoader(context, (LoadMoreTweetDownRequest)baseRequest);
-                break;
-            case APITweetTopics.KEY_LOAD_TRANSLATE_TWEET:
-                loader = new LoadTranslateTweetLoader(context, (LoadTranslateTweetRequest)baseRequest);
-                break;
-            case APITweetTopics.KEY_LOAD_TYPE_STATUS:
-                loader = new LoadTypeStatusLoader(context, (LoadTypeStatusRequest)baseRequest);
-                break;
-            case APITweetTopics.KEY_LOAD_USER:
-                loader = new LoadUserLoader(context, (LoadUserRequest)baseRequest);
-                break;
-            case APITweetTopics.KEY_PREPARING_LINK_FOR_SIDEBAR:
-                loader = new PreparingLinkForSidebarLoader(context, (PreparingLinkForSidebarRequest)baseRequest);
-                break;
-            case APITweetTopics.KEY_PROFILE_IMAGE:
-                loader = new ProfileImageLoader(context, (ProfileImageRequest)baseRequest);
-                break;
-            case APITweetTopics.KEY_RETWEET_STATUS:
-                loader = new RetweetStatusLoader(context, (RetweetStatusRequest)baseRequest);
-                break;
-            case APITweetTopics.KEY_SAVE_FIRST_TWEETS:
-                loader = new SaveFirstTweetsLoader(context, (SaveFirstTweetsRequest)baseRequest);
-                break;
-            case APITweetTopics.KEY_SEARCH:
-                loader = new SearchLoader(context, (SearchRequest)baseRequest);
-                break;
-            case APITweetTopics.KEY_STATUS_RETWEETEERS:
-                loader = new StatusRetweetersLoader(context, (StatusRetweetersRequest)baseRequest);
-                break;
-            case APITweetTopics.KEY_TRENDS:
-                loader = new TrendsLoader(context, (TrendsRequest)baseRequest);
-                break;
-            case APITweetTopics.KEY_TRENDS_LOCATION:
-                loader = new TrendsLocationLoader(context, (TrendsLocationRequest)baseRequest);
-                break;
-            case APITweetTopics.KEY_TWITTER_USER:
-                loader = new TwitterUserLoader(context, (TwitterUserRequest)baseRequest);
-                break;
-            case APITweetTopics.KEY_UPLOAD_STATUS:
-                loader = new UploadStatusLoader(context, (UploadStatusRequest)baseRequest);
-                break;
-            case APITweetTopics.KEY_UPLOAD_TWIT_LONGER:
-                loader = new UploadTwitlongerLoader(context, (UploadTwitlongerRequest)baseRequest);
-                break;
-            case APITweetTopics.KEY_USER_LISTS:
-                loader = new UserListsLoader(context, (UserListsRequest)baseRequest);
-                break;
+
+        if (baseRequest instanceof CheckConversationRequest) {
+            loader = new CheckConversationLoader(context, (CheckConversationRequest)baseRequest);
+        } else if (baseRequest instanceof ConversationRequest) {
+            loader = new ConversationLoader(context, (ConversationRequest)baseRequest);
+        } else if (baseRequest instanceof DirectMessageRequest) {
+            loader = new DirectMessageLoader(context, (DirectMessageRequest)baseRequest);
+        } else if (baseRequest instanceof Export2HTMLRequest) {
+            loader = new Export2HTMLLoader(context, (Export2HTMLRequest)baseRequest);
+        } else if (baseRequest instanceof GetConversationRequest) {
+            loader = new GetConversationLoader(context, (GetConversationRequest)baseRequest);
+        } else if (baseRequest instanceof GetUserListRequest) {
+            loader = new GetUserListLoader(context, (GetUserListRequest)baseRequest);
+        } else if (baseRequest instanceof ImageUploadRequest) {
+            loader = new ImageUploadLoader(context, (ImageUploadRequest)baseRequest);
+        } else if (baseRequest instanceof ListUserTwitterRequest) {
+            loader = new ListUserTwitterLoader(context, (ListUserTwitterRequest)baseRequest);
+        } else if (baseRequest instanceof LoadImageRequest) {
+            loader = new LoadImageLoader(context, (LoadImageRequest)baseRequest);
+        } else if (baseRequest instanceof LoadImageAutoCompleteRequest) {
+            loader = new LoadImageAutoCompleteLoader(context, (LoadImageAutoCompleteRequest)baseRequest);
+        } else if (baseRequest instanceof LoadImageWidgetRequest) {
+            loader = new LoadImageWidgetLoader(context, (LoadImageWidgetRequest)baseRequest);
+        } else if (baseRequest instanceof LoadLinkRequest) {
+            loader = new LoadLinkLoader(context, (LoadLinkRequest)baseRequest);;
+        } else if (baseRequest instanceof LoadMoreRequest) {
+            loader = new LoadMoreLoader(context, (LoadMoreRequest)baseRequest);
+        } else if (baseRequest instanceof LoadMoreTweetDownRequest) {
+            loader = new LoadMoreTweetDownLoader(context, (LoadMoreTweetDownRequest)baseRequest);
+        } else if (baseRequest instanceof LoadTranslateTweetRequest) {
+            loader = new LoadTranslateTweetLoader(context, (LoadTranslateTweetRequest)baseRequest);
+        } else if (baseRequest instanceof LoadTypeStatusRequest) {
+            loader = new LoadTypeStatusLoader(context, (LoadTypeStatusRequest)baseRequest);
+        } else if (baseRequest instanceof LoadUserRequest) {
+            loader = new LoadUserLoader(context, (LoadUserRequest)baseRequest);
+        } else if (baseRequest instanceof PreparingLinkForSidebarRequest) {
+            loader = new PreparingLinkForSidebarLoader(context, (PreparingLinkForSidebarRequest)baseRequest);
+        } else if (baseRequest instanceof ProfileImageRequest) {
+            loader = new ProfileImageLoader(context, (ProfileImageRequest)baseRequest);
+        } else if (baseRequest instanceof RetweetStatusRequest) {
+            loader = new RetweetStatusLoader(context, (RetweetStatusRequest)baseRequest);
+        } else if (baseRequest instanceof SaveFirstTweetsRequest) {
+            loader = new SaveFirstTweetsLoader(context, (SaveFirstTweetsRequest)baseRequest);
+        } else if (baseRequest instanceof SearchRequest) {
+            loader = new SearchLoader(context, (SearchRequest)baseRequest);
+        } else if (baseRequest instanceof StatusRetweetersRequest) {
+            loader = new StatusRetweetersLoader(context, (StatusRetweetersRequest)baseRequest);
+        } else if (baseRequest instanceof TrendsRequest) {
+            loader = new TrendsLoader(context, (TrendsRequest)baseRequest);
+        } else if (baseRequest instanceof TrendsLocationRequest) {
+            loader = new TrendsLocationLoader(context, (TrendsLocationRequest)baseRequest);
+        } else if (baseRequest instanceof TwitterUserRequest) {
+            loader = new TwitterUserLoader(context, (TwitterUserRequest)baseRequest);
+        } else if (baseRequest instanceof UploadStatusRequest) {
+            loader = new UploadStatusLoader(context, (UploadStatusRequest)baseRequest);
+        } else if (baseRequest instanceof UploadTwitlongerRequest) {
+            loader = new UploadTwitlongerLoader(context, (UploadTwitlongerRequest)baseRequest);
+        } else if (baseRequest instanceof UserListsRequest) {
+            loader = new UserListsLoader(context, (UserListsRequest)baseRequest);
         }
+
         return loader;
     }
 

@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 import api.APIDelegate;
 import api.APITweetTopics;
 import api.request.TwitterUserRequest;
+import api.response.BaseResponse;
 import api.response.ErrorResponse;
 import api.response.TwitterUserResponse;
 import com.android.dataframework.DataFramework;
@@ -32,7 +33,7 @@ import infos.InfoTweet;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class TweetTopicsFragment extends Fragment implements APIDelegate<TwitterUserResponse> {
+public class TweetTopicsFragment extends Fragment implements APIDelegate<BaseResponse> {
 
     private TweetsAdapter tweetsAdapter;
     private ArrayList<InfoTweet> infoTweets = new ArrayList<InfoTweet>();;
@@ -51,7 +52,7 @@ public class TweetTopicsFragment extends Fragment implements APIDelegate<Twitter
 
     private boolean flinging = false;
 
-    public void init(long column_id) {
+    public TweetTopicsFragment(long column_id) {
 
         column_entity = new Entity("columns", column_id);
         if (column_entity.getInt("type_id")== TweetTopicsUtils.COLUMN_TIMELINE) {
@@ -197,10 +198,10 @@ public class TweetTopicsFragment extends Fragment implements APIDelegate<Twitter
         listView.setVisibility(View.VISIBLE);
     }
 
-    public void reloadColumnUser(boolean firstIsLastPosition) {
-        Log.d(Utils.TAG,"reloadColumnUser : " + column_entity.getInt("type_id"));
+    public void reload() {
+        Log.d(Utils.TAG, "reloadColumnUser : " + column_entity.getInt("type_id"));
 
-        APITweetTopics.execute(getActivity(), getActivity().getSupportLoaderManager(), this, new TwitterUserRequest(column_entity.getInt("type_id"), user_entity.getId()));
+        APITweetTopics.execute(getActivity(), getLoaderManager(), this, new TwitterUserRequest(column_entity.getInt("type_id"), user_entity.getId()));
     }
 
     public void showHideMessage() {
@@ -277,7 +278,7 @@ public class TweetTopicsFragment extends Fragment implements APIDelegate<Twitter
         listView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                reloadColumnUser(false);
+                reload();
             }
         });
         listView.getRefreshableView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -342,7 +343,7 @@ public class TweetTopicsFragment extends Fragment implements APIDelegate<Twitter
         }
 
         if (getTweetsFromInternet) {
-            reloadColumnUser(false);
+            reload();
         } else {
             showHideMessage();
         }
@@ -365,7 +366,9 @@ public class TweetTopicsFragment extends Fragment implements APIDelegate<Twitter
     }
 
     @Override
-    public void onResults(TwitterUserResponse result) {
+    public void onResults(BaseResponse r) {
+
+        TwitterUserResponse result = (TwitterUserResponse) r;
 
         hideUpdating();
         listView.onRefreshComplete();
