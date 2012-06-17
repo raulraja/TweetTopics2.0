@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.text.Html;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -18,6 +17,8 @@ import api.request.LoadImageWidgetRequest;
 import api.response.ErrorResponse;
 import api.response.LoadImageWidgetResponse;
 import com.javielinux.fragmentadapter.TweetFragmentAdapter;
+import com.javielinux.utils.ActivityUtils;
+import com.javielinux.utils.TweetActions;
 import com.javielinux.utils.Utils;
 import com.viewpagerindicator.TabPageIndicator;
 import infos.InfoTweet;
@@ -40,6 +41,10 @@ public class TweetActivity extends BaseActivity {
     private TextView txtDate;
     private TextView txtText;
 
+    private LinearLayout llRoot;
+
+    private int activityAnimation = Utils.ACTIVITY_ANIMATION_RIGHT;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,12 +52,17 @@ public class TweetActivity extends BaseActivity {
         themeManager = new ThemeManager(this);
         themeManager.setTranslucentTheme();
 
-        overridePendingTransition(R.anim.pull_in_to_right, R.anim.hold);
-
         Bundle extras = getIntent().getExtras();
-        if (extras != null && extras.containsKey(KEY_EXTRAS_TWEET)) {
-            infoTweet = (InfoTweet) extras.getParcelable(KEY_EXTRAS_TWEET);
+        if (extras!=null) {
+            if (extras.containsKey(KEY_EXTRAS_TWEET)) {
+                infoTweet = (InfoTweet) extras.getParcelable(KEY_EXTRAS_TWEET);
+            }
+            if (extras.containsKey(Utils.KEY_ACTIVITY_ANIMATION)) {
+                activityAnimation = extras.getInt(Utils.KEY_ACTIVITY_ANIMATION);
+            }
         }
+
+        ActivityUtils.animationIn(this, activityAnimation);
 
         if (infoTweet==null) {
             Utils.showMessage(this, R.string.error_general);
@@ -120,13 +130,25 @@ public class TweetActivity extends BaseActivity {
         indicator = (TabPageIndicator)findViewById(R.id.tweet_indicator);
         indicator.setViewPager(pager);
 
-        ((Button)findViewById(R.id.tweet_btn_reply)).setOnClickListener(clickReply);
-        ((Button)findViewById(R.id.tweet_btn_retweet)).setOnClickListener(clickRetweet);
-        ((Button)findViewById(R.id.tweet_btn_translate)).setOnClickListener(clickTranslate);
-        ((Button)findViewById(R.id.tweet_btn_more)).setOnClickListener(clickMore);
+        (findViewById(R.id.tweet_btn_reply)).setOnClickListener(clickReply);
+        (findViewById(R.id.tweet_btn_retweet)).setOnClickListener(clickRetweet);
+        (findViewById(R.id.tweet_btn_translate)).setOnClickListener(clickTranslate);
+        (findViewById(R.id.tweet_btn_more)).setOnClickListener(clickMore);
 
-        ((LinearLayout)findViewById(R.id.tweet_ll)).setBackgroundResource((themeManager.getTheme() == 1) ? R.drawable.bg_sidebar : R.drawable.bg_sidebar_dark);
+        llRoot = (LinearLayout)findViewById(R.id.tweet_ll);
 
+        refreshTheme();
+
+    }
+
+    private void refreshTheme() {
+        if (activityAnimation == Utils.ACTIVITY_ANIMATION_RIGHT) {
+            llRoot.setPadding(29,0,0,0);
+            llRoot.setBackgroundResource((themeManager.getTheme() == 1) ? R.drawable.bg_sidebar : R.drawable.bg_sidebar_dark);
+        } else {
+            llRoot.setPadding(0,29,0,0);
+            llRoot.setBackgroundResource((themeManager.getTheme() == 1) ? R.drawable.bg_sidebar_left : R.drawable.bg_sidebar_left_dark);
+        }
     }
 
     View.OnClickListener clickReply = new View.OnClickListener() {
@@ -221,7 +243,7 @@ public class TweetActivity extends BaseActivity {
 
     @Override
     protected void onPause() {
-        overridePendingTransition(R.anim.hold, R.anim.push_out_from_right);
+        ActivityUtils.animationOut(this, activityAnimation);
         super.onPause();
     }
 

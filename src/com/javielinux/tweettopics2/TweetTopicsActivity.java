@@ -111,6 +111,21 @@ public class TweetTopicsActivity extends BaseActivity {
         indicator = (TitlePageIndicator)findViewById(R.id.tweettopics_bar_indicator);
         indicator.setFooterLineHeight(0);
         indicator.setViewPager(pager);
+        indicator.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int i, float v, int i1) {
+            }
+
+            @Override
+            public void onPageSelected(int i) {
+                reloadBarAvatar();
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int i) {
+
+            }
+        });
 
         layoutBackgroundApp = (LinearLayout) findViewById(R.id.tweettopics_layout_background_app);
 
@@ -118,9 +133,21 @@ public class TweetTopicsActivity extends BaseActivity {
 
         imgBarAvatar = (ImageView) findViewById(R.id.tweettopics_bar_avatar);
         imgNewStatus = (ImageView) findViewById(R.id.tweettopics_bar_new_status);
+        imgNewStatus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                newStatus();
+            }
+        });
 
         refreshTheme();
 
+        reloadBarAvatar();
+
+    }
+
+    private void reloadBarAvatar() {
+        imgBarAvatar.setImageBitmap(fragmentAdapter.getIconItem(pager.getCurrentItem()));
     }
 
     public void refreshTheme() {
@@ -130,8 +157,17 @@ public class TweetTopicsActivity extends BaseActivity {
         themeManager.setColors();
 
         layoutBackgroundBar.setBackgroundDrawable(ImageUtils.createBackgroundDrawable(this, themeManager.getColor("color_top_bar"), false, 0));
-        imgBarAvatar.setBackgroundDrawable(ImageUtils.createBackgroundDrawable(this, themeManager.getColor("color_top_bar"), false, 0));
-        imgNewStatus.setBackgroundDrawable(ImageUtils.createBackgroundDrawable(this, themeManager.getColor("color_top_bar"), false, 0));
+
+        StateListDrawable statesButton = new StateListDrawable();
+        statesButton.addState(new int[] {android.R.attr.state_pressed}, ImageUtils.createBackgroundDrawable(this, themeManager.getColor("color_button_press_bar"), false, 0));
+        statesButton.addState(new int[] {-android.R.attr.state_pressed}, ImageUtils.createBackgroundDrawable(this, themeManager.getColor("color_top_bar"), false, 0));
+
+        imgBarAvatar.setBackgroundDrawable(statesButton);
+        imgNewStatus.setBackgroundDrawable(statesButton);
+
+
+        (findViewById(R.id.tweettopics_bar_divider1)).setBackgroundDrawable(ImageUtils.createBackgroundDrawable(this, themeManager.getColor("color_top_bar"), false, 0));
+        (findViewById(R.id.tweettopics_bar_divider2)).setBackgroundDrawable(ImageUtils.createBackgroundDrawable(this, themeManager.getColor("color_top_bar"), false, 0));
 
         Drawable d = new ColorDrawable(android.R.color.transparent);
 
@@ -167,6 +203,11 @@ public class TweetTopicsActivity extends BaseActivity {
     public void newUser() {
         Intent newuser = new Intent(this, Users.class);
         startActivityForResult(newuser, ACTIVITY_USER);
+    }
+
+    public void newStatus() {
+        Intent newstatus = new Intent(this, NewStatusActivity.class);
+        startActivityForResult(newstatus, ACTIVITY_NEWSTATUS);
     }
 
     private void showDialogExit() {

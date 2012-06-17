@@ -4,7 +4,7 @@ import android.content.Context;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.util.Log;
-import com.javielinux.tweettopics2.NewStatus;
+import com.javielinux.tweettopics2.NewStatusActivity;
 import com.javielinux.utils.LocationUtils;
 import com.javielinux.utils.Utils;
 import twitter4j.GeoLocation;
@@ -24,7 +24,7 @@ public class UploadStatusAsyncTask extends AsyncTask<String, Void, Boolean> {
 	
 	private Context mContext;
 	private Twitter twitter;
-	private int mModeTweetLonger = NewStatus.MODE_TL_NONE;
+	private int mModeTweetLonger = NewStatusActivity.MODE_TL_NONE;
 
 	private UploadStatusAsyncTaskResponder responder;
 
@@ -64,7 +64,7 @@ public class UploadStatusAsyncTask extends AsyncTask<String, Void, Boolean> {
 			long tweet_id = Long.parseLong(args[1]);
 			boolean useGeo = args[2].equals("1")?true:false;
 			
-			if (mModeTweetLonger == NewStatus.MODE_TL_NONE) {
+			if (mModeTweetLonger == NewStatusActivity.MODE_TL_NONE) {
                 error = !updateText(text, tweet_id, useGeo);
 			} else {
 				String replyuser = "";

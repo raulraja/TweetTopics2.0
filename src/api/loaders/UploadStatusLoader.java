@@ -8,7 +8,7 @@ import api.request.UploadStatusRequest;
 import api.response.BaseResponse;
 import api.response.ErrorResponse;
 import api.response.UploadStatusResponse;
-import com.javielinux.tweettopics2.NewStatus;
+import com.javielinux.tweettopics2.NewStatusActivity;
 import com.javielinux.utils.LocationUtils;
 import com.javielinux.utils.Utils;
 import twitter4j.GeoLocation;
@@ -65,7 +65,7 @@ public class UploadStatusLoader extends AsynchronousLoader<BaseResponse> {
 
             Log.d(Utils.TAG, "Enviando a twitter: " + tweet_text);
 
-            if (modeTweetLonger == NewStatus.MODE_TL_NONE) {
+            if (modeTweetLonger == NewStatusActivity.MODE_TL_NONE) {
                 response.setReady(updateText(tweet_text, tweet_id, use_geolocation));
             } else {
                 String replyuser = "";

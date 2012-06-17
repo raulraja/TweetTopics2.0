@@ -19,7 +19,7 @@ import com.facebook.android.AsyncFacebookRunner.RequestListener;
 import com.facebook.android.Facebook;
 import com.facebook.android.FacebookError;
 import com.javielinux.facebook.FacebookHandler;
-import com.javielinux.tweettopics2.NewStatus;
+import com.javielinux.tweettopics2.NewStatusActivity;
 import com.javielinux.tweettopics2.R;
 import com.javielinux.twitter.ConnectionManager2;
 import com.javielinux.utils.PreferenceUtils;
@@ -124,11 +124,11 @@ public class ServiceUpdateStatus extends Service implements UploadStatusAsyncTas
 
                 int type = Integer.parseInt(Utils.getPreference(this).getString("prf_service_image", "1"));
                 if (type==1) {
-                    mBaseURLImage = NewStatus.URL_BASE_YFROG;
+                    mBaseURLImage = NewStatusActivity.URL_BASE_YFROG;
                 } else if (type==2) {
-                    mBaseURLImage = NewStatus.URL_BASE_TWITPIC;
+                    mBaseURLImage = NewStatusActivity.URL_BASE_TWITPIC;
                 } else if (type==3) {
-                    mBaseURLImage = NewStatus.URL_BASE_LOCKERZ;
+                    mBaseURLImage = NewStatusActivity.URL_BASE_LOCKERZ;
                 }
 
                 StringTokenizer tokens = new StringTokenizer(photos, "--");
@@ -217,19 +217,19 @@ public class ServiceUpdateStatus extends Service implements UploadStatusAsyncTas
 
                 if (Utils.getLenghtTweet(mText, shortURLLength, shortURLLengthHttps)>140) {
                     if (mEntityStatus.getInt("type_id") == 1) { // normal
-                        if (mEntityStatus.getInt("mode_tweetlonger") == NewStatus.MODE_TL_TWITLONGER) { // twitlonger
+                        if (mEntityStatus.getInt("mode_tweetlonger") == NewStatusActivity.MODE_TL_TWITLONGER) { // twitlonger
                             updateTwitlonger();
                         } else {
-                            updateStatus(NewStatus.MODE_TL_N_TWEETS);
+                            updateStatus(NewStatusActivity.MODE_TL_N_TWEETS);
                         }
                     } else { // directo
-                        directMessage(NewStatus.MODE_TL_N_TWEETS);
+                        directMessage(NewStatusActivity.MODE_TL_N_TWEETS);
                     }
                 } else {
                     if (mEntityStatus.getInt("type_id") == 1) { // normal
-                        updateStatus(NewStatus.MODE_TL_NONE);
+                        updateStatus(NewStatusActivity.MODE_TL_NONE);
                     } else { // directo
-                        directMessage(NewStatus.MODE_TL_NONE);
+                        directMessage(NewStatusActivity.MODE_TL_NONE);
                     }
                 }
             }

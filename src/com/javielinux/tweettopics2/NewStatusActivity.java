@@ -53,7 +53,7 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 
-public class NewStatus extends BaseActivity {
+public class NewStatusActivity extends BaseActivity {
 	
 	private static final int MAX_RESULTS = 5;
 	
@@ -148,7 +148,7 @@ public class NewStatus extends BaseActivity {
 	
 	private LinearLayout mLayoutBackgroundApp;
 	
-	private static NewStatus thisInstance;
+	private static NewStatusActivity thisInstance;
 	
 	private int mShortURLLength = 19;
 	private int mShortURLLengthHttps = 20;
@@ -426,7 +426,7 @@ public class NewStatus extends BaseActivity {
 			@Override
 			public void onClick(View v) {	
 				try {
-					AlertDialog builder = BuyProDialogBuilder.create(NewStatus.this);
+					AlertDialog builder = BuyProDialogBuilder.create(NewStatusActivity.this);
 					builder.show();
 				} catch (NameNotFoundException e) {
 					e.printStackTrace();
@@ -434,7 +434,7 @@ public class NewStatus extends BaseActivity {
 				/*
 				Uri uri = Uri.parse("market://search?q=pname:" + Utils.packageNamePRO);
 	            Intent buyProIntent = new Intent(Intent.ACTION_VIEW, uri);
-	            NewStatus.this.startActivity(buyProIntent);*/
+	            NewStatusActivity.this.startActivity(buyProIntent);*/
 			}
 		});
 
@@ -535,8 +535,8 @@ public class NewStatus extends BaseActivity {
 
 				// comprobar si tenemos geoposicion
 				
-				if (PreferenceUtils.getGeo(NewStatus.this)) {
-					Location loc = LocationUtils.getLastLocation(NewStatus.this);
+				if (PreferenceUtils.getGeo(NewStatusActivity.this)) {
+					Location loc = LocationUtils.getLastLocation(NewStatusActivity.this);
 					if (loc == null) {
 						showDialog(DIALOG_NO_GEO);
 					} else {
@@ -560,9 +560,9 @@ public class NewStatus extends BaseActivity {
 				int count = Utils.pullLinksHTTP(text).size() - mImages.size();
 				if (count>0) {
 					mText.setText(Utils.shortLinks(text, mImages));
-					Utils.showShortMessage(NewStatus.this, count + " " + NewStatus.this.getString(R.string.txt_shorter_n));
+					Utils.showShortMessage(NewStatusActivity.this, count + " " + NewStatusActivity.this.getString(R.string.txt_shorter_n));
 				} else {
-					Utils.showShortMessage(NewStatus.this, NewStatus.this.getString(R.string.txt_shorter_0));
+					Utils.showShortMessage(NewStatusActivity.this, NewStatusActivity.this.getString(R.string.txt_shorter_0));
 				}
 
 			}
@@ -574,14 +574,14 @@ public class NewStatus extends BaseActivity {
 
 			@Override
 			public void onClick(View v) {
-				if (PreferenceUtils.getGeo(NewStatus.this)) {
+				if (PreferenceUtils.getGeo(NewStatusActivity.this)) {
 					mGeo.setImageDrawable(mThemeManager.getDrawableMainButton(R.drawable.gd_action_bar_geo, ThemeManager.TYPE_NORMAL));
-					Utils.showShortMessage(NewStatus.this, NewStatus.this.getString(R.string.txt_geoloc_off));
-                    PreferenceUtils.setGeo(NewStatus.this, false);
+					Utils.showShortMessage(NewStatusActivity.this, NewStatusActivity.this.getString(R.string.txt_geoloc_off));
+                    PreferenceUtils.setGeo(NewStatusActivity.this, false);
 				} else {
 					mGeo.setImageDrawable(mThemeManager.getDrawableMainButton(R.drawable.gd_action_bar_geo, ThemeManager.TYPE_SELECTED));
-                    PreferenceUtils.setGeo(NewStatus.this, true);
-					Utils.showShortMessage(NewStatus.this, NewStatus.this.getString(R.string.txt_geoloc_on));
+                    PreferenceUtils.setGeo(NewStatusActivity.this, true);
+					Utils.showShortMessage(NewStatusActivity.this, NewStatusActivity.this.getString(R.string.txt_geoloc_on));
 				}
 			}
 			
@@ -693,8 +693,8 @@ public class NewStatus extends BaseActivity {
         v.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Intent newuser = new Intent(NewStatus.this, Users.class);
-				NewStatus.this.startActivityForResult(newuser, ACTIVITY_USER);
+				Intent newuser = new Intent(NewStatusActivity.this, Users.class);
+				NewStatusActivity.this.startActivityForResult(newuser, ACTIVITY_USER);
 			}
         });
 
@@ -863,7 +863,7 @@ public class NewStatus extends BaseActivity {
 	    	ent.setValue("photos", photos);
 	    	ent.setValue("mode_tweetlonger", mModeTweetLonger);
 	    	if (mIdDeleteDraft>0) ent.setValue("tweet_draft_id", mIdDeleteDraft);
-	    	if (mType==NewStatus.TYPE_REPLY || mType==NewStatus.TYPE_REPLY_ON_COPY) {
+	    	if (mType== NewStatusActivity.TYPE_REPLY || mType== NewStatusActivity.TYPE_REPLY_ON_COPY) {
 	    		ent.setValue("reply_tweet_id",  Utils.fillZeros("" + mReplyTweetId));
 	    	} else {
 	    		ent.setValue("reply_tweet_id",  "-1");
@@ -1013,14 +1013,14 @@ public class NewStatus extends BaseActivity {
                 progressDialog.dismiss();
                 if (iu!=null) {
                     if (iu.isFollower()) {
-                        Utils.showMessage(NewStatus.this, NewStatus.this.getString(R.string.verify_dm_yes, iu.getName()));
+                        Utils.showMessage(NewStatusActivity.this, NewStatusActivity.this.getString(R.string.verify_dm_yes, iu.getName()));
                         if (fromAutocomplete) {
                             mDMUsername = iu.getName();
                             mType = TYPE_DIRECT_MESSAGE;
                             populateFields();
                         }
                     } else {
-                        Utils.showMessage(NewStatus.this, NewStatus.this.getString(R.string.no_is_follower));
+                        Utils.showMessage(NewStatusActivity.this, NewStatusActivity.this.getString(R.string.no_is_follower));
                         if (!fromAutocomplete) {
                            finish();
                         }
@@ -1205,9 +1205,9 @@ public class NewStatus extends BaseActivity {
 			@Override
 			public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
 				progress += minValue;
-                PreferenceUtils.setSizeTextNewStatus(NewStatus.this, progress);
+                PreferenceUtils.setSizeTextNewStatus(NewStatusActivity.this, progress);
 				//seekBar.setProgress(progress);
-		        ((TextView)sizesFontView.findViewById(R.id.txt_size_text)).setText(getString(R.string.size_text) + " (" + PreferenceUtils.getSizeTextNewStatus(NewStatus.this) + ")");
+		        ((TextView)sizesFontView.findViewById(R.id.txt_size_text)).setText(getString(R.string.size_text) + " (" + PreferenceUtils.getSizeTextNewStatus(NewStatusActivity.this) + ")");
 				mText.setTextSize(progress);
 			}
 
@@ -1252,7 +1252,7 @@ public class NewStatus extends BaseActivity {
         }
 
         String replyuser = "";
-        if (mType==NewStatus.TYPE_REPLY || mType==NewStatus.TYPE_REPLY_ON_COPY) {
+        if (mType== NewStatusActivity.TYPE_REPLY || mType== NewStatusActivity.TYPE_REPLY_ON_COPY) {
             replyuser = "@"+mReplyScreenName;
         }
 
@@ -1343,8 +1343,8 @@ public class NewStatus extends BaseActivity {
     	    	ent.setValue("username_direct", mDMUsername);
     			ent.setValue("is_sent", 0);
     			ent.save();
-    			OnAlarmReceiverTweetProgrammed.callNextAlarm(NewStatus.this);
-    			Utils.showMessage(NewStatus.this, R.string.programmed_save);
+    			OnAlarmReceiverTweetProgrammed.callNextAlarm(NewStatusActivity.this);
+    			Utils.showMessage(NewStatusActivity.this, R.string.programmed_save);
     			finish();
             	
             }
@@ -1395,7 +1395,7 @@ public class NewStatus extends BaseActivity {
             })
             .setPositiveButton(R.string.view_draft, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
-                    	Intent send = new Intent(NewStatus.this, TweetDraft.class);
+                    	Intent send = new Intent(NewStatusActivity.this, TweetDraft.class);
                 		startActivity(send);
                     }
                 })
@@ -1418,7 +1418,7 @@ public class NewStatus extends BaseActivity {
 
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-                PreferenceUtils.setDefaultTextInTweet(NewStatus.this, et.getText().toString());
+                PreferenceUtils.setDefaultTextInTweet(NewStatusActivity.this, et.getText().toString());
 			}
 			
 		});
@@ -1426,7 +1426,7 @@ public class NewStatus extends BaseActivity {
 
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-                PreferenceUtils.setDefaultTextInTweet(NewStatus.this, "");
+                PreferenceUtils.setDefaultTextInTweet(NewStatusActivity.this, "");
 			}
 			
 		});

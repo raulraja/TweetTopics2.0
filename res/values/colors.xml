@@ -82,7 +82,7 @@
 	<color name="color_8">#b8c4e3</color>
 	
 	<color name="color_top_bar">#32747f</color>
-	<color name="color_bottom_bar">#35979f</color>
+	<color name="color_button_press_bar">#ffe7e152</color>
 	
 	<color name="color_load_more_break">#fd6f00</color>
 	
@@ -127,7 +127,7 @@
 	<color name="color_8_dark">#7080a9</color>
 	
 	<color name="color_top_bar_dark">#424242</color>
-	<color name="color_bottom_bar_dark">#585858</color>
+    <color name="color_button_press_bar_dark">#ffe7e152</color>
 	
 	<color name="color_load_more_break_dark">#ab2100</color>
 	

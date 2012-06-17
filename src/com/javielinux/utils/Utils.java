@@ -62,7 +62,10 @@ public class Utils {
 	
 	public static final String VERSION = "1.72";
 
-    public static final String EXTRA_CRASHED = "param_crash";
+    public static final String KEY_ACTIVITY_ANIMATION = "KEY_ACTIVITY_ANIMATION";
+
+    public static final int ACTIVITY_ANIMATION_RIGHT = 0;
+    public static final int ACTIVITY_ANIMATION_LEFT = 1;
 
 	public static final int NETWORK_TWITTER = 0;
 	public static final int NETWORK_FACEBOOK = 1;
@@ -70,8 +73,6 @@ public class Utils {
 	public static String ACTION_WIDGET_CONTROL = "com.javielinux.tweettopics2.WIDGET_CONTROL";
 	public static final String URI_SCHEME = "tweettopics2_widget_tweets";
 	
-	//public static final String SEP_BLOCK = "--";
-	//public static final String SEP_VALUES = ";;";
 	public static final String SEP_BLOCK = "\n";
 	public static final String SEP_VALUES = "\t";
 	
@@ -90,11 +91,7 @@ public class Utils {
     
 	public static final int NUMBERS_ZEROS_IN_LONG = 24;
 	
-	public static final int TYPE_ANIM_TOP = 0;
-	public static final int TYPE_ANIM_BOTTOM = 1;
-	public static final int TYPE_ANIM_LEFT = 2;
-	public static final int TYPE_ANIM_RIGHT = 3;
-	
+
 	public static final int TYPE_CIRCLE = 0;
 	public static final int TYPE_RECTANGLE = 1;
 	public static final int TYPE_BUBBLE = 2;

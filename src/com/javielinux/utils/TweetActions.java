@@ -1,4 +1,4 @@
-package com.javielinux.tweettopics2;
+package com.javielinux.utils;
 
 import adapters.UsersAdapter;
 import android.app.Activity;
@@ -9,8 +9,8 @@ import android.content.Intent;
 import android.text.ClipboardManager;
 import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
-import com.javielinux.utils.PreferenceUtils;
-import com.javielinux.utils.Utils;
+import com.javielinux.tweettopics2.NewStatusActivity;
+import com.javielinux.tweettopics2.R;
 import infos.InfoTweet;
 import preferences.RetweetsTypes;
 import updatestatus.ServiceUpdateStatus;
@@ -65,7 +65,7 @@ public class TweetActions {
     }
 
     public static void goToMention(Activity activity, InfoTweet infoTweet) {
-        updateStatus(activity, NewStatus.TYPE_NORMAL, "@" + infoTweet.getUsername(), infoTweet);
+        updateStatus(activity, NewStatusActivity.TYPE_NORMAL, "@" + infoTweet.getUsername(), infoTweet);
     }
 
     public static void goToShare(Activity activity, InfoTweet infoTweet) {
@@ -121,7 +121,7 @@ public class TweetActions {
             if (count>1) {
                 showDialogReply(activity, infoTweet);
             } else {
-                updateStatus(activity, NewStatus.TYPE_REPLY, "", infoTweet);
+                updateStatus(activity, NewStatusActivity.TYPE_REPLY, "", infoTweet);
             }
         }
 
@@ -147,7 +147,7 @@ public class TweetActions {
                                         text += users.get(i) + " ";
                                     }
                                 }
-                                updateStatus(activity, NewStatus.TYPE_REPLY, text, it);
+                                updateStatus(activity, NewStatusActivity.TYPE_REPLY, text, it);
                             }
                         } else if (which == 1) {
                             if (it != null) {
@@ -164,11 +164,11 @@ public class TweetActions {
                                         text += users.get(i) + " ";
                                     }
                                 }
-                                updateStatus(activity, NewStatus.TYPE_REPLY_ON_COPY, text, it);
+                                updateStatus(activity, NewStatusActivity.TYPE_REPLY_ON_COPY, text, it);
                             }
                         } else if (which == 2) {
                             if (it != null) {
-                                updateStatus(activity, NewStatus.TYPE_REPLY, "", it);
+                                updateStatus(activity, NewStatusActivity.TYPE_REPLY, "", it);
                             }
                         }
                     }
@@ -178,8 +178,8 @@ public class TweetActions {
     }
 
     public static void directMessage(Activity activity, String username) {
-        Intent newstatus = new Intent(activity, NewStatus.class);
-        newstatus.putExtra("type", NewStatus.TYPE_DIRECT_MESSAGE);
+        Intent newstatus = new Intent(activity, NewStatusActivity.class);
+        newstatus.putExtra("type", NewStatusActivity.TYPE_DIRECT_MESSAGE);
         newstatus.putExtra("username_direct_message", username);
         activity.startActivityForResult(newstatus, ACTIVITY_NEWSTATUS);
 
@@ -221,12 +221,12 @@ public class TweetActions {
     }
 
     private static void updateStatus(Activity activity, int type, String text, InfoTweet tweet, String prev) {
-        Intent newstatus = new Intent(activity, NewStatus.class);
+        Intent newstatus = new Intent(activity, NewStatusActivity.class);
         newstatus.putExtra("text", text);
         newstatus.putExtra("type", type);
         newstatus.putExtra("retweet_prev", prev);
         if (tweet != null) {
-            if (type == NewStatus.TYPE_REPLY || type == NewStatus.TYPE_REPLY_ON_COPY) {
+            if (type == NewStatusActivity.TYPE_REPLY || type == NewStatusActivity.TYPE_REPLY_ON_COPY) {
                 newstatus.putExtra("reply_tweetid", tweet.getId());
             }
             if (tweet.isRetweet()) {
@@ -271,17 +271,17 @@ public class TweetActions {
                     }
                 } else if (phrase.equals("_EM_")) {
                     if (it != null) {
-                        updateStatus(activity, NewStatus.TYPE_RETWEET, it.getText(), it);
+                        updateStatus(activity, NewStatusActivity.TYPE_RETWEET, it.getText(), it);
                     }
                 } else if (phrase.equals("_RU_")) {
                     if (it != null) {
-                        updateStatus(activity, NewStatus.TYPE_RETWEET, it.getUrlTweet(), it);
+                        updateStatus(activity, NewStatusActivity.TYPE_RETWEET, it.getUrlTweet(), it);
                     }
                 } else {
                     if (it != null) {
                         String text = phrase + " RT: @" + it.getUsername() + ": " + it.getText();
                         if (text.length() > 140) {
-                            updateStatus(activity, NewStatus.TYPE_RETWEET, it.getText(), it, phrase);
+                            updateStatus(activity, NewStatusActivity.TYPE_RETWEET, it.getText(), it, phrase);
                         } else {
                             updateStatus(activity, text);
                         }
@@ -313,7 +313,7 @@ public class TweetActions {
         ent.setValue("type_id", 1);
         ent.setValue("username_direct", "");
         ent.setValue("photos", "");
-        ent.setValue("mode_tweetlonger", NewStatus.MODE_TL_NONE);
+        ent.setValue("mode_tweetlonger", NewStatusActivity.MODE_TL_NONE);
         ent.setValue("reply_tweet_id", "-1");
         ent.setValue("use_geo", PreferenceUtils.getGeo(activity) ? "1" : "0");
         ent.save();

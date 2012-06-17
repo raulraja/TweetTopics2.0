@@ -10,7 +10,7 @@ import android.os.IBinder;
 import android.util.Log;
 import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
-import com.javielinux.tweettopics2.NewStatus;
+import com.javielinux.tweettopics2.NewStatusActivity;
 import com.javielinux.tweettopics2.R;
 import com.javielinux.tweettopics2.UploadTweetQuick;
 import com.javielinux.twitter.ConnectionManager2;
@@ -80,7 +80,7 @@ public class ServiceTweetQuick extends Service implements UploadStatusAsyncTaskR
      */
         
     public void updateStatus(String text, long tweet_id) {
-		new UploadStatusAsyncTask(this, this, twitter, NewStatus.MODE_TL_NONE).execute(text, tweet_id+"", "0");
+		new UploadStatusAsyncTask(this, this, twitter, NewStatusActivity.MODE_TL_NONE).execute(text, tweet_id+"", "0");
     }
 	
 	@Override
@@ -186,7 +186,7 @@ public class ServiceTweetQuick extends Service implements UploadStatusAsyncTaskR
      */
     
     public void directMessage(String text, String user) {
-		new DirectMessageAsyncTask(this, twitter, NewStatus.MODE_TL_NONE).execute(text, user);	
+		new DirectMessageAsyncTask(this, twitter, NewStatusActivity.MODE_TL_NONE).execute(text, user);
     }
 
 	@Override

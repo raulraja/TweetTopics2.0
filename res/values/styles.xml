@@ -300,26 +300,7 @@
     	<item name="android:textSize">10sp</item>
         <item name="android:textColor">?color_tweet_date</item>
      </style>
-     
-    <!-- Animations -->
-     
-	<style name="Animations" />
 
-	<style name="Animations.GrowFromBottom">
-		<item name="@android:windowEnterAnimation">@anim/grow_from_bottom</item>
-		<item name="@android:windowExitAnimation">@anim/shrink_from_top</item>
-	</style>
-	
-	<style name="Animations.GrowFromTop">
-		<item name="@android:windowEnterAnimation">@anim/grow_from_top</item>
-		<item name="@android:windowExitAnimation">@anim/shrink_from_bottom</item>
-	</style>
-	
-	<style name="Animations.PopDownMenu">
-		<item name="@android:windowEnterAnimation">@anim/grow_from_topleft_to_bottomright</item>
-		<item name="@android:windowExitAnimation">@anim/shrink_from_bottomright_to_topleft</item>
-	</style>
-    
     <style name="CountChars">
         <item name="android:textColor">@color/count_chars_normal</item>
         <item name="android:textSize">18sp</item>

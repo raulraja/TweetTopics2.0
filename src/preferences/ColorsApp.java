@@ -15,7 +15,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
-import com.javielinux.tweettopics2.NewStatus;
+import com.javielinux.tweettopics2.NewStatusActivity;
 import com.javielinux.tweettopics2.R;
 import com.javielinux.utils.Utils;
 import layouts.ColorDialog;
@@ -407,9 +407,9 @@ public class ColorsApp extends ListActivity implements ColorDialog.OnChangeColor
     }
     
     public static void exportTheme(Context cnt) {
-    	Intent newstatus = new Intent(cnt, NewStatus.class);
+    	Intent newstatus = new Intent(cnt, NewStatusActivity.class);
     	newstatus.putExtra("text", Utils.HASHTAG_SHARE_THEME + " " + URLExportTheme(cnt));
-    	newstatus.putExtra("type", NewStatus.TYPE_NORMAL);
+    	newstatus.putExtra("type", NewStatusActivity.TYPE_NORMAL);
     	cnt.startActivity(newstatus);
     }
     

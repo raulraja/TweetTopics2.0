@@ -16,7 +16,7 @@ import android.view.View;
 import android.widget.RemoteViews;
 import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
-import com.javielinux.tweettopics2.NewStatus;
+import com.javielinux.tweettopics2.NewStatusActivity;
 import com.javielinux.tweettopics2.R;
 import com.javielinux.tweettopics2.TweetTopicsActivity;
 import com.javielinux.utils.TweetTopicsUtils;
@@ -363,7 +363,7 @@ public class WidgetCounters4x1 extends AppWidgetProvider {
 		}
 		
 		if (buttonId==GlobalsWidget.BUTTON_WIDGET_NEW_STATUS) {
-			Intent i = new Intent(context, NewStatus.class);
+			Intent i = new Intent(context, NewStatusActivity.class);
 			i.setAction(Intent.ACTION_VIEW);
 			i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			i.putExtra("start_user_id", userId+"");
