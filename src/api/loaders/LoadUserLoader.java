@@ -8,10 +8,9 @@ import api.request.LoadUserRequest;
 import api.response.BaseResponse;
 import api.response.ErrorResponse;
 import api.response.LoadUserResponse;
-import com.android.dataframework.DataFramework;
-import com.android.dataframework.Entity;
 import com.javielinux.twitter.ConnectionManager2;
 import com.javielinux.utils.Utils;
+import infos.CacheData;
 import infos.InfoUsers;
 import twitter4j.TwitterException;
 import twitter4j.User;
@@ -35,19 +34,12 @@ public class LoadUserLoader extends AsynchronousLoader<BaseResponse> {
             LoadUserResponse response = new LoadUserResponse();
             InfoUsers infoUsers = new InfoUsers();
 
-	        Entity user_entity = DataFramework.getInstance().getTopEntity("users", "active=1", "");
-            String screenName = "";
-
-	        if (user_entity!=null) {
-	        	screenName = user_entity.getString("name");
-	        }
-
 			ConnectionManager2.getInstance().open(getContext());
 
-			User user_data = ConnectionManager2.getInstance().getTwitter(request.getUserId()).showUser(request.getUser());
+			User user_data = ConnectionManager2.getInstance().getAnonymousTwitter().showUser(request.getUser());
 
-			infoUsers.setFollower(ConnectionManager2.getInstance().getTwitter(request.getUserId()).existsFriendship(request.getUser(), screenName));
-			infoUsers.setFriend(ConnectionManager2.getInstance().getTwitter(request.getUserId()).existsFriendship(screenName, request.getUser()));
+			//infoUsers.setFollower(ConnectionManager2.getInstance().getTwitter(request.getUserId()).existsFriendship(request.getUser(), screenName));
+			//infoUsers.setFriend(ConnectionManager2.getInstance().getTwitter(request.getUserId()).existsFriendship(screenName, request.getUser()));
 
 			infoUsers.setName(user_data.getScreenName());
 			infoUsers.setFullname(user_data.getName());
@@ -79,6 +71,9 @@ public class LoadUserLoader extends AsynchronousLoader<BaseResponse> {
 			}
 
             response.setInfoUsers(infoUsers);
+
+            CacheData.addCacheUsers(infoUsers);
+
             return response;
 		} catch (TwitterException e) {
 			e.printStackTrace();

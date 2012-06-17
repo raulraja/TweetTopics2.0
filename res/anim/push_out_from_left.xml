@@ -4,12 +4,12 @@
         android:interpolator="@android:anim/accelerate_interpolator"
         android:fillBefore="true"
         >
-
-    <alpha
-            android:fromAlpha="1.0"
-            android:toAlpha="0.2"
-            android:duration="300"
-            />
+    <!--
+<alpha
+   android:fromAlpha="1.0"
+   android:toAlpha="0.2"
+   android:duration="300"
+   /> -->
     <translate
         android:duration="300"
         android:fromXDelta="0%"

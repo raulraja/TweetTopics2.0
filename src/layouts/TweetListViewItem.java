@@ -2,6 +2,7 @@ package layouts;
 
 import adapters.TweetsAdapter;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -14,6 +15,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 import api.APIDelegate;
 import api.APITweetTopics;
 import api.request.LoadImageRequest;
@@ -21,6 +23,7 @@ import api.response.BaseResponse;
 import api.response.ErrorResponse;
 import com.javielinux.tweettopics2.R;
 import com.javielinux.tweettopics2.ThemeManager;
+import com.javielinux.tweettopics2.UserActivity;
 import com.javielinux.utils.PreferenceUtils;
 import com.javielinux.utils.Utils;
 import infos.CacheData;
@@ -125,7 +128,7 @@ public class TweetListViewItem extends RelativeLayout {
     }
 
 	
-	public void setRow(final InfoTweet infoTweet, Context cnt, LoaderManager loaderManager, final TweetsAdapter tweetsAdapter, String usernameColumn) {
+	public void setRow(final InfoTweet infoTweet, final Context cnt, LoaderManager loaderManager, final TweetsAdapter tweetsAdapter, String usernameColumn) {
 
         context = cnt;
 
@@ -248,8 +251,9 @@ public class TweetListViewItem extends RelativeLayout {
 
 				@Override
 				public void onClick(View v) {
-                    Log.d("TweetTopics", "AvatarView.onClick");
-					//mTweetTopicsCore.loadSidebarUser(infoTweet.getUsernameRetweet());
+                    Intent intent = new Intent(cnt, UserActivity.class);
+                    intent.putExtra(UserActivity.KEY_EXTRAS_USER, infoTweet.getUsernameRetweet());
+                    cnt.startActivity(intent);
 				}
 				
 			});
@@ -262,7 +266,9 @@ public class TweetListViewItem extends RelativeLayout {
 
 				@Override
 				public void onClick(View v) {
-                    //TODO Cargar usuario
+                    Intent intent = new Intent(cnt, UserActivity.class);
+                    intent.putExtra(UserActivity.KEY_EXTRAS_USER, infoTweet.getUsername());
+                    cnt.startActivity(intent);
 				}
 				
 			});
@@ -277,6 +283,14 @@ public class TweetListViewItem extends RelativeLayout {
         if (linkForImage.equals("")) {
             viewHolder.tweetPhotoImgContainer.setVisibility(GONE);
         } else {
+
+            viewHolder.tweetPhotoImgContainer.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Toast.makeText(cnt,"Mostrar enlaces", Toast.LENGTH_LONG).show();
+                    // TODO mostrar links
+                }
+            });
 
             viewHolder.tweetPhotoImgContainer.setVisibility(VISIBLE);
 
@@ -338,7 +352,7 @@ public class TweetListViewItem extends RelativeLayout {
                             viewHolder.tweetPhotoImg.setImageBitmap(infoLink.getBitmapThumb());
                     }
 
-                    if (!tweetsAdapter.isFlinging()) tweetsAdapter.notifyDataSetChanged();
+                    //if (!tweetsAdapter.isFlinging()) tweetsAdapter.notifyDataSetChanged();
 
                 }
 

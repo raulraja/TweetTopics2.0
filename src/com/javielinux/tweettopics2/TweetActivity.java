@@ -17,7 +17,6 @@ import api.request.LoadImageWidgetRequest;
 import api.response.ErrorResponse;
 import api.response.LoadImageWidgetResponse;
 import com.javielinux.fragmentadapter.TweetFragmentAdapter;
-import com.javielinux.utils.ActivityUtils;
 import com.javielinux.utils.TweetActions;
 import com.javielinux.utils.Utils;
 import com.viewpagerindicator.TabPageIndicator;
@@ -26,7 +25,7 @@ import infos.InfoTweet;
 import java.io.File;
 import java.util.ArrayList;
 
-public class TweetActivity extends BaseActivity {
+public class TweetActivity extends BaseLayersActivity {
 
     public static final String KEY_EXTRAS_TWEET = "tweet";
 
@@ -43,8 +42,6 @@ public class TweetActivity extends BaseActivity {
 
     private LinearLayout llRoot;
 
-    private int activityAnimation = Utils.ACTIVITY_ANIMATION_RIGHT;
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,12 +54,7 @@ public class TweetActivity extends BaseActivity {
             if (extras.containsKey(KEY_EXTRAS_TWEET)) {
                 infoTweet = (InfoTweet) extras.getParcelable(KEY_EXTRAS_TWEET);
             }
-            if (extras.containsKey(Utils.KEY_ACTIVITY_ANIMATION)) {
-                activityAnimation = extras.getInt(Utils.KEY_ACTIVITY_ANIMATION);
-            }
         }
-
-        ActivityUtils.animationIn(this, activityAnimation);
 
         if (infoTweet==null) {
             Utils.showMessage(this, R.string.error_general);
@@ -76,7 +68,9 @@ public class TweetActivity extends BaseActivity {
 
             @Override
             public void onClick(View v) {
-                // TODO open user activity
+                Bundle bundle = new Bundle();
+                bundle.putString(UserActivity.KEY_EXTRAS_USER, infoTweet.isRetweet()?infoTweet.getUsernameRetweet():infoTweet.getUsername());
+                startAnimationActivity(UserActivity.class, bundle);
             }
 
         });
@@ -239,12 +233,5 @@ public class TweetActivity extends BaseActivity {
             builder.show();
         }
     };
-
-
-    @Override
-    protected void onPause() {
-        ActivityUtils.animationOut(this, activityAnimation);
-        super.onPause();
-    }
 
 }

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#00000000"
+    >
+
+    <RelativeLayout
+                  android:layout_width="fill_parent"
+                  android:layout_height="fill_parent"
+                  android:id="@+id/user_ll"
+            >
+
+        <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:gravity="center"
+                android:visibility="gone"
+                android:id="@+id/user_view_loading"
+                >
+
+            <ProgressBar
+                    android:layout_width="16sp"
+                    android:layout_height="16sp"
+                    android:indeterminate="true"
+                    android:layout_marginRight="6sp"
+                    />
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/loading"
+                    />
+
+        </LinearLayout>
+
+        <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/user_view_info"
+                >
+
+            <ImageView
+                    android:id="@+id/user_avatar"
+                    android:src="@drawable/avatar"
+                    style="@style/TweetAvatar" />
+
+            <LinearLayout android:layout_width="fill_parent"
+                          android:layout_height="wrap_content"
+                          android:orientation="vertical"
+                          android:layout_toRightOf="@id/user_avatar"
+                    >
+                <TextView
+                        android:id="@+id/user_username"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        style="@style/TweetTitle" android:singleLine="true"/>
+
+            </LinearLayout>
+
+            <TextView
+                    android:id="@+id/user_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:maxLines="4"
+                    android:layout_below="@+id/user_avatar"
+                    style="@style/TweetTextSidebar"
+                    />
+
+        </RelativeLayout>
+
+
+    </RelativeLayout>
+</FrameLayout>

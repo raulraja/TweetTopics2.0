@@ -1,6 +1,7 @@
 package com.javielinux.fragments;
 
 import adapters.TweetsAdapter;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -23,7 +24,6 @@ import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.javielinux.tweettopics2.R;
 import com.javielinux.tweettopics2.TweetActivity;
-import com.javielinux.utils.ActivityUtils;
 import com.javielinux.utils.TweetTopicsUtils;
 import com.javielinux.utils.Utils;
 import database.EntityTweetUser;
@@ -168,7 +168,7 @@ public class TweetTopicsFragment extends Fragment implements APIDelegate<BaseRes
         tweetsAdapter.setFlinging(flinging);
         if (!flinging) {
             markPositionLastReadAsLastReadId();
-            tweetsAdapter.notifyDataSetChanged();
+            //tweetsAdapter.notifyDataSetChanged();
         }
     }
 
@@ -359,9 +359,9 @@ public class TweetTopicsFragment extends Fragment implements APIDelegate<BaseRes
 
     private void onListItemClick(View v, int position, long id) {
 
-        Bundle bundle = new Bundle();
-        bundle.putParcelable(TweetActivity.KEY_EXTRAS_TWEET, tweetsAdapter.getItem(position - 1));
-        ActivityUtils.startAnimationActivity(getActivity(), TweetActivity.class, bundle, Utils.ACTIVITY_ANIMATION_RIGHT);
+        Intent intent = new Intent(getActivity(), TweetActivity.class);
+        intent.putExtra(TweetActivity.KEY_EXTRAS_TWEET, tweetsAdapter.getItem(position - 1));
+        startActivity(intent);
 
     }
 

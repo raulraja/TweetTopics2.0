@@ -2,12 +2,10 @@ package api.request;
 
 public class LoadUserRequest implements BaseRequest {
 
-    private long userId = 0;
     private String user = "";
 
-    public LoadUserRequest(long userId, String user) {
+    public LoadUserRequest(String user) {
         this.user = user;
-        this.userId = userId;
     }
 
     public String getUser() {
@@ -17,11 +15,4 @@ public class LoadUserRequest implements BaseRequest {
         this.user = user;
     }
 
-    public long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(long userId) {
-        this.userId = userId;
-    }
 }
