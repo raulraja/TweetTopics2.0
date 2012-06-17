@@ -25,30 +25,12 @@
                         android:padding="6dp"
                         android:src="@drawable/icon" />
 
-            <ImageView
-                    android:src="@drawable/action_bar_divider"
-                    android:paddingRight="3dp"
-                    android:id="@+id/tweettopics_bar_divider1"
-                    android:layout_width="wrap_content" android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_toRightOf="@id/tweettopics_bar_avatar"
-                    ></ImageView>
-
             <ImageView  android:id="@+id/tweettopics_bar_new_status"
                         android:layout_height="@dimen/actionbar_height"
                         android:layout_width="@dimen/actionbar_height"
                         android:padding="6dp"
                         android:layout_alignParentRight="true"
                         android:src="@drawable/action_bar_compose" />
-
-            <ImageView
-                    android:src="@drawable/action_bar_divider"
-                    android:paddingLeft="3dp"
-                    android:id="@+id/tweettopics_bar_divider2"
-                    android:layout_width="wrap_content" android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_toLeftOf="@id/tweettopics_bar_new_status"
-                    ></ImageView>
 
             <ImageView
                         android:layout_height="@dimen/actionbar_height"

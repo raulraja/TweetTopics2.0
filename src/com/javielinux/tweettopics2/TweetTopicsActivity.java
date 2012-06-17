@@ -109,7 +109,10 @@ public class TweetTopicsActivity extends BaseActivity {
         pager.setAdapter(fragmentAdapter);
 
         indicator = (TitlePageIndicator)findViewById(R.id.tweettopics_bar_indicator);
+        indicator.setFooterIndicatorStyle(TitlePageIndicator.IndicatorStyle.Triangle);
         indicator.setFooterLineHeight(0);
+        indicator.setFooterColor(Color.WHITE);
+        indicator.setClipPadding(-50);
         indicator.setViewPager(pager);
         indicator.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -166,8 +169,8 @@ public class TweetTopicsActivity extends BaseActivity {
         imgNewStatus.setBackgroundDrawable(statesButton);
 
 
-        (findViewById(R.id.tweettopics_bar_divider1)).setBackgroundDrawable(ImageUtils.createBackgroundDrawable(this, themeManager.getColor("color_top_bar"), false, 0));
-        (findViewById(R.id.tweettopics_bar_divider2)).setBackgroundDrawable(ImageUtils.createBackgroundDrawable(this, themeManager.getColor("color_top_bar"), false, 0));
+        //(findViewById(R.id.tweettopics_bar_divider1)).setBackgroundDrawable(ImageUtils.createBackgroundDrawable(this, themeManager.getColor("color_top_bar"), false, 0));
+        //(findViewById(R.id.tweettopics_bar_divider2)).setBackgroundDrawable(ImageUtils.createBackgroundDrawable(this, themeManager.getColor("color_top_bar"), false, 0));
 
         Drawable d = new ColorDrawable(android.R.color.transparent);
 

@@ -61,6 +61,6 @@ public class TweetTopicsFragmentAdapter extends FragmentPagerAdapter  {
 
     @Override
     public CharSequence getPageTitle(int position) {
-        return tweet_fragment_list.get(position).getEntity("type_id").getString("title").toUpperCase();
+        return tweet_fragment_list.get(position).getEntity("type_id").getString("title");
     }
 }

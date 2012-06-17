@@ -52,7 +52,7 @@ public class ImageUtils {
         if ( Utils.getPreference(cnt).getBoolean("prf_use_gradient", true)) {
             float[] hsv = new float[3];
             Color.colorToHSV(mBubbleColor, hsv);
-            if (hsv[2]-.08f>0) hsv[2]=hsv[2]-.08f;
+            if (hsv[2]-.09f>0) hsv[2]=hsv[2]-.09f;
             mBubbleColor2=Color.HSVToColor(hsv);
         }
         GradientDrawable mDrawable = new GradientDrawable(orientation,
