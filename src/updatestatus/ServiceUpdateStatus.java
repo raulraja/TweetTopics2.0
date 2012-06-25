@@ -21,7 +21,7 @@ import com.facebook.android.FacebookError;
 import com.javielinux.facebook.FacebookHandler;
 import com.javielinux.tweettopics2.NewStatusActivity;
 import com.javielinux.tweettopics2.R;
-import com.javielinux.twitter.ConnectionManager2;
+import com.javielinux.twitter.ConnectionManager;
 import com.javielinux.utils.PreferenceUtils;
 import com.javielinux.utils.TweetTopicsUtils;
 import com.javielinux.utils.Utils;
@@ -79,7 +79,7 @@ public class ServiceUpdateStatus extends Service implements UploadStatusAsyncTas
             e.printStackTrace();
         }
 
-        ConnectionManager2.getInstance().open(this);
+        ConnectionManager.getInstance().open(this);
 
         Log.d(Utils.TAG, "Creando nuevo estado");
 
@@ -167,7 +167,7 @@ public class ServiceUpdateStatus extends Service implements UploadStatusAsyncTas
 
     private void launchTasks() {
         if (mPhotos.size()>0) {
-            twitter = ConnectionManager2.getInstance().getTwitter(mUsersId.get(0));
+            twitter = ConnectionManager.getInstance().getTwitter(mUsersId.get(0));
             try {
                 setMood(this.getString(R.string.update_status_uploading_image), false);
             } catch (Resources.NotFoundException e) {
@@ -207,7 +207,7 @@ public class ServiceUpdateStatus extends Service implements UploadStatusAsyncTas
         if (ent.getString("service").equals("facebook")) {
             updateStatusFacebook();
         } else {
-            twitter = ConnectionManager2.getInstance().getTwitter(id);
+            twitter = ConnectionManager.getInstance().getTwitter(id);
 
             if (mEntityStatus.getInt("type_id") == 3) { // retweet
                 retweetMessage();

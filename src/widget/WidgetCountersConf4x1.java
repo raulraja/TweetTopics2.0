@@ -1,6 +1,5 @@
 package widget;
 
-import adapters.UsersAdapter;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.appwidget.AppWidgetManager;
@@ -11,6 +10,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Window;
 import com.android.dataframework.DataFramework;
+import com.javielinux.adapters.UsersAdapter;
 import com.javielinux.tweettopics2.R;
 import com.javielinux.utils.Utils;
 

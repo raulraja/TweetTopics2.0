@@ -13,7 +13,7 @@ import com.android.dataframework.Entity;
 import com.javielinux.tweettopics2.NewStatusActivity;
 import com.javielinux.tweettopics2.R;
 import com.javielinux.tweettopics2.UploadTweetQuick;
-import com.javielinux.twitter.ConnectionManager2;
+import com.javielinux.twitter.ConnectionManager;
 import com.javielinux.utils.LocationUtils;
 import com.javielinux.utils.Utils;
 import task.DirectMessageAsyncTask;
@@ -54,11 +54,11 @@ public class ServiceTweetQuick extends Service implements UploadStatusAsyncTaskR
 		
 		Log.d(Utils.TAG, "Arrancando TweetQuick");
 
-		ConnectionManager2.getInstance().open(this);
+		ConnectionManager.getInstance().open(this);
 		
     	List<Entity> ents = DataFramework.getInstance().getEntityList("users", DataFramework.KEY_ID + " = " + mUserId);
     	if (ents.size()==1) {
-    		twitter = ConnectionManager2.getInstance().getTwitter(mUserId);
+    		twitter = ConnectionManager.getInstance().getTwitter(mUserId);
     	}
     	
     	mEntityTweetQuick = new Entity("tweet_quick", mTweetQuickId);

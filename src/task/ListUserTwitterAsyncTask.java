@@ -1,9 +1,9 @@
 package task;
 
-import adapters.UserTwitterListAdapter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
+import com.javielinux.adapters.UserTwitterListAdapter;
 import com.javielinux.tweettopics2.TabGeneral;
 import com.javielinux.utils.Utils;
 import infos.InfoUsers;

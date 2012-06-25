@@ -12,7 +12,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import com.android.dataframework.DataFramework;
-import com.javielinux.twitter.ConnectionManager2;
+import com.javielinux.twitter.ConnectionManager;
 import com.javielinux.utils.Utils;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
@@ -64,9 +64,9 @@ public class EditUserTwitter extends BaseActivity implements Runnable  {
         
         //Entity ent = new Entity("users", mCurrentId);
         
-        ConnectionManager2.getInstance().open(this);
+        ConnectionManager.getInstance().open(this);
         
-        twitter = ConnectionManager2.getInstance().getTwitter(mCurrentId);
+        twitter = ConnectionManager.getInstance().getTwitter(mCurrentId);
         
         User user = null;
 		try {

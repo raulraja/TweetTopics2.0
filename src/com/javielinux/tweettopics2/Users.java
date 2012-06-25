@@ -1,6 +1,5 @@
 package com.javielinux.tweettopics2;
 
-import adapters.RowUserAdapter;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -19,17 +18,18 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.*;
 import android.widget.AdapterView.OnItemClickListener;
-import api.APIDelegate;
-import api.APITweetTopics;
-import api.loaders.ProfileImageLoader;
-import api.request.ProfileImageRequest;
-import api.response.ErrorResponse;
-import api.response.ProfileImageResponse;
 import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
+import com.javielinux.adapters.RowUserAdapter;
+import com.javielinux.api.APIDelegate;
+import com.javielinux.api.APITweetTopics;
+import com.javielinux.api.loaders.ProfileImageLoader;
+import com.javielinux.api.request.ProfileImageRequest;
+import com.javielinux.api.response.ErrorResponse;
+import com.javielinux.api.response.ProfileImageResponse;
 import com.javielinux.facebook.FacebookHandler;
 import com.javielinux.twitter.AuthorizationActivity;
-import com.javielinux.twitter.ConnectionManager2;
+import com.javielinux.twitter.ConnectionManager;
 import com.javielinux.utils.DialogUtils.BuyProDialogBuilder;
 import com.javielinux.utils.ImageUtils;
 import com.javielinux.utils.PreferenceUtils;
@@ -87,7 +87,7 @@ public class Users extends BaseActivity {
             e.printStackTrace();
         }
 
-        ConnectionManager2.getInstance().open(this);
+        ConnectionManager.getInstance().open(this);
 
         Entity e = DataFramework.getInstance().getTopEntity("users", "active=1", "");
         if (e != null) {
@@ -482,7 +482,7 @@ public class Users extends BaseActivity {
                     // create friend
                     if (boxInvite.isChecked()) {
                         try {
-                            ConnectionManager2.getInstance().getTwitter(e.getId()).createFriendship("tweettopics_app");
+                            ConnectionManager.getInstance().getTwitter(e.getId()).createFriendship("tweettopics_app");
                         } catch (TwitterException e1) {
                             e1.printStackTrace();
                         }

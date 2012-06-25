@@ -1,6 +1,6 @@
 NOTIFICATIONS USE
 
-By using a topic notifications we ensure that the tweets will be stored in the database of our phone. The oldest tweets in Twitter do not appear in searches, this can cause the lost of important tweets to us. With the notifications we ensure  that we always keep saved the last 500 tweets from each subject.
+By using a topic notifications we ensure that the tweets will be stored in the com.javielinux.database of our phone. The oldest tweets in Twitter do not appear in searches, this can cause the lost of important tweets to us. With the notifications we ensure  that we always keep saved the last 500 tweets from each subject.
 
 To use the notifications we must consider to make it in searches that have little activity. It would be illogical to store more information of than we can read or save.
 

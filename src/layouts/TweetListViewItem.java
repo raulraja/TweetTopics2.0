@@ -1,6 +1,5 @@
 package layouts;
 
-import adapters.TweetsAdapter;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -16,11 +15,12 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
-import api.APIDelegate;
-import api.APITweetTopics;
-import api.request.LoadImageRequest;
-import api.response.BaseResponse;
-import api.response.ErrorResponse;
+import com.javielinux.adapters.TweetsAdapter;
+import com.javielinux.api.APIDelegate;
+import com.javielinux.api.APITweetTopics;
+import com.javielinux.api.request.LoadImageRequest;
+import com.javielinux.api.response.BaseResponse;
+import com.javielinux.api.response.ErrorResponse;
 import com.javielinux.tweettopics2.R;
 import com.javielinux.tweettopics2.ThemeManager;
 import com.javielinux.tweettopics2.UserActivity;

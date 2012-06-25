@@ -1,6 +1,5 @@
 package com.javielinux.fragments;
 
-import adapters.TweetsAdapter;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -12,21 +11,22 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
-import api.APIDelegate;
-import api.APITweetTopics;
-import api.request.TwitterUserRequest;
-import api.response.BaseResponse;
-import api.response.ErrorResponse;
-import api.response.TwitterUserResponse;
 import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
+import com.javielinux.adapters.TweetsAdapter;
+import com.javielinux.api.APIDelegate;
+import com.javielinux.api.APITweetTopics;
+import com.javielinux.api.request.TwitterUserRequest;
+import com.javielinux.api.response.BaseResponse;
+import com.javielinux.api.response.ErrorResponse;
+import com.javielinux.api.response.TwitterUserResponse;
+import com.javielinux.database.EntityTweetUser;
 import com.javielinux.tweettopics2.R;
 import com.javielinux.tweettopics2.TweetActivity;
 import com.javielinux.utils.TweetTopicsUtils;
 import com.javielinux.utils.Utils;
-import database.EntityTweetUser;
 import infos.InfoSaveTweets;
 import infos.InfoTweet;
 

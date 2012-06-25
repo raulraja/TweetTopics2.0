@@ -17,12 +17,12 @@ import android.view.View;
 import android.widget.RemoteViews;
 import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
+import com.javielinux.database.EntitySearch;
 import com.javielinux.tweettopics2.R;
 import com.javielinux.tweettopics2.TweetTopicsActivity;
-import com.javielinux.twitter.ConnectionManager2;
+import com.javielinux.twitter.ConnectionManager;
 import com.javielinux.utils.PreferenceUtils;
 import com.javielinux.utils.Utils;
-import database.EntitySearch;
 import infos.InfoImagesTweet;
 import infos.InfoTweet;
 import task.LoadImageWidgetAsyncTask;
@@ -136,9 +136,9 @@ public class ServiceWidgetTweets4x2 extends Service {
         PreferenceUtils.setTypeWidget(this, TIMELINE);
         PreferenceUtils.setIdSearchWidget(this, 1);
 
-    	ConnectionManager2.getInstance().open(this);
+    	ConnectionManager.getInstance().open(this);
     	
-        twitter = ConnectionManager2.getInstance().getAnonymousTwitter();
+        twitter = ConnectionManager.getInstance().getAnonymousTwitter();
     	
     	try {
         	DataFramework.getInstance().open(this, Utils.packageName);
@@ -440,7 +440,7 @@ public class ServiceWidgetTweets4x2 extends Service {
     }
     
 	public void loadUser(long id) {
-		twitter = ConnectionManager2.getInstance().getTwitter(id);
+		twitter = ConnectionManager.getInstance().getTwitter(id);
 	}
     
     private void prev() {

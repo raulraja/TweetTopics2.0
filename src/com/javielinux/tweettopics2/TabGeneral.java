@@ -1,6 +1,5 @@
 package com.javielinux.tweettopics2;
 
-import adapters.UserTwitterListAdapter;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -14,7 +13,8 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
-import com.javielinux.twitter.ConnectionManager2;
+import com.javielinux.adapters.UserTwitterListAdapter;
+import com.javielinux.twitter.ConnectionManager;
 import com.javielinux.utils.Utils;
 import task.ListUserTwitterAsyncTask;
 import task.ListUserTwitterAsyncTask.UserTwitterStatusAsyncTaskResponder;
@@ -52,9 +52,9 @@ public class TabGeneral extends Activity implements UserTwitterStatusAsyncTaskRe
             e.printStackTrace();
         }
         
-        ConnectionManager2.getInstance().open(this);
+        ConnectionManager.getInstance().open(this);
 
-        twitter = ConnectionManager2.getInstance().getAnonymousTwitter();
+        twitter = ConnectionManager.getInstance().getAnonymousTwitter();
         
         String name = "";
         String search = "";

@@ -1,7 +1,7 @@
 package com.javielinux.twitter;
 
 import android.app.Application;
-import error_reporter.ErrorReporter;
+import com.javielinux.error_reporter.ErrorReporter;
 
 public class TwitterApplication extends Application {
     private ErrorReporter mErrs;

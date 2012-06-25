@@ -1,7 +1,5 @@
 package com.javielinux.tweettopics2;
 
-import adapters.TweetListDraftAdapter;
-import adapters.TweetLongerAdapter;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
@@ -30,6 +28,8 @@ import android.widget.*;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
+import com.javielinux.adapters.TweetListDraftAdapter;
+import com.javielinux.adapters.TweetLongerAdapter;
 import com.javielinux.utils.DialogUtils.BuyProDialogBuilder;
 import com.javielinux.utils.FileUtils;
 import com.javielinux.utils.LocationUtils;

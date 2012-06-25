@@ -1,6 +1,5 @@
 package preferences;
 
-import adapters.QuietWordsAdapter;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -13,6 +12,7 @@ import android.widget.*;
 import android.widget.AdapterView.OnItemClickListener;
 import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
+import com.javielinux.adapters.QuietWordsAdapter;
 import com.javielinux.tweettopics2.R;
 import com.javielinux.utils.Utils;
 

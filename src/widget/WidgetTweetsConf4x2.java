@@ -1,6 +1,5 @@
 package widget;
 
-import adapters.RowSearchWidgetAdapter;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.appwidget.AppWidgetManager;
@@ -10,6 +9,7 @@ import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.os.Bundle;
 import com.android.dataframework.DataFramework;
+import com.javielinux.adapters.RowSearchWidgetAdapter;
 import com.javielinux.tweettopics2.R;
 import com.javielinux.utils.Utils;
 

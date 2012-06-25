@@ -1,0 +1,426 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="actions_volume_controls"><!-- 1.74 -->
+        <item>Volum Android</item>
+        <item>Últim llegit</item>
+        <item>Colorar piulades</item>
+        <item>Piulades amb enllaços</item>
+        <item>Cerca una paraula</item>
+        <item>Buscar usuario</item>
+    </string-array>
+  <string-array name="entries_prf_max_download">
+    <!-- 1.71 -->
+    <item>60</item>
+    <item>80</item>
+    <item>100</item>
+    <item>150</item>
+    <item>Tots</item>
+  </string-array>
+  <string-array name="entries_prf_max_download_values">
+    <!-- 1.71 -->
+    <item>60</item>
+    <item>80</item>
+    <item>100</item>
+    <item>150</item>
+    <item>0</item>
+  </string-array>
+  <string-array name="actions_users_facebook">
+    <!-- 1.63 -->
+    <item>Elimina</item>
+  </string-array>
+  <string-array name="values_tweetprogrammed">
+    <!-- 1.61 -->
+    <item>En 5 minuts</item>
+    <item>En 15 minuts</item>
+    <item>En 30 minuts</item>
+    <item>En 1 hora</item>
+    <item>En 2 hores</item>
+    <item>En 6 hores</item>
+    <item>En 12 hores</item>
+    <item>En 24 hores</item>
+    <item>En 7 dies</item>
+  </string-array>
+  <string-array name="entries_prf_date_format">
+    <!-- 1.55 -->
+    <item>Temps transcorregut</item>
+    <item>Hora de la piulada</item>
+  </string-array>
+  <string-array name="entries_prf_date_format_values">
+    <!-- 1.55 -->
+    <item>1</item>
+    <item>2</item>
+  </string-array>
+  <string-array name="entries_prf_show_links">
+    <!-- 1.55 -->
+    <item>Enllaços originals</item>
+    <item>Com en el web de Twitter</item>
+    <item>Enllaç complet</item>
+  </string-array>
+  <string-array name="entries_prf_show_links_values">
+    <!-- 1.55 -->
+    <item>1</item>
+    <item>2</item>
+    <item>3</item>
+  </string-array>
+  <string-array name="items_err_send">
+    <!-- 1.50 -->
+    <item>Torna a enviar</item>
+    <item>Desa a borradors</item>
+  </string-array>
+  <string-array name="items_manager_theme">
+    <!-- 1.43 -->
+    <item>Canvia colors del tema</item>
+    <item>Carrega tema desat</item>
+    <item>Importa tema QR</item>
+    <item>Compatiu aquest tema</item>
+  </string-array>
+  <string-array name="entries_prf_positions_links">
+    <!-- 1.39 -->
+    <item>Sota el text</item>
+    <item>A la dreta</item>
+  </string-array>
+  <string-array name="entries_prf_positions_links_values">
+    <!-- 1.39 -->
+    <item>1</item>
+    <item>2</item>
+  </string-array>
+  <string-array name="languages">
+    <item>Qualsevol</item>
+    <item>Anglès</item>
+    <item>Espanyol</item>
+    <item>Francès</item>
+    <item>Alemany</item>
+    <item>Japonès</item>
+    <item>Portuguès</item>
+    <item>Italià</item>
+    <item>Rus</item>
+    <item>Indonesia</item>
+  </string-array>
+  <string-array name="languages_values">
+    <item>all</item>
+    <item>en</item>
+    <item>es</item>
+    <item>fr</item>
+    <item>de</item>
+    <item>ja</item>
+    <item>pt</item>
+    <item>it</item>
+    <item>ru</item>
+    <item>id</item>
+  </string-array>
+  <string-array name="languages_translates">
+    <item>Anglès</item>
+    <item>Espanyol</item>
+    <item>Francès</item>
+    <item>Alemany</item>
+    <item>Japonès</item>
+    <item>Portuguès</item>
+    <item>Italià</item>
+    <item>Rus</item>
+  </string-array>
+  <string-array name="languages_translates_values">
+    <item>en</item>
+    <item>es</item>
+    <item>fr</item>
+    <item>de</item>
+    <item>ja</item>
+    <item>pt</item>
+    <item>it</item>
+    <item>ru</item>
+  </string-array>
+  <string-array name="select_dialog_download_msg_timeline">
+    <item>Tots els missatges</item>
+    <item>100 últims</item>
+    <item>60 últims</item>
+    <item>40 últims</item>
+    <item>20 últims</item>
+  </string-array>
+  <string-array name="items_tweetprogrammed">
+    <item>Edita</item>
+    <item>Elimina</item>
+  </string-array>
+  <string-array name="items_tweetdraft">
+    <item>Edita</item>
+    <item>Elimina</item>
+  </string-array>
+  <string-array name="led_colors">
+    <item>Vermell</item>
+    <item>Groc</item>
+    <item>Blau</item>
+    <item>Verd</item>
+    <item>Taronja</item>
+    <item>Violeta</item>
+  </string-array>
+  <string-array name="led_colors_values">
+    <item>#FFFF0000</item>
+    <item>#FFf0ff00</item>
+    <item>#FF0000ff</item>
+    <item>#FF00ff00</item>
+    <item>#FFffc207</item>
+    <item>#FFd013b3</item>
+  </string-array>
+  <string-array name="items_show_tweets">
+    <item>Veure timeline</item>
+    <item>Veure mencions</item>
+  </string-array>
+  <string-array name="items_user_actions">
+    <item>Veure amigos</item>
+    <item>Veure seguidors</item>
+    <item>Veure llistes</item>
+    <item>Colorar piulades</item>
+    <!-- v 1.20  -->
+    <item>Inclou a la llista</item>
+    <item>Menciona</item>
+    <item>Oculta</item>
+    <item>Crea tema</item>
+    <item>Envia missatge directe</item>
+    <!-- v 1.37  -->
+  </string-array>
+  <string-array name="items_hashtag_actions">
+    <item>Veure piulades</item>
+    <item>Oculta</item>
+    <item>Crea tema</item>
+    <item>Piula!</item>
+    <item>Escriu per defecte</item>
+  </string-array>
+  <string-array name="items_tweetquick">
+    <item>Edita</item>
+    <item>Reinicia comptador</item>
+    <item>Elimina</item>
+  </string-array>
+  <string-array name="items_quietwords">
+    <item>Elimina</item>
+  </string-array>
+  <string-array name="items_colors">
+    <!-- v 1.20  -->
+    <item>Edita</item>
+    <item>Elimina</item>
+  </string-array>
+  <string-array name="items_actions_image">
+    <!-- v 1.37  -->
+    <item>Piula</item>
+    <item>Desar imatge a la SD</item>
+    <item>Comparteix imatge</item>
+    <item>Comparteix enllaçe</item>
+    <item>Estableix com a fons</item>
+    <!-- v 1.43  -->
+    <item>Crea codi QR</item>
+    <item>Desa al portapapers</item>
+  </string-array>
+  <string-array name="items_actions_links">
+    <!-- v 1.37  -->
+    <item>Piula</item>
+    <item>Comparteix enllaç</item>
+    <item>Crea codi QR</item>
+    <item>Desa al portapapers</item>
+  </string-array>
+  <string-array name="select_type_image">
+    <item>Usa la càmera</item>
+    <item>Mira la galeria</item>
+  </string-array>
+  <string-array name="actions_import">
+    <item>Des del portapapers</item>
+    <item>Escanejar codi QR</item>
+  </string-array>
+  <string-array name="actions_export">
+    <item>Escriure piulada</item>
+    <item>Aplicació externa</item>
+  </string-array>
+  <string-array name="actions_search">
+    <item>Veure</item>
+    <item>Edita</item>
+    <item>Comparteix</item>
+    <item>Elimina</item>
+  </string-array>
+  <string-array name="actions_search_temp">
+    <item>Veure</item>
+    <item>Converteix en cerca</item>
+    <item>Elimina</item>
+  </string-array>
+  <string-array name="actions_users">
+    <item>Edita usuari</item>
+    <item>Canvia avatar</item>
+    <!-- v 1.70  -->
+    <item>Actualitza avatar</item>
+    <item>Elimina</item>
+  </string-array>
+  <string-array name="actions_samples_search">
+    <item>Android: General</item>
+    <item>Android: Jocs</item>
+    <item>Android: Aplicacions</item>
+    <item>Foto: Tilt Shift</item>
+    <item>Foto: HDR</item>
+    <item>Series: True Blood</item>
+    <item>Series: The Walking Dead</item>
+    <item>Series: Número de Lost</item>
+    <item>Noticias Geek</item>
+    <item>Noticias Recepta Cuina</item>
+    <item>Vídeos: Slow motion</item>
+    <item>Vídeos: Stop motion</item>
+  </string-array>
+  <string-array name="actions_retweet">
+    <item>Retuiteja ara</item>
+    <item>Edita missatge</item>
+  </string-array>
+  <string-array name="actions_reply">
+    <item>Respon a tots</item>
+    <item>Respon a tots (cc)</item>
+    <item>Només al creador de la piulada</item>
+  </string-array>
+  <string-array name="actions_retweets_options">
+    <item>Les meves piulades, retuitejades</item>
+    <item>Els meus retuits</item>
+    <item>Retuits dels altres</item>
+  </string-array>
+  <string-array name="actions_list_options">
+    <item>Les meves llistes</item>
+    <item>Llistes que em segueixen</item>
+  </string-array>
+  <string-array name="attitude">
+    <item>Normal</item>
+    <item>Actitud positiva</item>
+    <item>Actitud negativa</item>
+  </string-array>
+  <string-array name="filter">
+    <item>No filtris</item>
+    <item>Només piulades amb enllaços</item>
+    <item>Només piulades amb imatges</item>
+    <item>Només piulades amb vídeos</item>
+    <item>Només piulades amb vídeos i imatges</item>
+    <item>Només notícies de RSS</item>
+    <item>Només preguntes</item>
+    <item>Aplicacions Android</item>
+  </string-array>
+  <string-array name="entries_prf_orientation">
+    <!-- v 1.30  -->
+    <item>Vertical</item>
+    <item>Sensor (labs)</item>
+  </string-array>
+  <string-array name="entries_prf_orientation_values">
+    <item>1</item>
+    <item>2</item>
+  </string-array>
+  <string-array name="entries_prf_n_result">
+    <item>20</item>
+    <item>40</item>
+    <item>60</item>
+    <item>80</item>
+    <item>100</item>
+  </string-array>
+  <string-array name="entries_prf_time_refresh">
+    <item>Mai</item>
+    <item>Cada 5 minuts</item>
+    <item>Cada 10 minuts</item>
+    <item>Cada 15 minuts</item>
+    <item>Cada 30 minuts</item>
+    <item>Cada hora</item>
+  </string-array>
+  <string-array name="entries_prf_time_refresh_values">
+    <item>0</item>
+    <item>5</item>
+    <item>10</item>
+    <item>15</item>
+    <item>30</item>
+    <item>60</item>
+  </string-array>
+  <string-array name="entries_prf_notifications">
+    <item>Mai</item>
+    <item>Cada minut</item>
+    <item>Cada 5 minuts</item>
+    <item>Cada 10 minuts</item>
+    <item>Cada 15 minuts</item>
+    <item>Cada 30 minuts</item>
+    <item>Cada hora</item>
+    <item>Cada 2 hores</item>
+    <item>Cada 6 hores</item>
+    <item>Cada 12 hores</item>
+    <item>Cada dia</item>
+  </string-array>
+  <string-array name="entries_prf_notifications_values">
+    <item>0</item>
+    <item>2</item>
+    <item>5</item>
+    <item>10</item>
+    <item>15</item>
+    <item>30</item>
+    <item>60</item>
+    <item>120</item>
+    <item>360</item>
+    <item>720</item>
+    <item>1440</item>
+  </string-array>
+  <string-array name="entries_prf_username_right">
+    <item>Res</item>
+    <item>Font de la piulada</item>
+    <item>Nom de l\'usuari</item>
+  </string-array>
+  <string-array name="entries_prf_username_right_values">
+    <item>1</item>
+    <item>2</item>
+    <item>3</item>
+  </string-array>
+  <string-array name="entries_prf_links">
+    <item>No mostris enllaços en les piulades</item>
+    <item>Mostra només imatges i vídeos</item>
+    <item>Mostra tots els enllaços</item>
+  </string-array>
+  <string-array name="entries_prf_links_values">
+    <item>1</item>
+    <item>2</item>
+    <item>3</item>
+  </string-array>
+  <string-array name="entries_prf_vibrate">
+    <item>Durant mig segon</item>
+    <item>Durant 1 segon</item>
+    <item>Dos de mig segon</item>
+    <item>Quatre de 1/4 de segon</item>
+    <!-- v 1.50  -->
+  </string-array>
+  <string-array name="entries_prf_vibrate_values">
+    <item>1</item>
+    <item>2</item>
+    <item>3</item>
+    <item>4</item>
+    <!-- v 1.50  -->
+  </string-array>
+  <string-array name="entries_prf_order_list">
+    <item>Ordre de creació</item>
+    <item>Ordre de creació invers</item>
+    <item>Primer els més usats</item>
+    <item>Primer els últims que he usat</item>
+  </string-array>
+  <string-array name="entries_prf_order_list_values">
+    <item>1</item>
+    <item>2</item>
+    <item>3</item>
+    <item>4</item>
+  </string-array>
+  <string-array name="entries_prf_size_photos">
+    <item>Petita (640x480)</item>
+    <item>Mitjana (1024x768)</item>
+    <item>Mida original</item>
+  </string-array>
+  <string-array name="entries_prf_size_photos_values">
+    <item>1</item>
+    <item>2</item>
+    <item>3</item>
+  </string-array>
+  <string-array name="entries_prf_save_avatars">
+    <item>A SDCard</item>
+    <item>Al cache del telèfon</item>
+  </string-array>
+  <string-array name="entries_prf_save_avatars_values">
+    <item>1</item>
+    <item>2</item>
+  </string-array>
+  <string-array name="entries_prf_themes">
+    <!-- 1.32 -->
+    <item>Blanc</item>
+    <item>Fosc</item>
+  </string-array>
+  <string-array name="entries_prf_themes_values">
+    <item>1</item>
+    <item>2</item>
+  </string-array>
+</resources>

@@ -1,7 +1,5 @@
 package com.javielinux.tweettopics2;
 
-import adapters.TweetQuickAlertAdapter;
-import adapters.TweetQuickUserAdapter;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -13,6 +11,8 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
+import com.javielinux.adapters.TweetQuickAlertAdapter;
+import com.javielinux.adapters.TweetQuickUserAdapter;
 import com.javielinux.utils.Utils;
 import preferences.ServiceTweetQuick;
 

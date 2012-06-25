@@ -14,14 +14,14 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
+import com.javielinux.database.EntitySearch;
+import com.javielinux.database.EntityTweetUser;
 import com.javielinux.tweettopics2.R;
 import com.javielinux.tweettopics2.TweetTopicsActivity;
-import com.javielinux.twitter.ConnectionManager2;
+import com.javielinux.twitter.ConnectionManager;
 import com.javielinux.utils.PreferenceUtils;
 import com.javielinux.utils.TweetTopicsUtils;
 import com.javielinux.utils.Utils;
-import database.EntitySearch;
-import database.EntityTweetUser;
 import infos.InfoSaveTweets;
 import preferences.IntegrationADW;
 import preferences.IntegrationADWAdapter;
@@ -97,9 +97,9 @@ public class AlarmAsyncTask extends AsyncTask<Void, Void, Void> {
             e.printStackTrace();
         }
         
-        ConnectionManager2.getInstance().open(mContext);
+        ConnectionManager.getInstance().open(mContext);
         
-        twitter = ConnectionManager2.getInstance().getAnonymousTwitter();
+        twitter = ConnectionManager.getInstance().getAnonymousTwitter();
     			
     	PreferenceManager.setDefaultValues(mContext, R.xml.preferences, false);
     	mPreferences = PreferenceManager.getDefaultSharedPreferences(mContext);
@@ -156,7 +156,7 @@ public class AlarmAsyncTask extends AsyncTask<Void, Void, Void> {
 	}
 	
 	public void loadUser(long id) {
-		twitter = ConnectionManager2.getInstance().getTwitter(id);
+		twitter = ConnectionManager.getInstance().getTwitter(id);
 	}
 	
 	public void searchUser() {

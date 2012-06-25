@@ -1,6 +1,5 @@
 package preferences;
 
-import adapters.RetweetsTypesAdapter;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -16,6 +15,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
+import com.javielinux.adapters.RetweetsTypesAdapter;
 import com.javielinux.tweettopics2.R;
 import com.javielinux.utils.Utils;
 

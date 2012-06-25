@@ -1,6 +1,5 @@
 package com.javielinux.utils;
 
-import adapters.UsersAdapter;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -9,6 +8,7 @@ import android.content.Intent;
 import android.text.ClipboardManager;
 import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
+import com.javielinux.adapters.UsersAdapter;
 import com.javielinux.tweettopics2.NewStatusActivity;
 import com.javielinux.tweettopics2.R;
 import infos.InfoTweet;
@@ -69,7 +69,7 @@ public class TweetActions {
     }
 
     public static void goToShare(Activity activity, InfoTweet infoTweet) {
-        Intent msg=new Intent(Intent.ACTION_SEND);
+        Intent msg = new Intent(Intent.ACTION_SEND);
         msg.putExtra(Intent.EXTRA_TEXT, infoTweet.getUsername() + ": " + infoTweet.getText());
         msg.setType("text/plain");
         activity.startActivity(msg);
@@ -87,13 +87,13 @@ public class TweetActions {
                 ent.setValue("url_avatar", infoTweet.getUrlAvatar());
                 ent.setValue("username", infoTweet.getUsername());
                 ent.setValue("user_id", infoTweet.getUserId());
-                ent.setValue("tweet_id", infoTweet.getId()+"");
+                ent.setValue("tweet_id", infoTweet.getId() + "");
                 ent.setValue("text", infoTweet.getText());
                 ent.setValue("text_urls", infoTweet.getTextURLs());
                 ent.setValue("source", infoTweet.getSource());
                 ent.setValue("to_username", infoTweet.getToUsername());
                 ent.setValue("to_user_id", infoTweet.getToUserId());
-                ent.setValue("date", infoTweet.getDate().getTime()+"");
+                ent.setValue("date", infoTweet.getDate().getTime() + "");
                 ent.setValue("latitude", infoTweet.getLatitude());
                 ent.setValue("longitude", infoTweet.getLongitude());
                 ent.save();
@@ -111,14 +111,14 @@ public class TweetActions {
         } else {
             ArrayList<String> users = Utils.pullLinksUsers(infoTweet.getText());
             int count = users.size();
-            if (!users.contains("@"+infoTweet.getUsername())) count++;
+            if (!users.contains("@" + infoTweet.getUsername())) count++;
 
             Entity e = DataFramework.getInstance().getTopEntity("users", "active=1", "");
-            if (e!=null) {
-                if (users.contains("@"+e.getString("name"))) count--;
+            if (e != null) {
+                if (users.contains("@" + e.getString("name"))) count--;
             }
 
-            if (count>1) {
+            if (count > 1) {
                 showDialogReply(activity, infoTweet);
             } else {
                 updateStatus(activity, NewStatusActivity.TYPE_REPLY, "", infoTweet);
