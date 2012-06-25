@@ -46,4 +46,33 @@
 
     </LinearLayout>
 
+    <LinearLayout android:layout_height="fill_parent"
+                  android:layout_width="fill_parent"
+                  android:visibility="invisible"
+                  android:id="@+id/tweettopics_ll_main_links"
+                  >
+
+        <LinearLayout android:layout_height="wrap_content"
+                      android:layout_width="wrap_content"
+                      android:id="@+id/tweettopics_ll_links"
+                      android:background="@drawable/popup_full_dark">
+            <ImageView android:layout_height="wrap_content"
+                       android:layout_width="wrap_content"
+                       android:padding="8dp"
+                       android:src="@drawable/icon"
+                    />
+            <ImageView android:layout_height="wrap_content"
+                       android:layout_width="wrap_content"
+                       android:padding="8dp"
+                       android:src="@drawable/icon"
+                    />
+            <ImageView android:layout_height="wrap_content"
+                       android:layout_width="wrap_content"
+                       android:padding="8dp"
+                       android:src="@drawable/icon"
+                    />
+        </LinearLayout>
+
+    </LinearLayout>
+
 </FrameLayout>

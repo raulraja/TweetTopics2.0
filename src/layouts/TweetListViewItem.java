@@ -14,7 +14,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 import com.javielinux.adapters.TweetsAdapter;
 import com.javielinux.api.APIDelegate;
 import com.javielinux.api.APITweetTopics;
@@ -23,6 +22,7 @@ import com.javielinux.api.response.BaseResponse;
 import com.javielinux.api.response.ErrorResponse;
 import com.javielinux.tweettopics2.R;
 import com.javielinux.tweettopics2.ThemeManager;
+import com.javielinux.tweettopics2.TweetTopicsActivity;
 import com.javielinux.tweettopics2.UserActivity;
 import com.javielinux.utils.PreferenceUtils;
 import com.javielinux.utils.Utils;
@@ -287,8 +287,9 @@ public class TweetListViewItem extends RelativeLayout {
             viewHolder.tweetPhotoImgContainer.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Toast.makeText(cnt,"Mostrar enlaces", Toast.LENGTH_LONG).show();
-                    // TODO mostrar links
+                    if (tweetsAdapter.getActivity() instanceof TweetTopicsActivity) {
+                        ((TweetTopicsActivity)tweetsAdapter.getActivity()).showLinks(viewHolder.tweetPhotoImgContainer, infoTweet.getText());
+                    }
                 }
             });
 

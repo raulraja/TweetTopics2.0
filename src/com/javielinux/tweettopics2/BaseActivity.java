@@ -6,10 +6,6 @@ import android.view.Window;
 
 public abstract class BaseActivity extends FragmentActivity {
 
-    public BaseActivity() {
-
-    }
-
     @Override
     protected void onStart() {
         super.onStart();

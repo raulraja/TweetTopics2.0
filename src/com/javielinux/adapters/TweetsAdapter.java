@@ -1,7 +1,7 @@
 package com.javielinux.adapters;
 
-import android.content.Context;
 import android.graphics.Color;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.LoaderManager;
 import android.util.Log;
 import android.view.View;
@@ -20,6 +20,10 @@ import layouts.TweetListViewItem;
 import java.util.ArrayList;
 
 public class TweetsAdapter extends ArrayAdapter<InfoTweet> {
+
+    public FragmentActivity getActivity() {
+        return activity;
+    }
 
     public static class ViewHolder {
         public ImageView avatarView;
@@ -55,6 +59,8 @@ public class TweetsAdapter extends ArrayAdapter<InfoTweet> {
     private String usernameColumn;
     private int column;
 
+    private FragmentActivity activity;
+
     public boolean isFlinging() {
         return flinging;
     }
@@ -63,9 +69,11 @@ public class TweetsAdapter extends ArrayAdapter<InfoTweet> {
         this.flinging = flinging;
     }
 
-    public TweetsAdapter(Context context, LoaderManager loaderManager, ArrayList<InfoTweet> infoTweetArrayList, String usernameColumn, int column) {
+    public TweetsAdapter(FragmentActivity activity, LoaderManager loaderManager, ArrayList<InfoTweet> infoTweetArrayList, String usernameColumn, int column) {
 
-        super(context, android.R.layout.simple_list_item_1, infoTweetArrayList);
+        super(activity, android.R.layout.simple_list_item_1, infoTweetArrayList);
+
+        this.activity = activity;
 
         Log.d(Utils.TAG, "Numero de elementos: " + infoTweetArrayList.size());
         this.infoTweetArrayList = infoTweetArrayList;
@@ -74,7 +82,7 @@ public class TweetsAdapter extends ArrayAdapter<InfoTweet> {
 
         this.loaderManager = loaderManager;
 
-        themeManager = new ThemeManager(context);
+        themeManager = new ThemeManager(activity);
         color_line = themeManager.getColor("color_tweet_no_read");
 
     }

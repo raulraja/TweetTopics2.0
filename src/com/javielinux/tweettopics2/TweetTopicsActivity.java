@@ -5,15 +5,13 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.StateListDrawable;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
+import android.view.*;
 import android.widget.*;
 import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
@@ -49,6 +47,11 @@ public class TweetTopicsActivity extends BaseActivity {
 
     private ImageView imgBarAvatar;
     private ImageView imgNewStatus;
+
+    private LinearLayout layoutLinks;
+    private LinearLayout layoutMainLinks;
+
+    private int statusBarHeight;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -130,6 +133,16 @@ public class TweetTopicsActivity extends BaseActivity {
             }
         });
 
+        layoutMainLinks = (LinearLayout) findViewById(R.id.tweettopics_ll_main_links);
+        layoutMainLinks.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                hideLinks();
+            }
+        });
+
+        layoutLinks = (LinearLayout) findViewById(R.id.tweettopics_ll_links);
+
         layoutBackgroundApp = (LinearLayout) findViewById(R.id.tweettopics_layout_background_app);
 
         layoutBackgroundBar = (RelativeLayout) findViewById(R.id.tweettopics_bar_background);
@@ -147,6 +160,48 @@ public class TweetTopicsActivity extends BaseActivity {
 
         reloadBarAvatar();
 
+    }
+
+    public boolean isShowLinks() {
+        return layoutMainLinks.getVisibility()==View.VISIBLE;
+    }
+
+    public void hideLinks() {
+        layoutMainLinks.setVisibility(View.INVISIBLE);
+    }
+
+    public void showLinks(View view, String text) {
+
+        Display display = getWindowManager().getDefaultDisplay();
+        int widthScreen = display.getWidth();
+        int heightScreen = display.getHeight();
+
+        if (statusBarHeight<=0) {
+            Rect rect= new Rect();
+            getWindow().getDecorView().getWindowVisibleDisplayFrame(rect);
+            statusBarHeight= rect.top;
+        }
+        int[] loc = new int[2];
+        view.getLocationOnScreen(loc);
+
+        int widthView = view.getMeasuredWidth();
+        int heightView = view.getMeasuredHeight();
+
+        int widthContainer = layoutLinks.getMeasuredWidth();
+        int heightContainer = layoutLinks.getMeasuredHeight();
+
+        int x = loc[0] + (widthView/2) - (widthContainer/2);
+        int y = loc[1] - statusBarHeight + (heightView/2) - (heightContainer/2);
+
+        if (x<0) x = 0;
+        if (y<0) y = 0;
+        if (x>widthScreen-widthContainer) x = widthScreen-widthContainer;
+        if (y>heightScreen-heightContainer) y = heightScreen-heightContainer;
+
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        params.setMargins(x, y, 0, 0);
+        layoutLinks.setLayoutParams(params);
+        layoutMainLinks.setVisibility(View.VISIBLE);
     }
 
     private void reloadBarAvatar() {
