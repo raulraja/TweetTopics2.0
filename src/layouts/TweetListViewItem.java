@@ -288,7 +288,7 @@ public class TweetListViewItem extends RelativeLayout {
                 @Override
                 public void onClick(View view) {
                     if (tweetsAdapter.getActivity() instanceof TweetTopicsActivity) {
-                        ((TweetTopicsActivity)tweetsAdapter.getActivity()).showLinks(viewHolder.tweetPhotoImgContainer, infoTweet.getText());
+                        ((TweetTopicsActivity)tweetsAdapter.getActivity()).showLinks(viewHolder.tweetPhotoImgContainer, infoTweet);
                     }
                 }
             });

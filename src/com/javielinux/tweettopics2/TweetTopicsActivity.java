@@ -15,12 +15,16 @@ import android.view.*;
 import android.widget.*;
 import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
+import com.javielinux.adapters.LinksAdapter;
 import com.javielinux.fragmentadapter.TweetTopicsFragmentAdapter;
 import com.javielinux.utils.ImageUtils;
 import com.javielinux.utils.PreferenceUtils;
 import com.javielinux.utils.Utils;
 import com.viewpagerindicator.TitlePageIndicator;
+import infos.InfoTweet;
 import preferences.Preferences;
+
+import java.util.ArrayList;
 
 public class TweetTopicsActivity extends BaseActivity {
 
@@ -50,6 +54,9 @@ public class TweetTopicsActivity extends BaseActivity {
 
     private LinearLayout layoutLinks;
     private LinearLayout layoutMainLinks;
+    private GridView gvLinks;
+    private LinksAdapter linksAdapter;
+    private ArrayList<String> links = new ArrayList<String>();
 
     private int statusBarHeight;
 
@@ -143,6 +150,10 @@ public class TweetTopicsActivity extends BaseActivity {
 
         layoutLinks = (LinearLayout) findViewById(R.id.tweettopics_ll_links);
 
+        linksAdapter = new LinksAdapter(this, links);
+        gvLinks = (GridView) findViewById(R.id.tweettopics_gv_links);
+        gvLinks.setAdapter(linksAdapter);
+
         layoutBackgroundApp = (LinearLayout) findViewById(R.id.tweettopics_layout_background_app);
 
         layoutBackgroundBar = (RelativeLayout) findViewById(R.id.tweettopics_bar_background);
@@ -166,42 +177,70 @@ public class TweetTopicsActivity extends BaseActivity {
         return layoutMainLinks.getVisibility()==View.VISIBLE;
     }
 
+    public void goToLink(String link) {
+//        if (CacheData.getCacheImages().containsKey(link)) {
+//            CacheData.getCacheImages().get(link);
+//        } else {
+//
+//        }
+        Toast.makeText(this,link,Toast.LENGTH_LONG).show();
+    }
+
     public void hideLinks() {
         layoutMainLinks.setVisibility(View.INVISIBLE);
     }
 
-    public void showLinks(View view, String text) {
+    public void showLinks(View view, InfoTweet infoTweet) {
 
-        Display display = getWindowManager().getDefaultDisplay();
-        int widthScreen = display.getWidth();
-        int heightScreen = display.getHeight();
+        ArrayList<String> linksInText = Utils.pullLinks(infoTweet.getText(), infoTweet.getContentURLs());
 
-        if (statusBarHeight<=0) {
-            Rect rect= new Rect();
-            getWindow().getDecorView().getWindowVisibleDisplayFrame(rect);
-            statusBarHeight= rect.top;
+        if (linksInText.size()==1) {
+            goToLink(linksInText.get(0));
+        } else {
+
+            links.clear();
+            links.addAll(linksInText);
+
+            if (links.size()>4) {
+                gvLinks.setNumColumns(3);
+            } else {
+                gvLinks.setNumColumns(2);
+            }
+
+            linksAdapter.notifyDataSetChanged();
+
+            Display display = getWindowManager().getDefaultDisplay();
+            int widthScreen = display.getWidth();
+            int heightScreen = display.getHeight();
+
+            if (statusBarHeight<=0) {
+                Rect rect= new Rect();
+                getWindow().getDecorView().getWindowVisibleDisplayFrame(rect);
+                statusBarHeight= rect.top;
+            }
+            int[] loc = new int[2];
+            view.getLocationOnScreen(loc);
+
+            int widthView = view.getMeasuredWidth();
+            int heightView = view.getMeasuredHeight();
+
+            int widthContainer = layoutLinks.getMeasuredWidth();
+            int heightContainer = layoutLinks.getMeasuredHeight()-statusBarHeight;
+
+            int x = loc[0] + (widthView/2) - (widthContainer/2);
+            int y = loc[1] - statusBarHeight + (heightView/2) - (heightContainer/2);
+
+            if (x<0) x = 0;
+            if (y<0) y = 0;
+            if (x>widthScreen-widthContainer) x = widthScreen-widthContainer;
+            if (y>heightScreen-heightContainer) y = heightScreen-heightContainer;
+
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            params.setMargins(x, y, 0, 0);
+            layoutLinks.setLayoutParams(params);
+            layoutMainLinks.setVisibility(View.VISIBLE);
+
         }
-        int[] loc = new int[2];
-        view.getLocationOnScreen(loc);
-
-        int widthView = view.getMeasuredWidth();
-        int heightView = view.getMeasuredHeight();
-
-        int widthContainer = layoutLinks.getMeasuredWidth();
-        int heightContainer = layoutLinks.getMeasuredHeight();
-
-        int x = loc[0] + (widthView/2) - (widthContainer/2);
-        int y = loc[1] - statusBarHeight + (heightView/2) - (heightContainer/2);
-
-        if (x<0) x = 0;
-        if (y<0) y = 0;
-        if (x>widthScreen-widthContainer) x = widthScreen-widthContainer;
-        if (y>heightScreen-heightContainer) y = heightScreen-heightContainer;
-
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        params.setMargins(x, y, 0, 0);
-        layoutLinks.setLayoutParams(params);
-        layoutMainLinks.setVisibility(View.VISIBLE);
     }
 
     private void reloadBarAvatar() {

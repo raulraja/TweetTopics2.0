@@ -56,21 +56,12 @@
                       android:layout_width="wrap_content"
                       android:id="@+id/tweettopics_ll_links"
                       android:background="@drawable/popup_full_dark">
-            <ImageView android:layout_height="wrap_content"
-                       android:layout_width="wrap_content"
-                       android:padding="8dp"
-                       android:src="@drawable/icon"
-                    />
-            <ImageView android:layout_height="wrap_content"
-                       android:layout_width="wrap_content"
-                       android:padding="8dp"
-                       android:src="@drawable/icon"
-                    />
-            <ImageView android:layout_height="wrap_content"
-                       android:layout_width="wrap_content"
-                       android:padding="8dp"
-                       android:src="@drawable/icon"
-                    />
+
+            <GridView android:layout_height="wrap_content"
+                      android:layout_width="wrap_content"
+                      android:columnWidth="60dp"
+                      android:id="@+id/tweettopics_gv_links" />
+
         </LinearLayout>
 
     </LinearLayout>
