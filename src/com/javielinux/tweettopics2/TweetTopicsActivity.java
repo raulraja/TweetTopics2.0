@@ -150,9 +150,15 @@ public class TweetTopicsActivity extends BaseActivity {
 
         layoutLinks = (LinearLayout) findViewById(R.id.tweettopics_ll_links);
 
-        linksAdapter = new LinksAdapter(this, links);
+        linksAdapter = new LinksAdapter(this, getSupportLoaderManager(), links);
         gvLinks = (GridView) findViewById(R.id.tweettopics_gv_links);
         gvLinks.setAdapter(linksAdapter);
+        gvLinks.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                goToLink(links.get(i));
+            }
+        });
 
         layoutBackgroundApp = (LinearLayout) findViewById(R.id.tweettopics_layout_background_app);
 
@@ -183,6 +189,7 @@ public class TweetTopicsActivity extends BaseActivity {
 //        } else {
 //
 //        }
+        if (isShowLinks()) hideLinks();
         Toast.makeText(this,link,Toast.LENGTH_LONG).show();
     }
 

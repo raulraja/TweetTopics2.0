@@ -1,41 +1,50 @@
 package com.javielinux.adapters;
 
 import android.content.Context;
+import android.support.v4.app.LoaderManager;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import com.android.dataframework.Entity;
 import com.javielinux.tweettopics2.R;
-import infos.CacheData;
-import infos.InfoLink;
+import layouts.LinkRowViewItem;
+import layouts.TweetListViewItem;
 
 import java.util.List;
 
 public class LinksAdapter extends BaseAdapter {
 
-    private Context mContext;
+    private Context context;
     private List<String> links;
 
-    public LinksAdapter(Context mContext, List<String> links)
+    private LoaderManager loaderManager;
+
+    public static class ViewHolder {
+        public ImageView image;
+        public TextView title;
+    }
+
+    public LinksAdapter(Context context, LoaderManager loaderManager, List<String> links)
     {
-        this.mContext = mContext;
+        this.context = context;
+        this.loaderManager = loaderManager;
         this.links = links;
+    }
+
+    public static ViewHolder generateViewHolder(View v) {
+
+        ViewHolder viewHolder = new ViewHolder();
+
+        viewHolder.image = (ImageView)v.findViewById(R.id.row_links_icon);
+        viewHolder.title = (TextView)v.findViewById(R.id.row_links_title);
+
+        return viewHolder;
     }
     
 	@Override
 	public int getCount() {
 		return links.size();
-	}
-	
-	public int getPositionById(long id) {
-        for (int i=0; i<getCount(); i++) {
-        	if ( ((Entity)getItem(i)).getId() == id ) {
-        		return i;
-        	}
-        }
-        return -1;
 	}
 	
 
@@ -52,35 +61,25 @@ public class LinksAdapter extends BaseAdapter {
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
         String link = links.get(position);
-		
-		View v = null;
-		
-		if (null == convertView) {
-			v = View.inflate(mContext, R.layout.row_links, null);
-		} else {
-			v = convertView;
-		}
 
-        ImageView img = (ImageView)v.findViewById(R.id.row_links_icon);
-        TextView title = (TextView)v.findViewById(R.id.row_links_title);
+        LinkRowViewItem view;
 
-        if (CacheData.getCacheImages().containsKey(link)) {
-            InfoLink item = CacheData.getCacheImages().get(link);
-
-            try {
-                img.setImageBitmap(item.getBitmapThumb());
-            } catch (Exception e) {
-                e.printStackTrace();
-                img.setImageResource(R.drawable.avatar);
-            }
-
-            title.setText(item.getTitle());
+        if (null == convertView) {
+            view = (LinkRowViewItem) View.inflate(context, R.layout.row_links, null);
+            view.setTag(generateViewHolder(view));
         } else {
-            img.setImageResource(R.drawable.avatar);
-            title.setText(link);
+            if(convertView instanceof TweetListViewItem) {
+                view = (LinkRowViewItem) convertView;
+            } else {
+                view = (LinkRowViewItem) View.inflate(context, R.layout.row_links, null);
+                view.setTag(generateViewHolder(view));
+            }
         }
 
-        return v;
+        view.setRow(link, context, loaderManager);
+
+
+        return view;
 	}
 
 }
