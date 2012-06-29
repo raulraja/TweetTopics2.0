@@ -31,6 +31,16 @@ public class LinkRowViewItem extends LinearLayout {
         super(context);
     }
 
+    private String writeTitle(String title) {
+        if (title.startsWith("http://")) {
+            title = title.substring(7);
+        }
+        if (title.length()>14) {
+            title = title.substring(0,12)+"...";
+        }
+        return title;
+    }
+
     public void setRow(String link, final Context cnt, LoaderManager loaderManager) {
 
         context = cnt;
@@ -44,7 +54,7 @@ public class LinkRowViewItem extends LinearLayout {
             InfoUsers infoUser = CacheData.getCacheUser(link.substring(1));
             if (infoUser!=null) {
                 if (infoUser.getAvatar()!=null) viewHolder.image.setImageBitmap(infoUser.getAvatar());
-                viewHolder.title.setText(link);
+                viewHolder.title.setText(writeTitle(link));
                 hasImage = true;
             } else {
 
@@ -85,7 +95,7 @@ public class LinkRowViewItem extends LinearLayout {
                     e.printStackTrace();
                 }
 
-                viewHolder.title.setText(item.getLink());
+                viewHolder.title.setText(writeTitle(item.getLink()));
             } else {
                 APITweetTopics.execute(context, loaderManager, new APIDelegate<LoadLinkResponse>() {
 
@@ -98,7 +108,7 @@ public class LinkRowViewItem extends LinearLayout {
                             e.printStackTrace();
                         }
 
-                        viewHolder.title.setText(result.getInfoLink().getLink());
+                        viewHolder.title.setText(writeTitle(result.getInfoLink().getLink()));
                     }
 
                     @Override
@@ -110,7 +120,7 @@ public class LinkRowViewItem extends LinearLayout {
         }
 
         if (!hasImage) {
-            viewHolder.title.setText(link);
+            viewHolder.title.setText(writeTitle(link));
             if (Utils.isLinkImage(link)) {
                 if (Utils.isLinkVideo(link)) {
                     viewHolder.image.setImageResource(R.drawable.icon_tweet_video);

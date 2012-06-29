@@ -5,6 +5,8 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import com.javielinux.tweettopics2.R;
+import com.javielinux.twitter.NetworkConfig;
+import com.javielinux.twitter.NetworkConfigParser;
 import com.javielinux.utils.Utils;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
@@ -15,8 +17,7 @@ import twitter4j.media.ImageUploadFactory;
 import twitter4j.media.MediaProvider;
 
 import java.io.File;
-import java.io.InputStream;
-import java.util.Properties;
+import java.util.List;
 
 public class ImageUploadAsyncTask extends AsyncTask<String, Void, ImageUploadAsyncTask.ImageUploadResult> {
 	
@@ -146,14 +147,20 @@ public class ImageUploadAsyncTask extends AsyncTask<String, Void, ImageUploadAsy
 	}
 	
 	private void loadConsumerKeys() {
-		try {
-			Properties props = new Properties();
-			InputStream stream = mContext.getResources().openRawResource(R.raw.oauth);
-			props.load(stream);
-			consumerKey = (String)props.get("consumer_key");
-			consumerSecretKey = (String)props.get("consumer_secret_key");
-		} catch (Exception e) {
-		}
+
+        NetworkConfigParser parser = new NetworkConfigParser();
+        List<NetworkConfig> networkConfigs = parser.parse(mContext.getResources().getXml(R.xml.network_config));
+        NetworkConfig config = null;
+        for (NetworkConfig c : networkConfigs) {
+            if(c.getName().equals("twitter.com")) {
+                config = c;
+                break;
+            }
+        }
+
+        consumerKey = config.getConsumerKey();
+        consumerSecretKey = config.getConsumerSecret();
+
 	}
 
 }

@@ -9,6 +9,8 @@ import com.javielinux.api.response.ErrorResponse;
 import com.javielinux.api.response.ImageUploadResponse;
 import com.javielinux.tweettopics2.R;
 import com.javielinux.twitter.ConnectionManager;
+import com.javielinux.twitter.NetworkConfig;
+import com.javielinux.twitter.NetworkConfigParser;
 import com.javielinux.utils.Utils;
 import twitter4j.TwitterException;
 import twitter4j.conf.Configuration;
@@ -18,8 +20,7 @@ import twitter4j.media.ImageUploadFactory;
 import twitter4j.media.MediaProvider;
 
 import java.io.File;
-import java.io.InputStream;
-import java.util.Properties;
+import java.util.List;
 
 public class ImageUploadLoader extends AsynchronousLoader<BaseResponse> {
 
@@ -119,14 +120,18 @@ public class ImageUploadLoader extends AsynchronousLoader<BaseResponse> {
     }
 
     private void loadConsumerKeys() {
-        try {
-            Properties props = new Properties();
-            InputStream stream = getContext().getResources().openRawResource(R.raw.oauth);
-            props.load(stream);
-            consumerKey = (String)props.get("consumer_key");
-            consumerSecretKey = (String)props.get("consumer_secret_key");
-        } catch (Exception e) {
+        NetworkConfigParser parser = new NetworkConfigParser();
+        List<NetworkConfig> networkConfigs = parser.parse(getContext().getResources().getXml(R.xml.network_config));
+        NetworkConfig config = null;
+        for (NetworkConfig c : networkConfigs) {
+            if(c.getName().equals("twitter.com")) {
+                config = c;
+                break;
+            }
         }
+
+        consumerKey = config.getConsumerKey();
+        consumerSecretKey = config.getConsumerSecret();
     }
 
 }

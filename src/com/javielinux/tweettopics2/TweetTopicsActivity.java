@@ -9,6 +9,7 @@ import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.StateListDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.view.*;
@@ -16,6 +17,7 @@ import android.widget.*;
 import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
 import com.javielinux.adapters.LinksAdapter;
+import com.javielinux.dialogs.HashTagDialogFragment;
 import com.javielinux.fragmentadapter.TweetTopicsFragmentAdapter;
 import com.javielinux.utils.ImageUtils;
 import com.javielinux.utils.PreferenceUtils;
@@ -190,7 +192,25 @@ public class TweetTopicsActivity extends BaseActivity {
 //
 //        }
         if (isShowLinks()) hideLinks();
-        Toast.makeText(this,link,Toast.LENGTH_LONG).show();
+        if (link.startsWith("@")) {
+            Intent intent = new Intent(this, UserActivity.class);
+            intent.putExtra(UserActivity.KEY_EXTRAS_USER, link);
+            startActivity(intent);
+        } else if (link.startsWith("#")) {
+            HashTagDialogFragment frag = new HashTagDialogFragment();
+            Bundle args = new Bundle();
+            args.putInt("title", R.string.actions);
+            args.putString("hashtag", link);
+            frag.setArguments(args);
+            frag.show(getSupportFragmentManager(), "dialog");
+        } else {
+            if (link.startsWith("www")) {
+                link = "http://"+link;
+            }
+            Uri uri = Uri.parse(link);
+            Intent intent = new Intent(android.content.Intent.ACTION_VIEW, uri);
+            startActivity(intent);
+        }
     }
 
     public void hideLinks() {
@@ -245,6 +265,7 @@ public class TweetTopicsActivity extends BaseActivity {
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             params.setMargins(x, y, 0, 0);
             layoutLinks.setLayoutParams(params);
+
             layoutMainLinks.setVisibility(View.VISIBLE);
 
         }

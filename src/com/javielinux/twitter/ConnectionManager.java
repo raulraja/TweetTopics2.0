@@ -47,8 +47,6 @@ public class ConnectionManager {
 
 	private String currentNetwork;
 
-	private long mIdUserDB = -1;
-
 	private NetworkConfig config = null;
 
 	private ConnectionManager() {};
@@ -193,8 +191,6 @@ public class ConnectionManager {
 
 			ent.save();
 
-			mIdUserDB = ent.getId();
-
 			try {
 				User user = twitter.showUser(ent.getInt("user_id"));
 
@@ -252,9 +248,6 @@ public class ConnectionManager {
 	        
 	        twitter = new TwitterFactory().getInstance(at);
 	        
-	        mIdUserDB = ent.getId();
-
-	        
 	        Log.d(Utils.TAG, "Cargado " + ent.getString("name") + " desde " + service);
 
         }
@@ -281,10 +274,6 @@ public class ConnectionManager {
 
 	public String getOAuthTokenSecret() {
 		return oAuthAccessTokenSecret;
-	}
-
-	public long getIdUserDB() {
-		return mIdUserDB;
 	}
 
 }
