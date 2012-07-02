@@ -32,6 +32,7 @@ public class AuthorizationActivity extends Activity {
 					} catch (TwitterException e) {
 						e.printStackTrace();
 					}
+                    setResult(RESULT_OK);
 					finish();
 				} else {
 					//Toast.makeText(AuthorizationActivity.this, "No se ha podido acceder a Twitter", Toast.LENGTH_LONG).show();

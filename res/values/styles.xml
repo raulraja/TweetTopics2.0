@@ -149,6 +149,12 @@
         <item name="android:paddingLeft">2dip</item>
         <item name="android:layout_marginLeft">8dip</item>
      </style>
+
+    <style name="UserAvatar">
+        <item name="android:layout_width">60dip</item>
+        <item name="android:layout_height">60dip</item>
+        <item name="android:padding">5dip</item>
+    </style>
      
     <style name="TweetFrAvatar">
         <item name="android:layout_width">48dip</item>
@@ -316,24 +322,29 @@
         <item name="android:textSize">13sp</item>
         <item name="android:textColor">#FF8a8a8a</item>
     </style>
+
+    <style name="MyActivityFullName">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">?color_title_general</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="MyActivityName">
+        <item name="android:textSize">13sp</item>
+        <item name="android:textColor">?color_desc_general</item>
+        <item name="android:textStyle">bold</item>
+    </style>
     
     <style name="UserTitle">
         <item name="android:textSize">16sp</item>
         <item name="android:textColor">?color_title_general</item>
         <item name="android:textStyle">bold</item>
      </style>
-     
 
     <style name="UserDesc">
         <item name="android:textSize">14sp</item>
         <item name="android:textColor">?color_desc_general</item>
      </style>
-
-     
-	<style name="TabIndicatorText">
-		<item name="android:textColor">#ffffff</item>
-		<item name="android:textStyle">bold</item>
-	</style>
 	
     <style name="TextGridSearch">
         <item name="android:textSize">14sp</item>
@@ -454,18 +465,13 @@
         <item name="android:textSize">14sp</item>
         <item name="android:textColor">?color_title_general</item>
     </style>
-    
-    <!-- actionBarTitle -->
-    
-    <style name="actionBarTitle">
-        <item name="android:background">@null</item>
+
+    <style name="SubTitleApp">
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">?color_title_general</item>
     </style>
     
-    <style name="actionBarButtonNewStatus">
-        <item name="android:textSize">8sp</item>
-        <item name="android:textColor">#ffffff</item>
-    </style>
-    
+
     <style name="TitleAlert">
         <item name="android:textSize">23sp</item>
         <item name="android:textColor">#000000</item>

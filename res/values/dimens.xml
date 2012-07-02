@@ -21,4 +21,6 @@
 
     <dimen name="actionbar_height">40dp</dimen>
 
+    <dimen name="sub_actionbar_height">32dp</dimen>
+
 </resources>

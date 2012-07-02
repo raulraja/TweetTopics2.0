@@ -149,7 +149,7 @@ public class TweetTopicsActivity extends BaseActivity {
         indicator.setFooterIndicatorStyle(TitlePageIndicator.IndicatorStyle.Triangle);
         indicator.setFooterLineHeight(0);
         indicator.setFooterColor(Color.WHITE);
-        indicator.setClipPadding(-50);
+        indicator.setClipPadding(-getWindowManager().getDefaultDisplay().getWidth());
         indicator.setViewPager(pager);
         indicator.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override

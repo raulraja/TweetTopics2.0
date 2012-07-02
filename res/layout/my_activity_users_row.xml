@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:orientation="horizontal" android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="#dddddd"
+                android:padding="5px">
+
+    <FrameLayout
+            android:id="@+id/my_activity_user_icon_layout"
+            android:layout_marginRight="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+        <ImageView
+                android:id="@+id/my_activity_user_icon"
+                android:src="@drawable/avatar"
+                style="@style/UserAvatar"/>
+        <ImageView android:id="@+id/my_activity_user_tag_network"
+                   android:src="@drawable/icon_twitter"
+                   android:layout_height="wrap_content"
+                   android:layout_gravity="right|bottom"
+                   android:layout_width="wrap_content"></ImageView>
+    </FrameLayout>
+
+
+    <TextView android:id="@+id/my_activity_user_fullname"
+              android:layout_width="fill_parent"
+              android:layout_height="wrap_content"
+              android:text="Javi Pacheco"
+              android:layout_toRightOf="@id/my_activity_user_icon_layout"
+              style="@style/MyActivityFullName"/>
+
+    <TextView android:id="@+id/my_activity_user_name"
+              android:layout_width="fill_parent"
+              android:layout_height="wrap_content"
+              android:text="javielinux"
+              android:layout_toRightOf="@id/my_activity_user_icon_layout"
+              android:layout_below="@id/my_activity_user_fullname"
+              style="@style/MyActivityName"/>
+
+    <LinearLayout
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:orientation="horizontal">
+        <FrameLayout
+                android:id="@+id/FrameLayout01"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content">
+            <ImageButton
+                    android:id="@+id/my_activity_timeline"
+                    android:background="@android:drawable/menuitem_background"
+                    android:gravity="center"
+                    android:layout_height="42dp"
+                    android:layout_width="42dp"
+                    android:src="@drawable/action_bar_timeline" />
+            <ImageView
+                    android:id="@+id/my_activity_counter_timeline"
+                    android:layout_gravity="right"
+                    android:layout_height="wrap_content"
+                    android:layout_width="fill_parent" />
+        </FrameLayout>
+
+        <FrameLayout
+                android:id="@+id/FrameLayout02"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content">
+            <ImageButton
+                    android:id="@+id/my_activity_mentions"
+                    android:background="@android:drawable/menuitem_background"
+                    android:gravity="center"
+                    android:layout_height="42dp"
+                    android:layout_width="42dp"
+                    android:src="@drawable/action_bar_mentions" />
+            <ImageView
+                    android:id="@+id/my_activity_counter_mentions"
+                    android:layout_gravity="right"
+                    android:layout_height="wrap_content"
+                    android:layout_width="fill_parent" />
+        </FrameLayout>
+
+        <FrameLayout
+                android:id="@+id/FrameLayout03"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content">
+            <ImageButton
+                    android:id="@+id/my_activity_directs"
+                    android:background="@android:drawable/menuitem_background"
+                    android:gravity="center"
+                    android:layout_height="42dp"
+                    android:layout_width="42dp"
+                    android:src="@drawable/action_bar_dm" />
+            <ImageView
+                    android:id="@+id/my_activity_counter_directs"
+                    android:layout_gravity="right"
+                    android:layout_height="wrap_content"
+                    android:layout_width="fill_parent" />
+        </FrameLayout>
+    </LinearLayout>
+
+</RelativeLayout>

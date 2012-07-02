@@ -2,6 +2,11 @@
 <resources>
 
     <!-- v 2.0  -->
+
+    <string name="column_created">Creada columna %1$s</string>
+
+    <string name="column_no_found">Columna no encontrada: %1$s</string>
+
     <string name="create_columns">Crear columnas</string>
     <string name="retry">Reintentar</string>
     <string name="updating">Actualizando</string>
