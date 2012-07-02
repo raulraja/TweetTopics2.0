@@ -38,7 +38,7 @@ public class SearchLoader extends AsynchronousLoader<BaseResponse> {
             if (entitySearch.getInt("notifications")==1) {
                 response.setInfoSaveTweets(entitySearch.saveTweets(getContext(), ConnectionManager.getInstance().getAnonymousTwitter(), false));
             } else {
-                response.setInfoSaveTweets(new InfoSaveTweets());
+                response.setInfoSaveTweets(null);
 
                 ArrayList<InfoTweet> infoTweets = new ArrayList<InfoTweet>();
 

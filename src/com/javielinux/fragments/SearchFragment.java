@@ -23,8 +23,10 @@ import com.javielinux.api.response.BaseResponse;
 import com.javielinux.api.response.ErrorResponse;
 import com.javielinux.api.response.SearchResponse;
 import com.javielinux.database.EntitySearch;
+import com.javielinux.database.EntityTweetUser;
 import com.javielinux.tweettopics2.R;
 import com.javielinux.tweettopics2.TweetActivity;
+import com.javielinux.utils.TweetTopicsUtils;
 import com.javielinux.utils.Utils;
 import infos.InfoSaveTweets;
 import infos.InfoTweet;
@@ -46,7 +48,6 @@ public class SearchFragment extends Fragment implements APIDelegate<BaseResponse
     private LinearLayout viewUpdate;
 
     private int positionLastRead = 0;
-    private int typeUserColumn = 0;
     private boolean flinging = false;
 
     public SearchFragment(long column_id) {
@@ -308,9 +309,7 @@ public class SearchFragment extends Fragment implements APIDelegate<BaseResponse
 
         showTweetsList();
 
-        InfoSaveTweets infoSaveTweets = result.getInfoSaveTweets();
-
-        if (infoSaveTweets == null) {
+        if (search_entity.getInt("notifications") == 0) {
             ArrayList<InfoTweet> infoTweetList = result.getInfoTweets();
             int count = 0;
             int firstVisible = listView.getRefreshableView().getFirstVisiblePosition();
@@ -328,6 +327,49 @@ public class SearchFragment extends Fragment implements APIDelegate<BaseResponse
             tweetsAdapter.notifyDataSetChanged();
             listView.getRefreshableView().setSelection(firstVisible + count);
         } else {
+            InfoSaveTweets infoSaveTweets = result.getInfoSaveTweets();
+
+            if (infoSaveTweets.getNewMessages() > 0) {
+
+                ArrayList<Entity> tweets;
+
+                try {
+                    tweets = DataFramework.getInstance().getEntityList("tweets", "search_id = " + search_entity.getId(), "date desc");
+                } catch (Exception exception) {
+                    tweets = DataFramework.getInstance().getEntityList("tweets", "search_id = " + search_entity.getId(), "date desc", "0," + Utils.MAX_ROW_BYSEARCH);
+                }
+
+                int firstVisible = listView.getRefreshableView().getFirstVisiblePosition();
+                int count = 0;
+                boolean found = false;
+
+                for (int i = tweets.size()-1; i >=0; i--) {
+                    InfoTweet infoTweet = new InfoTweet(tweets.get(i));
+
+                    if (!found && search_entity.getValueLastId() >= tweets.get(i).getLong("tweet_id")) {
+                        infoTweet.setLastRead(true);
+                        found = true;
+                    }
+
+                    if (i >= tweets.size() - 1 && !found) {
+                        infoTweet.setLastRead(true);
+                        found = true;
+                    }
+
+                    infoTweet.setRead(found);
+
+                    try {
+                        infoTweets.add(0, infoTweet);
+                        count++;
+                    } catch (OutOfMemoryError er) {
+                        i = tweets.size();
+                    }
+                }
+
+                tweetsAdapter.setLastReadPosition(tweetsAdapter.getLastReadPosition() + count);
+                tweetsAdapter.notifyDataSetChanged();
+                listView.getRefreshableView().setSelection(firstVisible + count);
+            }
         }
     }
 
