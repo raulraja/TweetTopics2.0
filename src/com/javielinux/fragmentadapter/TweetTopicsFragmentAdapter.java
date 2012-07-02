@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.util.Log;
 import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
+import com.javielinux.fragments.SearchFragment;
 import com.javielinux.fragments.TweetTopicsFragment;
 import com.javielinux.utils.TweetTopicsUtils;
 import com.javielinux.utils.Utils;
@@ -40,10 +41,12 @@ public class TweetTopicsFragmentAdapter extends FragmentPagerAdapter  {
     }
 
     public Bitmap getIconItem(int position) {
-        int typeColumn = tweet_fragment_list.get(position).getInt("type_id");
-        if (typeColumn == TweetTopicsUtils.COLUMN_TIMELINE || typeColumn == TweetTopicsUtils.COLUMN_MENTIONS
-                || typeColumn == TweetTopicsUtils.COLUMN_DIRECT_MESSAGES || typeColumn == TweetTopicsUtils.COLUMN_SENT_DIRECT_MESSAGES) {
-            return Utils.getBitmapAvatar(tweet_fragment_list.get(position).getEntity("user_id").getId(), Utils.AVATAR_MEDIUM);
+        if (tweet_fragment_list.size() > 0) {
+            int typeColumn = tweet_fragment_list.get(position).getInt("type_id");
+            if (typeColumn == TweetTopicsUtils.COLUMN_TIMELINE || typeColumn == TweetTopicsUtils.COLUMN_MENTIONS
+                    || typeColumn == TweetTopicsUtils.COLUMN_DIRECT_MESSAGES || typeColumn == TweetTopicsUtils.COLUMN_SENT_DIRECT_MESSAGES) {
+                return Utils.getBitmapAvatar(tweet_fragment_list.get(position).getEntity("user_id").getId(), Utils.AVATAR_MEDIUM);
+            }
         }
         return null;
     }
@@ -51,7 +54,13 @@ public class TweetTopicsFragmentAdapter extends FragmentPagerAdapter  {
     @Override
     public Fragment getItem(int index) {
         Log.d(Utils.TAG, "Creando columna "+index+" : " +tweet_fragment_list.get(index).getString("description").toUpperCase());
-        return new TweetTopicsFragment(tweet_fragment_list.get(index).getId());
+        String fragment = tweet_fragment_list.get(index).getEntity("type_id").getString("fragment");
+
+        if (fragment.equals("TweetTopicsFragment")) {
+            return new TweetTopicsFragment(tweet_fragment_list.get(index).getId());
+        } else{
+            return new SearchFragment(tweet_fragment_list.get(index).getId());
+        }
     }
 
     @Override

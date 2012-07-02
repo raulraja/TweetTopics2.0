@@ -9,6 +9,13 @@ import com.javielinux.api.response.SearchResponse;
 import com.javielinux.database.EntitySearch;
 import com.javielinux.twitter.ConnectionManager;
 import infos.InfoSaveTweets;
+import infos.InfoTweet;
+import twitter4j.QueryResult;
+import twitter4j.ResponseList;
+import twitter4j.Status;
+import twitter4j.Tweet;
+
+import java.util.ArrayList;
 
 public class SearchLoader extends AsynchronousLoader<BaseResponse> {
 
@@ -33,45 +40,26 @@ public class SearchLoader extends AsynchronousLoader<BaseResponse> {
             } else {
                 response.setInfoSaveTweets(new InfoSaveTweets());
 
-                // TODO Cargas el infoTweet con todos los tweets
-
-                /*
-                ArrayList<RowResponseList> rowResponseLists = new ArrayList<RowResponseList>();
+                ArrayList<InfoTweet> infoTweets = new ArrayList<InfoTweet>();
 
                 if (entitySearch.isUser()) {
                     // La búsqueda es de un usuario, así que buscamos en twitter directamente
-                    ResponseList<Status> statuses = ConnectionManager.getInstance().getTwitter().getUserTimeline(entitySearch.getString("from_user"));
+                    ResponseList<Status> statuses = ConnectionManager.getInstance().getAnonymousTwitter().getUserTimeline(entitySearch.getString("from_user"));
                     for (twitter4j.Status status : statuses) {
-                        RowResponseList rowResponseList = new RowResponseList(status);
-                        rowResponseLists.add(rowResponseList);
+                        infoTweets.add(new InfoTweet(status));
                     }
                 } else {
-                    QueryResult result = ConnectionManager.getInstance().getTwitter().search(entitySearch.getQuery(getContext()));
+                    QueryResult result = ConnectionManager.getInstance().getAnonymousTwitter().search(entitySearch.getQuery(getContext()));
                     ArrayList<Tweet> tweets = (ArrayList<Tweet>)result.getTweets();
-                    for (int i=0; i<tweets.size(); i++) {
-                        RowResponseList rowResponseList = new RowResponseList(tweets.get(i));
-                        rowResponseLists.add(rowResponseList);
+                    for (Tweet tweet : tweets) {
+                        infoTweets.add(new InfoTweet(tweet));
                     }
                 }
 
-                response.setListAdapter(new ResponseListAdapter(getContext(), tweetTopicsCore, rowResponseLists, entitySearch.getLong("last_tweet_id")));
-
-                */
+                response.setInfoTweets(infoTweets);
             }
 
             return response;
-        /*} catch (TwitterException e) {
-            e.printStackTrace();
-            ErrorResponse response = new ErrorResponse();
-            response.setError(e, e.getMessage());
-
-            RateLimitStatus rate = e.getRateLimitStatus();
-
-            if (rate!=null) {
-                response.setRateError(rate);
-            }
-
-            return response;  */
         } catch (Exception e) {
             e.printStackTrace();
             ErrorResponse response = new ErrorResponse();

@@ -21,6 +21,7 @@ import com.javielinux.dialogs.HashTagDialogFragment;
 import com.javielinux.fragmentadapter.TweetTopicsFragmentAdapter;
 import com.javielinux.utils.ImageUtils;
 import com.javielinux.utils.PreferenceUtils;
+import com.javielinux.utils.TweetTopicsUtils;
 import com.javielinux.utils.Utils;
 import com.viewpagerindicator.TitlePageIndicator;
 import infos.InfoTweet;
@@ -61,6 +62,30 @@ public class TweetTopicsActivity extends BaseActivity {
     private ArrayList<String> links = new ArrayList<String>();
 
     private int statusBarHeight;
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        switch (requestCode) {
+            case ACTIVITY_NEWEDITSEARCH:
+                boolean create_column = data.getBooleanExtra("view", false);
+
+                if (create_column) {
+                    int count = DataFramework.getInstance().getEntityListCount("columns", "") + 1;
+
+                    Entity type = new Entity("type_columns", (long) TweetTopicsUtils.COLUMN_SEARCH);
+                    Entity search = new Entity("columns");
+                    search.setValue("description", type.getString("description"));
+                    search.setValue("type_id", type);
+                    search.setValue("position", count);
+                    search.setValue("search_id", data.getLongExtra(DataFramework.KEY_ID, -1));
+                    search.save();
+                }
+
+                break;
+        }
+
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
