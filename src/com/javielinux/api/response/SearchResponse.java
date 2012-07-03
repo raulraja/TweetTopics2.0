@@ -10,7 +10,6 @@ public class SearchResponse implements BaseResponse {
     private InfoSaveTweets infoSaveTweets = null;
     private ArrayList<InfoTweet> infoTweets = null;
 
-
     public InfoSaveTweets getInfoSaveTweets() {
         return infoSaveTweets;
     }

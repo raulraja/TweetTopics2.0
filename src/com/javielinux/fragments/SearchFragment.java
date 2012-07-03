@@ -160,7 +160,12 @@ public class SearchFragment extends Fragment implements APIDelegate<BaseResponse
     public void reload() {
         Log.d(Utils.TAG, "reloadColumnUser : " + column_entity.getInt("type_id"));
 
-        APITweetTopics.execute(getActivity(), getLoaderManager(), this, new SearchRequest(search_entity));
+        SearchRequest searchRequest = new SearchRequest(search_entity);
+
+        if (infoTweets.size() > 0)
+            searchRequest.setSinceId(infoTweets.get(0).getId());
+
+        APITweetTopics.execute(getActivity(), getLoaderManager(), this, searchRequest);
     }
 
     private boolean markPositionLastReadAsLastReadId() {
@@ -261,26 +266,12 @@ public class SearchFragment extends Fragment implements APIDelegate<BaseResponse
 
         boolean getTweetsFromInternet = false;
 
-        if (infoTweets.size()<=0) {
+        if (infoTweets.size()<=0)
             showLoading();
-            getTweetsFromInternet = true;
-        } else {
-            int minutes = Integer.parseInt(Utils.getPreference(getActivity()).getString("prf_time_refresh", "10"));
+        else
+            showUpdating();
 
-            if (minutes > 0) {
-                int miliseconds = minutes * 60 * 1000;
-                Date date = new Date(tweetsAdapter.getItem(0).getDate().getTime() + miliseconds);
-
-                if (new Date().after(date)) {
-                    showUpdating();
-                    getTweetsFromInternet = true;
-                }
-            }
-        }
-
-        if (getTweetsFromInternet) {
-            reload();
-        }
+        reload();
 
         return view;
     }
@@ -329,6 +320,9 @@ public class SearchFragment extends Fragment implements APIDelegate<BaseResponse
         } else {
             InfoSaveTweets infoSaveTweets = result.getInfoSaveTweets();
 
+            int count = 0;
+            int firstVisible = listView.getRefreshableView().getFirstVisiblePosition();
+
             if (infoSaveTweets.getNewMessages() > 0) {
 
                 ArrayList<Entity> tweets;
@@ -339,8 +333,6 @@ public class SearchFragment extends Fragment implements APIDelegate<BaseResponse
                     tweets = DataFramework.getInstance().getEntityList("tweets", "search_id = " + search_entity.getId(), "date desc", "0," + Utils.MAX_ROW_BYSEARCH);
                 }
 
-                int firstVisible = listView.getRefreshableView().getFirstVisiblePosition();
-                int count = 0;
                 boolean found = false;
 
                 for (int i = tweets.size()-1; i >=0; i--) {
@@ -365,11 +357,11 @@ public class SearchFragment extends Fragment implements APIDelegate<BaseResponse
                         i = tweets.size();
                     }
                 }
-
-                tweetsAdapter.setLastReadPosition(tweetsAdapter.getLastReadPosition() + count);
-                tweetsAdapter.notifyDataSetChanged();
-                listView.getRefreshableView().setSelection(firstVisible + count);
             }
+
+            tweetsAdapter.setLastReadPosition(tweetsAdapter.getLastReadPosition() + count);
+            tweetsAdapter.notifyDataSetChanged();
+            listView.getRefreshableView().setSelection(firstVisible + count);
         }
     }
 

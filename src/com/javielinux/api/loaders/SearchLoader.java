@@ -10,21 +10,20 @@ import com.javielinux.database.EntitySearch;
 import com.javielinux.twitter.ConnectionManager;
 import infos.InfoSaveTweets;
 import infos.InfoTweet;
-import twitter4j.QueryResult;
-import twitter4j.ResponseList;
-import twitter4j.Status;
-import twitter4j.Tweet;
+import twitter4j.*;
 
 import java.util.ArrayList;
 
 public class SearchLoader extends AsynchronousLoader<BaseResponse> {
 
     private EntitySearch entitySearch;
+    private long since_id;
 
     public SearchLoader(Context context, SearchRequest request) {
         super(context);
 
         this.entitySearch = request.getEntitySearch();
+        this.since_id = request.getSinceId();
     }
 
     @Override
@@ -49,7 +48,10 @@ public class SearchLoader extends AsynchronousLoader<BaseResponse> {
                         infoTweets.add(new InfoTweet(status));
                     }
                 } else {
-                    QueryResult result = ConnectionManager.getInstance().getAnonymousTwitter().search(entitySearch.getQuery(getContext()));
+                    Query query = entitySearch.getQuery(getContext());
+                    if (since_id != -1)
+                        query.setSinceId(since_id);
+                    QueryResult result = ConnectionManager.getInstance().getAnonymousTwitter().search(query);
                     ArrayList<Tweet> tweets = (ArrayList<Tweet>)result.getTweets();
                     for (Tweet tweet : tweets) {
                         infoTweets.add(new InfoTweet(tweet));
