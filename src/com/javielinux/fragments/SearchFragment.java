@@ -37,7 +37,7 @@ import java.util.Date;
 public class SearchFragment extends Fragment implements APIDelegate<BaseResponse> {
 
     private TweetsAdapter tweetsAdapter;
-    private ArrayList<InfoTweet> infoTweets = new ArrayList<InfoTweet>();;
+    private ArrayList<InfoTweet> infoTweets = new ArrayList<InfoTweet>();
     private Entity column_entity;
     private EntitySearch search_entity;
     private View view;

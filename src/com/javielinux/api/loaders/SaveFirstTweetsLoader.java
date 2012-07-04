@@ -29,7 +29,7 @@ public class SaveFirstTweetsLoader extends AsynchronousLoader<BaseResponse> {
             InfoSaveTweets infoSaveTweets = null;
 
 		    EntitySearch entitySearch = new EntitySearch(id);
-		    infoSaveTweets = entitySearch.saveTweets(TabNewEditSearch.StaticContext, TabGeneral.twitter, false);
+		    infoSaveTweets = entitySearch.saveTweets(TabNewEditSearch.StaticContext, TabGeneral.twitter, false, -1);
 
             response.setInfoSaveTweets(infoSaveTweets);
             return response;

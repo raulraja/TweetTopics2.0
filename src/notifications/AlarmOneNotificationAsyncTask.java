@@ -209,7 +209,7 @@ public class AlarmOneNotificationAsyncTask extends AsyncTask<Void, Void, Void> {
 				if (searchs.get(i).getInt("notifications")==1 && !PreferenceUtils.getStatusWorkApp(mContext)) {
 					EntitySearch es = new EntitySearch(searchs.get(i).getId());
 					
-					InfoSaveTweets info = es.saveTweets(mContext, twitter, true);
+					InfoSaveTweets info = es.saveTweets(mContext, twitter, true, -1);
 					
 					int count = es.getValueNewCount();
 					

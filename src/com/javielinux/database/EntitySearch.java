@@ -102,12 +102,16 @@ public class EntitySearch extends Entity {
 		return getLong("last_tweet_id_notifications");
 	}
 	
-	public InfoSaveTweets saveTweets(Context cnt, Twitter twitter, boolean saveNotifications) {
+	public InfoSaveTweets saveTweets(Context cnt, Twitter twitter, boolean saveNotifications, long since_id) {
 		InfoSaveTweets out = new InfoSaveTweets();
 		try {
 			int nResult = DataFramework.getInstance().getEntityListCount("tweets", "favorite=0 and search_id="+getId());
 
-			QueryResult result = twitter.search(getQuery(cnt));
+            Query query = getQuery(cnt);
+            if (since_id != -1)
+                query.setSinceId(since_id);
+
+			QueryResult result = twitter.search(query);
 			ArrayList<Tweet> tweets = (ArrayList<Tweet>)result.getTweets();
 			
 			if (tweets.size()>0) {

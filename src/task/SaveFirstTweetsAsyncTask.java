@@ -23,7 +23,7 @@ public class SaveFirstTweetsAsyncTask extends AsyncTask<Long, Void, InfoSaveTwee
 	@Override
 	protected InfoSaveTweets doInBackground(Long... args) {
 		EntitySearch ent = new EntitySearch(args[0]);
-		return ent.saveTweets(TabNewEditSearch.StaticContext, TabGeneral.twitter, false);
+		return ent.saveTweets(TabNewEditSearch.StaticContext, TabGeneral.twitter, false, -1);
 	}
 
 	@Override

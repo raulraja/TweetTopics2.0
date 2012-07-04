@@ -245,7 +245,7 @@ public class AlarmAsyncTask extends AsyncTask<Void, Void, Void> {
 				EntitySearch es = new EntitySearch(searchs.get(i).getId());
 				
 				if (mType!=OnAlarmReceiver.ALARM_ONLY_OTHERS) {
-					InfoSaveTweets info = es.saveTweets(mContext, twitter, true);
+					InfoSaveTweets info = es.saveTweets(mContext, twitter, true, -1);
 					if (info.getNewMessages()>0 && searchs.get(i).getInt("notifications_bar")==1) {
 						showSearchNotifications = true;
 					}
