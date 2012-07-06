@@ -40,6 +40,7 @@ public class ProfileImageLoader extends AsynchronousLoader<BaseResponse> {
 
     	if (request.getUserId() > 0) {
             try {
+                ConnectionManager.getInstance().open(getContext());
                 Entity ent = new Entity("users", request.getUserId());
                 User user = ConnectionManager.getInstance().getTwitter(request.getUserId()).showUser(ent.getInt("user_id"));
                 Bitmap avatar = BitmapFactory.decodeStream(new Utils.FlushedInputStream(user.getProfileImageURL().openStream()));
@@ -47,6 +48,9 @@ public class ProfileImageLoader extends AsynchronousLoader<BaseResponse> {
 
 				FileOutputStream out = new FileOutputStream(file);
 				avatar.compress(Bitmap.CompressFormat.JPEG, 90, out);
+
+                ent.setValue("fullname", user.getName());
+                ent.save();
 
 				avatar.recycle();
 			} catch (NullPointerException e) {

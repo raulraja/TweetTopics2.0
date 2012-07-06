@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Shader;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -33,7 +35,6 @@ import com.javielinux.tweettopics2.EditUserTwitter;
 import com.javielinux.tweettopics2.R;
 import com.javielinux.tweettopics2.ThemeManager;
 import com.javielinux.twitter.AuthorizationActivity;
-import com.javielinux.utils.ImageUtils;
 import com.javielinux.utils.TweetTopicsUtils;
 import com.javielinux.utils.Utils;
 
@@ -72,7 +73,11 @@ public class MyActivityFragment extends Fragment {
         themeManager = new ThemeManager(getActivity());
         themeManager.setTheme();
 
-        view.setBackgroundDrawable(ImageUtils.createStateListDrawable(getActivity(), new ThemeManager(getActivity()).getColor("list_background_row_color")));
+        BitmapDrawable bmp = (BitmapDrawable)getActivity().getResources().getDrawable(themeManager.getResource("search_tile"));
+        if (bmp!=null) {
+            bmp.setTileModeXY(Shader.TileMode.REPEAT, Shader.TileMode.REPEAT);
+            view.setBackgroundDrawable(bmp);
+        }
 
         Button btTwitter = (Button) view.findViewById(R.id.bt_twitter);
         btTwitter.setOnClickListener(new View.OnClickListener() {
@@ -280,7 +285,7 @@ public class MyActivityFragment extends Fragment {
     public void refreshAvatar() {
         progressDialog = new ProgressDialog(getActivity());
 
-        progressDialog.setTitle(R.string.user_list);
+        progressDialog.setTitle(R.string.loading);
         progressDialog.setMessage(this.getResources().getString(R.string.update_avatar_loading));
 
         progressDialog.setCancelable(false);
@@ -311,7 +316,7 @@ public class MyActivityFragment extends Fragment {
 
         progressDialog = new ProgressDialog(getActivity());
 
-        progressDialog.setTitle(R.string.user_list);
+        progressDialog.setTitle(R.string.loading);
         progressDialog.setMessage(this.getResources().getString(R.string.change_avatar_loading));
 
         progressDialog.setCancelable(false);

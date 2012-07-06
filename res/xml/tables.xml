@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 
-<database name="tweet_db" version="24">
+<database name="tweet_db" version="25">
   
   <table name="search" to-string="%name%">
     <field name="name" obligatory="true" type="text" size="128"/>
@@ -51,6 +51,7 @@
   <table name="users" to-string="%name%" backup="no">
   	<field name="service" obligatory="true" type="text" size="16" new-in-version="16"/>
     <field name="name" obligatory="true" type="text" size="128"/>
+    <field name="fullname" obligatory="true" type="text" size="128" new-in-version="25"/>
 	<field name="user_id" obligatory="true" type="int"/>
 	<field name="active" obligatory="true" type="int" default="0" />
     <field name="auth_key" obligatory="true" type="text" size="128"/>

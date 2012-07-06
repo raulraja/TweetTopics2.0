@@ -14,7 +14,6 @@ import com.android.dataframework.Entity;
 import com.javielinux.fragments.MyActivityFragment;
 import com.javielinux.tweettopics2.R;
 import com.javielinux.tweettopics2.ThemeManager;
-import com.javielinux.utils.ImageUtils;
 import com.javielinux.utils.TweetTopicsUtils;
 import com.javielinux.utils.Utils;
 import layouts.AlphaTextView;
@@ -158,7 +157,7 @@ public class MyActivityAdapter extends BaseAdapter {
 
             long id = item.getId();
 
-            v.setBackgroundDrawable(ImageUtils.createStateListDrawable(context, themeManager.getColor("list_background_row_color")));
+            //v.setBackgroundDrawable(ImageUtils.createStateListDrawable(context, themeManager.getColor("list_background_row_color")));
 
             ImageView img = (ImageView)v.findViewById(R.id.my_activity_user_icon);
             try {
@@ -184,7 +183,11 @@ public class MyActivityAdapter extends BaseAdapter {
             }
 
             TextView fullname = (TextView)v.findViewById(R.id.my_activity_user_fullname);
-            fullname.setText("Javi Pacheco");
+            if (item.getString("fullname").equals("")) {
+                fullname.setText(item.getString("name"));
+            } else {
+                fullname.setText(item.getString("fullname"));
+            }
 
             TextView name = (TextView)v.findViewById(R.id.my_activity_user_name);
             name.setText(item.getString("name"));
@@ -230,8 +233,6 @@ public class MyActivityAdapter extends BaseAdapter {
                 params.weight = 1;
                 ((LinearLayout)v).addView(drawSearch(item), params);
             }
-        } else if (element.type==MY_ACTIVITY_TITLE_SEARCH) {
-            v.setBackgroundDrawable(ImageUtils.createBackgroundDrawable(context, themeManager.getColor("color_top_bar"), false, 0));
         }
 
         return v;

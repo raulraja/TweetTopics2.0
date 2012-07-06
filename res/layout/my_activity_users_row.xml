@@ -4,7 +4,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:orientation="horizontal" android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:background="#dddddd"
                 android:padding="5px">
 
     <FrameLayout
@@ -23,21 +22,24 @@
                    android:layout_width="wrap_content"></ImageView>
     </FrameLayout>
 
+    <LinearLayout
+            android:layout_toRightOf="@id/my_activity_user_icon_layout"
+            android:layout_centerVertical="true"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:orientation="vertical">
+        <TextView android:id="@+id/my_activity_user_fullname"
+                  android:layout_width="fill_parent"
+                  android:layout_height="wrap_content"
+                  android:text="Javi Pacheco"
+                  style="@style/MyActivityFullName"/>
 
-    <TextView android:id="@+id/my_activity_user_fullname"
-              android:layout_width="fill_parent"
-              android:layout_height="wrap_content"
-              android:text="Javi Pacheco"
-              android:layout_toRightOf="@id/my_activity_user_icon_layout"
-              style="@style/MyActivityFullName"/>
-
-    <TextView android:id="@+id/my_activity_user_name"
-              android:layout_width="fill_parent"
-              android:layout_height="wrap_content"
-              android:text="javielinux"
-              android:layout_toRightOf="@id/my_activity_user_icon_layout"
-              android:layout_below="@id/my_activity_user_fullname"
-              style="@style/MyActivityName"/>
+        <TextView android:id="@+id/my_activity_user_name"
+                  android:layout_width="fill_parent"
+                  android:layout_height="wrap_content"
+                  android:text="javielinux"
+                  style="@style/MyActivityName"/>
+    </LinearLayout>
 
     <LinearLayout
             android:layout_alignParentRight="true"

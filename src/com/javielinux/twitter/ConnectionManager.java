@@ -171,6 +171,7 @@ public class ConnectionManager {
 	        ent.setValue("service", currentNetwork);
 	        try {
 				ent.setValue("name", twitter.getScreenName());
+                ent.setValue("fullname", twitter.showUser(twitter.getId()).getName());
 				ent.setValue("user_id", twitter.getId());
 
 				ent.setValue(KEY_AUTH_KEY, accessTokenOAuth.getToken());
