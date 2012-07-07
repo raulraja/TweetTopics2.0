@@ -1,6 +1,9 @@
 package com.javielinux.fragmentadapter;
 
+import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -11,12 +14,17 @@ import com.javielinux.fragments.MyActivityFragment;
 import com.javielinux.fragments.NoFoundFragment;
 import com.javielinux.fragments.SearchFragment;
 import com.javielinux.fragments.TweetTopicsFragment;
+import com.javielinux.tweettopics2.R;
 import com.javielinux.utils.TweetTopicsUtils;
 import com.javielinux.utils.Utils;
 
 import java.util.ArrayList;
 
 public class TweetTopicsFragmentAdapter extends FragmentPagerAdapter  {
+
+    public ArrayList<Entity> getFragmentList() {
+        return fragmentList;
+    }
 
     private ArrayList<Entity> fragmentList = new ArrayList<Entity>();
 
@@ -25,10 +33,11 @@ public class TweetTopicsFragmentAdapter extends FragmentPagerAdapter  {
     }
 
     private MyActivityFragment myActivityFragment;
+    private Context context;
 
-    public TweetTopicsFragmentAdapter(FragmentManager fragmentManager) {
+    public TweetTopicsFragmentAdapter(Context context, FragmentManager fragmentManager) {
         super(fragmentManager);
-
+        this.context = context;
         fillColumnList();
     }
 
@@ -64,6 +73,15 @@ public class TweetTopicsFragmentAdapter extends FragmentPagerAdapter  {
                     || typeColumn == TweetTopicsUtils.COLUMN_DIRECT_MESSAGES || typeColumn == TweetTopicsUtils.COLUMN_SENT_DIRECT_MESSAGES) {
                 return Utils.getBitmapAvatar(fragmentList.get(position).getEntity("user_id").getId(), Utils.AVATAR_MEDIUM);
             }
+            if (typeColumn == TweetTopicsUtils.COLUMN_SEARCH) {
+                Entity ent = new Entity("search", fragmentList.get(position).getLong("search_id"));
+                Drawable d = Utils.getDrawable(context, ent.getString("icon_big"));
+                if (d==null) {
+                    d = context.getResources().getDrawable(R.drawable.letter_az);
+                }
+                return ((BitmapDrawable)d).getBitmap();
+            }
+
         }
         return null;
     }

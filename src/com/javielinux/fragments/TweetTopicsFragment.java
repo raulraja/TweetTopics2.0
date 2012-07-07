@@ -25,6 +25,7 @@ import com.javielinux.api.response.TwitterUserResponse;
 import com.javielinux.database.EntityTweetUser;
 import com.javielinux.tweettopics2.R;
 import com.javielinux.tweettopics2.TweetActivity;
+import com.javielinux.tweettopics2.TweetTopicsActivity;
 import com.javielinux.utils.TweetTopicsUtils;
 import com.javielinux.utils.Utils;
 import infos.InfoSaveTweets;
@@ -447,12 +448,15 @@ public class TweetTopicsFragment extends Fragment implements APIDelegate<BaseRes
             }
 
             tweetsAdapter.addHideMessages(countHide);
+            infoTweets.get(tweetsAdapter.getLastReadPosition()+1).setLastRead(false);
             tweetsAdapter.setLastReadPosition(tweetsAdapter.getLastReadPosition() + count);
             positionLastRead = tweetsAdapter.getLastReadPosition() + count;
 
             tweetsAdapter.notifyDataSetChanged();
 
-            listView.getRefreshableView().setSelection(firstVisible + count);
+            listView.getRefreshableView().setSelection(firstVisible + count + 1);
+
+            sendBroadcastUpdateTweets();
 
         }
     }
@@ -465,9 +469,7 @@ public class TweetTopicsFragment extends Fragment implements APIDelegate<BaseRes
     }
 
     private void sendBroadcastUpdateTweets() {
-        Intent update = new Intent();
-        update.setAction(Intent.ACTION_VIEW);
-        getActivity().sendOrderedBroadcast(update, null);
+        ((TweetTopicsActivity)getActivity()).refreshMyActivity();
         WidgetCounters4x1.updateAll(getActivity());
         WidgetCounters2x1.updateAll(getActivity());
     }

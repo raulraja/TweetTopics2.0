@@ -2,7 +2,9 @@ package com.javielinux.tweettopics2;
 
 
 import android.app.AlertDialog;
-import android.content.*;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
@@ -25,6 +27,7 @@ import com.javielinux.utils.Utils;
 import com.nineoldandroids.animation.Animator;
 import com.nineoldandroids.animation.AnimatorSet;
 import com.nineoldandroids.animation.ObjectAnimator;
+import com.nineoldandroids.animation.ValueAnimator;
 import com.viewpagerindicator.TitlePageIndicator;
 import infos.InfoTweet;
 import preferences.Preferences;
@@ -52,9 +55,12 @@ public class TweetTopicsActivity extends BaseActivity {
     private TweetTopicsFragmentAdapter fragmentAdapter;
     private TitlePageIndicator indicator;
     private ThemeManager themeManager;
-    private LinearLayout layoutBackgroundApp;
+    private RelativeLayout layoutBackgroundApp;
 
     private RelativeLayout layoutBackgroundBar;
+    private HorizontalScrollView layoutBackgroundColumnsBar;
+    private LinearLayout layoutBackgroundColumnsItems;
+    private boolean isShowColumnsItems = false;
 
     private ImageView imgBarAvatar;
     private ImageView imgNewStatus;
@@ -68,22 +74,6 @@ public class TweetTopicsActivity extends BaseActivity {
     private int statusBarHeight;
     private int widthScreen;
     private int heightScreen;
-
-
-    private BroadcastReceiver receiver = new BroadcastReceiver() {
-
-        @Override
-        public void onReceive(Context context, Intent intent) {
-
-            if (intent != null) {
-                String action = intent.getAction();
-                if (Intent.ACTION_VIEW.equals(action)) {
-                    fragmentAdapter.getMyActivityFragment().fillData();
-                }
-            }
-
-        }
-    };
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -162,8 +152,6 @@ public class TweetTopicsActivity extends BaseActivity {
 
         Utils.setActivity(this);
 
-        registerReceiver(receiver, new IntentFilter(Intent.ACTION_VIEW));
-
         Display display = getWindowManager().getDefaultDisplay();
         widthScreen = display.getWidth();
         heightScreen = display.getHeight();
@@ -173,7 +161,7 @@ public class TweetTopicsActivity extends BaseActivity {
 
         setContentView(R.layout.tweettopics_activity);
 
-        fragmentAdapter = new TweetTopicsFragmentAdapter(getSupportFragmentManager());
+        fragmentAdapter = new TweetTopicsFragmentAdapter(this, getSupportFragmentManager());
 
         pager = (ViewPager)findViewById(R.id.tweet_pager);
         pager.setAdapter(fragmentAdapter);
@@ -199,6 +187,12 @@ public class TweetTopicsActivity extends BaseActivity {
 
             }
         });
+        indicator.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showActionBarColumns();
+            }
+        });
 
         layoutMainLinks = (LinearLayout) findViewById(R.id.tweettopics_ll_main_links);
         layoutMainLinks.setOnClickListener(new View.OnClickListener() {
@@ -220,9 +214,12 @@ public class TweetTopicsActivity extends BaseActivity {
             }
         });
 
-        layoutBackgroundApp = (LinearLayout) findViewById(R.id.tweettopics_layout_background_app);
+        layoutBackgroundApp = (RelativeLayout) findViewById(R.id.tweettopics_layout_background_app);
 
         layoutBackgroundBar = (RelativeLayout) findViewById(R.id.tweettopics_bar_background);
+
+        layoutBackgroundColumnsBar = (HorizontalScrollView) findViewById(R.id.tweettopics_bar_columns);
+        layoutBackgroundColumnsItems = (LinearLayout) findViewById(R.id.tweettopics_bar_columns_items);
 
         imgBarAvatar = (ImageView) findViewById(R.id.tweettopics_bar_avatar);
         imgNewStatus = (ImageView) findViewById(R.id.tweettopics_bar_new_status);
@@ -237,6 +234,113 @@ public class TweetTopicsActivity extends BaseActivity {
 
         reloadBarAvatar();
 
+        refreshActionBarColumns();
+
+    }
+
+    public void refreshActionBarColumns() {
+        layoutBackgroundColumnsItems.removeAllViews();
+        for (int i=0; i<fragmentAdapter.getFragmentList().size(); i++) {
+            View view = View.inflate(this, R.layout.row_actionbar_column, null);
+            Bitmap bmp = fragmentAdapter.getIconItem(i);
+            if (bmp!=null) {
+                ((ImageView)view.findViewById(R.id.row_actionbar_column_img)).setImageBitmap(bmp);
+            } else {
+                ((ImageView)view.findViewById(R.id.row_actionbar_column_img)).setImageResource(R.drawable.icon);
+            }
+            ((TextView)view.findViewById(R.id.row_actionbar_column_title)).setText(fragmentAdapter.getPageTitle(i));
+            view.setTag(i);
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    showActionBarIndicatorAndMovePager((Integer) view.getTag());
+                }
+            });
+            layoutBackgroundColumnsItems.addView(view);
+
+            ImageView separator = new ImageView(this);
+            separator.setBackgroundColor(Color.parseColor("#44000000"));
+            layoutBackgroundColumnsItems.addView(separator, new LinearLayout.LayoutParams(1, ViewGroup.LayoutParams.FILL_PARENT));
+
+        }
+    }
+
+    public void showActionBarColumns() {
+        isShowColumnsItems = true;
+
+        layoutBackgroundColumnsBar.setVisibility(View.VISIBLE);
+        layoutBackgroundColumnsItems.setVisibility(View.VISIBLE);
+
+        ValueAnimator moveMargins = ValueAnimator.ofFloat(getResources().getDimension(R.dimen.actionbar_height), getResources().getDimension(R.dimen.actionbar_columns_height));
+        moveMargins.setDuration(250);
+        moveMargins.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.FILL_PARENT);
+                float value = (Float)valueAnimator.getAnimatedValue();
+                params.setMargins(0,(int)value, 0,0);
+                pager.setLayoutParams(params);
+            }
+        });
+
+        ObjectAnimator translationOut = ObjectAnimator.ofFloat(layoutBackgroundBar, "translationY", 0f, -getResources().getDimension(R.dimen.actionbar_height));
+        translationOut.setDuration(250);
+
+        AnimatorSet animatorSet = new AnimatorSet();
+        animatorSet.playTogether(translationOut, moveMargins);
+        animatorSet.start();
+
+
+    }
+
+    public void showActionBarIndicatorAndMovePager(final int pos) {
+        isShowColumnsItems = false;
+
+        ObjectAnimator translationIn = ObjectAnimator.ofFloat(layoutBackgroundBar, "translationY", -getResources().getDimension(R.dimen.actionbar_height), 0f);
+        translationIn.setDuration(250);
+
+        ValueAnimator moveMargins = ValueAnimator.ofFloat(getResources().getDimension(R.dimen.actionbar_columns_height), (int)getResources().getDimension(R.dimen.actionbar_height));
+        moveMargins.setDuration(250);
+        moveMargins.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.FILL_PARENT);
+                float value = (Float)valueAnimator.getAnimatedValue();
+                params.setMargins(0,(int)value,0,0);
+                pager.setLayoutParams(params);
+            }
+        });
+
+        AnimatorSet animatorSet = new AnimatorSet();
+        animatorSet.playTogether(moveMargins, translationIn);
+
+        animatorSet.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animator) {
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animator) {
+                layoutBackgroundColumnsBar.setVisibility(View.GONE);
+                layoutBackgroundColumnsItems.setVisibility(View.GONE);
+                if (pos>=0) pager.setCurrentItem(pos, true);
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animator) {
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animator) {
+            }
+        });
+
+        animatorSet.start();
+
+    }
+
+    public void refreshMyActivity() {
+        fragmentAdapter.getMyActivityFragment().fillData();
     }
 
     public boolean isShowLinks() {
@@ -393,6 +497,7 @@ public class TweetTopicsActivity extends BaseActivity {
         themeManager.setColors();
 
         layoutBackgroundBar.setBackgroundDrawable(ImageUtils.createBackgroundDrawable(this, themeManager.getColor("color_top_bar"), false, 0));
+        layoutBackgroundColumnsBar.setBackgroundDrawable(ImageUtils.createBackgroundDrawable(this, themeManager.getColor("color_top_bar"), false, 0));
 
         StateListDrawable statesButton = new StateListDrawable();
         statesButton.addState(new int[] {android.R.attr.state_pressed}, ImageUtils.createBackgroundDrawable(this, themeManager.getColor("color_button_press_bar"), false, 0));
@@ -426,9 +531,19 @@ public class TweetTopicsActivity extends BaseActivity {
     }
 
     @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+             if (isShowColumnsItems) {
+                 showActionBarIndicatorAndMovePager(-1);
+                 return false;
+             }
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
     public void onDestroy() {
         super.onDestroy();
-        unregisterReceiver(receiver);
         DataFramework.getInstance().close();
     }
 
