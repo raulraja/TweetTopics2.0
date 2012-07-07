@@ -20,6 +20,12 @@ public class TweetTopicsFragmentAdapter extends FragmentPagerAdapter  {
 
     private ArrayList<Entity> fragmentList = new ArrayList<Entity>();
 
+    public MyActivityFragment getMyActivityFragment() {
+        return myActivityFragment;
+    }
+
+    private MyActivityFragment myActivityFragment;
+
     public TweetTopicsFragmentAdapter(FragmentManager fragmentManager) {
         super(fragmentManager);
 
@@ -73,7 +79,8 @@ public class TweetTopicsFragmentAdapter extends FragmentPagerAdapter  {
             case TweetTopicsUtils.COLUMN_DIRECT_MESSAGES:
                 return new TweetTopicsFragment(fragmentList.get(index).getId());
             case TweetTopicsUtils.COLUMN_MY_ACTIVITY:
-                return new MyActivityFragment();
+                myActivityFragment = new MyActivityFragment();
+                return myActivityFragment;
             case TweetTopicsUtils.COLUMN_SEARCH:
                 return new SearchFragment(fragmentList.get(index).getId());
             default:

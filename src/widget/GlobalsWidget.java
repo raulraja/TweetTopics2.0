@@ -10,6 +10,7 @@ public class GlobalsWidget {
 	static final int WIDGET_VERSION = 1;
 	static final int WIDGET_NOT_CONFIGURED = -1;
 	static final int WIDGET_DELETED = 0;
+    public static final String TWEETS_UPDATE = "com.javielinux.TWEETS_UPDATE_TWEETTOPICS";
 	static final String WIDGET_UPDATE = "com.javielinux.WIDGET_UPDATE_TWEETTOPICS";
     static final String WIDGET_UPDATE_2x1 = "com.javielinux.WIDGET_UPDATE_TWEETTOPICS_2x1";
 	static final String PREF_GLOBALS = "g_widget_";

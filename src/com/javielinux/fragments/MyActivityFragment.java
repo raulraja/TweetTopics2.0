@@ -73,8 +73,8 @@ public class MyActivityFragment extends Fragment {
         themeManager = new ThemeManager(getActivity());
         themeManager.setTheme();
 
-        BitmapDrawable bmp = (BitmapDrawable)getActivity().getResources().getDrawable(themeManager.getResource("search_tile"));
-        if (bmp!=null) {
+        BitmapDrawable bmp = (BitmapDrawable) getActivity().getResources().getDrawable(themeManager.getResource("search_tile"));
+        if (bmp != null) {
             bmp.setTileModeXY(Shader.TileMode.REPEAT, Shader.TileMode.REPEAT);
             view.setBackgroundDrawable(bmp);
         }
@@ -414,6 +414,7 @@ public class MyActivityFragment extends Fragment {
         frag.show(getFragmentManager(), "dialog");
 
     }
+
     private void showDeleteUserDialog() {
 
         AlertDialogFragment frag = new AlertDialogFragment();

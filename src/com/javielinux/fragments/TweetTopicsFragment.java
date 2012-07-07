@@ -29,6 +29,8 @@ import com.javielinux.utils.TweetTopicsUtils;
 import com.javielinux.utils.Utils;
 import infos.InfoSaveTweets;
 import infos.InfoTweet;
+import widget.WidgetCounters2x1;
+import widget.WidgetCounters4x1;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -214,8 +216,8 @@ public class TweetTopicsFragment extends Fragment implements APIDelegate<BaseRes
 
     private boolean markPositionLastReadAsLastReadId() {
 
-        //TODO:sendBroadcastWidgets
-        //sendBroadcastWidgets();
+        sendBroadcastUpdateTweets();
+
         if (tweetsAdapter != null) {
             if (!tweetsAdapter.isUserLastItemLastRead()) {
                 if (tweetsAdapter.getCount() > positionLastRead) {
@@ -446,6 +448,7 @@ public class TweetTopicsFragment extends Fragment implements APIDelegate<BaseRes
 
             tweetsAdapter.addHideMessages(countHide);
             tweetsAdapter.setLastReadPosition(tweetsAdapter.getLastReadPosition() + count);
+            positionLastRead = tweetsAdapter.getLastReadPosition() + count;
 
             tweetsAdapter.notifyDataSetChanged();
 
@@ -460,4 +463,13 @@ public class TweetTopicsFragment extends Fragment implements APIDelegate<BaseRes
         listView.onRefreshComplete();
         showNoInternet();
     }
+
+    private void sendBroadcastUpdateTweets() {
+        Intent update = new Intent();
+        update.setAction(Intent.ACTION_VIEW);
+        getActivity().sendOrderedBroadcast(update, null);
+        WidgetCounters4x1.updateAll(getActivity());
+        WidgetCounters2x1.updateAll(getActivity());
+    }
+
 }

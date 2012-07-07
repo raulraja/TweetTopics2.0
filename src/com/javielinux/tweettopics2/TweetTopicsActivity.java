@@ -2,8 +2,7 @@ package com.javielinux.tweettopics2;
 
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.content.Intent;
+import android.content.*;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
@@ -69,6 +68,22 @@ public class TweetTopicsActivity extends BaseActivity {
     private int statusBarHeight;
     private int widthScreen;
     private int heightScreen;
+
+
+    private BroadcastReceiver receiver = new BroadcastReceiver() {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            if (intent != null) {
+                String action = intent.getAction();
+                if (Intent.ACTION_VIEW.equals(action)) {
+                    fragmentAdapter.getMyActivityFragment().fillData();
+                }
+            }
+
+        }
+    };
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -146,6 +161,8 @@ public class TweetTopicsActivity extends BaseActivity {
         }
 
         Utils.setActivity(this);
+
+        registerReceiver(receiver, new IntentFilter(Intent.ACTION_VIEW));
 
         Display display = getWindowManager().getDefaultDisplay();
         widthScreen = display.getWidth();
@@ -411,6 +428,7 @@ public class TweetTopicsActivity extends BaseActivity {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        unregisterReceiver(receiver);
         DataFramework.getInstance().close();
     }
 
