@@ -41,7 +41,6 @@ public class TweetTopicsActivity extends BaseActivity {
     protected static final int EXIT_ID = Menu.FIRST + 2;
     protected static final int MANAGER_USER_ID = Menu.FIRST + 3;
     protected static final int SIZE_TEXT_ID = Menu.FIRST + 4;
-    protected static final int USER_LIST_ID = Menu.FIRST + 5;
 
     public static final int ACTIVITY_NEWEDITSEARCH = 0;
     public static final int ACTIVITY_PREFERENCES = 1;
@@ -49,7 +48,6 @@ public class TweetTopicsActivity extends BaseActivity {
     public static final int ACTIVITY_USER = 3;
     public static final int ACTIVITY_WALLPAPER = 4;
     public static final int ACTIVITY_COLORS_APP = 5;
-    public static final int ACTIVITY_USER_LIST = 6;
 
     private ViewPager pager;
     private TweetTopicsFragmentAdapter fragmentAdapter;
@@ -110,7 +108,6 @@ public class TweetTopicsActivity extends BaseActivity {
         menu.add(0, EXIT_ID, 0, R.string.exit)
                 .setIcon(android.R.drawable.ic_menu_revert);
         menu.add(0, MANAGER_USER_ID, 0, R.string.manager_user);
-        menu.add(0, USER_LIST_ID, 0, R.string.lists);
         return true;
     }
 
@@ -128,10 +125,6 @@ public class TweetTopicsActivity extends BaseActivity {
             case PREFERENCES_ID:
                 Intent i = new Intent(this, Preferences.class);
                 startActivityForResult(i, ACTIVITY_PREFERENCES);
-                return true;
-            case USER_LIST_ID:
-                Intent user_lists_intent = new Intent(this, Preferences.class);
-                startActivityForResult(user_lists_intent, ACTIVITY_USER_LIST);
                 return true;
             case EXIT_ID:
                 showDialogExit();

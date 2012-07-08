@@ -251,6 +251,7 @@
         <item>Change avatar</item> <!-- v 1.70  -->
     	<item>Refresh avatar</item>
     	<item>Delete</item>
+        <item>Show lists</item>
     </string-array>
     
     <string-array name="actions_samples_search">

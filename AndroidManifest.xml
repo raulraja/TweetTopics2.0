@@ -18,6 +18,7 @@
 
         <activity android:name="TweetActivity" android:theme="@android:style/Theme.Translucent"></activity>
         <activity android:name="UserActivity" android:theme="@android:style/Theme.Translucent"></activity>
+        <activity android:name="UserListsActivity"></activity>
 
 		<activity android:name="Users"></activity>
 		<activity android:name="TabGeneral"></activity>

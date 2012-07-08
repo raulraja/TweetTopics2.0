@@ -141,6 +141,7 @@
     <item>Редактировать пользователя</item>
     <item>Обновить аватар</item>
     <item>Удалить</item>
+      <item>Посмотреть списки</item>
   </string-array>
   <string-array name="actions_samples_search">
     <item>Android: General</item>

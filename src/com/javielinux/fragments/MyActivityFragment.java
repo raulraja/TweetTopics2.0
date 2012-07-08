@@ -34,6 +34,7 @@ import com.javielinux.facebook.FacebookHandler;
 import com.javielinux.tweettopics2.EditUserTwitter;
 import com.javielinux.tweettopics2.R;
 import com.javielinux.tweettopics2.ThemeManager;
+import com.javielinux.tweettopics2.UserListsActivity;
 import com.javielinux.twitter.AuthorizationActivity;
 import com.javielinux.utils.TweetTopicsUtils;
 import com.javielinux.utils.Utils;
@@ -45,6 +46,7 @@ public class MyActivityFragment extends Fragment {
 
     public static final int ACTIVITY_NEW_TWITTER_USER = 0;
     public static final int ACTIVITY_EDIT_TWITTER_USER = 1;
+    public static final int ACTIVITY_SHOW_USER_LISTS = 2;
 
     private MyActivityAdapter adapter;
 
@@ -312,6 +314,14 @@ public class MyActivityFragment extends Fragment {
 
     }
 
+    public void showUserLists() {
+        if (idUser > 0) {
+            Intent userLists = new Intent(getActivity(), UserListsActivity.class);
+            userLists.putExtra(DataFramework.KEY_ID, idUser);
+            startActivityForResult(userLists, ACTIVITY_SHOW_USER_LISTS);
+        }
+    }
+
     public void changeAvatar() {
 
         progressDialog = new ProgressDialog(getActivity());
@@ -408,6 +418,8 @@ public class MyActivityFragment extends Fragment {
                     refreshAvatar();
                 } else if (which == 3) {
                     showDeleteUserDialog();
+                } else if (which == 4) {
+                    showUserLists();
                 }
             }
         });

@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:background="#44000000"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent">
+
+        <TextView android:id="@+id/user_list_selection"
+            android:drawableTop="@drawable/action_bar_user_list"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            style="@style/TextGridSearch"
+            android:text="@string/my_lists" />
+
+        <ImageView android:id="@+id/divider1"
+            android:background="@drawable/action_bar_divider"
+            android:contentDescription=""
+            android:layout_height="fill_parent"
+            android:layout_width="wrap_content" />
+
+        <TextView android:id="@+id/user_following_list_selection"
+            android:drawableTop="@drawable/action_bar_user_following_list"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            style="@style/TextGridSearch"
+            android:text="@string/list_follow_me" />
+
+        <ImageView android:id="@+id/divider2"
+            android:background="@drawable/action_bar_divider"
+            android:contentDescription=""
+            android:layout_height="fill_parent"
+            android:layout_width="wrap_content" />
+
+        <TextView android:id="@+id/user_list_update"
+            android:drawableTop="@drawable/action_bar_refresh"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            style="@style/TextGridSearch"
+            android:text="@string/update" />
+
+        <ImageView android:id="@+id/divider3"
+            android:background="@drawable/action_bar_divider"
+            android:contentDescription=""
+            android:layout_height="fill_parent"
+            android:layout_width="wrap_content" />
+
+        <TextView android:id="@+id/user_list_close"
+            android:drawableTop="@drawable/action_bar_close"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            style="@style/TextGridSearch"
+            android:text="@string/close" />
+
+    </LinearLayout>
+
+    <LinearLayout android:id="@+id/user_lists_view_loading"
+        android:background="?attr/bottom_bar_background"
+        android:gravity="center"
+        android:layout_height="fill_parent"
+        android:layout_width="fill_parent"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <ProgressBar
+            android:indeterminate="true"
+            android:layout_height="16sp"
+            android:layout_marginRight="6sp"
+            android:layout_width="16sp" />
+        <TextView android:id="@+id/text_loading"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:text="@string/loading" />
+
+    </LinearLayout>
+
+    <LinearLayout android:id="@+id/user_lists_view_no_internet"
+        android:gravity="center"
+        android:layout_height="fill_parent"
+        android:layout_width="fill_parent"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="15dp"
+            android:layout_width="wrap_content"
+            android:text="@string/error_general" />
+
+        <Button android:id="@+id/user_lists_view_no_internet"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:text="@string/retry"/>
+
+    </LinearLayout>
+
+    <GridView android:id="@+id/grid_userlist"
+        android:background="?attr/bottom_bar_background"
+        android:columnWidth="100dip"
+        android:gravity="center"
+        android:horizontalSpacing="5dip"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_width="fill_parent"
+        android:numColumns="auto_fit"
+        android:stretchMode="columnWidth">
+    </GridView>
+
+</LinearLayout>

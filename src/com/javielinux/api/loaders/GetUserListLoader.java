@@ -32,15 +32,15 @@ public class GetUserListLoader extends AsynchronousLoader<BaseResponse> {
             ConnectionManager.getInstance().open(getContext());
 
             // Delete user list from com.javielinux.database for updating the info
-            String sql_delete_user_list = "DELETE FROM user_lists WHERE user_id="+ request.getEntity().getInt("user_id") + " AND type_id=1";
+            String sql_delete_user_list = "DELETE FROM user_lists WHERE user_id="+ request.getEntity().getId() + " AND type_id=1";
             DataFramework.getInstance().getDB().execSQL(sql_delete_user_list);
 
-            ResponseList<UserList> user_list = ConnectionManager.getInstance().getTwitter(request.getEntity().getInt("user_id")).getAllUserLists(request.getEntity().getString("name"));
+            ResponseList<UserList> user_list = ConnectionManager.getInstance().getTwitter(request.getEntity().getId()).getAllUserLists(request.getEntity().getString("name"));
 
             for (int i = 0; i < user_list.size(); i++) {
                 Entity user_list_entity = new Entity("user_lists");
 
-                user_list_entity.setValue("user_id", request.getEntity().getInt("user_id"));
+                user_list_entity.setValue("user_id", request.getEntity().getId());
                 user_list_entity.setValue("user_screenname", user_list.get(i).getUser().getScreenName());
                 user_list_entity.setValue("url_avatar", user_list.get(i).getUser().getProfileImageURL());
                 user_list_entity.setValue("userlist_id", user_list.get(i).getId());
@@ -53,14 +53,14 @@ public class GetUserListLoader extends AsynchronousLoader<BaseResponse> {
             }
 
             // Delete user list from com.javielinux.database for updating the info
-            String sql_delete_user_following_list = "DELETE FROM user_lists WHERE user_id="+ request.getEntity().getInt("user_id") + " AND type_id=2";
+            String sql_delete_user_following_list = "DELETE FROM user_lists WHERE user_id="+ request.getEntity().getId() + " AND type_id=2";
             DataFramework.getInstance().getDB().execSQL(sql_delete_user_following_list);
 
-            ResponseList<UserList> user_following_list = ConnectionManager.getInstance().getTwitter(request.getEntity().getInt("user_id")).getUserListMemberships(request.getEntity().getString("name"), -1);
+            ResponseList<UserList> user_following_list = ConnectionManager.getInstance().getTwitter(request.getEntity().getId()).getUserListMemberships(request.getEntity().getString("name"), -1);
 
             for (int i = 0; i < user_following_list.size(); i++) {
                 Entity user_list_entity = new Entity("user_lists");
-                user_list_entity.setValue("user_id", request.getEntity().getInt("user_id"));
+                user_list_entity.setValue("user_id", request.getEntity().getId());
                 user_list_entity.setValue("user_screenname", user_following_list.get(i).getUser().getScreenName());
                 user_list_entity.setValue("url_avatar", user_following_list.get(i).getUser().getProfileImageURL());
                 user_list_entity.setValue("userlist_id", user_following_list.get(i).getId());

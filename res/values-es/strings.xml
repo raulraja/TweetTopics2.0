@@ -4,6 +4,7 @@
     <!-- v 2.0  -->
 
     <string name="column_created">Creada columna %1$s</string>
+    <string name="column_exists">La columna ya está creada: %1$s</string>
 
     <string name="column_no_found">Columna no encontrada: %1$s</string>
 
@@ -22,6 +23,20 @@
     <string name="title_saved_tweets">Tweets</string>
     <string name="title_saved_images">Imágenes</string>
     <string name="title_saved_links">Enlaces</string>
+
+    <!-- v 1.74  -->
+
+    <string name="volume_control_search_user">Usuario</string>
+    <string name="volume_control_search_user_msg">Nombre de usuario que quieres buscar</string>
+
+    <string name="volume_control_search_word">Palabra</string>
+    <string name="volume_control_search_word_msg">Palabra que quieres buscar</string>
+
+    <string name="update">Actualizar</string>
+    <string name="user_list_get_message">No existe ninguna información acerca de las listas del usuario en el sistema. ¿Quieres comprobar si hay alguna información en el servidor? Esta operación puede llevar algún tiempo.</string>
+    <string name="user_list_update_message">¿Quieres actualizar las listas del usuario con la información existente en el servidor? Esta operación puede llevar algún tiempo.</string>
+
+    <string name="volume_control">Control del volumen</string>
 
     <!-- v 1.72  -->
     <string name="show_retweeters">Mostrar retweeters</string>

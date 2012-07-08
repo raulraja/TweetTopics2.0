@@ -8,10 +8,10 @@ public class LoadTypeStatusResponse implements BaseResponse {
 
     private ArrayList<InfoTweet> infoTweetArrayList;
 
-    public ArrayList<InfoTweet> getInfoTweetList() {
+    public ArrayList<InfoTweet> getInfoTweets() {
         return infoTweetArrayList;
     }
-    public void setInfoTweetList(ArrayList<InfoTweet> list) {
+    public void setInfoTweets(ArrayList<InfoTweet> list) {
         this.infoTweetArrayList = list;
     }
 

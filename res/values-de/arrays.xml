@@ -237,6 +237,7 @@
     	<item>Avatar aktualisieren</item>
     	<item>Timeline auf Telefon speichern</item>
     	<item>L&#246;schen</item>
+        <item>Listen anzeigen</item>
     </string-array>
     
     <string-array name="actions_samples_search">

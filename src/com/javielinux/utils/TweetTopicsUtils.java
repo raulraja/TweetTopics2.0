@@ -29,7 +29,7 @@ public class TweetTopicsUtils {
     public static final int TWEET_TYPE_FAVORITES = 2;
     public static final int TWEET_TYPE_DIRECTMESSAGES = 3;
     public static final int TWEET_TYPE_SENT_DIRECTMESSAGES = 4;
-
+    public static final int TWEET_TYPE_USER_LIST = 5;
 
     public static boolean hasColumn(long userId, int column) {
         for (Entity entityColumn : DataFramework.getInstance().getEntityList("columns")) {

@@ -134,7 +134,7 @@ public class LoadTypeStatusLoader extends AsynchronousLoader<BaseResponse> {
 				}
 			}
 
-            response.setInfoTweetList(result);
+            response.setInfoTweets(result);
             return response;
 
 		} catch (TwitterException e) {

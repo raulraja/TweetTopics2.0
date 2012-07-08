@@ -4,6 +4,7 @@
     <!-- v 2.0  -->
 
     <string name="column_created">Created column %1$s</string>
+    <string name="column_exists">The column has already created: %1$s</string>
 
     <string name="column_no_found">Column no found: %1$s</string>
 
@@ -22,6 +23,20 @@
     <string name="title_saved_tweets">Tweets</string>
     <string name="title_saved_images">Images</string>
     <string name="title_saved_links">Links</string>
+
+    <!-- v 1.74  -->
+
+    <string name="volume_control_search_user">Username</string>
+    <string name="volume_control_search_user_msg">The username you wish to search</string>
+
+    <string name="volume_control_search_word">Word</string>
+    <string name="volume_control_search_word_msg">The word you wish to search</string>
+
+    <string name="update">Update</string>
+    <string name="user_list_get_message">There is no information about the user lists in the system. Would you like to check if there is some information on the server? This task may take some time</string>
+    <string name="user_list_update_message">Would you like to update the user lists with the info existing on the server? This task may take some time</string>
+
+    <string name="volume_control">Volume control</string>
 
     <!-- v 1.72  -->
     <string name="show_retweeters">Show retweeters</string>

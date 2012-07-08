@@ -10,10 +10,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.util.Log;
 import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
-import com.javielinux.fragments.MyActivityFragment;
-import com.javielinux.fragments.NoFoundFragment;
-import com.javielinux.fragments.SearchFragment;
-import com.javielinux.fragments.TweetTopicsFragment;
+import com.javielinux.fragments.*;
 import com.javielinux.tweettopics2.R;
 import com.javielinux.utils.TweetTopicsUtils;
 import com.javielinux.utils.Utils;
@@ -101,6 +98,8 @@ public class TweetTopicsFragmentAdapter extends FragmentPagerAdapter  {
                 return myActivityFragment;
             case TweetTopicsUtils.COLUMN_SEARCH:
                 return new SearchFragment(fragmentList.get(index).getId());
+            case TweetTopicsUtils.COLUMN_LIST_USER:
+                return new ListUserFragment(fragmentList.get(index).getId());
             default:
                 return new NoFoundFragment(fragmentList.get(index).getString("description"));
         }
@@ -118,6 +117,9 @@ public class TweetTopicsFragmentAdapter extends FragmentPagerAdapter  {
             case TweetTopicsUtils.COLUMN_SEARCH:
                 Entity ent = new Entity("search", fragmentList.get(position).getLong("search_id"));
                 return ent.getString("name");
+            case TweetTopicsUtils.COLUMN_LIST_USER:
+                Entity list_user_entity = new Entity("user_lists", fragmentList.get(position).getLong("userlist_id"));
+                return list_user_entity.getString("name");
             default:
                 return fragmentList.get(position).getEntity("type_id").getString("title");
         }
