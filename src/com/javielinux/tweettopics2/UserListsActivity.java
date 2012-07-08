@@ -2,33 +2,19 @@ package com.javielinux.tweettopics2;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.StateListDrawable;
 import android.os.Bundle;
-import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.View;
 import android.widget.*;
 import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
-import com.javielinux.adapters.LinksAdapter;
 import com.javielinux.adapters.RowUserListsAdapter;
 import com.javielinux.api.APIDelegate;
 import com.javielinux.api.APITweetTopics;
 import com.javielinux.api.request.GetUserListRequest;
-import com.javielinux.api.request.SearchRequest;
 import com.javielinux.api.response.BaseResponse;
 import com.javielinux.api.response.ErrorResponse;
-import com.javielinux.fragmentadapter.TweetTopicsFragmentAdapter;
-import com.javielinux.twitter.ConnectionManager;
-import com.javielinux.utils.ImageUtils;
 import com.javielinux.utils.TweetTopicsUtils;
 import com.javielinux.utils.Utils;
-import com.viewpagerindicator.TitlePageIndicator;
-import twitter4j.TwitterException;
-import twitter4j.User;
 
 import java.util.ArrayList;
 
@@ -225,7 +211,9 @@ public class UserListsActivity extends BaseActivity implements APIDelegate<BaseR
         }
 
         userListsAdapter.clear();
-        userListsAdapter.addAll(userlist_entities);
+        for (Entity entity : userlist_entities) {
+            userListsAdapter.add(entity);
+        }
         userListsAdapter.notifyDataSetChanged();
 
         showUserLists();

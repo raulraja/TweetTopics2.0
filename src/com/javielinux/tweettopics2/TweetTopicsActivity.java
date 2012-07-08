@@ -12,6 +12,7 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.StateListDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.view.ViewPager;
 import android.view.*;
 import android.widget.*;
@@ -27,7 +28,6 @@ import com.javielinux.utils.Utils;
 import com.nineoldandroids.animation.Animator;
 import com.nineoldandroids.animation.AnimatorSet;
 import com.nineoldandroids.animation.ObjectAnimator;
-import com.nineoldandroids.animation.ValueAnimator;
 import com.viewpagerindicator.TitlePageIndicator;
 import infos.InfoTweet;
 import preferences.Preferences;
@@ -263,7 +263,7 @@ public class TweetTopicsActivity extends BaseActivity {
 
         layoutBackgroundColumnsBar.setVisibility(View.VISIBLE);
         layoutBackgroundColumnsItems.setVisibility(View.VISIBLE);
-
+        /*
         ValueAnimator moveMargins = ValueAnimator.ofFloat(getResources().getDimension(R.dimen.actionbar_height), getResources().getDimension(R.dimen.actionbar_columns_height));
         moveMargins.setDuration(250);
         moveMargins.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
@@ -275,12 +275,18 @@ public class TweetTopicsActivity extends BaseActivity {
                 pager.setLayoutParams(params);
             }
         });
+        */
+
+        int distance = (int)getResources().getDimension(R.dimen.actionbar_columns_height) - (int)getResources().getDimension(R.dimen.actionbar_height);
+
+        ObjectAnimator translationPager = ObjectAnimator.ofFloat(pager, "translationY", 0f, distance);
+        translationPager.setDuration(250);
 
         ObjectAnimator translationOut = ObjectAnimator.ofFloat(layoutBackgroundBar, "translationY", 0f, -getResources().getDimension(R.dimen.actionbar_height));
         translationOut.setDuration(250);
 
         AnimatorSet animatorSet = new AnimatorSet();
-        animatorSet.playTogether(translationOut, moveMargins);
+        animatorSet.playTogether(translationOut, translationPager);
         animatorSet.start();
 
 
@@ -291,7 +297,7 @@ public class TweetTopicsActivity extends BaseActivity {
 
         ObjectAnimator translationIn = ObjectAnimator.ofFloat(layoutBackgroundBar, "translationY", -getResources().getDimension(R.dimen.actionbar_height), 0f);
         translationIn.setDuration(250);
-
+        /*
         ValueAnimator moveMargins = ValueAnimator.ofFloat(getResources().getDimension(R.dimen.actionbar_columns_height), (int)getResources().getDimension(R.dimen.actionbar_height));
         moveMargins.setDuration(250);
         moveMargins.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
@@ -303,9 +309,15 @@ public class TweetTopicsActivity extends BaseActivity {
                 pager.setLayoutParams(params);
             }
         });
+         */
+
+        int distance = (int)getResources().getDimension(R.dimen.actionbar_columns_height) - (int)getResources().getDimension(R.dimen.actionbar_height);
+
+        ObjectAnimator translationPager = ObjectAnimator.ofFloat(pager, "translationY", distance, 0f);
+        translationPager.setDuration(250);
 
         AnimatorSet animatorSet = new AnimatorSet();
-        animatorSet.playTogether(moveMargins, translationIn);
+        animatorSet.playTogether(translationPager, translationIn);
 
         animatorSet.addListener(new Animator.AnimatorListener() {
             @Override
@@ -316,7 +328,15 @@ public class TweetTopicsActivity extends BaseActivity {
             public void onAnimationEnd(Animator animator) {
                 layoutBackgroundColumnsBar.setVisibility(View.GONE);
                 layoutBackgroundColumnsItems.setVisibility(View.GONE);
-                if (pos>=0) pager.setCurrentItem(pos, true);
+                if (pos>=0) {
+                    Handler myHandler = new Handler();
+                    myHandler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            pager.setCurrentItem(pos, true);
+                        }
+                    }, 100);
+                }
             }
 
             @Override
