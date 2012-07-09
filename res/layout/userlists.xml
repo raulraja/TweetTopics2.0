@@ -66,6 +66,21 @@
 
     </LinearLayout>
 
+    <LinearLayout android:id="@+id/user_lists_view_no_lists"
+        android:background="?attr/bottom_bar_background"
+        android:gravity="center"
+        android:layout_height="fill_parent"
+        android:layout_width="fill_parent"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <TextView android:id="@+id/text_loading"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:text="@string/no_list" />
+
+    </LinearLayout>
+
     <LinearLayout android:id="@+id/user_lists_view_loading"
         android:background="?attr/bottom_bar_background"
         android:gravity="center"

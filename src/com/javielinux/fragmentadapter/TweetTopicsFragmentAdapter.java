@@ -59,6 +59,20 @@ public class TweetTopicsFragmentAdapter extends FragmentPagerAdapter  {
         }
     }
 
+    public void refreshColumnList() {
+
+        try {
+            int last_position = fragmentList.get(fragmentList.size()-1).getInt("position");
+
+            fragmentList.addAll(DataFramework.getInstance().getEntityList("columns","position>" + last_position));
+
+            notifyDataSetChanged();
+        }
+        catch (Exception exception) {
+            exception.printStackTrace();
+        }
+    }
+
     public Entity getEntityItem(int position) {
         return fragmentList.get(position);
     }

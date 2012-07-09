@@ -13,6 +13,7 @@ import android.graphics.drawable.StateListDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.*;
 import android.widget.*;
@@ -73,15 +74,25 @@ public class TweetTopicsActivity extends BaseActivity {
     private int widthScreen;
     private int heightScreen;
 
+    public ViewPager getViewPager() {
+        return pager;
+    }
+
+    public TweetTopicsFragmentAdapter getFragmentPagerAdapter() {
+        return fragmentAdapter;
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        super.onActivityResult(requestCode, resultCode, data);
 
         switch (requestCode) {
             case ACTIVITY_NEWEDITSEARCH:
                 boolean create_column = data.getBooleanExtra("view", false);
 
                 if (create_column) {
-                    int count = DataFramework.getInstance().getEntityListCount("columns", "") + 1;
+                    final int count = DataFramework.getInstance().getEntityListCount("columns", "") + 1;
 
                     Entity type = new Entity("type_columns", (long) TweetTopicsUtils.COLUMN_SEARCH);
                     Entity search = new Entity("columns");
@@ -90,6 +101,15 @@ public class TweetTopicsActivity extends BaseActivity {
                     search.setValue("position", count);
                     search.setValue("search_id", data.getLongExtra(DataFramework.KEY_ID, -1));
                     search.save();
+
+                    Handler myHandler = new Handler();
+                    myHandler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            fragmentAdapter.refreshColumnList();
+                            pager.setCurrentItem(count, false);
+                        }
+                    }, 100);
                 }
 
                 break;

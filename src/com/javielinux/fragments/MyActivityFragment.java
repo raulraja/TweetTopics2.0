@@ -11,6 +11,8 @@ import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,16 +33,14 @@ import com.javielinux.dialogs.AlertDialogFragment;
 import com.javielinux.dialogs.CreateDefaultColumnsUserDialogFragment;
 import com.javielinux.dialogs.SelectImageDialogFragment;
 import com.javielinux.facebook.FacebookHandler;
-import com.javielinux.tweettopics2.EditUserTwitter;
-import com.javielinux.tweettopics2.R;
-import com.javielinux.tweettopics2.ThemeManager;
-import com.javielinux.tweettopics2.UserListsActivity;
+import com.javielinux.tweettopics2.*;
 import com.javielinux.twitter.AuthorizationActivity;
 import com.javielinux.utils.TweetTopicsUtils;
 import com.javielinux.utils.Utils;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.util.ArrayList;
 
 public class MyActivityFragment extends Fragment {
 
@@ -63,9 +63,7 @@ public class MyActivityFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         adapter = new MyActivityAdapter(getActivity(), this);
-
     }
 
     @Override
@@ -169,6 +167,20 @@ public class MyActivityFragment extends Fragment {
                     }
                 }
                 break;
+            case ACTIVITY_SHOW_USER_LISTS:
+                if (resultCode == Activity.RESULT_OK) {
+                    final int position = intent.getIntExtra("position", 0);
+
+                    Handler myHandler = new Handler();
+                    myHandler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            ((TweetTopicsActivity)getActivity()).getFragmentPagerAdapter().refreshColumnList();
+                            ((TweetTopicsActivity)getActivity()).getViewPager().setCurrentItem(position, false);
+                        }
+                    }, 100);
+                }
+                break;
         }
     }
 
@@ -182,16 +194,38 @@ public class MyActivityFragment extends Fragment {
     }
 
     public void clickSearch(Entity clickSearch) {
-        int count = DataFramework.getInstance().getEntityListCount("columns", "") + 1;
+        final ArrayList<Entity> created_column_list = DataFramework.getInstance().getEntityList("columns", "search_id=" + clickSearch.getId());
 
-        Entity type = new Entity("type_columns", (long) TweetTopicsUtils.COLUMN_SEARCH);
-        Entity search = new Entity("columns");
-        search.setValue("description", type.getString("description"));
-        search.setValue("type_id", type);
-        search.setValue("position", count);
-        search.setValue("search_id", clickSearch.getId());
-        search.save();
-        Toast.makeText(getActivity(), getString(R.string.column_created, clickSearch.getString("name")), Toast.LENGTH_LONG).show();
+        if (created_column_list.size() == 0) {
+            final int position = DataFramework.getInstance().getEntityListCount("columns", "") + 1;
+
+            Entity type = new Entity("type_columns", (long) TweetTopicsUtils.COLUMN_SEARCH);
+            Entity search = new Entity("columns");
+            search.setValue("description", type.getString("description"));
+            search.setValue("type_id", type);
+            search.setValue("position", position);
+            search.setValue("search_id", clickSearch.getId());
+            search.save();
+            Toast.makeText(getActivity(), getString(R.string.column_created, clickSearch.getString("name")), Toast.LENGTH_LONG).show();
+
+            Handler myHandler = new Handler();
+            myHandler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    ((TweetTopicsActivity)getActivity()).getFragmentPagerAdapter().refreshColumnList();
+                    ((TweetTopicsActivity)getActivity()).getViewPager().setCurrentItem(position, false);
+                }
+            }, 100);
+        } else {
+            Handler myHandler = new Handler();
+            myHandler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    ((TweetTopicsActivity)getActivity()).getViewPager().setCurrentItem(created_column_list.get(0).getInt("position"), false);
+                }
+            }, 100);
+
+        }
     }
 
     public void fillData() {
