@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="fill_parent"
+    android:layout_width="fill_parent">
+
+    <com.handmark.pulltorefresh.library.PullToRefreshListView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:id="@+id/trend_listview"
+            />
+
+    <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:gravity="center"
+            android:visibility="gone"
+            android:id="@+id/trend_view_loading"
+            >
+
+        <ProgressBar
+                android:layout_width="16sp"
+                android:layout_height="16sp"
+                android:indeterminate="true"
+                android:layout_marginRight="6sp"
+                />
+        <TextView
+                android:id="@+id/trend_fragment_text_loading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/loading"
+                />
+
+    </LinearLayout>
+
+    <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:gravity="center"
+            android:visibility="gone"
+            android:id="@+id/trend_view_no_internet"
+            >
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/error_general"
+                android:layout_marginBottom="15dp"
+                />
+
+        <Button android:id="@+id/trend_view_no_internet"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/retry"/>
+
+    </LinearLayout>
+
+    <LinearLayout android:layout_width="fill_parent" android:layout_height="fill_parent"
+                  android:id="@+id/trend_view_update"
+                  android:gravity="bottom"
+                  android:orientation="vertical" android:visibility="gone"
+            >
+        <LinearLayout android:layout_width="fill_parent" android:layout_height="15dip"
+                      android:orientation="horizontal"
+                      android:gravity="center"
+                      android:background="?attr/color_background_text_info_background"
+                >
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/updating"
+                    style="@style/BackgroundText" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+</RelativeLayout>

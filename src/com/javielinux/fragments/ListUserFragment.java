@@ -51,9 +51,6 @@ public class ListUserFragment extends Fragment implements APIDelegate<BaseRespon
     private LinearLayout viewNoInternet;
     private LinearLayout viewUpdate;
 
-    private int positionLastRead = 0;
-    private boolean flinging = false;
-
     public ListUserFragment(long column_id) {
 
         column_entity = new Entity("columns", column_id);

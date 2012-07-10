@@ -1,6 +1,7 @@
 package com.javielinux.tweettopics2;
 
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -42,6 +43,7 @@ public class TweetTopicsActivity extends BaseActivity {
     protected static final int EXIT_ID = Menu.FIRST + 2;
     protected static final int MANAGER_USER_ID = Menu.FIRST + 3;
     protected static final int SIZE_TEXT_ID = Menu.FIRST + 4;
+    protected static final int TRENDS_LOCATION = Menu.FIRST + 5;
 
     public static final int ACTIVITY_NEWEDITSEARCH = 0;
     public static final int ACTIVITY_PREFERENCES = 1;
@@ -49,6 +51,7 @@ public class TweetTopicsActivity extends BaseActivity {
     public static final int ACTIVITY_USER = 3;
     public static final int ACTIVITY_WALLPAPER = 4;
     public static final int ACTIVITY_COLORS_APP = 5;
+    public static final int ACTIVITY_TRENDS_LOCATION = 6;
 
     private ViewPager pager;
     private TweetTopicsFragmentAdapter fragmentAdapter;
@@ -113,6 +116,20 @@ public class TweetTopicsActivity extends BaseActivity {
                 }
 
                 break;
+            case ACTIVITY_TRENDS_LOCATION:
+                if (resultCode == Activity.RESULT_OK) {
+                    final int position = data.getIntExtra("position", 0);
+
+                    Handler myHandler = new Handler();
+                    myHandler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            fragmentAdapter.refreshColumnList();
+                            pager.setCurrentItem(position, false);
+                        }
+                    }, 100);
+                }
+                break;
         }
 
     }
@@ -127,7 +144,10 @@ public class TweetTopicsActivity extends BaseActivity {
                 .setIcon(android.R.drawable.ic_menu_preferences);
         menu.add(0, EXIT_ID, 0, R.string.exit)
                 .setIcon(android.R.drawable.ic_menu_revert);
-        menu.add(0, MANAGER_USER_ID, 0, R.string.manager_user);
+        menu.add(0, MANAGER_USER_ID, 0, R.string.manager_user)
+                .setIcon(android.R.drawable.ic_menu_agenda);
+        menu.add(0, TRENDS_LOCATION, 0, R.string.trending_topics)
+                .setIcon(R.drawable.gd_action_bar_trending);
         return true;
     }
 
@@ -148,6 +168,10 @@ public class TweetTopicsActivity extends BaseActivity {
                 return true;
             case EXIT_ID:
                 showDialogExit();
+                return true;
+            case TRENDS_LOCATION:
+                Intent trendslocation_intent = new Intent(this, TrendsLocationActivity.class);
+                startActivityForResult(trendslocation_intent, ACTIVITY_TRENDS_LOCATION);
                 return true;
         }
         return false;

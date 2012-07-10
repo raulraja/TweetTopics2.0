@@ -7,7 +7,10 @@ import com.javielinux.api.response.BaseResponse;
 import com.javielinux.api.response.ErrorResponse;
 import com.javielinux.api.response.TrendsResponse;
 import com.javielinux.twitter.ConnectionManager;
+import twitter4j.Trend;
 import twitter4j.TwitterException;
+
+import java.util.ArrayList;
 
 public class TrendsLoader extends AsynchronousLoader<BaseResponse> {
 
@@ -25,7 +28,13 @@ public class TrendsLoader extends AsynchronousLoader<BaseResponse> {
             ConnectionManager.getInstance().open(getContext());
 
             TrendsResponse response = new TrendsResponse();
-            response.setTrends(ConnectionManager.getInstance().getAnonymousTwitter().getLocationTrends(location_id).getTrends());
+            Trend[] trends_list = ConnectionManager.getInstance().getAnonymousTwitter().getLocationTrends(location_id).getTrends();
+            ArrayList<Trend> trends_arraylist = new ArrayList<Trend>();
+
+            for (int i = 0; i < trends_list.length; i++)
+                trends_arraylist.add(trends_list[i]);
+
+            response.setTrends(new ArrayList<Trend>(trends_arraylist));
             return response;
         } catch (TwitterException e) {
             e.printStackTrace();

@@ -114,6 +114,8 @@ public class TweetTopicsFragmentAdapter extends FragmentPagerAdapter  {
                 return new SearchFragment(fragmentList.get(index).getId());
             case TweetTopicsUtils.COLUMN_LIST_USER:
                 return new ListUserFragment(fragmentList.get(index).getId());
+            case TweetTopicsUtils.COLUMN_TRENDING_TOPIC:
+                return new TrendingTopicsFragment(fragmentList.get(index).getId());
             default:
                 return new NoFoundFragment(fragmentList.get(index).getString("description"));
         }
