@@ -56,8 +56,6 @@ public class RowTrendsLocationAdapter extends BaseAdapter {
             view = convertView;
 		}
 
-        view.setBackgroundDrawable(ImageUtils.createStateListDrawable(mContext, new ThemeManager(mContext).getColor("list_background_row_color")));
-
         TextView location_name = (TextView)view.findViewById(R.id.location_name);
         location_name.setText(item.getName());
 

@@ -3,8 +3,9 @@ package com.javielinux.tweettopics2;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Shader;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.View;
 import android.widget.*;
 import com.android.dataframework.DataFramework;
@@ -30,6 +31,9 @@ public class UserListsActivity extends BaseActivity implements APIDelegate<BaseR
     private ArrayList<Entity> userlist_entities;
     private int type_id;
 
+    private ThemeManager themeManager;
+
+    private LinearLayout viewUserListsParent;
     private LinearLayout viewNoLists;
     private LinearLayout viewLoading;
     private LinearLayout viewNoInternet;
@@ -67,15 +71,22 @@ public class UserListsActivity extends BaseActivity implements APIDelegate<BaseR
 
         user_entity = new Entity("users", user_id);
 
-        ThemeManager mThemeManager = new ThemeManager(this);
-        mThemeManager.setTheme();
+        themeManager = new ThemeManager(this);
+        themeManager.setTheme();
 
-        setContentView(R.layout.userlists);
+        setContentView(R.layout.userlists_activity);
 
+        viewUserListsParent = (LinearLayout) this.findViewById(R.id.user_lists_parent);
         viewNoLists = (LinearLayout) this.findViewById(R.id.user_lists_view_no_lists);
         viewLoading = (LinearLayout) this.findViewById(R.id.user_lists_view_loading);
         viewNoInternet = (LinearLayout) this.findViewById(R.id.user_lists_view_no_internet);
         viewUserLists = (GridView) this.findViewById(R.id.grid_userlist);
+
+        BitmapDrawable bmp = (BitmapDrawable) this.getResources().getDrawable(themeManager.getResource("search_tile"));
+        if (bmp != null) {
+            bmp.setTileModeXY(Shader.TileMode.REPEAT, Shader.TileMode.REPEAT);
+            viewUserListsParent.setBackgroundDrawable(bmp);
+        }
 
         TextView userOwnList = (TextView) this.findViewById(R.id.user_list_selection);
         userOwnList.setOnClickListener(new View.OnClickListener() {

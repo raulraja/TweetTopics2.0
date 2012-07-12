@@ -1,10 +1,15 @@
 package com.javielinux.tweettopics2;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.DataSetObserver;
+import android.graphics.Color;
+import android.graphics.Shader;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
@@ -30,10 +35,13 @@ import java.util.List;
 
 public class TrendsLocationActivity extends BaseActivity implements APIDelegate<BaseResponse> {
 
+    private LinearLayout viewTrendsParent;
     private LinearLayout viewNoTrendsLocation;
     private LinearLayout viewLoading;
     private LinearLayout viewNoInternet;
     private ListView listView;
+
+    private ThemeManager themeManager;
     
     private ArrayList<Location> trendslocation_list;
     private RowTrendsLocationAdapter trendslocation_adapter;
@@ -44,15 +52,22 @@ public class TrendsLocationActivity extends BaseActivity implements APIDelegate<
 
         Utils.setActivity(this);
 
-        ThemeManager mThemeManager = new ThemeManager(this);
-        mThemeManager.setTheme();
+        themeManager = new ThemeManager(this);
+        themeManager.setTheme();
 
         setContentView(R.layout.trendslocation_activity);
 
+        viewTrendsParent = (LinearLayout) this.findViewById(R.id.trends_location_parent);
         viewNoTrendsLocation = (LinearLayout) this.findViewById(R.id.trends_location_view_no_lists);
         viewLoading = (LinearLayout) this.findViewById(R.id.trends_location_view_loading);
         viewNoInternet = (LinearLayout) this.findViewById(R.id.trends_location_view_no_internet);
         listView = (ListView) this.findViewById(R.id.trends_location_list);
+
+        BitmapDrawable bmp = (BitmapDrawable) this.getResources().getDrawable(themeManager.getResource("search_tile"));
+        if (bmp != null) {
+            bmp.setTileModeXY(Shader.TileMode.REPEAT, Shader.TileMode.REPEAT);
+            viewTrendsParent.setBackgroundDrawable(bmp);
+        }
 
         trendslocation_list = new ArrayList<Location>();
         trendslocation_adapter = new RowTrendsLocationAdapter(this, trendslocation_list);
