@@ -171,7 +171,7 @@ public class TweetTopicsFragment extends Fragment implements APIDelegate<BaseRes
         tweetsAdapter.setFlinging(flinging);
         if (!flinging) {
             markPositionLastReadAsLastReadId();
-            //tweetsAdapter.notifyDataSetChanged();
+            tweetsAdapter.launchVisibleTask(listView.getRefreshableView().getFirstVisiblePosition(), listView.getRefreshableView().getLastVisiblePosition());
         }
     }
 

@@ -14,19 +14,16 @@ import android.graphics.drawable.StateListDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.*;
 import android.widget.*;
 import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
 import com.javielinux.adapters.LinksAdapter;
+import com.javielinux.dialogs.AlertDialogFragment;
 import com.javielinux.dialogs.HashTagDialogFragment;
 import com.javielinux.fragmentadapter.TweetTopicsFragmentAdapter;
-import com.javielinux.utils.ImageUtils;
-import com.javielinux.utils.PreferenceUtils;
-import com.javielinux.utils.TweetTopicsUtils;
-import com.javielinux.utils.Utils;
+import com.javielinux.utils.*;
 import com.nineoldandroids.animation.Animator;
 import com.nineoldandroids.animation.AnimatorSet;
 import com.nineoldandroids.animation.ObjectAnimator;
@@ -293,6 +290,13 @@ public class TweetTopicsActivity extends BaseActivity {
                     showActionBarIndicatorAndMovePager((Integer) view.getTag());
                 }
             });
+            view.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    showDialogDeleteColumn((Integer) view.getTag());
+                    return false;
+                }
+            });
             layoutBackgroundColumnsItems.addView(view);
 
             ImageView separator = new ImageView(this);
@@ -300,6 +304,35 @@ public class TweetTopicsActivity extends BaseActivity {
             layoutBackgroundColumnsItems.addView(separator, new LinearLayout.LayoutParams(1, ViewGroup.LayoutParams.FILL_PARENT));
 
         }
+    }
+
+    private void showDialogDeleteColumn(final int position) {
+        AlertDialogFragment frag = new AlertDialogFragment();
+        Bundle args = new Bundle();
+        args.putInt(AlertDialogFragment.KEY_ALERT_TITLE, R.string.delete);
+        args.putInt(AlertDialogFragment.KEY_ALERT_MESSAGE, R.string.column_delete);
+        args.putBoolean(AlertDialogFragment.KEY_ALERT_HAS_NEGATIVE_BUTTON, true);
+        frag.setArguments(args);
+        frag.setAlertButtonListener(new AlertDialogFragment.AlertButtonListener() {
+            @Override
+            public void OnAlertButtonOk() {
+                // TODO Delete column
+                Toast.makeText(TweetTopicsActivity.this,"Paco borra la columna " + position + " aquí pisha",Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void OnAlertButtonCancel() {
+            }
+
+            @Override
+            public void OnAlertButtonNeutral() {
+            }
+
+            @Override
+            public void OnAlertItems(int which) {
+            }
+        });
+        frag.show(getSupportFragmentManager(), "dialog");
     }
 
     public void showActionBarColumns() {
@@ -465,7 +498,7 @@ public class TweetTopicsActivity extends BaseActivity {
 
     public void showLinks(View view, InfoTweet infoTweet) {
 
-        ArrayList<String> linksInText = Utils.pullLinks(infoTweet.getText(), infoTweet.getContentURLs());
+        ArrayList<String> linksInText = LinksUtils.pullLinks(infoTweet.getText(), infoTweet.getContentURLs());
 
         if (linksInText.size()==1) {
             goToLink(linksInText.get(0));
@@ -594,6 +627,10 @@ public class TweetTopicsActivity extends BaseActivity {
                  showActionBarIndicatorAndMovePager(-1);
                  return false;
              }
+            if (isShowLinks()) {
+                hideLinks();
+                return false;
+            }
         }
         return super.onKeyDown(keyCode, event);
     }

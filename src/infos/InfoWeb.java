@@ -1,6 +1,5 @@
 package infos;
 
-import android.graphics.Bitmap;
 import android.util.Log;
 import com.javielinux.utils.Utils;
 import org.htmlcleaner.CleanerProperties;
@@ -22,7 +21,6 @@ public class InfoWeb {
 	private String title = "";
 	private String image = "";
 	private String description = "";
-	private Bitmap imageBitmap = null;
 	
 	public InfoWeb(String web) {
 		this.web = web;
@@ -81,7 +79,6 @@ public class InfoWeb {
 	                	}
 	                }
 	                image = w;
-	                imageBitmap = Utils.getBitmap(w, Utils.HEIGHT_IMAGELINK);
 	            }
 			} catch (OutOfMemoryError e) {
 				e.printStackTrace();
@@ -111,10 +108,6 @@ public class InfoWeb {
 
 	public String getDescription() {
 		return description;
-	}
-
-	public Bitmap getImageBitmap() {
-		return imageBitmap;
 	}
 
 	public String getTitle() {

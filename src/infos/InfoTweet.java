@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
 import com.android.dataframework.Entity;
+import com.javielinux.utils.LinksUtils;
 import com.javielinux.utils.Utils;
 import com.javielinux.utils.Utils.URLContent;
 import twitter4j.Status;
@@ -58,6 +59,9 @@ public class InfoTweet implements Parcelable {
     private String sourceRetweet = "";
 	
 	private String urlTweet = "";
+
+    private String bestLink = "";
+    private int linksCount = 0;
 	
 	public InfoTweet(Tweet tweet) {
 		writeTweet(tweet);
@@ -81,6 +85,7 @@ public class InfoTweet implements Parcelable {
 		}
 		
 		urlTweet = START_URL_TWITTER + username.toLowerCase() + "/status/" + id;
+        calculateLinks();
 	}
 	
 	public InfoTweet(Status status) {
@@ -115,6 +120,8 @@ public class InfoTweet implements Parcelable {
 		}
 		
 		urlTweet = "http://twitter.com/#!/" + username.toLowerCase() + PREFIX_URL_TWITTER + id;
+
+        calculateLinks();
 	}
 
 	public InfoTweet(Entity entity) {
@@ -160,6 +167,8 @@ public class InfoTweet implements Parcelable {
 		}
 		
 		urlTweet = "http://twitter.com/#!/" + username.toLowerCase() + "/status/" + id;
+
+        calculateLinks();
 	}
 	
 	public InfoTweet(User user) {
@@ -187,7 +196,56 @@ public class InfoTweet implements Parcelable {
 			}
 		} catch (Exception e) {
 		}
+
+        calculateLinks();
 	}
+
+    private void calculateLinks() {
+        ArrayList<String> links = LinksUtils.pullLinks(getText(), getContentURLs());
+        linksCount = links.size();
+        bestLink = searchLink(links);
+    }
+
+    private String searchLink(ArrayList<String> links) {
+        if (links.size()>0) {
+            // primero buscamos un link con imagen
+
+            for (String link : links) {
+                if (!link.startsWith("@") || !link.startsWith("#")) {
+                    if (LinksUtils.isLinkImage(link)){
+                        return link;
+                    }
+                }
+            }
+
+            // si no un link normal
+
+            for (String link : links) {
+                if (!link.startsWith("@") || !link.startsWith("#")) {
+                    return link;
+                }
+            }
+
+
+            // si no un usuario
+
+            for (String link : links) {
+                if (link.startsWith("@")) {
+                    return link;
+                }
+            }
+
+            // si no un hashtag
+
+            for (String link : links) {
+                if (link.startsWith("#")) {
+                    return link;
+                }
+            }
+
+        }
+        return "";
+    }
 
 
 	public long getId() {
@@ -449,6 +507,8 @@ public class InfoTweet implements Parcelable {
         urlTweet = in.readString();
         textHTMLFinal = in.readString();
 
+        calculateLinks();
+
     }
 
     public boolean isDm() {
@@ -463,4 +523,11 @@ public class InfoTweet implements Parcelable {
         return (mTypeFrom == FROM_SAVED_TWEET);
     }
 
+    public String getBestLink() {
+        return bestLink;
+    }
+
+    public int getLinksCount() {
+        return linksCount;
+    }
 }

@@ -21,6 +21,7 @@ import com.javielinux.database.EntitySearch;
 import com.javielinux.tweettopics2.R;
 import com.javielinux.tweettopics2.TweetTopicsActivity;
 import com.javielinux.twitter.ConnectionManager;
+import com.javielinux.utils.LinksUtils;
 import com.javielinux.utils.PreferenceUtils;
 import com.javielinux.utils.Utils;
 import infos.InfoImagesTweet;
@@ -232,7 +233,7 @@ public class ServiceWidgetTweets4x2 extends Service {
 	    		mRemoteView.setTextViewText(R.id.w_tweet_text, Html.fromHtml(Utils.toHTML(context, mTweets.get(mCurrentTweet).getText())));
 				mRemoteView.setTextViewText(R.id.w_tweet_date,  Utils.timeFromTweet(this, mTweets.get(mCurrentTweet).getDate()) );
 				
-				ArrayList<String> links = Utils.pullLinksHTTP(mTweets.get(mCurrentTweet).getText());
+				ArrayList<String> links = LinksUtils.pullLinksHTTP(mTweets.get(mCurrentTweet).getText());
 							
 				for (int i=0; i<5; i++) {
 					int id = 0;

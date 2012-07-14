@@ -54,7 +54,7 @@ public class InfoLink {
 	public String getLink() {
 		return link;
 	}
-
+    /*
 	public void setBitmapThumb(Bitmap bmp) {
 		this.bmpThumb = bmp;
 	}
@@ -70,7 +70,7 @@ public class InfoLink {
 	public Bitmap getBitmapLarge() {
 		return bmpLarge;
 	}
-
+    */
 	public void setService(String service) {
 		this.service = service;
 	}

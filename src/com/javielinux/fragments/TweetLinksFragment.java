@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import com.javielinux.adapters.TweetsLinkAdapter;
 import com.javielinux.tweettopics2.R;
-import com.javielinux.utils.Utils;
+import com.javielinux.utils.LinksUtils;
 import infos.InfoTweet;
 
 public class TweetLinksFragment extends Fragment {
@@ -27,7 +27,7 @@ public class TweetLinksFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         adapter = new TweetsLinkAdapter(getActivity(), getLoaderManager(),
-                Utils.pullLinks(infoTweet.getText(), infoTweet.getContentURLs()));
+                LinksUtils.pullLinks(infoTweet.getText(), infoTweet.getContentURLs()));
 
     }
 

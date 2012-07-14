@@ -109,7 +109,7 @@ public class TweetActions {
         if (infoTweet.isDm()) {
             directMessage(activity, infoTweet.getUsername());
         } else {
-            ArrayList<String> users = Utils.pullLinksUsers(infoTweet.getText());
+            ArrayList<String> users = LinksUtils.pullLinksUsers(infoTweet.getText());
             int count = users.size();
             if (!users.contains("@" + infoTweet.getUsername())) count++;
 
@@ -134,7 +134,7 @@ public class TweetActions {
                     public void onClick(DialogInterface dialog, int which) {
                         if (which == 0) {
                             if (it != null) {
-                                ArrayList<String> users = Utils.pullLinksUsers(it.getText());
+                                ArrayList<String> users = LinksUtils.pullLinksUsers(it.getText());
                                 String text = "";
                                 String user = "";
                                 Entity e = DataFramework.getInstance().getTopEntity("users", "active=1", "");
@@ -151,7 +151,7 @@ public class TweetActions {
                             }
                         } else if (which == 1) {
                             if (it != null) {
-                                ArrayList<String> users = Utils.pullLinksUsers(it.getText());
+                                ArrayList<String> users = LinksUtils.pullLinksUsers(it.getText());
                                 String text = " //cc ";
                                 String user = "";
                                 Entity e = DataFramework.getInstance().getTopEntity("users", "active=1", "");

@@ -9,6 +9,17 @@ import com.javielinux.tweettopics2.R;
 
 public class AlertDialogFragment extends DialogFragment {
 
+    public static final String KEY_ALERT_TITLE = "title";
+    public static final String KEY_ALERT_MESSAGE = "message";
+    public static final String KEY_ALERT_ARRAY_ITEMS = "array_items";
+    public static final String KEY_ALERT_POSITION_LABEL = "positive_label";
+    public static final String KEY_ALERT_NEGATIVE_LABEL = "negative_label";
+    public static final String KEY_ALERT_NEUTRAL_LABEL = "neutral_label";
+    public static final String KEY_ALERT_HAS_POSITIVE_BUTTON = "has_positive_button";
+    public static final String KEY_ALERT_HAS_NEGATIVE_BUTTON = "has_negative_button";
+    public static final String KEY_ALERT_HAS_NEUTRAL_BUTTON = "has_neutral_button";
+    public static final String KEY_ALERT_CANCELABLE = "cancelable";
+
     public void setAlertButtonListener(AlertButtonListener alertButtonListener) {
         this.alertButtonListener = alertButtonListener;
     }
@@ -24,33 +35,33 @@ public class AlertDialogFragment extends DialogFragment {
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        int title = getArguments().getInt("title");
+        int title = getArguments().getInt(KEY_ALERT_TITLE);
         int message = 0;
-        if (getArguments().containsKey("message")) message = getArguments().getInt("message");
+        if (getArguments().containsKey(KEY_ALERT_MESSAGE)) message = getArguments().getInt(KEY_ALERT_MESSAGE);
 
         int arrayItems = 0;
-        if (getArguments().containsKey("array_items")) arrayItems = getArguments().getInt("array_items");
+        if (getArguments().containsKey(KEY_ALERT_ARRAY_ITEMS)) arrayItems = getArguments().getInt(KEY_ALERT_ARRAY_ITEMS);
 
         int positiveLabel = R.string.alert_dialog_ok;
-        if (getArguments().containsKey("positive_label")) positiveLabel = getArguments().getInt("positive_label");
+        if (getArguments().containsKey(KEY_ALERT_POSITION_LABEL)) positiveLabel = getArguments().getInt(KEY_ALERT_POSITION_LABEL);
 
         int negativeLabel = R.string.alert_dialog_cancel;
-        if (getArguments().containsKey("negative_label")) negativeLabel = getArguments().getInt("negative_label");
+        if (getArguments().containsKey(KEY_ALERT_NEGATIVE_LABEL)) negativeLabel = getArguments().getInt(KEY_ALERT_NEGATIVE_LABEL);
 
         int neutralLabel = R.string.alert_dialog_close;
-        if (getArguments().containsKey("neutral_label")) neutralLabel = getArguments().getInt("neutral_label");
+        if (getArguments().containsKey(KEY_ALERT_NEUTRAL_LABEL)) neutralLabel = getArguments().getInt(KEY_ALERT_NEUTRAL_LABEL);
 
         boolean hasPositiveButton = true;
-        if (getArguments().containsKey("has_positive_button")) hasPositiveButton = getArguments().getBoolean("has_positive_button");
+        if (getArguments().containsKey(KEY_ALERT_HAS_POSITIVE_BUTTON)) hasPositiveButton = getArguments().getBoolean(KEY_ALERT_HAS_POSITIVE_BUTTON);
 
         boolean hasNegativeButton = true;
-        if (getArguments().containsKey("has_negative_button")) hasNegativeButton = getArguments().getBoolean("has_negative_button");
+        if (getArguments().containsKey(KEY_ALERT_HAS_NEGATIVE_BUTTON)) hasNegativeButton = getArguments().getBoolean(KEY_ALERT_HAS_NEGATIVE_BUTTON);
 
         boolean hasNeutralButton = false;
-        if (getArguments().containsKey("has_neutral_button")) hasNeutralButton = getArguments().getBoolean("has_neutral_button");
+        if (getArguments().containsKey(KEY_ALERT_HAS_NEUTRAL_BUTTON)) hasNeutralButton = getArguments().getBoolean(KEY_ALERT_HAS_NEUTRAL_BUTTON);
 
         boolean cancelable = true;
-        if (getArguments().containsKey("cancelable")) cancelable = getArguments().getBoolean("cancelable");
+        if (getArguments().containsKey(KEY_ALERT_CANCELABLE)) cancelable = getArguments().getBoolean(KEY_ALERT_CANCELABLE);
 
         AlertDialog.Builder alert =  new AlertDialog.Builder(getActivity());
         alert.setTitle(title);

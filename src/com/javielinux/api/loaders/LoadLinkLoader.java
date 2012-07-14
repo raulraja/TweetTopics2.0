@@ -7,6 +7,7 @@ import com.javielinux.api.request.LoadLinkRequest;
 import com.javielinux.api.response.BaseResponse;
 import com.javielinux.api.response.ErrorResponse;
 import com.javielinux.api.response.LoadLinkResponse;
+import com.javielinux.utils.LinksUtils;
 import com.javielinux.utils.Utils;
 import infos.CacheData;
 import infos.InfoLink;
@@ -29,7 +30,7 @@ public class LoadLinkLoader extends AsynchronousLoader<BaseResponse> {
         InfoLink il = request.getInfoLink();
 
         if (il==null) {
-            il = Utils.getThumbTweet(request.getLink());
+            il = LinksUtils.getInfoTweet(request.getLink());
             if (il!=null) {
                 CacheData.putCacheImages(request.getLink(), il);
             }
@@ -46,8 +47,8 @@ public class LoadLinkLoader extends AsynchronousLoader<BaseResponse> {
                     if (!info.getDescription().equals("")) {
                         il.setDescription(info.getDescription());
                     }
-                    if (info.getImageBitmap()!=null) {
-                        il.setBitmapThumb(info.getImageBitmap());
+                    if (!"".equals(info.getImage())) {
+                        il.setLinkImageThumb(info.getImage());
                     }
 
                     il.setExtensiveInfo(true);
@@ -61,11 +62,12 @@ public class LoadLinkLoader extends AsynchronousLoader<BaseResponse> {
             } else {
                 int h = Utils.dip2px(getContext(), Utils.HEIGHT_IMAGE);
                 if (il.getType()==1) h = Utils.dip2px(getContext(), Utils.HEIGHT_VIDEO);
-                il.setBitmapLarge(Utils.getBitmap(il.getLinkImageLarge(), h));
                 il.setExtensiveInfo(true);
             }
 
         }
+
+        if (il!=null) CacheData.putCacheImages(request.getLink(), il);
 
         response.setInfoLink(il);
 

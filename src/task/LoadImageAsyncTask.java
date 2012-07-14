@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.util.Log;
+import com.javielinux.utils.LinksUtils;
 import com.javielinux.utils.Utils;
 import infos.CacheData;
 import infos.InfoLink;
@@ -66,7 +67,7 @@ public class LoadImageAsyncTask extends AsyncTask<String, Void, Void> {
 		}
 		
 		for (String image : mSearchImages) {
-			InfoLink il = Utils.getThumbTweet(image);
+			InfoLink il = LinksUtils.getInfoTweet(image);
 			if (il!=null) {
 				//int type = Integer.parseInt(Utils.preference.getString("prf_links", "3"));
 				//if ( type == 3 ) {

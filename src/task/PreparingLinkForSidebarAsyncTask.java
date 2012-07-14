@@ -1,7 +1,7 @@
 package task;
 
 import android.os.AsyncTask;
-import com.javielinux.utils.Utils;
+import com.javielinux.utils.LinksUtils;
 import infos.CacheData;
 
 public class PreparingLinkForSidebarAsyncTask extends AsyncTask<String, Void, Boolean> {
@@ -22,7 +22,7 @@ public class PreparingLinkForSidebarAsyncTask extends AsyncTask<String, Void, Bo
 	protected Boolean doInBackground(String... args) {
 		String link = args[0];
 		try {
-			CacheData.putCacheImages(link, Utils.getThumbTweet(link));
+			CacheData.putCacheImages(link, LinksUtils.getInfoTweet(link));
 		} catch (Exception e) {
 			return false;
 		}

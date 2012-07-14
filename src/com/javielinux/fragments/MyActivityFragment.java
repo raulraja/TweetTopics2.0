@@ -11,8 +11,6 @@ import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -390,10 +388,10 @@ public class MyActivityFragment extends Fragment {
 
         AlertDialogFragment frag = new AlertDialogFragment();
         Bundle args = new Bundle();
-        args.putInt("title", R.string.actions);
-        args.putBoolean("has_positive_button", false);
-        args.putBoolean("cancelable", false);
-        args.putInt("array_items", R.array.actions_users_facebook);
+        args.putInt(AlertDialogFragment.KEY_ALERT_TITLE, R.string.actions);
+        args.putBoolean(AlertDialogFragment.KEY_ALERT_HAS_POSITIVE_BUTTON, false);
+        args.putBoolean(AlertDialogFragment.KEY_ALERT_CANCELABLE, false);
+        args.putInt(AlertDialogFragment.KEY_ALERT_ARRAY_ITEMS, R.array.actions_users_facebook);
         frag.setArguments(args);
         frag.setAlertButtonListener(new AlertDialogFragment.AlertButtonListener() {
             @Override
@@ -424,10 +422,10 @@ public class MyActivityFragment extends Fragment {
 
         AlertDialogFragment frag = new AlertDialogFragment();
         Bundle args = new Bundle();
-        args.putInt("title", R.string.actions);
-        args.putBoolean("has_positive_button", false);
-        args.putBoolean("cancelable", false);
-        args.putInt("array_items", R.array.actions_users);
+        args.putInt(AlertDialogFragment.KEY_ALERT_TITLE, R.string.actions);
+        args.putBoolean(AlertDialogFragment.KEY_ALERT_HAS_POSITIVE_BUTTON, false);
+        args.putBoolean(AlertDialogFragment.KEY_ALERT_CANCELABLE, false);
+        args.putInt(AlertDialogFragment.KEY_ALERT_ARRAY_ITEMS, R.array.actions_users);
         frag.setArguments(args);
         frag.setAlertButtonListener(new AlertDialogFragment.AlertButtonListener() {
             @Override
@@ -465,8 +463,8 @@ public class MyActivityFragment extends Fragment {
 
         AlertDialogFragment frag = new AlertDialogFragment();
         Bundle args = new Bundle();
-        args.putInt("title", R.string.title_question_delete);
-        args.putInt("message", R.string.question_delete);
+        args.putInt(AlertDialogFragment.KEY_ALERT_TITLE, R.string.title_question_delete);
+        args.putInt(AlertDialogFragment.KEY_ALERT_MESSAGE, R.string.question_delete);
         frag.setArguments(args);
         frag.setAlertButtonListener(new AlertDialogFragment.AlertButtonListener() {
             @Override

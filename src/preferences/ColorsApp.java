@@ -17,6 +17,7 @@ import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
 import com.javielinux.tweettopics2.NewStatusActivity;
 import com.javielinux.tweettopics2.R;
+import com.javielinux.utils.LinksUtils;
 import com.javielinux.utils.Utils;
 import layouts.ColorDialog;
 
@@ -419,7 +420,7 @@ public class ColorsApp extends ListActivity implements ColorDialog.OnChangeColor
 
 		url += SEP_BLOCK+getTheme(cnt);
 		
-		return Utils.shortURL(url);
+		return LinksUtils.shortURL(url);
 		
 	}
     

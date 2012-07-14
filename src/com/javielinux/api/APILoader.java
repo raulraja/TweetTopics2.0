@@ -60,8 +60,6 @@ public class APILoader implements LoaderManager.LoaderCallbacks {
             loader = new ImageUploadLoader(context, (ImageUploadRequest)baseRequest);
         } else if (baseRequest instanceof ListUserTwitterRequest) {
             loader = new ListUserTwitterLoader(context, (ListUserTwitterRequest)baseRequest);
-        } else if (baseRequest instanceof LoadImageRequest) {
-            loader = new LoadImageLoader(context, (LoadImageRequest)baseRequest);
         } else if (baseRequest instanceof LoadImageAutoCompleteRequest) {
             loader = new LoadImageAutoCompleteLoader(context, (LoadImageAutoCompleteRequest)baseRequest);
         } else if (baseRequest instanceof LoadImageWidgetRequest) {

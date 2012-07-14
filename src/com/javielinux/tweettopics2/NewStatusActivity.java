@@ -31,10 +31,7 @@ import com.android.dataframework.Entity;
 import com.javielinux.adapters.TweetListDraftAdapter;
 import com.javielinux.adapters.TweetLongerAdapter;
 import com.javielinux.utils.DialogUtils.BuyProDialogBuilder;
-import com.javielinux.utils.FileUtils;
-import com.javielinux.utils.LocationUtils;
-import com.javielinux.utils.PreferenceUtils;
-import com.javielinux.utils.Utils;
+import com.javielinux.utils.*;
 import infos.InfoUsers;
 import layouts.AutoCompleteHashTagListItem;
 import layouts.AutoCompleteListItem;
@@ -557,9 +554,9 @@ public class NewStatusActivity extends BaseActivity {
 			public void onClick(View v) {
 
 				String text = mText.getText().toString();
-				int count = Utils.pullLinksHTTP(text).size() - mImages.size();
+				int count = LinksUtils.pullLinksHTTP(text).size() - mImages.size();
 				if (count>0) {
-					mText.setText(Utils.shortLinks(text, mImages));
+					mText.setText(LinksUtils.shortLinks(text, mImages));
 					Utils.showShortMessage(NewStatusActivity.this, count + " " + NewStatusActivity.this.getString(R.string.txt_shorter_n));
 				} else {
 					Utils.showShortMessage(NewStatusActivity.this, NewStatusActivity.this.getString(R.string.txt_shorter_0));
@@ -949,7 +946,7 @@ public class NewStatusActivity extends BaseActivity {
 			mResultInfoHashTags.clear();
 
 			for (int i=0; i<ents.size()&&count<MAX_RESULTS; i++) {
-                ArrayList<String> hashs = Utils.pullLinksHashTags(ents.get(i).getString("text"));
+                ArrayList<String> hashs = LinksUtils.pullLinksHashTags(ents.get(i).getString("text"));
                 for (String h : hashs) {
                     h = h.replace("#", "");
                     if (!hashtags.contains(h) && h.startsWith(ht)) {

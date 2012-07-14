@@ -3,23 +3,17 @@ package com.javielinux.adapters;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.*;
-import com.android.dataframework.DataFramework;
+import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import com.android.dataframework.Entity;
 import com.javielinux.tweettopics2.R;
-import com.javielinux.utils.ImageUtils;
-import com.javielinux.utils.TweetTopicsUtils;
 import com.javielinux.utils.Utils;
-import infos.InfoTweet;
 import layouts.AlphaTextView;
-import layouts.TweetListViewItem;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.List;
 
 public class RowUserListsAdapter extends ArrayAdapter<Entity> {
 

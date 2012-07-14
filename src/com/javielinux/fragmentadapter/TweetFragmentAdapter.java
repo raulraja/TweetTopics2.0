@@ -8,7 +8,7 @@ import com.javielinux.fragments.TweetConversationFragment;
 import com.javielinux.fragments.TweetLinksFragment;
 import com.javielinux.fragments.TweetMapFragment;
 import com.javielinux.tweettopics2.R;
-import com.javielinux.utils.Utils;
+import com.javielinux.utils.LinksUtils;
 import infos.InfoTweet;
 
 import java.util.ArrayList;
@@ -36,7 +36,7 @@ public class TweetFragmentAdapter extends FragmentPagerAdapter  {
     }
 
     void loadColumns() {
-        if (Utils.pullLinks(infoTweet.getText()).size()>0) {
+        if (LinksUtils.pullLinks(infoTweet.getText()).size()>0) {
             tweet_fragment_code.add(TAB_LINKS);
             tweet_fragment_titles.add(context.getString(R.string.links));
         }

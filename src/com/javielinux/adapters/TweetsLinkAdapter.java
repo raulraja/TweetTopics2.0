@@ -6,6 +6,7 @@ import android.support.v4.app.LoaderManager;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
+import com.androidquery.AQuery;
 import com.javielinux.api.APIDelegate;
 import com.javielinux.api.APITweetTopics;
 import com.javielinux.api.request.LoadLinkRequest;
@@ -45,10 +46,12 @@ public class TweetsLinkAdapter extends ArrayAdapter<String> {
     }
 
     private LoaderManager loaderManager;
+    private AQuery aQuery;
 
 	public TweetsLinkAdapter(Context cnt, LoaderManager loaderManager, ArrayList<String> statii) {
 		super(cnt, android.R.layout.simple_list_item_1, statii);
         this.loaderManager = loaderManager;
+        aQuery = new AQuery(cnt);
 	}
 
     public static ViewHolder generateViewHolder(View v) {
@@ -145,8 +148,7 @@ public class TweetsLinkAdapter extends ArrayAdapter<String> {
                        viewHolder.containerLink.setVisibility(View.GONE);
                        viewHolder.containerUser.setVisibility(View.GONE);
                        viewHolder.containerHashTag.setVisibility(View.GONE);
-
-                       viewHolder.imgImage.setImageBitmap(il.getBitmapLarge());
+                       aQuery.id(viewHolder.imgImage).image(il.getLinkImageLarge(), true, true);
                        break;
                     case InfoLink.VIDEO:
                        viewHolder.containerLoading.setVisibility(View.GONE);
@@ -155,8 +157,7 @@ public class TweetsLinkAdapter extends ArrayAdapter<String> {
                        viewHolder.containerLink.setVisibility(View.GONE);
                        viewHolder.containerUser.setVisibility(View.GONE);
                        viewHolder.containerHashTag.setVisibility(View.GONE);
-
-                       viewHolder.imgVideo.setImageBitmap(il.getBitmapLarge());
+                       aQuery.id(viewHolder.imgVideo).image(il.getLinkImageLarge(), true, true);
                        break;
                    default:
                        viewHolder.containerLoading.setVisibility(View.GONE);

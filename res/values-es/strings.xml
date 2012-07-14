@@ -3,6 +3,8 @@
 
     <!-- v 2.0  -->
 
+    <string name="column_delete">¿Estás seguro de querer borrar esta columna?</string>
+
     <string name="column_created">Creada columna %1$s</string>
     <string name="column_exists">La columna ya está creada: %1$s</string>
 
