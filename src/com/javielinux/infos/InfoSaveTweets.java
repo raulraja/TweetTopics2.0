@@ -1,4 +1,4 @@
-package infos;
+package com.javielinux.infos;
 
 import com.javielinux.utils.Utils;
 import twitter4j.RateLimitStatus;

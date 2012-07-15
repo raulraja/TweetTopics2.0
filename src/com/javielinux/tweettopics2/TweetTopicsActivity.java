@@ -23,12 +23,12 @@ import com.javielinux.adapters.LinksAdapter;
 import com.javielinux.dialogs.AlertDialogFragment;
 import com.javielinux.dialogs.HashTagDialogFragment;
 import com.javielinux.fragmentadapter.TweetTopicsFragmentAdapter;
+import com.javielinux.infos.InfoTweet;
 import com.javielinux.utils.*;
 import com.nineoldandroids.animation.Animator;
 import com.nineoldandroids.animation.AnimatorSet;
 import com.nineoldandroids.animation.ObjectAnimator;
 import com.viewpagerindicator.TitlePageIndicator;
-import infos.InfoTweet;
 import preferences.Preferences;
 
 import java.util.ArrayList;

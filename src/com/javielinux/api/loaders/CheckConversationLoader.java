@@ -7,8 +7,8 @@ import com.javielinux.api.request.CheckConversationRequest;
 import com.javielinux.api.response.BaseResponse;
 import com.javielinux.api.response.CheckConversationResponse;
 import com.javielinux.api.response.ErrorResponse;
+import com.javielinux.infos.InfoTweet;
 import com.javielinux.twitter.ConnectionManager;
-import infos.InfoTweet;
 import twitter4j.TwitterException;
 
 public class CheckConversationLoader extends AsynchronousLoader<BaseResponse> {

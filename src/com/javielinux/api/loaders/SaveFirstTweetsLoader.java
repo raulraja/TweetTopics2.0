@@ -7,9 +7,9 @@ import com.javielinux.api.response.BaseResponse;
 import com.javielinux.api.response.ErrorResponse;
 import com.javielinux.api.response.SaveFirstTweetsResponse;
 import com.javielinux.database.EntitySearch;
+import com.javielinux.infos.InfoSaveTweets;
 import com.javielinux.tweettopics2.TabGeneral;
 import com.javielinux.tweettopics2.TabNewEditSearch;
-import infos.InfoSaveTweets;
 
 public class SaveFirstTweetsLoader extends AsynchronousLoader<BaseResponse> {
 

@@ -23,13 +23,13 @@ import com.javielinux.api.response.BaseResponse;
 import com.javielinux.api.response.ErrorResponse;
 import com.javielinux.api.response.TwitterUserResponse;
 import com.javielinux.database.EntityTweetUser;
+import com.javielinux.infos.InfoSaveTweets;
+import com.javielinux.infos.InfoTweet;
 import com.javielinux.tweettopics2.R;
 import com.javielinux.tweettopics2.TweetActivity;
 import com.javielinux.tweettopics2.TweetTopicsActivity;
 import com.javielinux.utils.TweetTopicsUtils;
 import com.javielinux.utils.Utils;
-import infos.InfoSaveTweets;
-import infos.InfoTweet;
 import widget.WidgetCounters2x1;
 import widget.WidgetCounters4x1;
 

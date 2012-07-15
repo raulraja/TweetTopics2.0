@@ -1,6 +1,6 @@
 package com.javielinux.api.request;
 
-import infos.InfoTweet;
+import com.javielinux.infos.InfoTweet;
 
 import java.util.ArrayList;
 

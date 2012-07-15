@@ -15,11 +15,11 @@ import com.javielinux.api.request.LoadUserRequest;
 import com.javielinux.api.response.ErrorResponse;
 import com.javielinux.api.response.LoadLinkResponse;
 import com.javielinux.api.response.LoadUserResponse;
+import com.javielinux.infos.InfoLink;
+import com.javielinux.infos.InfoUsers;
 import com.javielinux.tweettopics2.R;
+import com.javielinux.utils.CacheData;
 import com.javielinux.utils.LinksUtils;
-import infos.CacheData;
-import infos.InfoLink;
-import infos.InfoUsers;
 
 import java.util.List;
 
@@ -113,8 +113,8 @@ public class LinksAdapter extends BaseAdapter {
             }
         } else if (!link.startsWith("#")) {
 
-            if (CacheData.getCacheImages().containsKey(link)) {
-                InfoLink item = CacheData.getCacheImages().get(link);
+            if (CacheData.existCacheInfoLink(link)) {
+                InfoLink item = CacheData.getCacheInfoLink(link);
                 String thumb = item.getLinkImageThumb();
                 if (thumb.equals("")) {
                     aQuery.id(viewHolder.image).image(typeResource);

@@ -1,4 +1,4 @@
-package infos;
+package com.javielinux.infos;
 
 import android.graphics.Bitmap;
 

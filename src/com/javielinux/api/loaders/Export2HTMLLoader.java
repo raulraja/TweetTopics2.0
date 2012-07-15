@@ -6,9 +6,9 @@ import com.javielinux.api.request.Export2HTMLRequest;
 import com.javielinux.api.response.BaseResponse;
 import com.javielinux.api.response.ErrorResponse;
 import com.javielinux.api.response.Export2HTMLResponse;
+import com.javielinux.infos.InfoTweet;
 import com.javielinux.tweettopics2.R;
 import com.javielinux.utils.Utils;
-import infos.InfoTweet;
 
 import java.io.File;
 import java.io.FileNotFoundException;

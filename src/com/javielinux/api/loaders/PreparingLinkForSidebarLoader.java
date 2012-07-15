@@ -6,8 +6,8 @@ import com.javielinux.api.request.PreparingLinkForSidebarRequest;
 import com.javielinux.api.response.BaseResponse;
 import com.javielinux.api.response.ErrorResponse;
 import com.javielinux.api.response.PreparingLinkForSidebarResponse;
+import com.javielinux.utils.CacheData;
 import com.javielinux.utils.LinksUtils;
-import infos.CacheData;
 
 public class PreparingLinkForSidebarLoader extends AsynchronousLoader<BaseResponse> {
 
@@ -24,7 +24,7 @@ public class PreparingLinkForSidebarLoader extends AsynchronousLoader<BaseRespon
 
 		try {
             PreparingLinkForSidebarResponse response = new PreparingLinkForSidebarResponse();
-			CacheData.putCacheImages(link, LinksUtils.getInfoTweet(link));
+			CacheData.putCacheInfoLinks(link, LinksUtils.getInfoTweet(link));
 
             response.setReady(true);
             return response;

@@ -1,6 +1,6 @@
 package com.javielinux.api.request;
 
-import infos.InfoLink;
+import com.javielinux.infos.InfoLink;
 
 public class LoadLinkRequest implements BaseRequest {
 

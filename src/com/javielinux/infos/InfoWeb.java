@@ -1,6 +1,7 @@
-package infos;
+package com.javielinux.infos;
 
 import android.util.Log;
+import com.javielinux.utils.GuessEncodingInputStream;
 import com.javielinux.utils.Utils;
 import org.htmlcleaner.CleanerProperties;
 import org.htmlcleaner.HtmlCleaner;

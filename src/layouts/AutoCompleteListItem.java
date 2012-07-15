@@ -7,8 +7,8 @@ import android.util.AttributeSet;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import com.javielinux.infos.InfoUsers;
 import com.javielinux.tweettopics2.R;
-import infos.InfoUsers;
 import task.LoadImageAutoCompleteAsyncTask;
 import task.LoadImageAutoCompleteAsyncTask.LoadImageAutoCompleteAsyncTaskResponder;
 

@@ -15,9 +15,9 @@ import com.javielinux.api.request.LoadUserRequest;
 import com.javielinux.api.response.ErrorResponse;
 import com.javielinux.api.response.LoadImageWidgetResponse;
 import com.javielinux.api.response.LoadUserResponse;
+import com.javielinux.infos.InfoUsers;
+import com.javielinux.utils.CacheData;
 import com.javielinux.utils.Utils;
-import infos.CacheData;
-import infos.InfoUsers;
 
 import java.io.File;
 

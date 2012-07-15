@@ -9,10 +9,10 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
+import com.javielinux.infos.InfoSaveTweets;
 import com.javielinux.tweettopics2.R;
 import com.javielinux.utils.TweetTopicsUtils;
 import com.javielinux.utils.Utils;
-import infos.InfoSaveTweets;
 import twitter4j.*;
 
 public class EntityTweetUser extends Entity {

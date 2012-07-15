@@ -12,9 +12,9 @@ import com.javielinux.api.APITweetTopics;
 import com.javielinux.api.request.LoadLinkRequest;
 import com.javielinux.api.response.ErrorResponse;
 import com.javielinux.api.response.LoadLinkResponse;
+import com.javielinux.infos.InfoLink;
 import com.javielinux.tweettopics2.R;
-import infos.CacheData;
-import infos.InfoLink;
+import com.javielinux.utils.CacheData;
 
 import java.util.ArrayList;
 
@@ -120,7 +120,7 @@ public class TweetsLinkAdapter extends ArrayAdapter<String> {
 
         } else {
 
-            InfoLink il = CacheData.getInfoLinkCaches(link);
+            InfoLink il = CacheData.getCacheInfoLink(link);
 
             if (il == null) {
                 viewHolder.containerLoading.setVisibility(View.VISIBLE);

@@ -1,7 +1,7 @@
 package com.javielinux.api.response;
 
 
-import infos.InfoLink;
+import com.javielinux.infos.InfoLink;
 
 public class LoadLinkResponse implements BaseResponse {
     private InfoLink infoLink;

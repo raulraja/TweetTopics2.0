@@ -1,6 +1,6 @@
 package com.javielinux.api.response;
 
-import infos.InfoSaveTweets;
+import com.javielinux.infos.InfoSaveTweets;
 
 public class SaveFirstTweetsResponse implements BaseResponse {
 

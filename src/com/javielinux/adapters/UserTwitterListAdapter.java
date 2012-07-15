@@ -9,8 +9,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import com.javielinux.infos.InfoUsers;
 import com.javielinux.tweettopics2.R;
-import infos.InfoUsers;
 import twitter4j.RateLimitStatus;
 
 import java.util.ArrayList;

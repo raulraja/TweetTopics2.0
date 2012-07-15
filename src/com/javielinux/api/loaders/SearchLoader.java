@@ -7,9 +7,8 @@ import com.javielinux.api.response.BaseResponse;
 import com.javielinux.api.response.ErrorResponse;
 import com.javielinux.api.response.SearchResponse;
 import com.javielinux.database.EntitySearch;
+import com.javielinux.infos.InfoTweet;
 import com.javielinux.twitter.ConnectionManager;
-import infos.InfoSaveTweets;
-import infos.InfoTweet;
 import twitter4j.*;
 
 import java.util.ArrayList;

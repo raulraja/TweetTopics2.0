@@ -7,9 +7,9 @@ import android.support.v4.app.FragmentPagerAdapter;
 import com.javielinux.fragments.TweetConversationFragment;
 import com.javielinux.fragments.TweetLinksFragment;
 import com.javielinux.fragments.TweetMapFragment;
+import com.javielinux.infos.InfoTweet;
 import com.javielinux.tweettopics2.R;
 import com.javielinux.utils.LinksUtils;
-import infos.InfoTweet;
 
 import java.util.ArrayList;
 

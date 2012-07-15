@@ -8,10 +8,10 @@ import com.javielinux.api.request.LoadUserRequest;
 import com.javielinux.api.response.BaseResponse;
 import com.javielinux.api.response.ErrorResponse;
 import com.javielinux.api.response.LoadUserResponse;
+import com.javielinux.infos.InfoUsers;
 import com.javielinux.twitter.ConnectionManager;
+import com.javielinux.utils.CacheData;
 import com.javielinux.utils.Utils;
-import infos.CacheData;
-import infos.InfoUsers;
 import twitter4j.TwitterException;
 import twitter4j.User;
 

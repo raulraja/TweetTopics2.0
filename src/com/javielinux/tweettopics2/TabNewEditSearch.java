@@ -16,9 +16,9 @@ import com.android.dataframework.Entity;
 import com.google.ads.AdRequest;
 import com.google.ads.AdView;
 import com.javielinux.database.EntitySearch;
+import com.javielinux.infos.InfoSaveTweets;
 import com.javielinux.utils.PreferenceUtils;
 import com.javielinux.utils.Utils;
-import infos.InfoSaveTweets;
 import task.SaveFirstTweetsAsyncTask;
 import task.SaveFirstTweetsAsyncTask.SaveFirstTweetsAsyncTaskResponder;
 

@@ -7,10 +7,10 @@ import com.javielinux.api.response.BaseResponse;
 import com.javielinux.api.response.ErrorResponse;
 import com.javielinux.api.response.TwitterUserResponse;
 import com.javielinux.database.EntityTweetUser;
+import com.javielinux.infos.InfoSaveTweets;
 import com.javielinux.twitter.ConnectionManager;
 import com.javielinux.utils.TweetTopicsUtils;
 import com.javielinux.utils.Utils;
-import infos.InfoSaveTweets;
 
 public class TwitterUserLoader extends AsynchronousLoader<BaseResponse> {
 

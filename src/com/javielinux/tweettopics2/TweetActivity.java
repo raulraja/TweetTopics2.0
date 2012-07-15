@@ -17,10 +17,10 @@ import com.javielinux.api.request.LoadImageWidgetRequest;
 import com.javielinux.api.response.ErrorResponse;
 import com.javielinux.api.response.LoadImageWidgetResponse;
 import com.javielinux.fragmentadapter.TweetFragmentAdapter;
+import com.javielinux.infos.InfoTweet;
 import com.javielinux.utils.TweetActions;
 import com.javielinux.utils.Utils;
 import com.viewpagerindicator.TabPageIndicator;
-import infos.InfoTweet;
 
 import java.io.File;
 import java.util.ArrayList;

@@ -9,9 +9,9 @@ import android.text.ClipboardManager;
 import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
 import com.javielinux.adapters.UsersAdapter;
+import com.javielinux.infos.InfoTweet;
 import com.javielinux.tweettopics2.NewStatusActivity;
 import com.javielinux.tweettopics2.R;
-import infos.InfoTweet;
 import preferences.RetweetsTypes;
 import updatestatus.ServiceUpdateStatus;
 

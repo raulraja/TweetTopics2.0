@@ -1,4 +1,4 @@
-package infos;
+package com.javielinux.infos;
 
 import android.content.Context;
 import com.javielinux.tweettopics2.R;

@@ -23,16 +23,13 @@ import com.javielinux.api.response.BaseResponse;
 import com.javielinux.api.response.ErrorResponse;
 import com.javielinux.api.response.SearchResponse;
 import com.javielinux.database.EntitySearch;
-import com.javielinux.database.EntityTweetUser;
+import com.javielinux.infos.InfoSaveTweets;
+import com.javielinux.infos.InfoTweet;
 import com.javielinux.tweettopics2.R;
 import com.javielinux.tweettopics2.TweetActivity;
-import com.javielinux.utils.TweetTopicsUtils;
 import com.javielinux.utils.Utils;
-import infos.InfoSaveTweets;
-import infos.InfoTweet;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 public class SearchFragment extends Fragment implements APIDelegate<BaseResponse> {
 

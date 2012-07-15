@@ -6,8 +6,8 @@ import com.javielinux.api.request.LoadTypeStatusRequest;
 import com.javielinux.api.response.BaseResponse;
 import com.javielinux.api.response.ErrorResponse;
 import com.javielinux.api.response.LoadTypeStatusResponse;
+import com.javielinux.infos.InfoTweet;
 import com.javielinux.twitter.ConnectionManager;
-import infos.InfoTweet;
 import twitter4j.*;
 
 import java.util.ArrayList;

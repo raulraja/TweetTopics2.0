@@ -2,9 +2,9 @@ package task;
 
 import android.os.AsyncTask;
 import com.javielinux.database.EntitySearch;
+import com.javielinux.infos.InfoSaveTweets;
 import com.javielinux.tweettopics2.TabGeneral;
 import com.javielinux.tweettopics2.TabNewEditSearch;
-import infos.InfoSaveTweets;
 
 public class SaveFirstTweetsAsyncTask extends AsyncTask<Long, Void, InfoSaveTweets> {
 

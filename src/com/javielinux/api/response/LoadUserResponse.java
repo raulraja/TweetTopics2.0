@@ -1,6 +1,6 @@
 package com.javielinux.api.response;
 
-import infos.InfoUsers;
+import com.javielinux.infos.InfoUsers;
 
 public class LoadUserResponse implements BaseResponse {
 

@@ -6,8 +6,8 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
+import com.javielinux.infos.InfoSubMenuTweet;
 import com.javielinux.tweettopics2.R;
-import infos.InfoSubMenuTweet;
 import widget.ServiceWidgetTweets4x2;
 
 import java.util.ArrayList;

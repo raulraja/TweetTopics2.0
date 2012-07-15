@@ -1,7 +1,7 @@
 package com.javielinux.api.response;
 
-import infos.InfoSaveTweets;
-import infos.InfoTweet;
+import com.javielinux.infos.InfoSaveTweets;
+import com.javielinux.infos.InfoTweet;
 
 import java.util.ArrayList;
 

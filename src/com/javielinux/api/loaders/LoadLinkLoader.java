@@ -7,11 +7,11 @@ import com.javielinux.api.request.LoadLinkRequest;
 import com.javielinux.api.response.BaseResponse;
 import com.javielinux.api.response.ErrorResponse;
 import com.javielinux.api.response.LoadLinkResponse;
+import com.javielinux.infos.InfoLink;
+import com.javielinux.infos.InfoWeb;
+import com.javielinux.utils.CacheData;
 import com.javielinux.utils.LinksUtils;
 import com.javielinux.utils.Utils;
-import infos.CacheData;
-import infos.InfoLink;
-import infos.InfoWeb;
 
 public class LoadLinkLoader extends AsynchronousLoader<BaseResponse> {
 
@@ -32,7 +32,7 @@ public class LoadLinkLoader extends AsynchronousLoader<BaseResponse> {
         if (il==null) {
             il = LinksUtils.getInfoTweet(request.getLink());
             if (il!=null) {
-                CacheData.putCacheImages(request.getLink(), il);
+                CacheData.putCacheInfoLinks(request.getLink(), il);
             }
         }
 
@@ -67,7 +67,7 @@ public class LoadLinkLoader extends AsynchronousLoader<BaseResponse> {
 
         }
 
-        if (il!=null) CacheData.putCacheImages(request.getLink(), il);
+        if (il!=null) CacheData.putCacheInfoLinks(request.getLink(), il);
 
         response.setInfoLink(il);
 

@@ -1,7 +1,6 @@
 package com.javielinux.utils;
 
-import infos.CacheData;
-import infos.InfoLink;
+import com.javielinux.infos.InfoLink;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
