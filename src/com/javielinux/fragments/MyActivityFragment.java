@@ -59,59 +59,6 @@ public class MyActivityFragment extends Fragment {
     private Handler handler = new Handler();
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        adapter = new MyActivityAdapter(getActivity(), this);
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = View.inflate(getActivity(), R.layout.my_activity_fragment, null);
-
-        themeManager = new ThemeManager(getActivity());
-        themeManager.setTheme();
-
-        BitmapDrawable bmp = (BitmapDrawable) getActivity().getResources().getDrawable(themeManager.getResource("search_tile"));
-        if (bmp != null) {
-            bmp.setTileModeXY(Shader.TileMode.REPEAT, Shader.TileMode.REPEAT);
-            view.setBackgroundDrawable(bmp);
-        }
-
-        Button btTwitter = (Button) view.findViewById(R.id.bt_twitter);
-        btTwitter.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                newUserTwitter();
-            }
-
-        });
-
-        Button btFacebook = (Button) view.findViewById(R.id.bt_facebook);
-        btFacebook.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                newUserFacebook();
-            }
-
-        });
-
-        listUsers = (ListView) view.findViewById(R.id.my_activity_users);
-
-        listUsers.setAdapter(adapter);
-
-        lblEmpty = (TextView) view.findViewById(R.id.my_activity_empty);
-
-        return view;
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-    }
-
-    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
 
@@ -174,6 +121,7 @@ public class MyActivityFragment extends Fragment {
                         @Override
                         public void run() {
                             ((TweetTopicsActivity)getActivity()).getFragmentPagerAdapter().refreshColumnList();
+                            ((TweetTopicsActivity)getActivity()).refreshActionBarColumns();
                             ((TweetTopicsActivity)getActivity()).getViewPager().setCurrentItem(position, false);
                         }
                     }, 100);
@@ -182,13 +130,87 @@ public class MyActivityFragment extends Fragment {
         }
     }
 
-    public void clickUser(Entity user) {
-        idUser = user.getId();
-        if (user.getString("service").equals("facebook")) {
-            showFacebookDialog();
-        } else {
-            showTwitterDialog();
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        adapter = new MyActivityAdapter(getActivity(), this);
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = View.inflate(getActivity(), R.layout.my_activity_fragment, null);
+
+        themeManager = new ThemeManager(getActivity());
+        themeManager.setTheme();
+
+        BitmapDrawable bmp = (BitmapDrawable) getActivity().getResources().getDrawable(themeManager.getResource("search_tile"));
+        if (bmp != null) {
+            bmp.setTileModeXY(Shader.TileMode.REPEAT, Shader.TileMode.REPEAT);
+            view.setBackgroundDrawable(bmp);
         }
+
+        Button btTwitter = (Button) view.findViewById(R.id.bt_twitter);
+        btTwitter.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                newUserTwitter();
+            }
+
+        });
+
+        Button btFacebook = (Button) view.findViewById(R.id.bt_facebook);
+        btFacebook.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                newUserFacebook();
+            }
+
+        });
+
+        listUsers = (ListView) view.findViewById(R.id.my_activity_users);
+
+        listUsers.setAdapter(adapter);
+
+        lblEmpty = (TextView) view.findViewById(R.id.my_activity_empty);
+
+        return view;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+    }
+
+    public void changeAvatar() {
+
+        progressDialog = new ProgressDialog(getActivity());
+
+        progressDialog.setTitle(R.string.loading);
+        progressDialog.setMessage(this.getResources().getString(R.string.change_avatar_loading));
+
+        progressDialog.setCancelable(false);
+
+        progressDialog.show();
+
+        APITweetTopics.execute(getActivity(), getLoaderManager(), new APIDelegate<ProfileImageResponse>() {
+            @Override
+            public void onResults(ProfileImageResponse result) {
+                progressDialog.cancel();
+
+                fillData();
+                if (result.getReady())
+                    Utils.showMessage(getActivity(), getActivity().getString(R.string.change_avatar_correct));
+
+            }
+
+            @Override
+            public void onError(ErrorResponse error) {
+                progressDialog.cancel();
+                Utils.showMessage(getActivity(), getActivity().getString(R.string.change_avatar_no_correct));
+            }
+        }, new ProfileImageRequest(ProfileImageLoader.CHANGE_AVATAR, idUser));
     }
 
     public void clickSearch(Entity clickSearch) {
@@ -226,70 +248,24 @@ public class MyActivityFragment extends Fragment {
         }
     }
 
-    public void fillData() {
-        adapter.refresh();
-        adapter.notifyDataSetChanged();
-
-        if (listUsers.getCount() <= 0) {
-            listUsers.setVisibility(View.GONE);
-            lblEmpty.setVisibility(View.VISIBLE);
+    public void clickUser(Entity user) {
+        idUser = user.getId();
+        if (user.getString("service").equals("facebook")) {
+            showFacebookDialog();
         } else {
-            listUsers.setVisibility(View.VISIBLE);
-            lblEmpty.setVisibility(View.GONE);
-        }
-
-    }
-
-    public String getURLNewAvatar() {
-        return Utils.appDirectory + "aux_avatar_" + idUser + ".jpg";
-    }
-
-    public void newUserTwitter() {
-        if (Utils.isLite(getActivity())) {
-            if (DataFramework.getInstance().getEntityList("users", "service = \"twitter.com\" or service is null").size() < 1) {
-                startAuthorization(Utils.NETWORK_TWITTER);
-            } else {
-                showDialogBuyPro();
-                Utils.showMessage(getActivity(), getString(R.string.max_users_lite));
-            }
-        } else {
-            startAuthorization(Utils.NETWORK_TWITTER);
+            showTwitterDialog();
         }
     }
 
-    public void newUserFacebook() {
-        int nUserTwitter = DataFramework.getInstance().getEntityList("users", "service = \"twitter.com\" or service is null").size();
-        if (nUserTwitter <= 0) {
-            Utils.showMessage(getActivity(), getString(R.string.first_twitter_user));
-        } else {
-            if (Utils.isLite(getActivity())) {
-                if (DataFramework.getInstance().getEntityList("users", "service = \"facebook\"").size() < 1) {
-                    startAuthorization(Utils.NETWORK_FACEBOOK);
-                } else {
-                    showDialogBuyPro();
-                    Utils.showMessage(getActivity(), getString(R.string.max_users_lite));
-                }
-            } else {
-                startAuthorization(Utils.NETWORK_FACEBOOK);
-            }
-        }
-    }
+    public void createColumnsLastUser() {
 
-    private void startAuthorization(int network) {
-        if (network == Utils.NETWORK_TWITTER) {
-            Intent intent = new Intent(getActivity(), AuthorizationActivity.class);
-            startActivityForResult(intent, ACTIVITY_NEW_TWITTER_USER);
-        }
-        if (network == Utils.NETWORK_FACEBOOK) {
-            FacebookHandler fbh = new FacebookHandler(getActivity());
-            // TODO
-            //fbh.setUsersActivity(getActivity());
-            fbh.newUser();
-        }
-    }
+        long lastIdUser = DataFramework.getInstance().getTopEntity("users", "", DataFramework.KEY_ID + " desc").getId();
 
-    public void showDialogBuyPro() {
-        // TODO
+        CreateDefaultColumnsUserDialogFragment frag = new CreateDefaultColumnsUserDialogFragment();
+        Bundle args = new Bundle();
+        args.putLong("user_id", lastIdUser);
+        frag.setArguments(args);
+        frag.show(getFragmentManager(), "dialog");
     }
 
     public void deleteUser() {
@@ -313,6 +289,55 @@ public class MyActivityFragment extends Fragment {
             Intent edit = new Intent(getActivity(), EditUserTwitter.class);
             edit.putExtra(DataFramework.KEY_ID, idUser);
             startActivityForResult(edit, ACTIVITY_EDIT_TWITTER_USER);
+        }
+    }
+
+    public void fillData() {
+        adapter.refresh();
+        adapter.notifyDataSetChanged();
+
+        if (listUsers.getCount() <= 0) {
+            listUsers.setVisibility(View.GONE);
+            lblEmpty.setVisibility(View.VISIBLE);
+        } else {
+            listUsers.setVisibility(View.VISIBLE);
+            lblEmpty.setVisibility(View.GONE);
+        }
+
+    }
+
+    public String getURLNewAvatar() {
+        return Utils.appDirectory + "aux_avatar_" + idUser + ".jpg";
+    }
+
+    public void newUserFacebook() {
+        int nUserTwitter = DataFramework.getInstance().getEntityList("users", "service = \"twitter.com\" or service is null").size();
+        if (nUserTwitter <= 0) {
+            Utils.showMessage(getActivity(), getString(R.string.first_twitter_user));
+        } else {
+            if (Utils.isLite(getActivity())) {
+                if (DataFramework.getInstance().getEntityList("users", "service = \"facebook\"").size() < 1) {
+                    startAuthorization(Utils.NETWORK_FACEBOOK);
+                } else {
+                    showDialogBuyPro();
+                    Utils.showMessage(getActivity(), getString(R.string.max_users_lite));
+                }
+            } else {
+                startAuthorization(Utils.NETWORK_FACEBOOK);
+            }
+        }
+    }
+
+    public void newUserTwitter() {
+        if (Utils.isLite(getActivity())) {
+            if (DataFramework.getInstance().getEntityList("users", "service = \"twitter.com\" or service is null").size() < 1) {
+                startAuthorization(Utils.NETWORK_TWITTER);
+            } else {
+                showDialogBuyPro();
+                Utils.showMessage(getActivity(), getString(R.string.max_users_lite));
+            }
+        } else {
+            startAuthorization(Utils.NETWORK_TWITTER);
         }
     }
 
@@ -346,42 +371,37 @@ public class MyActivityFragment extends Fragment {
 
     }
 
-    public void showUserLists() {
-        if (idUser > 0) {
-            Intent userLists = new Intent(getActivity(), UserListsActivity.class);
-            userLists.putExtra(DataFramework.KEY_ID, idUser);
-            startActivityForResult(userLists, ACTIVITY_SHOW_USER_LISTS);
-        }
+    private void showDeleteUserDialog() {
+
+        AlertDialogFragment frag = new AlertDialogFragment();
+        Bundle args = new Bundle();
+        args.putInt(AlertDialogFragment.KEY_ALERT_TITLE, R.string.title_question_delete);
+        args.putInt(AlertDialogFragment.KEY_ALERT_MESSAGE, R.string.question_delete);
+        frag.setArguments(args);
+        frag.setAlertButtonListener(new AlertDialogFragment.AlertButtonListener() {
+            @Override
+            public void OnAlertButtonOk() {
+                deleteUser();
+            }
+
+            @Override
+            public void OnAlertButtonCancel() {
+            }
+
+            @Override
+            public void OnAlertButtonNeutral() {
+            }
+
+            @Override
+            public void OnAlertItems(int witch) {
+            }
+        });
+        frag.show(getFragmentManager(), "dialog");
+
     }
 
-    public void changeAvatar() {
-
-        progressDialog = new ProgressDialog(getActivity());
-
-        progressDialog.setTitle(R.string.loading);
-        progressDialog.setMessage(this.getResources().getString(R.string.change_avatar_loading));
-
-        progressDialog.setCancelable(false);
-
-        progressDialog.show();
-
-        APITweetTopics.execute(getActivity(), getLoaderManager(), new APIDelegate<ProfileImageResponse>() {
-            @Override
-            public void onResults(ProfileImageResponse result) {
-                progressDialog.cancel();
-
-                fillData();
-                if (result.getReady())
-                    Utils.showMessage(getActivity(), getActivity().getString(R.string.change_avatar_correct));
-
-            }
-
-            @Override
-            public void onError(ErrorResponse error) {
-                progressDialog.cancel();
-                Utils.showMessage(getActivity(), getActivity().getString(R.string.change_avatar_no_correct));
-            }
-        }, new ProfileImageRequest(ProfileImageLoader.CHANGE_AVATAR, idUser));
+    public void showDialogBuyPro() {
+        // TODO
     }
 
     private void showFacebookDialog() {
@@ -417,6 +437,16 @@ public class MyActivityFragment extends Fragment {
 
     }
 
+    private void showSelectImageDialog() {
+
+        SelectImageDialogFragment frag = new SelectImageDialogFragment();
+        Bundle args = new Bundle();
+        args.putInt("title", R.string.actions);
+        args.putString("file", getURLNewAvatar());
+        frag.setArguments(args);
+        frag.show(getFragmentManager(), "dialog");
+
+    }
 
     private void showTwitterDialog() {
 
@@ -459,55 +489,24 @@ public class MyActivityFragment extends Fragment {
 
     }
 
-    private void showDeleteUserDialog() {
-
-        AlertDialogFragment frag = new AlertDialogFragment();
-        Bundle args = new Bundle();
-        args.putInt(AlertDialogFragment.KEY_ALERT_TITLE, R.string.title_question_delete);
-        args.putInt(AlertDialogFragment.KEY_ALERT_MESSAGE, R.string.question_delete);
-        frag.setArguments(args);
-        frag.setAlertButtonListener(new AlertDialogFragment.AlertButtonListener() {
-            @Override
-            public void OnAlertButtonOk() {
-                deleteUser();
-            }
-
-            @Override
-            public void OnAlertButtonCancel() {
-            }
-
-            @Override
-            public void OnAlertButtonNeutral() {
-            }
-
-            @Override
-            public void OnAlertItems(int witch) {
-            }
-        });
-        frag.show(getFragmentManager(), "dialog");
-
+    public void showUserLists() {
+        if (idUser > 0) {
+            Intent userLists = new Intent(getActivity(), UserListsActivity.class);
+            userLists.putExtra(DataFramework.KEY_ID, idUser);
+            startActivityForResult(userLists, ACTIVITY_SHOW_USER_LISTS);
+        }
     }
 
-    private void showSelectImageDialog() {
-
-        SelectImageDialogFragment frag = new SelectImageDialogFragment();
-        Bundle args = new Bundle();
-        args.putInt("title", R.string.actions);
-        args.putString("file", getURLNewAvatar());
-        frag.setArguments(args);
-        frag.show(getFragmentManager(), "dialog");
-
+    private void startAuthorization(int network) {
+        if (network == Utils.NETWORK_TWITTER) {
+            Intent intent = new Intent(getActivity(), AuthorizationActivity.class);
+            startActivityForResult(intent, ACTIVITY_NEW_TWITTER_USER);
+        }
+        if (network == Utils.NETWORK_FACEBOOK) {
+            FacebookHandler fbh = new FacebookHandler(getActivity());
+            // TODO
+            //fbh.setUsersActivity(getActivity());
+            fbh.newUser();
+        }
     }
-
-    public void createColumnsLastUser() {
-
-        long lastIdUser = DataFramework.getInstance().getTopEntity("users", "", DataFramework.KEY_ID + " desc").getId();
-
-        CreateDefaultColumnsUserDialogFragment frag = new CreateDefaultColumnsUserDialogFragment();
-        Bundle args = new Bundle();
-        args.putLong("user_id", lastIdUser);
-        frag.setArguments(args);
-        frag.show(getFragmentManager(), "dialog");
-    }
-
 }

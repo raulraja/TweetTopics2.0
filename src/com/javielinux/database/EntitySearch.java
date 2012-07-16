@@ -25,6 +25,10 @@ public class EntitySearch extends Entity {
 	*/
 	private String mErrorLastQuery = "";
 
+    public EntitySearch() {
+        super("search");
+    }
+
 	public EntitySearch(Long id) {
 		super("search", id);
 	}

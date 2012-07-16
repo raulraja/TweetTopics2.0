@@ -171,6 +171,29 @@ public class UserListsActivity extends BaseActivity implements APIDelegate<BaseR
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        DataFramework.getInstance().close();
+    }
+
+    @Override
+    public void onError(ErrorResponse error) {
+        error.getError().printStackTrace();
+        showNoInternet();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    public void onResults(BaseResponse result) {
+        if (!result.isError())
+            fillGridUserLists();
+    }
+
     private void createUserListsColumn(Entity userList) {
 
         ArrayList<Entity> created_column_list = DataFramework.getInstance().getEntityList("columns", "userlist_id=" + userList.getId());
@@ -199,6 +222,36 @@ public class UserListsActivity extends BaseActivity implements APIDelegate<BaseR
         finish();
     }
 
+    private void fillGridUserLists() {
+
+        userlist_entities.clear();
+
+        ArrayList<Entity> userlist_data;
+
+        if (type_id == SHOW_TWEETS) {
+            userlist_data = DataFramework.getInstance().getEntityList("user_lists", "user_id=" + user_entity.getId() + " AND type_id=1", "");
+        } else {
+            userlist_data = DataFramework.getInstance().getEntityList("user_lists", "user_id=" + user_entity.getId() + " AND type_id=2", "");
+        }
+
+        for (int i = 0; i < userlist_data.size(); i++)
+            userlist_entities.add(userlist_data.get(i));
+
+        userListsAdapter.notifyDataSetChanged();
+
+        if (userListsAdapter.getCount() == 0) {
+            showNoLists();
+        } else {
+            showUserLists();
+        }
+    }
+
+    public void reload() {
+
+        GetUserListRequest getUserListRequest = new GetUserListRequest(user_entity);
+        APITweetTopics.execute(this, getSupportLoaderManager(), this, getUserListRequest);
+    }
+
     public void showNoLists() {
         viewNoLists.setVisibility(View.VISIBLE);
         viewLoading.setVisibility(View.GONE);
@@ -225,58 +278,5 @@ public class UserListsActivity extends BaseActivity implements APIDelegate<BaseR
         viewLoading.setVisibility(View.GONE);
         viewNoInternet.setVisibility(View.GONE);
         viewUserLists.setVisibility(View.VISIBLE);
-    }
-
-    public void reload() {
-
-        GetUserListRequest getUserListRequest = new GetUserListRequest(user_entity);
-        APITweetTopics.execute(this, getSupportLoaderManager(), this, getUserListRequest);
-    }
-
-    private void fillGridUserLists() {
-
-        userlist_entities.clear();
-
-        ArrayList<Entity> userlist_data;
-
-        if (type_id == SHOW_TWEETS) {
-            userlist_data = DataFramework.getInstance().getEntityList("user_lists", "user_id=" + user_entity.getId() + " AND type_id=1", "");
-        } else {
-            userlist_data = DataFramework.getInstance().getEntityList("user_lists", "user_id=" + user_entity.getId() + " AND type_id=2", "");
-        }
-
-        for (int i = 0; i < userlist_data.size(); i++)
-            userlist_entities.add(userlist_data.get(i));
-
-        userListsAdapter.notifyDataSetChanged();
-
-        if (userListsAdapter.getCount() == 0) {
-            showNoLists();
-        } else {
-            showUserLists();
-        }
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        DataFramework.getInstance().close();
-    }
-
-    @Override
-    public void onResults(BaseResponse result) {
-        if (!result.isError())
-            fillGridUserLists();
-    }
-
-    @Override
-    public void onError(ErrorResponse error) {
-        error.getError().printStackTrace();
-        showNoInternet();
     }
 }

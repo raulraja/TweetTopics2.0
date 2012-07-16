@@ -19,18 +19,9 @@ import java.util.ArrayList;
 
 public class TweetTopicsFragmentAdapter extends FragmentPagerAdapter  {
 
-    public ArrayList<Entity> getFragmentList() {
-        return fragmentList;
-    }
-
-    private ArrayList<Entity> fragmentList = new ArrayList<Entity>();
-
-    public MyActivityFragment getMyActivityFragment() {
-        return myActivityFragment;
-    }
-
-    private MyActivityFragment myActivityFragment;
     private Context context;
+    private MyActivityFragment myActivityFragment;
+    private ArrayList<Entity> fragmentList = new ArrayList<Entity>();
 
     public TweetTopicsFragmentAdapter(Context context, FragmentManager fragmentManager) {
         super(fragmentManager);
@@ -59,22 +50,13 @@ public class TweetTopicsFragmentAdapter extends FragmentPagerAdapter  {
         }
     }
 
-    public void refreshColumnList() {
-
-        try {
-            int last_position = fragmentList.get(fragmentList.size()-1).getInt("position");
-
-            fragmentList.addAll(DataFramework.getInstance().getEntityList("columns","position>" + last_position));
-
-            notifyDataSetChanged();
-        }
-        catch (Exception exception) {
-            exception.printStackTrace();
-        }
+    @Override
+    public int getCount() {
+        return fragmentList.size();
     }
 
-    public Entity getEntityItem(int position) {
-        return fragmentList.get(position);
+    public ArrayList<Entity> getFragmentList() {
+        return fragmentList;
     }
 
     public Bitmap getIconItem(int position) {
@@ -121,9 +103,8 @@ public class TweetTopicsFragmentAdapter extends FragmentPagerAdapter  {
         }
     }
 
-    @Override
-    public int getCount() {
-        return fragmentList.size();
+    public MyActivityFragment getMyActivityFragment() {
+        return myActivityFragment;
     }
 
     @Override
@@ -136,9 +117,33 @@ public class TweetTopicsFragmentAdapter extends FragmentPagerAdapter  {
             case TweetTopicsUtils.COLUMN_LIST_USER:
                 Entity list_user_entity = new Entity("user_lists", fragmentList.get(position).getLong("userlist_id"));
                 return list_user_entity.getString("name");
+            case TweetTopicsUtils.COLUMN_TRENDING_TOPIC:
+                return fragmentList.get(position).getEntity("type_id").getString("title") + " " + fragmentList.get(position).getString("description");
             default:
                 return fragmentList.get(position).getEntity("type_id").getString("title");
         }
 
+    }
+
+    public void refreshColumnList() {
+
+        try {
+            /*int last_position = fragmentList.get(fragmentList.size()-1).getInt("position");
+
+            fragmentList.addAll(DataFramework.getInstance().getEntityList("columns","position>" + last_position));*/
+
+            fragmentList.clear();
+
+            Entity myActivity = new Entity("columns");
+            myActivity.setValue("type_id", TweetTopicsUtils.COLUMN_MY_ACTIVITY);
+            fragmentList.add(myActivity);
+
+            fragmentList.addAll(DataFramework.getInstance().getEntityList("columns"));
+
+            notifyDataSetChanged();
+        }
+        catch (Exception exception) {
+            exception.printStackTrace();
+        }
     }
 }

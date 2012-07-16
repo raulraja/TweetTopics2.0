@@ -74,14 +74,6 @@ public class TweetTopicsActivity extends BaseActivity {
     private int widthScreen;
     private int heightScreen;
 
-    public ViewPager getViewPager() {
-        return pager;
-    }
-
-    public TweetTopicsFragmentAdapter getFragmentPagerAdapter() {
-        return fragmentAdapter;
-    }
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
@@ -106,6 +98,7 @@ public class TweetTopicsActivity extends BaseActivity {
                     myHandler.postDelayed(new Runnable() {
                         @Override
                         public void run() {
+                            refreshActionBarColumns();
                             fragmentAdapter.refreshColumnList();
                             pager.setCurrentItem(count, false);
                         }
@@ -121,6 +114,7 @@ public class TweetTopicsActivity extends BaseActivity {
                     myHandler.postDelayed(new Runnable() {
                         @Override
                         public void run() {
+                            refreshActionBarColumns();
                             fragmentAdapter.refreshColumnList();
                             pager.setCurrentItem(position, false);
                         }
@@ -129,49 +123,6 @@ public class TweetTopicsActivity extends BaseActivity {
                 break;
         }
 
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        menu.add(0, NEW_ID, 0, R.string.new_search)
-                .setIcon(android.R.drawable.ic_menu_add);
-        menu.add(0, SIZE_TEXT_ID, 0, R.string.size)
-                .setIcon(R.drawable.ic_menu_font_size);
-        menu.add(0, PREFERENCES_ID, 0, R.string.preferences)
-                .setIcon(android.R.drawable.ic_menu_preferences);
-        menu.add(0, EXIT_ID, 0, R.string.exit)
-                .setIcon(android.R.drawable.ic_menu_revert);
-        menu.add(0, MANAGER_USER_ID, 0, R.string.manager_user)
-                .setIcon(android.R.drawable.ic_menu_agenda);
-        menu.add(0, TRENDS_LOCATION, 0, R.string.trending_topics)
-                .setIcon(R.drawable.gd_action_bar_trending);
-        return true;
-    }
-
-    public boolean onMenuItemSelected(int featureId, MenuItem item) {
-        switch (item.getItemId()) {
-            case NEW_ID:
-                newSearch();
-                return true;
-            case SIZE_TEXT_ID:
-                showSizeText();
-                return true;
-            case MANAGER_USER_ID:
-                newUser();
-                return true;
-            case PREFERENCES_ID:
-                Intent i = new Intent(this, Preferences.class);
-                startActivityForResult(i, ACTIVITY_PREFERENCES);
-                return true;
-            case EXIT_ID:
-                showDialogExit();
-                return true;
-            case TRENDS_LOCATION:
-                Intent trendslocation_intent = new Intent(this, TrendsLocationActivity.class);
-                startActivityForResult(trendslocation_intent, ACTIVITY_TRENDS_LOCATION);
-                return true;
-        }
-        return false;
     }
 
     @Override
@@ -272,7 +223,202 @@ public class TweetTopicsActivity extends BaseActivity {
 
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        menu.add(0, NEW_ID, 0, R.string.new_search)
+                .setIcon(android.R.drawable.ic_menu_add);
+        menu.add(0, SIZE_TEXT_ID, 0, R.string.size)
+                .setIcon(R.drawable.ic_menu_font_size);
+        menu.add(0, PREFERENCES_ID, 0, R.string.preferences)
+                .setIcon(android.R.drawable.ic_menu_preferences);
+        menu.add(0, EXIT_ID, 0, R.string.exit)
+                .setIcon(android.R.drawable.ic_menu_revert);
+        menu.add(0, MANAGER_USER_ID, 0, R.string.manager_user)
+                .setIcon(android.R.drawable.ic_menu_agenda);
+        menu.add(0, TRENDS_LOCATION, 0, R.string.trending_topics)
+                .setIcon(R.drawable.gd_action_bar_trending);
+        return true;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        DataFramework.getInstance().close();
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            if (isShowColumnsItems) {
+                showActionBarIndicatorAndMovePager(-1);
+                return false;
+            }
+            if (isShowLinks()) {
+                hideLinks();
+                return false;
+            }
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+    public boolean onMenuItemSelected(int featureId, MenuItem item) {
+        switch (item.getItemId()) {
+            case NEW_ID:
+                newSearch();
+                return true;
+            case SIZE_TEXT_ID:
+                showSizeText();
+                return true;
+            case MANAGER_USER_ID:
+                newUser();
+                return true;
+            case PREFERENCES_ID:
+                Intent i = new Intent(this, Preferences.class);
+                startActivityForResult(i, ACTIVITY_PREFERENCES);
+                return true;
+            case EXIT_ID:
+                showDialogExit();
+                return true;
+            case TRENDS_LOCATION:
+                Intent trendslocation_intent = new Intent(this, TrendsLocationActivity.class);
+                startActivityForResult(trendslocation_intent, ACTIVITY_TRENDS_LOCATION);
+                return true;
+        }
+        return false;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Entity user = DataFramework.getInstance().getTopEntity("users", "active=1", "");
+        if (user == null) {
+            newUser();
+        }
+    }
+
+    private boolean deleteColumn(final int position) {
+
+        ArrayList<Entity> deleted_column = DataFramework.getInstance().getEntityList("columns", "position=" + position);
+
+        boolean result = false;
+
+        if (deleted_column.size() > 0) {
+
+            result = deleted_column.get(0).delete();
+
+            if (result) {
+                DataFramework.getInstance().getDB().execSQL("UPDATE columns SET position=position-1 WHERE position>" + position);
+
+                Handler myHandler = new Handler();
+                myHandler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        fragmentAdapter.refreshColumnList();
+                        showActionBarIndicatorAndMovePager(pager.getCurrentItem());
+                        refreshActionBarColumns();
+
+                        /*if (pager.getCurrentItem() == position) {
+                            if (position == fragmentAdapter.getCount())
+                                pager.setCurrentItem(position - 1, false);
+                            else
+                                pager.setCurrentItem(position, false);
+                        } */
+                    }
+                }, 100);
+            }
+        }
+
+        return result;
+    }
+
+    public ViewPager getViewPager() {
+        return pager;
+    }
+
+    public TweetTopicsFragmentAdapter getFragmentPagerAdapter() {
+        return fragmentAdapter;
+    }
+
+    public void goToLink(String link) {
+//        if (CacheData.getCacheImages().containsKey(link)) {
+//            CacheData.getCacheImages().get(link);
+//        } else {
+//
+//        }
+        if (isShowLinks()) hideLinks();
+        if (link.startsWith("@")) {
+            Intent intent = new Intent(this, UserActivity.class);
+            intent.putExtra(UserActivity.KEY_EXTRAS_USER, link);
+            startActivity(intent);
+        } else if (link.startsWith("#")) {
+            HashTagDialogFragment frag = new HashTagDialogFragment();
+            Bundle args = new Bundle();
+            args.putInt("title", R.string.actions);
+            args.putString("hashtag", link);
+            frag.setArguments(args);
+            frag.show(getSupportFragmentManager(), "dialog");
+        } else {
+            if (link.startsWith("www")) {
+                link = "http://"+link;
+            }
+            Uri uri = Uri.parse(link);
+            Intent intent = new Intent(android.content.Intent.ACTION_VIEW, uri);
+            startActivity(intent);
+        }
+    }
+
+    public void hideLinks() {
+        ObjectAnimator scaleX = ObjectAnimator.ofFloat(layoutLinks, "scaleX", 1f, 0f);
+        scaleX.setDuration(150);
+        ObjectAnimator scaleY = ObjectAnimator.ofFloat(layoutLinks, "scaleY", 1f, 0f);
+        scaleY.setDuration(150);
+        ObjectAnimator fadeAnim = ObjectAnimator.ofFloat(layoutLinks, "alpha", 1f, 0f);
+        fadeAnim.setDuration(150);
+        AnimatorSet animatorSet = new AnimatorSet();
+        animatorSet.playTogether(scaleX, scaleY, fadeAnim);
+        animatorSet.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animator) {
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animator) {
+                layoutMainLinks.setVisibility(View.INVISIBLE);
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animator) {
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animator) {
+            }
+        });
+        animatorSet.start();
+
+    }
+
+    public boolean isShowLinks() {
+        return layoutMainLinks.getVisibility()==View.VISIBLE;
+    }
+
+    public void newSearch() {
+        Intent newsearch = new Intent(this, TabNewEditSearch.class);
+        startActivityForResult(newsearch, ACTIVITY_NEWEDITSEARCH);
+    }
+
+    public void newStatus() {
+        Intent newstatus = new Intent(this, NewStatusActivity.class);
+        startActivityForResult(newstatus, ACTIVITY_NEWSTATUS);
+    }
+
+    public void newUser() {
+        Intent newuser = new Intent(this, Users.class);
+        startActivityForResult(newuser, ACTIVITY_USER);
+    }
+
     public void refreshActionBarColumns() {
+
         layoutBackgroundColumnsItems.removeAllViews();
         for (int i=0; i<fragmentAdapter.getFragmentList().size(); i++) {
             View view = View.inflate(this, R.layout.row_actionbar_column, null);
@@ -306,33 +452,43 @@ public class TweetTopicsActivity extends BaseActivity {
         }
     }
 
-    private void showDialogDeleteColumn(final int position) {
-        AlertDialogFragment frag = new AlertDialogFragment();
-        Bundle args = new Bundle();
-        args.putInt(AlertDialogFragment.KEY_ALERT_TITLE, R.string.delete);
-        args.putInt(AlertDialogFragment.KEY_ALERT_MESSAGE, R.string.column_delete);
-        args.putBoolean(AlertDialogFragment.KEY_ALERT_HAS_NEGATIVE_BUTTON, true);
-        frag.setArguments(args);
-        frag.setAlertButtonListener(new AlertDialogFragment.AlertButtonListener() {
-            @Override
-            public void OnAlertButtonOk() {
-                // TODO Delete column
-                Toast.makeText(TweetTopicsActivity.this,"Paco borra la columna " + position + " aquí pisha",Toast.LENGTH_LONG).show();
-            }
+    public void refreshMyActivity() {
+        fragmentAdapter.getMyActivityFragment().fillData();
+    }
 
-            @Override
-            public void OnAlertButtonCancel() {
-            }
+    public void refreshTheme() {
 
-            @Override
-            public void OnAlertButtonNeutral() {
-            }
+        layoutBackgroundApp.setBackgroundColor(Color.parseColor("#"+themeManager.getStringColor("color_background_new_status")));
 
-            @Override
-            public void OnAlertItems(int which) {
-            }
-        });
-        frag.show(getSupportFragmentManager(), "dialog");
+        themeManager.setColors();
+
+        layoutBackgroundBar.setBackgroundDrawable(ImageUtils.createBackgroundDrawable(this, themeManager.getColor("color_top_bar"), false, 0));
+        layoutBackgroundColumnsBar.setBackgroundDrawable(ImageUtils.createBackgroundDrawable(this, themeManager.getColor("color_top_bar"), false, 0));
+
+        StateListDrawable statesButton = new StateListDrawable();
+        statesButton.addState(new int[] {android.R.attr.state_pressed}, ImageUtils.createBackgroundDrawable(this, themeManager.getColor("color_button_press_bar"), false, 0));
+        statesButton.addState(new int[] {-android.R.attr.state_pressed}, ImageUtils.createBackgroundDrawable(this, themeManager.getColor("color_top_bar"), false, 0));
+
+        imgBarAvatar.setBackgroundDrawable(statesButton);
+        imgNewStatus.setBackgroundDrawable(statesButton);
+
+
+        //(findViewById(R.id.tweettopics_bar_divider1)).setBackgroundDrawable(ImageUtils.createBackgroundDrawable(this, themeManager.getColor("color_top_bar"), false, 0));
+        //(findViewById(R.id.tweettopics_bar_divider2)).setBackgroundDrawable(ImageUtils.createBackgroundDrawable(this, themeManager.getColor("color_top_bar"), false, 0));
+
+        Drawable d = new ColorDrawable(android.R.color.transparent);
+
+        StateListDrawable states = new StateListDrawable();
+        states.addState(new int[] {android.R.attr.state_pressed}, d);
+        states.addState(new int[] {android.R.attr.state_window_focused}, d);
+        states.addState(new int[] {android.R.attr.state_pressed}, d);
+        states.addState(new int[] {android.R.attr.state_selected}, d);
+        states.addState(new int[] {android.R.attr.color}, new ColorDrawable(themeManager.getColor("color_indicator_text")));
+        indicator.setBackgroundDrawable(states);
+    }
+
+    private void reloadBarAvatar() {
+        imgBarAvatar.setImageBitmap(fragmentAdapter.getIconItem(pager.getCurrentItem()));
     }
 
     public void showActionBarColumns() {
@@ -429,71 +585,60 @@ public class TweetTopicsActivity extends BaseActivity {
 
     }
 
-    public void refreshMyActivity() {
-        fragmentAdapter.getMyActivityFragment().fillData();
-    }
+    private void showDialogDeleteColumn(final int position) {
 
-    public boolean isShowLinks() {
-        return layoutMainLinks.getVisibility()==View.VISIBLE;
-    }
-
-    public void goToLink(String link) {
-//        if (CacheData.getCacheImages().containsKey(link)) {
-//            CacheData.getCacheImages().get(link);
-//        } else {
-//
-//        }
-        if (isShowLinks()) hideLinks();
-        if (link.startsWith("@")) {
-            Intent intent = new Intent(this, UserActivity.class);
-            intent.putExtra(UserActivity.KEY_EXTRAS_USER, link);
-            startActivity(intent);
-        } else if (link.startsWith("#")) {
-            HashTagDialogFragment frag = new HashTagDialogFragment();
-            Bundle args = new Bundle();
-            args.putInt("title", R.string.actions);
-            args.putString("hashtag", link);
-            frag.setArguments(args);
-            frag.show(getSupportFragmentManager(), "dialog");
-        } else {
-            if (link.startsWith("www")) {
-                link = "http://"+link;
-            }
-            Uri uri = Uri.parse(link);
-            Intent intent = new Intent(android.content.Intent.ACTION_VIEW, uri);
-            startActivity(intent);
-        }
-    }
-
-    public void hideLinks() {
-        ObjectAnimator scaleX = ObjectAnimator.ofFloat(layoutLinks, "scaleX", 1f, 0f);
-        scaleX.setDuration(150);
-        ObjectAnimator scaleY = ObjectAnimator.ofFloat(layoutLinks, "scaleY", 1f, 0f);
-        scaleY.setDuration(150);
-        ObjectAnimator fadeAnim = ObjectAnimator.ofFloat(layoutLinks, "alpha", 1f, 0f);
-        fadeAnim.setDuration(150);
-        AnimatorSet animatorSet = new AnimatorSet();
-        animatorSet.playTogether(scaleX, scaleY, fadeAnim);
-        animatorSet.addListener(new Animator.AnimatorListener() {
+        AlertDialogFragment frag = new AlertDialogFragment();
+        Bundle args = new Bundle();
+        args.putInt(AlertDialogFragment.KEY_ALERT_TITLE, R.string.delete);
+        args.putInt(AlertDialogFragment.KEY_ALERT_MESSAGE, R.string.column_delete);
+        args.putBoolean(AlertDialogFragment.KEY_ALERT_HAS_NEGATIVE_BUTTON, true);
+        frag.setArguments(args);
+        frag.setAlertButtonListener(new AlertDialogFragment.AlertButtonListener() {
             @Override
-            public void onAnimationStart(Animator animator) {
+            public void OnAlertButtonOk() {
+
+                if (deleteColumn(position))
+                    Toast.makeText(TweetTopicsActivity.this, "La columna se ha eliminado",Toast.LENGTH_LONG).show();
             }
 
             @Override
-            public void onAnimationEnd(Animator animator) {
-                layoutMainLinks.setVisibility(View.INVISIBLE);
+            public void OnAlertButtonCancel() {
             }
 
             @Override
-            public void onAnimationCancel(Animator animator) {
+            public void OnAlertButtonNeutral() {
             }
 
             @Override
-            public void onAnimationRepeat(Animator animator) {
+            public void OnAlertItems(int which) {
             }
         });
-        animatorSet.start();
+        frag.show(getSupportFragmentManager(), "dialog");
+    }
 
+    private void showDialogExit() {
+
+        int minutes = Integer.parseInt(Utils.getPreference(this).getString("prf_time_notifications", "15"));
+
+        if (minutes > 0) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle(R.string.dialog_exit);
+            builder.setMessage(R.string.dialog_exit_msg);
+            builder.setPositiveButton(R.string.alert_dialog_ok, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int whichButton) {
+                    PreferenceUtils.saveNotificationsApp(TweetTopicsActivity.this, false);
+                    TweetTopicsActivity.this.finish();
+                }
+            });
+            builder.setNegativeButton(R.string.alert_dialog_cancel, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int whichButton) {
+                }
+            });
+            builder.create();
+            builder.show();
+        } else {
+            TweetTopicsActivity.this.finish();
+        }
     }
 
     public void showLinks(View view, InfoTweet infoTweet) {
@@ -576,111 +721,6 @@ public class TweetTopicsActivity extends BaseActivity {
         }
     }
 
-    private void reloadBarAvatar() {
-        imgBarAvatar.setImageBitmap(fragmentAdapter.getIconItem(pager.getCurrentItem()));
-    }
-
-    public void refreshTheme() {
-
-        layoutBackgroundApp.setBackgroundColor(Color.parseColor("#"+themeManager.getStringColor("color_background_new_status")));
-
-        themeManager.setColors();
-
-        layoutBackgroundBar.setBackgroundDrawable(ImageUtils.createBackgroundDrawable(this, themeManager.getColor("color_top_bar"), false, 0));
-        layoutBackgroundColumnsBar.setBackgroundDrawable(ImageUtils.createBackgroundDrawable(this, themeManager.getColor("color_top_bar"), false, 0));
-
-        StateListDrawable statesButton = new StateListDrawable();
-        statesButton.addState(new int[] {android.R.attr.state_pressed}, ImageUtils.createBackgroundDrawable(this, themeManager.getColor("color_button_press_bar"), false, 0));
-        statesButton.addState(new int[] {-android.R.attr.state_pressed}, ImageUtils.createBackgroundDrawable(this, themeManager.getColor("color_top_bar"), false, 0));
-
-        imgBarAvatar.setBackgroundDrawable(statesButton);
-        imgNewStatus.setBackgroundDrawable(statesButton);
-
-
-        //(findViewById(R.id.tweettopics_bar_divider1)).setBackgroundDrawable(ImageUtils.createBackgroundDrawable(this, themeManager.getColor("color_top_bar"), false, 0));
-        //(findViewById(R.id.tweettopics_bar_divider2)).setBackgroundDrawable(ImageUtils.createBackgroundDrawable(this, themeManager.getColor("color_top_bar"), false, 0));
-
-        Drawable d = new ColorDrawable(android.R.color.transparent);
-
-        StateListDrawable states = new StateListDrawable();
-        states.addState(new int[] {android.R.attr.state_pressed}, d);
-        states.addState(new int[] {android.R.attr.state_window_focused}, d);
-        states.addState(new int[] {android.R.attr.state_pressed}, d);
-        states.addState(new int[] {android.R.attr.state_selected}, d);
-        states.addState(new int[] {android.R.attr.color}, new ColorDrawable(themeManager.getColor("color_indicator_text")));
-        indicator.setBackgroundDrawable(states);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        Entity user = DataFramework.getInstance().getTopEntity("users", "active=1", "");
-        if (user == null) {
-            newUser();
-        }
-    }
-
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-             if (isShowColumnsItems) {
-                 showActionBarIndicatorAndMovePager(-1);
-                 return false;
-             }
-            if (isShowLinks()) {
-                hideLinks();
-                return false;
-            }
-        }
-        return super.onKeyDown(keyCode, event);
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        DataFramework.getInstance().close();
-    }
-
-    public void newSearch() {
-        Intent newsearch = new Intent(this, TabNewEditSearch.class);
-        startActivityForResult(newsearch, ACTIVITY_NEWEDITSEARCH);
-    }
-
-    public void newUser() {
-        Intent newuser = new Intent(this, Users.class);
-        startActivityForResult(newuser, ACTIVITY_USER);
-    }
-
-    public void newStatus() {
-        Intent newstatus = new Intent(this, NewStatusActivity.class);
-        startActivityForResult(newstatus, ACTIVITY_NEWSTATUS);
-    }
-
-    private void showDialogExit() {
-
-        int minutes = Integer.parseInt(Utils.getPreference(this).getString("prf_time_notifications", "15"));
-
-        if (minutes > 0) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle(R.string.dialog_exit);
-            builder.setMessage(R.string.dialog_exit_msg);
-            builder.setPositiveButton(R.string.alert_dialog_ok, new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int whichButton) {
-                    PreferenceUtils.saveNotificationsApp(TweetTopicsActivity.this, false);
-                    TweetTopicsActivity.this.finish();
-                }
-            });
-            builder.setNegativeButton(R.string.alert_dialog_cancel, new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int whichButton) {
-                }
-            });
-            builder.create();
-            builder.show();
-        } else {
-            TweetTopicsActivity.this.finish();
-        }
-    }
-
     public void showSizeText() {
 
         final int minValue = 6;
@@ -755,5 +795,4 @@ public class TweetTopicsActivity extends BaseActivity {
         builder.show();
 
     }
-
 }

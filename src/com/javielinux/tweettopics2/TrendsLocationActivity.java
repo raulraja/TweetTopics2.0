@@ -104,7 +104,7 @@ public class TrendsLocationActivity extends BaseActivity implements APIDelegate<
 
             Entity type = new Entity("type_columns", (long) TweetTopicsUtils.COLUMN_TRENDING_TOPIC);
             Entity user_list = new Entity("columns");
-            user_list.setValue("description", type.getString("description"));
+            user_list.setValue("description", trendslocation.getName());
             user_list.setValue("type_id", type);
             user_list.setValue("position", position);
             user_list.setValue("location_id", trendslocation.getWoeid());
