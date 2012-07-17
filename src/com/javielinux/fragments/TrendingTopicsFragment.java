@@ -148,17 +148,11 @@ public class TrendingTopicsFragment extends Fragment implements APIDelegate<Base
             @Override
             public void onClick(View v) {
 
-                trendsLocationlistView.setVisibility(View.VISIBLE);
-
-                ObjectAnimator translationTrendsLocation = ObjectAnimator.ofFloat(trendsLocationlistView, "translationY", -trendsLocationlistView.getHeight(), 0f);
-                translationTrendsLocation.setDuration(250);
-
                 ObjectAnimator translationTrends = ObjectAnimator.ofFloat(viewTweetList, "translationY", 0f, viewTweetList.getHeight());
                 translationTrends.setDuration(250);
 
                 AnimatorSet animatorSet = new AnimatorSet();
-                //animatorSet.playTogether(translationTrendsLocation,translationTrends);
-                animatorSet.playTogether(translationTrendsLocation);
+                animatorSet.playTogether(translationTrends);
 
                 animatorSet.addListener(new Animator.AnimatorListener() {
                     @Override
@@ -168,6 +162,14 @@ public class TrendingTopicsFragment extends Fragment implements APIDelegate<Base
                     @Override
                     public void onAnimationEnd(Animator animator) {
                         viewTweetList.setVisibility(View.GONE);
+                        trendsLocationlistView.setVisibility(View.VISIBLE);
+
+                        ObjectAnimator translationTrendsLocation = ObjectAnimator.ofFloat(trendsLocationlistView, "translationY", -trendsLocationlistView.getHeight(), 0f);
+                        translationTrendsLocation.setDuration(250);
+
+                        AnimatorSet animatorSet = new AnimatorSet();
+                        animatorSet.playTogether(translationTrendsLocation);
+                        animatorSet.start();
                     }
 
                     @Override
