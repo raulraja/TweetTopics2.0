@@ -1,7 +1,7 @@
 package com.javielinux.infos;
 
 
-import android.graphics.Bitmap;
+import twitter4j.User;
 
 import java.util.Date;
 
@@ -12,7 +12,6 @@ public class InfoUsers {
 	private String location = "";
 	private String url = "";
 	private Date created = null;
-	private Bitmap avatar = null;
 	private String urlAvatar = "";
 	private int tweets = 0;
 	private int followers = 0;
@@ -27,15 +26,23 @@ public class InfoUsers {
 	public InfoUsers() {
 	}
 
-	
-	public void setAvatar(Bitmap avatar) {
-		this.avatar = avatar;
-	}
+    public InfoUsers(User user) {
+        setName(user.getScreenName());
+        setFullname(user.getName());
+        setCreated(user.getCreatedAt());
+        setLocation(user.getLocation());
+        if (user.getURL()!=null) setUrl(user.getURL().toString());
+        setFollowers(user.getFollowersCount());
+        setFollowing(user.getFriendsCount());
+        setTweets(user.getStatusesCount());
+        setBio(user.getDescription());
+        if (user.getStatus()!=null) setTextTweet(user.getStatus().getText());
+        setUrlAvatar(user.getProfileImageURL().toString());
 
-	public Bitmap getAvatar() {
-		return avatar;
-	}
+        //infoUsers.setFollower(ConnectionManager.getInstance().getTwitter(request.getUserId()).existsFriendship(request.getUser(), screenName));
+        //infoUsers.setFriend(ConnectionManager.getInstance().getTwitter(request.getUserId()).existsFriendship(screenName, request.getUser()));
 
+    }
 
 	public void setName(String name) {
 		this.name = name;

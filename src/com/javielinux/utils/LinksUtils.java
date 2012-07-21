@@ -1,7 +1,9 @@
 package com.javielinux.utils;
 
+import android.util.Log;
 import com.javielinux.infos.InfoLink;
 import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
@@ -10,6 +12,7 @@ import org.htmlcleaner.CleanerProperties;
 import org.htmlcleaner.HtmlCleaner;
 import org.htmlcleaner.TagNode;
 import org.htmlcleaner.XPatherException;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
@@ -17,6 +20,7 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.*;
@@ -319,6 +323,8 @@ public class LinksUtils {
 			    if ( (t!=null) && t!="" && !t.equals("null")) link = t;
 			} catch (OutOfMemoryError e) {
 				e.printStackTrace();
+            } catch (JSONException e) {
+                e.printStackTrace();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -326,18 +332,6 @@ public class LinksUtils {
 		}
 
 		return link;
-    }
-
-    static public boolean hasLinksTweetForUser(String text) {
-    	int p = (Integer.parseInt(Utils.preference.getString("prf_links", "3")));
-    	if ( p == 1 ) {
-    		return false;
-    	} else if ( p == 2 ) {
-    		return hasImagesTweet(text);
-    	} else if ( p == 3 ) {
-    		return hasLinksTweet(text);
-    	}
-    	return true;
     }
 
     static public boolean hasLinksTweet(String text) {
@@ -472,6 +466,7 @@ public class LinksUtils {
             Utils.URLContent content = CacheData.getURLMedia(link);
             InfoLink il = new InfoLink();
             il.setService("Twitter Pic");
+            il.setExtensiveInfo(true);
             il.setType(0);
             il.setLink(link);
             il.setOriginalLink(originalLink);
@@ -522,6 +517,7 @@ public class LinksUtils {
 
             InfoLink il = new InfoLink();
             il.setService("Imgur");
+            il.setExtensiveInfo(true);
             il.setType(0);
             il.setLink(link);
             il.setOriginalLink(originalLink);
@@ -536,6 +532,7 @@ public class LinksUtils {
 			String id = link.substring(link.lastIndexOf("/")+1);
             InfoLink il = new InfoLink();
             il.setService("Lightbox");
+            il.setExtensiveInfo(true);
             il.setType(0);
             il.setLink(link);
             il.setOriginalLink(originalLink);
@@ -551,6 +548,7 @@ public class LinksUtils {
 
             InfoLink il = new InfoLink();
             il.setService("Twitpic");
+            il.setExtensiveInfo(true);
             il.setType(0);
             il.setLink(link);
             il.setOriginalLink(originalLink);
@@ -564,6 +562,7 @@ public class LinksUtils {
 			String id = link.substring(link.lastIndexOf("/")+1);
             InfoLink il = new InfoLink();
             il.setService("Picplz");
+            il.setExtensiveInfo(true);
             il.setType(0);
             il.setLink(link);
             il.setOriginalLink(originalLink);
@@ -577,6 +576,7 @@ public class LinksUtils {
 			String id = link.substring(link.lastIndexOf("/")+1);
             InfoLink il = new InfoLink();
             il.setService("Img.ly");
+            il.setExtensiveInfo(true);
             il.setType(0);
             il.setLink(link);
             il.setOriginalLink(originalLink);
@@ -606,11 +606,13 @@ public class LinksUtils {
 		if (link.contains("yfrog")) {
             InfoLink il = new InfoLink();
             il.setService("Yfrog");
+            il.setExtensiveInfo(true);
             il.setType(0);
             il.setLink(link);
             il.setOriginalLink(originalLink);
             il.setLinkImageThumb(link+".th.jpg");
             il.setLinkImageLarge(link+":android");
+            Log.d(Utils.TAG, "yfrog (\"+link+\"): " + link+".th.jpg" + " -- " +link+":android");
             return il;
 
 		}
@@ -620,6 +622,7 @@ public class LinksUtils {
 			String id = link.substring(link.lastIndexOf("/")+1);
             InfoLink il = new InfoLink();
             il.setService("twitvid");
+            il.setExtensiveInfo(true);
             il.setType(1);
             il.setLink(link);
             il.setOriginalLink(originalLink);
@@ -629,18 +632,6 @@ public class LinksUtils {
             il.setLinkImageLarge("http://images2.twitvid.com/"+id+".jpg");
             return il;
 		}
-
-
-		if ( (Integer.parseInt(Utils.preference.getString("prf_links", "3"))) == 3 ) {
-			InfoLink il = new InfoLink();
-			il.setService("web");
-			il.setType(2);
-			il.setLink(link);
-			il.setOriginalLink(originalLink);
-			il.setTitle(originalLink);
-			return il;
-		}
-
 
         /*
         if (link.contains("flic.kr")) {
@@ -736,7 +727,6 @@ public class LinksUtils {
 
         }
 
-
         // instagr.am
         if (link.contains("instagr.am")) {
 
@@ -749,12 +739,13 @@ public class LinksUtils {
                 props.setAllowMultiWordAttributes(true);
                 props.setRecognizeUnicodeChars(true);
                 props.setOmitComments(true);
-
+                props.setUseEmptyElementTags(true);
+                /*
                 URL url = new URL(link);
                 URLConnection conn;
                 conn = url.openConnection();
-                InputStreamReader isr = new InputStreamReader(conn.getInputStream());
-                TagNode node = cleaner.clean(isr);
+                InputStreamReader isr = new InputStreamReader(conn.getInputStream());    */
+                TagNode node = cleaner.clean(getURIContent(link));
 
                 Object[] objMeta = node.evaluateXPath("//meta[@property='og:image']");
                 if (objMeta.length > 0) {
@@ -779,6 +770,7 @@ public class LinksUtils {
             il.setOriginalLink(originalLink);
             il.setLinkImageThumb(image);
             il.setLinkImageLarge(image);
+            Log.d(Utils.TAG, "Instagr.am ("+link+"): " + image);
             return il;
 
         }
@@ -854,6 +846,7 @@ public class LinksUtils {
                     if (!imgThumb.equals("")) {
                         InfoLink il = new InfoLink();
                         il.setService("Twitgoo");
+                        il.setExtensiveInfo(true);
                         il.setType(0);
                         il.setLink(link);
                         il.setOriginalLink(originalLink);
@@ -896,6 +889,7 @@ public class LinksUtils {
                     if (!imgThumb.equals("")) {
                         InfoLink il = new InfoLink();
                         il.setService("Vimeo");
+                        il.setExtensiveInfo(true);
                         il.setType(1);
                         il.setLink(link);
                         il.setOriginalLink(originalLink);
@@ -961,6 +955,7 @@ public class LinksUtils {
             InfoLink il = new InfoLink();
 
             il.setService("Youtube");
+            il.setExtensiveInfo(true);
             il.setType(1);
             il.setLink(link);
             il.setOriginalLink(originalLink);
@@ -972,7 +967,50 @@ public class LinksUtils {
 
         }
 
+        // si no es una imagen, es un enlace web
 
-        return null;
+        InfoLink il = new InfoLink();
+        il.setService("web");
+        il.setType(2);
+        il.setLink(link);
+        il.setOriginalLink(originalLink);
+        il.setTitle(originalLink);
+        return il;
+
     }
+
+
+    public static String getURIContent(String url) {
+        String result = null;
+        HttpClient client = new DefaultHttpClient();
+        HttpGet request = new HttpGet();
+        StringBuffer sb = null;
+        Boolean flag = false;
+        try {
+            request.setURI(new URI(url));
+            request.setHeader("User-Agent", "Mozilla/5.0 (Windows; U; Windows NT 6.1; ru; rv:1.9.2.10) Gecko/20100914 Firefox/3.6.10");
+            HttpResponse response = client.execute(request);
+            BufferedReader in = new BufferedReader(new InputStreamReader(
+                    response.getEntity().getContent(), "CP-1251"));
+            sb = new StringBuffer("");
+            String line = "";
+            String NL = System.getProperty("line.separator");
+            while ((line = in.readLine()) != null) {
+                sb.append(line + NL);
+            }
+            in.close();
+            flag = true;
+        } catch (ClientProtocolException e) {
+        } catch (IOException e) {
+        } catch (URISyntaxException e) {
+        }
+        if (flag) {
+            result = sb.toString();
+            if (result.equals("")) {
+                result = null;
+            }
+        }
+        return result;
+    }
+
 }

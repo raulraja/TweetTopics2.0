@@ -46,7 +46,7 @@ public class InfoTweet implements Parcelable {
 	private double longitude = 0;
 	private boolean favorited = false;
 
-    private int type_tweet = -1;
+    private int typeTweet = -1;
 	
 	private boolean retweet = false;
     private boolean lastRead = false;
@@ -137,7 +137,7 @@ public class InfoTweet implements Parcelable {
 			mTypeFrom = FROM_STATUS;
 			toReplyId = entity.getLong("reply_tweet_id");
 			favorited = entity.getInt("is_favorite")==1?true:false;
-            type_tweet = entity.getInt("type_id");
+            typeTweet = entity.getInt("type_id");
 		}
 		idDB = entity.getId();
 		id = entity.getLong("tweet_id");
@@ -458,10 +458,10 @@ public class InfoTweet implements Parcelable {
         parcel.writeLong(toUserId);
         parcel.writeLong(createAt.getTime());
         parcel.writeLong(toReplyId);
-        parcel.writeInt(favorited?1:0);
+        parcel.writeInt(favorited ? 1 : 0);
         parcel.writeDouble(latitude);
         parcel.writeDouble(longitude);
-        parcel.writeInt(retweet?1:0);
+        parcel.writeInt(retweet ? 1 : 0);
         parcel.writeString(urlAvatarRetweet);
         parcel.writeString(textRetweet);
         parcel.writeString(usernameRetweet);
@@ -469,6 +469,18 @@ public class InfoTweet implements Parcelable {
         parcel.writeString(sourceRetweet);
         parcel.writeString(urlTweet);
         parcel.writeString(textHTMLFinal);
+        parcel.writeInt(typeTweet);
+        parcel.writeInt(linksCount);
+        parcel.writeString(bestLink);
+
+        parcel.writeInt(urls.size());
+        for (URLContent url : urls) {
+            parcel.writeString(url.normal);
+            parcel.writeString(url.display);
+            parcel.writeString(url.expanded);
+            parcel.writeString(url.linkMediaThumb);
+            parcel.writeString(url.linkMediaLarge);
+        }
     }
 
     public static final Parcelable.Creator<InfoTweet> CREATOR
@@ -506,17 +518,32 @@ public class InfoTweet implements Parcelable {
         sourceRetweet = in.readString();
         urlTweet = in.readString();
         textHTMLFinal = in.readString();
+        typeTweet = in.readInt();
+        linksCount = in.readInt();
+        bestLink = in.readString();
+
+        int sizeUrls = in.readInt();
+        urls = new ArrayList<URLContent>();
+        for (int i=0; i<sizeUrls; i++) {
+            URLContent url = new URLContent();
+            url.normal = in.readString();
+            url.display = in.readString();
+            url.expanded = in.readString();
+            url.linkMediaThumb = in.readString();
+            url.linkMediaLarge = in.readString();
+            urls.add(url);
+        }
 
         calculateLinks();
 
     }
 
     public boolean isDm() {
-        return (type_tweet==3 || type_tweet==4);
+        return (typeTweet ==3 || typeTweet ==4);
     }
 
     public boolean isTimeline() {
-        return (type_tweet==1);
+        return (typeTweet ==1);
     }
 
     public boolean isSavedTweet() {

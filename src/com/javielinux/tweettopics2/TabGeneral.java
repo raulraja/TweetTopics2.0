@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
-import android.content.DialogInterface.OnCancelListener;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
@@ -16,11 +15,8 @@ import com.android.dataframework.Entity;
 import com.javielinux.adapters.UserTwitterListAdapter;
 import com.javielinux.twitter.ConnectionManager;
 import com.javielinux.utils.Utils;
-import task.ListUserTwitterAsyncTask;
 import task.ListUserTwitterAsyncTask.UserTwitterStatusAsyncTaskResponder;
 import twitter4j.Twitter;
-
-import java.util.Date;
 
 public class TabGeneral extends Activity implements UserTwitterStatusAsyncTaskResponder {
 	private long mCurrentId = -1;
@@ -156,7 +152,8 @@ public class TabGeneral extends Activity implements UserTwitterStatusAsyncTaskRe
     }
     
     public void searchAvatarInTwitter(String text) {
-    		
+        // TODO Esto está mal
+    	/*
 		progressDialog = ProgressDialog.show(
 				this,
 				getResources().getString(R.string.loading_users),
@@ -174,7 +171,7 @@ public class TabGeneral extends Activity implements UserTwitterStatusAsyncTaskRe
 		});
 		
 		userTask = new ListUserTwitterAsyncTask(this).execute(text);	
-
+        */
     }
     
     private void populateFields() {
@@ -209,7 +206,10 @@ public class TabGeneral extends Activity implements UserTwitterStatusAsyncTaskRe
 		mAdapter = adapter;
 		
 		progressDialog.dismiss();
-		
+
+        // TODO Esto está muy mal hecho
+
+		/*
 		if (mAdapter.getError()==Utils.UNKNOWN_ERROR) {
 			Utils.showMessage(this, this.getString(R.string.no_server));
 		} else if (mAdapter.getError()==Utils.LIMIT_ERROR) {
@@ -240,7 +240,7 @@ public class TabGeneral extends Activity implements UserTwitterStatusAsyncTaskRe
 			alert.show();
 			
     	}
-		
+		*/
 	}
 
 	@Override

@@ -18,11 +18,10 @@ public class HashTagDialogFragment extends DialogFragment {
     private String hashtag = "";
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        int title = getArguments().getInt("title");
         hashtag = getArguments().getString("hashtag");
 
         return new AlertDialog.Builder(getActivity())
-                .setTitle(title)
+                .setTitle(hashtag)
                 .setItems( R.array.items_hashtag_actions, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         if (which==0) {

@@ -2,9 +2,6 @@ package com.javielinux.api.loaders;
 
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import com.javielinux.adapters.UserTwitterListAdapter;
 import com.javielinux.api.AsynchronousLoader;
 import com.javielinux.api.request.ListUserTwitterRequest;
 import com.javielinux.api.response.BaseResponse;
@@ -39,21 +36,9 @@ public class ListUserTwitterLoader extends AsynchronousLoader<BaseResponse> {
             ArrayList<InfoUsers> ar = new ArrayList<InfoUsers>();
             ResponseList<User> users = ConnectionManager.getInstance().getTwitter(request.getUserId()).searchUsers(request.getUser(), 0);
             for (int i=0; i<users.size(); i++) {
-                InfoUsers u = new InfoUsers();
-                u.setName(users.get(i).getScreenName());
-                try {
-                    Bitmap bmp = BitmapFactory.decodeStream(new Utils.FlushedInputStream(users.get(i).getProfileImageURL().openStream()));
-                    u.setAvatar(bmp);
-                } catch (OutOfMemoryError e) {
-                    u.setAvatar(null);
-                    e.printStackTrace();
-                } catch (Exception e) {
-                    u.setAvatar(null);
-                    e.printStackTrace();
-                }
-                ar.add(u);
+                ar.add(new InfoUsers(users.get(i)));
             }
-            response.setAdapter(new UserTwitterListAdapter(getContext(), ar));
+            response.setUsers(ar);
             return response;
         } catch (TwitterException e) {
             e.printStackTrace();

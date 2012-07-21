@@ -8,24 +8,60 @@
     <RelativeLayout
           android:id="@+id/tweet_links_row_container_image"
           android:layout_width="fill_parent"
-          android:layout_height="fill_parent"
+          android:layout_height="@dimen/height_image_tweet"
           android:visibility="gone">
 
         <ImageView  android:id="@+id/tweet_links_row_image"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"></ImageView>
+                    android:layout_height="@dimen/height_image_tweet"
+                    android:scaleType="centerCrop"
+                    android:layout_width="fill_parent"></ImageView>
+
+        <RelativeLayout android:layout_width="fill_parent"
+                      android:layout_height="wrap_content"
+                      android:background="#66000000"
+                      android:padding="5dp"
+                      android:layout_alignParentBottom="true">
+
+            <TextView android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:id="@+id/tweet_links_row_image_link" />
+
+        </RelativeLayout>
 
     </RelativeLayout>
 
     <RelativeLayout
             android:id="@+id/tweet_links_row_container_video"
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
+            android:layout_height="@dimen/height_image_tweet"
             android:visibility="gone">
 
         <ImageView  android:id="@+id/tweet_links_row_video"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"></ImageView>
+                    android:layout_height="@dimen/height_image_tweet"
+                    android:scaleType="centerCrop"
+                    android:layout_width="fill_parent"></ImageView>
+
+        <RelativeLayout android:layout_width="fill_parent"
+                      android:layout_height="wrap_content"
+                      android:background="#66000000"
+                      android:padding="5dp"
+                      android:layout_alignParentBottom="true">
+
+            <TextView android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:id="@+id/tweet_links_row_video_title" />
+
+            <TextView android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:id="@+id/tweet_links_row_video_duration"
+                      android:layout_alignParentRight="true"/>
+
+            <TextView android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:id="@+id/tweet_links_row_video_description"
+                      android:layout_below="@id/tweet_links_row_video_title"/>
+
+        </RelativeLayout>
 
     </RelativeLayout>
 
@@ -33,6 +69,7 @@
             android:id="@+id/tweet_links_row_container_link"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
+            android:padding="@dimen/default_padding"
             android:visibility="gone">
 
         <ImageView  android:id="@+id/tweet_links_row_link_image"
@@ -44,6 +81,7 @@
                 android:layout_toRightOf="@id/tweet_links_row_link_image"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:singleLine="true"
                 style="@style/TextLink" />
 
         <TextView
@@ -56,7 +94,7 @@
 
         <TextView
                 android:id="@+id/tweet_links_row_link_description"
-                android:layout_toRightOf="@id/tweet_links_row_link_title"
+                android:layout_toRightOf="@id/tweet_links_row_link_image"
                 android:layout_below="@id/tweet_links_row_link_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -68,6 +106,7 @@
             android:id="@+id/tweet_links_row_container_user"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
+            android:padding="@dimen/default_padding"
             android:visibility="gone">
 
         <ImageView  android:id="@+id/tweet_links_row_user_avatar"
@@ -81,6 +120,14 @@
                 android:layout_height="wrap_content"
                 style="@style/TextTitle" />
 
+        <TextView
+                android:id="@+id/tweet_links_row_user_counters"
+                android:layout_toRightOf="@id/tweet_links_row_link_image"
+                android:layout_below="@id/tweet_links_row_user_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/TextDescription" />
+
 
     </RelativeLayout>
 
@@ -88,6 +135,7 @@
             android:id="@+id/tweet_links_row_container_hashtag"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
+            android:padding="@dimen/default_padding"
             android:visibility="gone">
 
         <ImageView  android:id="@+id/tweet_links_row_hashtag_image"
@@ -99,7 +147,7 @@
                 android:layout_toRightOf="@id/tweet_links_row_hashtag_image"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="@style/TextTitle" />
+                style="@style/TitleTrendingTopics" />
 
 
     </RelativeLayout>
@@ -109,6 +157,7 @@
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:gravity="center"
+            android:padding="@dimen/default_padding"
             android:visibility="gone"
             android:id="@+id/tweet_links_row_container_loading"
             >

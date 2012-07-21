@@ -3,8 +3,6 @@ package com.javielinux.fragments;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Handler;
-import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,7 +35,7 @@ import twitter4j.Trend;
 
 import java.util.ArrayList;
 
-public class TrendingTopicsFragment extends Fragment implements APIDelegate<BaseResponse> {
+public class TrendingTopicsFragment extends BaseListFragment implements APIDelegate<BaseResponse> {
 
     private Entity column_entity;
 
@@ -88,6 +86,12 @@ public class TrendingTopicsFragment extends Fragment implements APIDelegate<Base
     }
 
     @Override
+    public void setFlinging(boolean flinging) {
+        this.flinging = flinging;
+        trendsAdapter.setFlinging(flinging);
+    }
+
+    @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
     }
@@ -124,6 +128,7 @@ public class TrendingTopicsFragment extends Fragment implements APIDelegate<Base
         });
 
         trendslistView = (PullToRefreshListView) view.findViewById(R.id.trends_listview);
+        trendsAdapter.setParentListView(trendslistView);
         trendslistView.getRefreshableView().setCacheColorHint(Color.TRANSPARENT);
         trendslistView.getRefreshableView().setAdapter(trendsAdapter);
         trendslistView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener() {
@@ -291,6 +296,7 @@ public class TrendingTopicsFragment extends Fragment implements APIDelegate<Base
             }
 
             trendsAdapter.notifyDataSetChanged();
+            trendsAdapter.launchVisibleTask();
         }
     }
 

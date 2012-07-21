@@ -15,6 +15,8 @@ import twitter4j.TwitterFactory;
 import twitter4j.User;
 import twitter4j.auth.AccessToken;
 import twitter4j.auth.RequestToken;
+import twitter4j.conf.Configuration;
+import twitter4j.conf.ConfigurationBuilder;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -44,10 +46,6 @@ public class ConnectionManager {
 
 	private String oAuthAccessToken;
 	private String oAuthAccessTokenSecret;
-
-	private String currentNetwork;
-
-	private NetworkConfig config = null;
 
 	private ConnectionManager() {};
 
@@ -97,7 +95,7 @@ public class ConnectionManager {
         loadFromDB();
     }
 
-	
+    /*
 	public void setNetworkConfig(String networkType) {
 		
 		NetworkConfigParser parser = new NetworkConfigParser();
@@ -125,15 +123,38 @@ public class ConnectionManager {
 
 		
 	}
-	
-	public String getCurrentNetwork() {
-		return currentNetwork;
-	}
+    */
+
+    public NetworkConfig getNetworkConfig() {
+        NetworkConfig config = null;
+        NetworkConfigParser parser = new NetworkConfigParser();
+        List<NetworkConfig> networkConfigs = parser.parse(context.getResources().getXml(R.xml.network_config));
+
+        for (NetworkConfig c : networkConfigs) {
+            if(c.getName().equals("twitter.com")) {
+                config = c;
+                break;
+            }
+        }
+        return config;
+    }
+
+    public Configuration getConfiguration() {
+        NetworkConfig config = getNetworkConfig();
+
+        ConfigurationBuilder configurationBuilder = new ConfigurationBuilder();
+        configurationBuilder.setOAuthConsumerKey(config.getConsumerKey());
+        configurationBuilder.setOAuthConsumerSecret(config.getConsumerSecret());
+        configurationBuilder.setUseSSL(true);
+        return configurationBuilder.build();
+    }
 
 	public String getAuthenticationURL() throws TwitterException {
 
+        NetworkConfig config = getNetworkConfig();
+
         twitterOAuth = new TwitterFactory().getInstance();
-		//twitter.setOAuthConsumer(config.getConsumerKey(), config.getConsumerSecret());
+        twitterOAuth.setOAuthConsumer(config.getConsumerKey(), config.getConsumerSecret());
 
 		requestTokenOAuth = twitterOAuth.getOAuthRequestToken();//AuthorizationActivity.TWITTER_HOST);
 
@@ -168,7 +189,7 @@ public class ConnectionManager {
         	DataFramework.getInstance().getDB().execSQL("UPDATE users SET active = 0");
 
 	        Entity ent = new Entity("users");
-	        ent.setValue("service", currentNetwork);
+	        ent.setValue("service", "twitter.com");
 	        try {
 				ent.setValue("name", twitter.getScreenName());
                 ent.setValue("fullname", twitter.showUser(twitter.getId()).getName());
@@ -229,7 +250,7 @@ public class ConnectionManager {
         if (ent!=null) {
         	
             // comprobamos si no es facebook
-            
+            /*
         	if (ent.getString("service")!=null) {
 	            if (ent.getString("service").equals("facebook")) {
 	            	ent = DataFramework.getInstance().getTopEntity("users", "service is null or service = \"twitter.com\"", "");
@@ -237,19 +258,27 @@ public class ConnectionManager {
 	    			ent.save();
 	            }
         	}
-	        
+	        */
 	        String service = ent.getString("service");
 	        if (service.equals("")) service = "twitter.com";
 	        
-			setNetworkConfig(service);
+			//setNetworkConfig(service);
 			String accessToken = ent.getString(KEY_AUTH_KEY);
 	        String accessTokenSecret = ent.getString(KEY_AUTH_SECRET_KEY);
 
+
+//            ConfigurationBuilder configurationBuilder = new ConfigurationBuilder();
+//            configurationBuilder.setOAuthConsumerKey(accessToken);
+//            configurationBuilder.setOAuthConsumerSecret(accessTokenSecret);
+//            configurationBuilder.setUseSSL(true);
+//            Configuration configuration = configurationBuilder.build();
+//            twitter = new TwitterFactory(configuration).getInstance();
+
+
             AccessToken at = new AccessToken(accessToken, accessTokenSecret);
+	        twitter = new TwitterFactory(getConfiguration()).getInstance(at);
 	        
-	        twitter = new TwitterFactory().getInstance(at);
-	        
-	        Log.d(Utils.TAG, "Cargado " + ent.getString("name") + " desde " + service);
+	        Log.d(Utils.TAG, "Cargado " + ent.getString("name") + " desde twitter");
 
         }
 

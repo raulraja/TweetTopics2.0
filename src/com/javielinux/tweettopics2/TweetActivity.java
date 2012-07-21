@@ -3,7 +3,9 @@ package com.javielinux.tweettopics2;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.text.Html;
@@ -16,6 +18,7 @@ import com.javielinux.api.APITweetTopics;
 import com.javielinux.api.request.LoadImageWidgetRequest;
 import com.javielinux.api.response.ErrorResponse;
 import com.javielinux.api.response.LoadImageWidgetResponse;
+import com.javielinux.dialogs.HashTagDialogFragment;
 import com.javielinux.fragmentadapter.TweetFragmentAdapter;
 import com.javielinux.infos.InfoTweet;
 import com.javielinux.utils.TweetActions;
@@ -68,9 +71,7 @@ public class TweetActivity extends BaseLayersActivity {
 
             @Override
             public void onClick(View v) {
-                Bundle bundle = new Bundle();
-                bundle.putString(UserActivity.KEY_EXTRAS_USER, infoTweet.isRetweet()?infoTweet.getUsernameRetweet():infoTweet.getUsername());
-                startAnimationActivity(UserActivity.class, bundle);
+                goToLink(infoTweet.isRetweet()?infoTweet.getUsernameRetweet():infoTweet.getUsername());
             }
 
         });
@@ -133,6 +134,27 @@ public class TweetActivity extends BaseLayersActivity {
 
         refreshTheme();
 
+    }
+
+    public void goToLink(String link) {
+        if (link.startsWith("@")) {
+            Bundle bundle = new Bundle();
+            bundle.putString(UserActivity.KEY_EXTRAS_USER, link);
+            startAnimationActivity(UserActivity.class, bundle);
+        } else if (link.startsWith("#")) {
+            HashTagDialogFragment frag = new HashTagDialogFragment();
+            Bundle args = new Bundle();
+            args.putString("hashtag", link);
+            frag.setArguments(args);
+            frag.show(getSupportFragmentManager(), "dialog");
+        } else {
+            if (link.startsWith("www")) {
+                link = "http://"+link;
+            }
+            Uri uri = Uri.parse(link);
+            Intent intent = new Intent(android.content.Intent.ACTION_VIEW, uri);
+            startActivity(intent);
+        }
     }
 
     private void refreshTheme() {

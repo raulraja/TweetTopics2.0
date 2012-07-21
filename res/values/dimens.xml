@@ -24,4 +24,8 @@
     <dimen name="actionbar_height">40dp</dimen>
     <dimen name="sub_actionbar_height">32dp</dimen>
 
+    <dimen name="height_image_tweet">220dp</dimen>
+
+    <dimen name="default_padding">8dp</dimen>
+
 </resources>

@@ -353,7 +353,6 @@ public class TweetTopicsActivity extends BaseActivity {
         } else if (link.startsWith("#")) {
             HashTagDialogFragment frag = new HashTagDialogFragment();
             Bundle args = new Bundle();
-            args.putInt("title", R.string.actions);
             args.putString("hashtag", link);
             frag.setArguments(args);
             frag.show(getSupportFragmentManager(), "dialog");
@@ -598,7 +597,7 @@ public class TweetTopicsActivity extends BaseActivity {
             public void OnAlertButtonOk() {
 
                 if (deleteColumn(position))
-                    Toast.makeText(TweetTopicsActivity.this, "La columna se ha eliminado",Toast.LENGTH_LONG).show();
+                    Toast.makeText(TweetTopicsActivity.this, R.string.column_delete_ok,Toast.LENGTH_LONG).show();
             }
 
             @Override

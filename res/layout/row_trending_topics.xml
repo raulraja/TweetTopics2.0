@@ -8,7 +8,7 @@
     <TextView android:id="@+id/trend_name"
         android:layout_height="wrap_content"
         android:layout_width="fill_parent"
-        android:padding="7dp"
-        style="@style/SubTitleApp" />
+        android:padding="12dp"
+        style="@style/TitleTrendingTopics" />
 
 </LinearLayout>

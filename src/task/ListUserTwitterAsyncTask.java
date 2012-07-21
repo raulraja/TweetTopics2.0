@@ -4,19 +4,13 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import com.javielinux.adapters.UserTwitterListAdapter;
-import com.javielinux.infos.InfoUsers;
 import com.javielinux.tweettopics2.TabGeneral;
 import com.javielinux.utils.Utils;
-import twitter4j.RateLimitStatus;
-import twitter4j.ResponseList;
-import twitter4j.TwitterException;
-import twitter4j.User;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
 
 public class ListUserTwitterAsyncTask extends AsyncTask<String, Void, UserTwitterListAdapter> {
 
@@ -36,22 +30,12 @@ public class ListUserTwitterAsyncTask extends AsyncTask<String, Void, UserTwitte
 
 	@Override
 	protected UserTwitterListAdapter doInBackground(String... args) {
-		ArrayList<InfoUsers> ar = new ArrayList<InfoUsers>();
+		/*ArrayList<InfoUsers> ar = new ArrayList<InfoUsers>();
 		try {
 			ResponseList<User> users = TabGeneral.twitter.searchUsers(args[0], 0);
 			for (int i=0; i<users.size(); i++) {
 				InfoUsers u = new InfoUsers();
 				u.setName(users.get(i).getScreenName());
-				try {
-					Bitmap bmp = BitmapFactory.decodeStream(new Utils.FlushedInputStream(users.get(i).getProfileImageURL().openStream()));
-					u.setAvatar(bmp);
-				} catch (OutOfMemoryError e) {
-					u.setAvatar(null);
-					e.printStackTrace();
-				} catch (Exception e) {
-					u.setAvatar(null);
-					e.printStackTrace();
-				}
 				ar.add(u);
 			}
 			return new UserTwitterListAdapter(mTabGeneral, ar);
@@ -63,10 +47,11 @@ public class ListUserTwitterAsyncTask extends AsyncTask<String, Void, UserTwitte
     			adapter.setError(Utils.LIMIT_ERROR);
     			adapter.setRate(rate);
     		} else {
-    			adapter.setError(Utils.UNKNOWN_ERROR);	
+    			adapter.setError(Utils.UNKNOWN_ERROR);
     		}
     		return adapter;
-		}
+		}   */
+        return null;
 	}
 	
 	public static Bitmap getBitmapFromURL(String src) {

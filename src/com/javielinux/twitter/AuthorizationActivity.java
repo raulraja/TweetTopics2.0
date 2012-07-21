@@ -85,7 +85,7 @@ public class AuthorizationActivity extends Activity {
 		
 		ConnectionManager.getInstance().open(this);
     	
-        ConnectionManager.getInstance().setNetworkConfig(network);
+//        ConnectionManager.getInstance().setNetworkConfig(network);
         
         String authUrl = null;
 		try {

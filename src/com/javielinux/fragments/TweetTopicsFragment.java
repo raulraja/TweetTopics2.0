@@ -3,7 +3,6 @@ package com.javielinux.fragments;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,7 +35,7 @@ import widget.WidgetCounters4x1;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class TweetTopicsFragment extends Fragment implements APIDelegate<BaseResponse> {
+public class TweetTopicsFragment extends BaseListFragment implements APIDelegate<BaseResponse> {
 
     private TweetsAdapter tweetsAdapter;
     private ArrayList<InfoTweet> infoTweets = new ArrayList<InfoTweet>();;
@@ -52,8 +51,6 @@ public class TweetTopicsFragment extends Fragment implements APIDelegate<BaseRes
     private int positionLastRead = 0;
 
     private int typeUserColumn = 0;
-
-    private boolean flinging = false;
 
     public TweetTopicsFragment(long column_id) {
 
@@ -162,16 +159,12 @@ public class TweetTopicsFragment extends Fragment implements APIDelegate<BaseRes
 
     }
 
-    public boolean isFlinging() {
-        return flinging;
-    }
-
+    @Override
     public void setFlinging(boolean flinging) {
         this.flinging = flinging;
         tweetsAdapter.setFlinging(flinging);
         if (!flinging) {
             markPositionLastReadAsLastReadId();
-            tweetsAdapter.launchVisibleTask(listView.getRefreshableView().getFirstVisiblePosition(), listView.getRefreshableView().getLastVisiblePosition());
         }
     }
 
@@ -206,7 +199,7 @@ public class TweetTopicsFragment extends Fragment implements APIDelegate<BaseRes
 
         APITweetTopics.execute(getActivity(), getLoaderManager(), this, new TwitterUserRequest(column_entity.getInt("type_id"), user_entity.getId()));
     }
-
+    /*
     public void showHideMessage() {
         boolean show = Utils.getPreference(getActivity()).getBoolean("prf_quiet_show_msg", true);
 
@@ -214,7 +207,7 @@ public class TweetTopicsFragment extends Fragment implements APIDelegate<BaseRes
             Utils.showMessage(getActivity(), tweetsAdapter.getHideMessages() + " " + getActivity().getString(R.string.tweets_hidden));
         }
     }
-
+    */
     private boolean markPositionLastReadAsLastReadId() {
 
         sendBroadcastUpdateTweets();
@@ -291,6 +284,8 @@ public class TweetTopicsFragment extends Fragment implements APIDelegate<BaseRes
             }
         });
 
+        tweetsAdapter.setParentListView(listView);
+
         listView.setOnScrollListener(new AbsListView.OnScrollListener() {
 
             @Override
@@ -345,10 +340,10 @@ public class TweetTopicsFragment extends Fragment implements APIDelegate<BaseRes
             }
         }
 
+        tweetsAdapter.launchVisibleTask();
+
         if (getTweetsFromInternet) {
             reload();
-        } else {
-            showHideMessage();
         }
 
         return view;
@@ -453,6 +448,7 @@ public class TweetTopicsFragment extends Fragment implements APIDelegate<BaseRes
             positionLastRead = tweetsAdapter.getLastReadPosition() + count;
 
             tweetsAdapter.notifyDataSetChanged();
+            tweetsAdapter.launchVisibleTask();
 
             listView.getRefreshableView().setSelection(firstVisible + count + 1);
 

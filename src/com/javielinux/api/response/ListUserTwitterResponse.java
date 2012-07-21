@@ -1,21 +1,23 @@
 package com.javielinux.api.response;
 
 
-import com.javielinux.adapters.UserTwitterListAdapter;
+import com.javielinux.infos.InfoUsers;
+
+import java.util.ArrayList;
 
 public class ListUserTwitterResponse implements BaseResponse {
-    private UserTwitterListAdapter adapter;
+    private ArrayList<InfoUsers> users;
 
-    public UserTwitterListAdapter getAdapter() {
-        return adapter;
+    public ArrayList<InfoUsers> getUsers() {
+        return users;
     }
 
-    public void setAdapter(UserTwitterListAdapter adapter) {
-        this.adapter = adapter;
+    public void setUsers(ArrayList<InfoUsers> users) {
+        this.users = users;
     }
 
     @Override
     public boolean isError() {
-        return false;  //To change body of implemented methods use File | Settings | File Templates.
+        return false;
     }
 }

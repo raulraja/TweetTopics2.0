@@ -3,7 +3,6 @@ package com.javielinux.fragments;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,7 +27,7 @@ import com.javielinux.utils.Utils;
 
 import java.util.ArrayList;
 
-public class ListUserFragment extends Fragment implements APIDelegate<BaseResponse> {
+public class ListUserFragment extends BaseListFragment implements APIDelegate<BaseResponse> {
 
     private Entity column_entity;
     private Entity list_user_entity;
@@ -84,6 +83,12 @@ public class ListUserFragment extends Fragment implements APIDelegate<BaseRespon
     }
 
     @Override
+    public void setFlinging(boolean flinging) {
+        this.flinging = flinging;
+        tweetsAdapter.setFlinging(flinging);
+    }
+
+    @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
     }
@@ -103,6 +108,7 @@ public class ListUserFragment extends Fragment implements APIDelegate<BaseRespon
         view = View.inflate(getActivity(), R.layout.tweettopics_fragment, null);
 
         listView = (PullToRefreshListView) view.findViewById(R.id.tweet_status_listview);
+        tweetsAdapter.setParentListView(listView);
         listView.getRefreshableView().setCacheColorHint(Color.TRANSPARENT);
         listView.getRefreshableView().setAdapter(tweetsAdapter);
         listView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener() {
@@ -123,8 +129,6 @@ public class ListUserFragment extends Fragment implements APIDelegate<BaseRespon
         viewLoading = (LinearLayout) view.findViewById(R.id.tweet_view_loading);
         viewNoInternet = (LinearLayout) view.findViewById(R.id.tweet_view_no_internet);
         viewUpdate = (LinearLayout) view.findViewById(R.id.tweet_view_update);
-
-        boolean getTweetsFromInternet = false;
 
         if (infoTweets.size()<=0)
             showLoading();
@@ -176,6 +180,7 @@ public class ListUserFragment extends Fragment implements APIDelegate<BaseRespon
 
         tweetsAdapter.setLastReadPosition(tweetsAdapter.getLastReadPosition() + count);
         tweetsAdapter.notifyDataSetChanged();
+        tweetsAdapter.launchVisibleTask();
         listView.getRefreshableView().setSelection(firstVisible + count);
     }
 

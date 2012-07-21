@@ -3,6 +3,10 @@
 
     <!-- v 2.0  -->
 
+    <string name="info_user_counters">%1$s tweets | %2$s seguidores | %3$s amigos</string>
+
+    <string name="column_delete_ok">La columna se ha eliminado</string>
+
     <string name="column_delete">¿Estás seguro de querer borrar esta columna?</string>
 
     <string name="column_created">Creada columna %1$s</string>

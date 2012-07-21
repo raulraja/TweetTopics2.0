@@ -43,7 +43,8 @@
 			                android:entries="@array/entries_prf_n_result"
 			                android:entryValues="@array/entries_prf_n_result"
 			                android:dialogTitle="@string/title_prf_result" />
-			
+
+                <!--
 			        <ListPreference
 			        		android:defaultValue="3"
 			                android:key="prf_links"
@@ -52,7 +53,7 @@
 			                android:entries="@array/entries_prf_links"
 			                android:entryValues="@array/entries_prf_links_values"
 			                android:dialogTitle="@string/title_prf_links" />
-			                
+			        -->
 			        <ListPreference
 			        		android:defaultValue="2"
 			                android:key="prf_show_links"
@@ -268,13 +269,13 @@
 		                android:title="@string/title_prf_quiet"
 		                android:summary="@string/summary_prf_quiet"
 		                android:dialogTitle="@string/title_prf_quiet" />
-		                
+		<!--
 		        <CheckBoxPreference
 		                android:defaultValue="true"
 		                android:key="prf_quiet_show_msg"
 		                android:title="@string/title_prf_quiet_show_msg"
 		                android:summary="@string/summary_prf_quiet_show_msg" />
-		                
+		-->
 		        <ListPreference
 		        		android:defaultValue="1"
 		                android:key="prf_order_list"

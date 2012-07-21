@@ -16,6 +16,7 @@ import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
 import com.androidquery.AQuery;
 import com.androidquery.util.Constants;
+import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.javielinux.api.APIDelegate;
 import com.javielinux.api.APITweetTopics;
 import com.javielinux.api.request.LoadLinkRequest;
@@ -34,10 +35,6 @@ import java.util.HashMap;
 import java.util.concurrent.RejectedExecutionException;
 
 public class TweetsAdapter extends ArrayAdapter<InfoTweet> {
-
-    public FragmentActivity getActivity() {
-        return activity;
-    }
 
     public static class ViewHolder {
         public ImageView avatarView;
@@ -83,6 +80,16 @@ public class TweetsAdapter extends ArrayAdapter<InfoTweet> {
 
     private AQuery listAQuery;
 
+    private PullToRefreshListView parentListView;
+
+    public FragmentActivity getActivity() {
+        return activity;
+    }
+
+    public void setParentListView(PullToRefreshListView parentListView) {
+        this.parentListView = parentListView;
+    }
+
     public boolean isFlinging() {
         return flinging;
     }
@@ -91,10 +98,15 @@ public class TweetsAdapter extends ArrayAdapter<InfoTweet> {
         this.flinging = flinging;
         if (!flinging) {
             notifyDataSetChanged();
+            launchVisibleTask();
         }
     }
 
-    public void launchVisibleTask(int firstPosition, int lastPosition) {
+    public void launchVisibleTask() {
+
+        int firstPosition = parentListView.getRefreshableView().getFirstVisiblePosition();
+        int lastPosition = parentListView.getRefreshableView().getLastVisiblePosition();
+
         for (int i=firstPosition; i<=lastPosition; i++) {
             String linkForImage = infoTweetArrayList.get(i).getBestLink();
             if (!linkForImage.equals("") && !linkForImage.startsWith("@") && !linkForImage.startsWith("#")) {

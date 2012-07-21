@@ -3,7 +3,6 @@ package com.javielinux.fragments;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,7 +30,7 @@ import com.javielinux.utils.Utils;
 
 import java.util.ArrayList;
 
-public class SearchFragment extends Fragment implements APIDelegate<BaseResponse> {
+public class SearchFragment extends BaseListFragment implements APIDelegate<BaseResponse> {
 
     private TweetsAdapter tweetsAdapter;
     private ArrayList<InfoTweet> infoTweets = new ArrayList<InfoTweet>();
@@ -45,7 +44,6 @@ public class SearchFragment extends Fragment implements APIDelegate<BaseResponse
     private LinearLayout viewUpdate;
 
     private int positionLastRead = 0;
-    private boolean flinging = false;
 
     public SearchFragment(long column_id) {
 
@@ -116,10 +114,7 @@ public class SearchFragment extends Fragment implements APIDelegate<BaseResponse
 
     }
 
-    public boolean isFlinging() {
-        return flinging;
-    }
-
+    @Override
     public void setFlinging(boolean flinging) {
         this.flinging = flinging;
         tweetsAdapter.setFlinging(flinging);
@@ -215,6 +210,7 @@ public class SearchFragment extends Fragment implements APIDelegate<BaseResponse
         view = View.inflate(getActivity(), R.layout.tweettopics_fragment, null);
 
         listView = (PullToRefreshListView) view.findViewById(R.id.tweet_status_listview);
+        tweetsAdapter.setParentListView(listView);
         listView.getRefreshableView().setCacheColorHint(Color.TRANSPARENT);
         listView.getRefreshableView().setAdapter(tweetsAdapter);
         listView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener() {
@@ -261,12 +257,12 @@ public class SearchFragment extends Fragment implements APIDelegate<BaseResponse
         viewNoInternet = (LinearLayout) view.findViewById(R.id.tweet_view_no_internet);
         viewUpdate = (LinearLayout) view.findViewById(R.id.tweet_view_update);
 
-        boolean getTweetsFromInternet = false;
-
         if (infoTweets.size()<=0)
             showLoading();
         else
             showUpdating();
+
+        tweetsAdapter.launchVisibleTask();
 
         reload();
 
@@ -358,6 +354,7 @@ public class SearchFragment extends Fragment implements APIDelegate<BaseResponse
 
             tweetsAdapter.setLastReadPosition(tweetsAdapter.getLastReadPosition() + count);
             tweetsAdapter.notifyDataSetChanged();
+            tweetsAdapter.launchVisibleTask();
             listView.getRefreshableView().setSelection(firstVisible + count);
         }
     }

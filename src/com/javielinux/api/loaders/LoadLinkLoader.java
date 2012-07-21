@@ -5,13 +5,11 @@ import android.content.Context;
 import com.javielinux.api.AsynchronousLoader;
 import com.javielinux.api.request.LoadLinkRequest;
 import com.javielinux.api.response.BaseResponse;
-import com.javielinux.api.response.ErrorResponse;
 import com.javielinux.api.response.LoadLinkResponse;
 import com.javielinux.infos.InfoLink;
 import com.javielinux.infos.InfoWeb;
 import com.javielinux.utils.CacheData;
 import com.javielinux.utils.LinksUtils;
-import com.javielinux.utils.Utils;
 
 public class LoadLinkLoader extends AsynchronousLoader<BaseResponse> {
 
@@ -37,7 +35,7 @@ public class LoadLinkLoader extends AsynchronousLoader<BaseResponse> {
         }
 
         if (il!=null) {
-            if (il.getType()==2) { // es un link
+            if (il.getType()==InfoLink.GENERAL && !il.isExtensiveInfo()) { // es un link
                 try {
                     InfoWeb info = new InfoWeb(il.getLink());
 
@@ -54,15 +52,11 @@ public class LoadLinkLoader extends AsynchronousLoader<BaseResponse> {
                     il.setExtensiveInfo(true);
                 } catch (Exception e) {
                     e.printStackTrace();
-                    ErrorResponse errorResponse = new ErrorResponse();
-                    errorResponse.setError(e, e.getMessage());
-                    return errorResponse;
+//                    ErrorResponse errorResponse = new ErrorResponse();
+//                    errorResponse.setError(e, e.getMessage());
+//                    return errorResponse;
                 }
 
-            } else {
-                int h = Utils.dip2px(getContext(), Utils.HEIGHT_IMAGE);
-                if (il.getType()==1) h = Utils.dip2px(getContext(), Utils.HEIGHT_VIDEO);
-                il.setExtensiveInfo(true);
             }
 
         }

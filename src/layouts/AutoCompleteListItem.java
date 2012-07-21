@@ -9,7 +9,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.javielinux.infos.InfoUsers;
 import com.javielinux.tweettopics2.R;
-import task.LoadImageAutoCompleteAsyncTask;
 import task.LoadImageAutoCompleteAsyncTask.LoadImageAutoCompleteAsyncTaskResponder;
 
 public class AutoCompleteListItem extends LinearLayout implements LoadImageAutoCompleteAsyncTaskResponder {
@@ -33,14 +32,17 @@ public class AutoCompleteListItem extends LinearLayout implements LoadImageAutoC
 		}
 
 		if (latestLoadTask!=null) latestLoadTask.cancel(true);
-		
+
+        // TODO El autocompletar hay que reescribirlo
+
+		/*
 		mAvatar = (ImageView)findViewById(R.id.ac_avatar);
 		if (item.getAvatar()==null) {
 			mAvatar.setImageResource(R.drawable.avatar);
 			latestLoadTask = new LoadImageAutoCompleteAsyncTask(this).execute(item.getUrlAvatar());			
 		} else {
 			mAvatar.setImageBitmap(item.getAvatar());
-		}
+		}    */
 	}
 
 	@Override

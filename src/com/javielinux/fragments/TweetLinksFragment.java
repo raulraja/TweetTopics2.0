@@ -5,10 +5,12 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import com.javielinux.adapters.TweetsLinkAdapter;
 import com.javielinux.infos.InfoTweet;
 import com.javielinux.tweettopics2.R;
+import com.javielinux.tweettopics2.TweetActivity;
 import com.javielinux.utils.LinksUtils;
 
 public class TweetLinksFragment extends Fragment {
@@ -38,6 +40,13 @@ public class TweetLinksFragment extends Fragment {
         list =  ((ListView)view.findViewById(R.id.tweet_links_list));
 
         list.setAdapter(adapter);
+
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                ((TweetActivity)getActivity()).goToLink(adapter.getItem(i));
+            }
+        });
 
         return view;
     }

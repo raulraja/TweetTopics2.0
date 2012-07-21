@@ -1,7 +1,5 @@
 package com.javielinux.infos;
 
-import android.graphics.Bitmap;
-
 public class InfoLink {
 
     public static final int IMAGE = 0;
@@ -16,8 +14,6 @@ public class InfoLink {
 	private int durationVideo = 0;
 	private String originalLink = "";
 	private String link = "";
-	private Bitmap bmpThumb = null;
-	private Bitmap bmpLarge = null;
 	private String service = "";
 	private int type = 0; // 0 -> imagen 1 -> video 2 -> Enlace  3 -> QR TweetTopics 4 -> Theme TweetTopics 5 -> Es un tweet
 	private String linkImageThumb = "";
@@ -54,23 +50,7 @@ public class InfoLink {
 	public String getLink() {
 		return link;
 	}
-    /*
-	public void setBitmapThumb(Bitmap bmp) {
-		this.bmpThumb = bmp;
-	}
 
-	public Bitmap getBitmapThumb() {
-		return bmpThumb;
-	}
-	
-	public void setBitmapLarge(Bitmap bmp) {
-		this.bmpLarge = bmp;
-	}
-
-	public Bitmap getBitmapLarge() {
-		return bmpLarge;
-	}
-    */
 	public void setService(String service) {
 		this.service = service;
 	}

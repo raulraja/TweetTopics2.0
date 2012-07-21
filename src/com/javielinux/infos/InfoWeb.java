@@ -1,8 +1,6 @@
 package com.javielinux.infos;
 
-import android.util.Log;
 import com.javielinux.utils.GuessEncodingInputStream;
-import com.javielinux.utils.Utils;
 import org.htmlcleaner.CleanerProperties;
 import org.htmlcleaner.HtmlCleaner;
 import org.htmlcleaner.TagNode;
@@ -44,9 +42,7 @@ public class InfoWeb {
 				// ver el encoding
 				InputStream istreamEncoding = new GuessEncodingInputStream(istream);
 				String encoding = ((GuessEncodingInputStream)istreamEncoding).guess();
-				
-				Log.d(Utils.TAG, web+" - encoding: " + encoding);
-	
+
 				URLConnection conn;
 				conn = url.openConnection();
 				

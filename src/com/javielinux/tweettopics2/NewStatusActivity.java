@@ -894,13 +894,7 @@ public class NewStatusActivity extends BaseActivity {
 				if (!names.contains(ents.get(i).getString("username"))) {
 					InfoUsers iu = new InfoUsers();
 					iu.setName(ents.get(i).getString("username"));
-					
-					File file = Utils.getFileForSaveURL(this, ents.get(i).getString("url_avatar"));
-					if (file.exists()) {
-						iu.setAvatar(BitmapFactory.decodeFile(file.getAbsolutePath()));
-					} else {
-						iu.setUrlAvatar(ents.get(i).getString("url_avatar"));
-					}
+					iu.setUrlAvatar(ents.get(i).getString("url_avatar"));
 					names.add(ents.get(i).getString("username"));
 					mResultInfoUsers.add(iu);
 					AutoCompleteListItem v = (AutoCompleteListItem) View.inflate(this, R.layout.row_autocomplete_user, null);

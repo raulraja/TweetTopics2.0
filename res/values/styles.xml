@@ -472,6 +472,11 @@
         <item name="android:textColor">?color_title_general</item>
     </style>
 
+    <style name="TitleTrendingTopics">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">?color_title_general</item>
+    </style>
+
     <style name="SubTitleApp">
         <item name="android:textSize">15sp</item>
         <item name="android:textColor">?color_title_general</item>

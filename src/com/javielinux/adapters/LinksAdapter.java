@@ -90,7 +90,9 @@ public class LinksAdapter extends BaseAdapter {
         if (link.startsWith("@")) {
             InfoUsers infoUser = CacheData.getCacheUser(link.substring(1));
             if (infoUser!=null) {
-                if (infoUser.getAvatar()!=null) viewHolder.image.setImageBitmap(infoUser.getAvatar());
+
+                aQuery.id(viewHolder.image).image(infoUser.getUrlAvatar(), true, true, 0, typeResource, aQuery.getCachedImage(typeResource), AQuery.FADE_IN_NETWORK);
+
                 viewHolder.title.setText(writeTitle(link));
                 hasImage = true;
             } else {
@@ -183,6 +185,9 @@ public class LinksAdapter extends BaseAdapter {
     private String writeTitle(String title) {
         if (title.startsWith("http://")) {
             title = title.substring(7);
+        }
+        if (title.startsWith("www.")) {
+            title = title.substring(4);
         }
         if (title.length()>14) {
             title = title.substring(0,12)+"...";
