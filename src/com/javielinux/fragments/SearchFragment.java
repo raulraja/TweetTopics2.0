@@ -262,8 +262,6 @@ public class SearchFragment extends BaseListFragment implements APIDelegate<Base
         else
             showUpdating();
 
-        tweetsAdapter.launchVisibleTask();
-
         reload();
 
         return view;

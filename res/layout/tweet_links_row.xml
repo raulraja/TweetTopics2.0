@@ -54,12 +54,8 @@
             <TextView android:layout_width="wrap_content"
                       android:layout_height="wrap_content"
                       android:id="@+id/tweet_links_row_video_duration"
-                      android:layout_alignParentRight="true"/>
-
-            <TextView android:layout_width="wrap_content"
-                      android:layout_height="wrap_content"
-                      android:id="@+id/tweet_links_row_video_description"
-                      android:layout_below="@id/tweet_links_row_video_title"/>
+                      android:layout_below="@id/tweet_links_row_video_title"
+                      />
 
         </RelativeLayout>
 
@@ -73,8 +69,7 @@
             android:visibility="gone">
 
         <ImageView  android:id="@+id/tweet_links_row_link_image"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"></ImageView>
+                    style="@style/TweetAvatar"></ImageView>
 
         <TextView
                 android:id="@+id/tweet_links_row_link_url"
@@ -110,23 +105,23 @@
             android:visibility="gone">
 
         <ImageView  android:id="@+id/tweet_links_row_user_avatar"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"></ImageView>
+                    style="@style/TweetAvatar"></ImageView>
 
         <TextView
                 android:id="@+id/tweet_links_row_user_name"
-                android:layout_toRightOf="@id/tweet_links_row_link_image"
+                android:layout_toRightOf="@id/tweet_links_row_user_avatar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/default_padding"
                 style="@style/TextTitle" />
 
         <TextView
                 android:id="@+id/tweet_links_row_user_counters"
-                android:layout_toRightOf="@id/tweet_links_row_link_image"
+                android:layout_toRightOf="@id/tweet_links_row_user_avatar"
                 android:layout_below="@id/tweet_links_row_user_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="@style/TextDescription" />
+                style="@style/TextSubTitle" />
 
 
     </RelativeLayout>
@@ -152,28 +147,45 @@
 
     </RelativeLayout>
 
-    <LinearLayout
+    <RelativeLayout
             android:orientation="horizontal"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:gravity="center"
             android:padding="@dimen/default_padding"
             android:visibility="gone"
             android:id="@+id/tweet_links_row_container_loading"
             >
 
-        <ProgressBar
-                android:layout_width="16sp"
-                android:layout_height="16sp"
-                android:indeterminate="true"
-                android:layout_marginRight="6sp"
-                />
+        <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="fill_parent"
+                android:id="@+id/tweet_links_row_container_loading_ll"
+                android:gravity="center"
+                android:layout_height="fill_parent">
+            <ProgressBar
+                    android:layout_width="16sp"
+                    android:layout_height="16sp"
+                    android:indeterminate="true"
+                    android:layout_marginRight="6sp"
+                    />
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/loading"
+                    />
+        </LinearLayout>
+
         <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/loading"
+                android:layout_below="@id/tweet_links_row_container_loading_ll"
+                android:layout_margin="@dimen/default_padding"
+                android:id="@+id/tweet_links_row_loading_text"
+                android:singleLine="true"
+                android:gravity="center"
+                style="@style/TextSubTitle"
                 />
 
-    </LinearLayout>
+    </RelativeLayout>
 
 </LinearLayout>

@@ -52,7 +52,7 @@ public class UserActivity extends BaseLayersActivity {
         Bundle extras = getIntent().getExtras();
         if (extras!=null) {
             if (extras.containsKey(KEY_EXTRAS_USER)) {
-                username = extras.getString(KEY_EXTRAS_USER);
+                username = extras.getString(KEY_EXTRAS_USER).replace("@", "");
             }
         }
 

@@ -88,7 +88,7 @@ public class LinksAdapter extends BaseAdapter {
         boolean hasImage = false;
 
         if (link.startsWith("@")) {
-            InfoUsers infoUser = CacheData.getCacheUser(link.substring(1));
+            InfoUsers infoUser = CacheData.getCacheUser(link);
             if (infoUser!=null) {
 
                 aQuery.id(viewHolder.image).image(infoUser.getUrlAvatar(), true, true, 0, typeResource, aQuery.getCachedImage(typeResource), AQuery.FADE_IN_NETWORK);

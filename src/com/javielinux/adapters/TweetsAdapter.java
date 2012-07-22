@@ -102,36 +102,40 @@ public class TweetsAdapter extends ArrayAdapter<InfoTweet> {
         }
     }
 
+    private void loadLinks(int position) {
+        String linkForImage = infoTweetArrayList.get(position).getBestLink();
+        if (!linkForImage.equals("") && !linkForImage.startsWith("@") && !linkForImage.startsWith("#")) {
+            if (!CacheData.existCacheInfoLink(linkForImage)) {
+                try {
+                    APITweetTopics.execute(getContext(), loaderManager, new APIDelegate<LoadLinkResponse>() {
+
+                        @Override
+                        public void onResults(LoadLinkResponse result) {
+                            if (result.getInfoLink() != null) {
+                                if (!isFlinging()) {
+                                    notifyDataSetChanged();
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onError(ErrorResponse error) {
+
+                        }
+                    }, new LoadLinkRequest(linkForImage, null));
+
+                } catch (RejectedExecutionException e) {}
+            }
+        }
+    }
+
     public void launchVisibleTask() {
 
         int firstPosition = parentListView.getRefreshableView().getFirstVisiblePosition();
         int lastPosition = parentListView.getRefreshableView().getLastVisiblePosition();
 
         for (int i=firstPosition; i<=lastPosition; i++) {
-            String linkForImage = infoTweetArrayList.get(i).getBestLink();
-            if (!linkForImage.equals("") && !linkForImage.startsWith("@") && !linkForImage.startsWith("#")) {
-                if (!CacheData.existCacheInfoLink(linkForImage)) {
-                    try {
-                        APITweetTopics.execute(getContext(), loaderManager, new APIDelegate<LoadLinkResponse>() {
-
-                            @Override
-                            public void onResults(LoadLinkResponse result) {
-                                if (result.getInfoLink() != null) {
-                                    if (!isFlinging()) {
-                                        notifyDataSetChanged();
-                                    }
-                                }
-                            }
-
-                            @Override
-                            public void onError(ErrorResponse error) {
-
-                            }
-                        }, new LoadLinkRequest(linkForImage, null));
-
-                    } catch (RejectedExecutionException e) {}
-                }
-            }
+            loadLinks(i);
         }
     }
 
@@ -212,6 +216,7 @@ public class TweetsAdapter extends ArrayAdapter<InfoTweet> {
             convertView = activity.getLayoutInflater().inflate(R.layout.tweet_list_view_item, parent, false);
             //view = (RelativeLayout) View.inflate(getContext(), R.layout.tweet_list_view_item, null);
             convertView.setTag(generateViewHolder(convertView));
+            loadLinks(position);
         }
 
         ViewHolder viewHolder = (ViewHolder) convertView.getTag();

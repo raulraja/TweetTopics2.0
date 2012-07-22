@@ -292,7 +292,7 @@ public class TweetTopicsFragment extends BaseListFragment implements APIDelegate
             public void onScroll(AbsListView arg0, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
                 if (positionLastRead > firstVisibleItem) {
                     positionLastRead = firstVisibleItem;
-                    if (firstVisibleItem==0) markPositionLastReadAsLastReadId();
+                    if (firstVisibleItem == 0) markPositionLastReadAsLastReadId();
                 }
             }
 
@@ -339,8 +339,6 @@ public class TweetTopicsFragment extends BaseListFragment implements APIDelegate
 
             }
         }
-
-        tweetsAdapter.launchVisibleTask();
 
         if (getTweetsFromInternet) {
             reload();

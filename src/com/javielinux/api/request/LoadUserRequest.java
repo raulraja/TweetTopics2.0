@@ -12,7 +12,7 @@ public class LoadUserRequest implements BaseRequest {
         return user;
     }
     public void setUser(String user) {
-        this.user = user;
+        this.user = user.replace("@", "");
     }
 
 }

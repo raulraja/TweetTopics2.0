@@ -139,7 +139,7 @@ public class TweetActivity extends BaseLayersActivity {
     public void goToLink(String link) {
         if (link.startsWith("@")) {
             Bundle bundle = new Bundle();
-            bundle.putString(UserActivity.KEY_EXTRAS_USER, link);
+            bundle.putString(UserActivity.KEY_EXTRAS_USER, link.replace("@", ""));
             startAnimationActivity(UserActivity.class, bundle);
         } else if (link.startsWith("#")) {
             HashTagDialogFragment frag = new HashTagDialogFragment();

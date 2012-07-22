@@ -22,6 +22,7 @@ public class CacheData {
 	}
 	
 	public static InfoUsers getCacheUser(String name) {
+        name = name.replace("@", "");
 		if (cacheUsers !=null && cacheUsers.containsKey(name)) {
 			return cacheUsers.get(name);
 		}
