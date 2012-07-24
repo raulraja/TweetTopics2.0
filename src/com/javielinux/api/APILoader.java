@@ -100,6 +100,8 @@ public class APILoader implements LoaderManager.LoaderCallbacks {
             loader = new UploadTwitlongerLoader(context, (UploadTwitlongerRequest)baseRequest);
         } else if (baseRequest instanceof UserListsRequest) {
             loader = new UserListsLoader(context, (UserListsRequest)baseRequest);
+        } else if (baseRequest instanceof TwitterUserDBRequest) {
+            loader = new TwitterUserDBLoader(context, (TwitterUserDBRequest)baseRequest);
         }
 
         return loader;

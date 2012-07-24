@@ -17,9 +17,11 @@ import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.javielinux.adapters.TweetsAdapter;
 import com.javielinux.api.APIDelegate;
 import com.javielinux.api.APITweetTopics;
+import com.javielinux.api.request.TwitterUserDBRequest;
 import com.javielinux.api.request.TwitterUserRequest;
 import com.javielinux.api.response.BaseResponse;
 import com.javielinux.api.response.ErrorResponse;
+import com.javielinux.api.response.TwitterUserDBResponse;
 import com.javielinux.api.response.TwitterUserResponse;
 import com.javielinux.database.EntityTweetUser;
 import com.javielinux.infos.InfoSaveTweets;
@@ -38,7 +40,7 @@ import java.util.Date;
 public class TweetTopicsFragment extends BaseListFragment implements APIDelegate<BaseResponse> {
 
     private TweetsAdapter tweetsAdapter;
-    private ArrayList<InfoTweet> infoTweets = new ArrayList<InfoTweet>();;
+    private ArrayList<InfoTweet> infoTweets = new ArrayList<InfoTweet>();
     private Entity column_entity;
     private Entity user_entity;
     private View view;
@@ -66,96 +68,56 @@ public class TweetTopicsFragment extends BaseListFragment implements APIDelegate
 
     }
 
-    private void preLoadInfoTweetIfIsNecessary() {
+    private void preLoadInfoTweetFromDB() {
 
-        EntityTweetUser entityTweetUser = new EntityTweetUser(user_entity.getId(), typeUserColumn);
+        showLoading();
 
-        String whereType = "";
+        APITweetTopics.execute(getActivity(), getLoaderManager(), new APIDelegate() {
+            @Override
+            public void onResults(BaseResponse r) {
+                TwitterUserDBResponse result = (TwitterUserDBResponse) r;
+                infoTweets.clear();
+                infoTweets.addAll(result.getInfoTweets());
+                tweetsAdapter.setHideMessages(result.getCountHide());
+                tweetsAdapter.setLastReadPosition(result.getPosition());
+                positionLastRead = result.getPosition();
+                tweetsAdapter.notifyDataSetChanged();
 
-        switch (column_entity.getInt("type_id")) {
-            case TweetTopicsUtils.COLUMN_TIMELINE:
-                Utils.fillHide();
-                whereType = " AND type_id = " + TweetTopicsUtils.TWEET_TYPE_TIMELINE;
-                break;
-            case TweetTopicsUtils.COLUMN_MENTIONS:
-                whereType = " AND type_id = " + TweetTopicsUtils.TWEET_TYPE_MENTIONS;
-                break;
-            case TweetTopicsUtils.COLUMN_DIRECT_MESSAGES:
-                whereType = " AND (type_id = " + TweetTopicsUtils.TWEET_TYPE_DIRECTMESSAGES + " OR type_id = " + TweetTopicsUtils.TWEET_TYPE_SENT_DIRECTMESSAGES + ")";
-                break;
-        }
+                boolean getTweetsFromInternet = false;
 
-        ArrayList<Entity> tweets;
-
-        try {
-            tweets = DataFramework.getInstance().getEntityList("tweets_user", "user_tt_id = " + column_entity.getLong("user_id") + whereType, "date desc, has_more_tweets_down asc");
-        } catch (Exception exception) {
-            tweets = DataFramework.getInstance().getEntityList("tweets_user", "user_tt_id = " + column_entity.getLong("user_id") + whereType, "date desc, has_more_tweets_down asc", "0," + Utils.MAX_ROW_BYSEARCH);
-        }
-
-        int pos = 0;
-        int count = 0;
-        boolean found = false;
-        int countHide = 0;
-
-        for (int i = 0; i < tweets.size(); i++) {
-
-            boolean delete_tweet = false;
-
-            if (i > 0) {
-                if (tweets.get(i).getLong("tweet_id") == tweets.get(i - 1).getLong("tweet_id")) {
-                    delete_tweet = true;
-                }
-            }
-            if (delete_tweet) {
-                try {
-                    tweets.get(i).delete();
-
-                } catch (Exception exception) {
-                    exception.printStackTrace();
-                }
-            } else {
-                boolean is_timeline = column_entity.getInt("type_id") ==  TweetTopicsUtils.COLUMN_TIMELINE;
-
-                if (is_timeline && Utils.hideUser.contains(tweets.get(i).getString("username").toLowerCase())) { // usuario
-                    countHide++;
-                } else if (is_timeline && Utils.isHideWordInText(tweets.get(i).getString("text").toLowerCase())) { // palabra
-                    countHide++;
-                } else if (is_timeline && Utils.isHideSourceInText(tweets.get(i).getString("source").toLowerCase())) { // fuente
-                    countHide++;
+                if (infoTweets.size()<=0) {
+                    getTweetsFromInternet = true;
                 } else {
-                    InfoTweet infoTweet = new InfoTweet(tweets.get(i));
-                    if (!found && entityTweetUser.getValueLastId() >= tweets.get(i).getLong("tweet_id")) {
-                        infoTweet.setLastRead(true);
-                        pos = count;
-                        found = true;
-                    }
+                    if (column_entity.getInt("type_id") == TweetTopicsUtils.COLUMN_TIMELINE) {
 
-                    if (i >= tweets.size() - 1 && !found) {
-                        infoTweet.setLastRead(true);
-                        pos = count;
-                        found = true;
-                    }
+                        int minutes = Integer.parseInt(Utils.getPreference(getActivity()).getString("prf_time_refresh", "10"));
 
-                    infoTweet.setRead(found);
+                        if (minutes > 0) {
+                            int miliseconds = minutes * 60 * 1000;
+                            Date date = new Date(tweetsAdapter.getItem(0).getDate().getTime() + miliseconds);
 
-                    try {
-                        infoTweets.add(infoTweet);
-                        /*if (r.hasMoreTweetDown()) {
-                            response.add(new RowResponseList(RowResponseList.TYPE_MORE_TWEETS));
-                        }*/
-                        count++;
-                    } catch (OutOfMemoryError er) {
-                        i = tweets.size();
+                            if (new Date().after(date)) {
+                                showUpdating();
+                                getTweetsFromInternet = true;
+                            }
+                        }
+
                     }
                 }
+
+                if (getTweetsFromInternet) {
+                    reload();
+                } else {
+                    showTweetsList();
+                }
+
             }
 
-        }
-
-        tweetsAdapter.setHideMessages(countHide);
-        tweetsAdapter.setLastReadPosition(pos);
-        positionLastRead = pos;
+            @Override
+            public void onError(ErrorResponse error) {
+                reload();
+            }
+        }, new TwitterUserDBRequest(column_entity.getInt("type_id"), user_entity.getId(), typeUserColumn));
 
     }
 
@@ -199,15 +161,7 @@ public class TweetTopicsFragment extends BaseListFragment implements APIDelegate
 
         APITweetTopics.execute(getActivity(), getLoaderManager(), this, new TwitterUserRequest(column_entity.getInt("type_id"), user_entity.getId()));
     }
-    /*
-    public void showHideMessage() {
-        boolean show = Utils.getPreference(getActivity()).getBoolean("prf_quiet_show_msg", true);
 
-        if (show && tweetsAdapter.getHideMessages() > 0) {
-            Utils.showMessage(getActivity(), tweetsAdapter.getHideMessages() + " " + getActivity().getString(R.string.tweets_hidden));
-        }
-    }
-    */
     private boolean markPositionLastReadAsLastReadId() {
 
         sendBroadcastUpdateTweets();
@@ -255,7 +209,6 @@ public class TweetTopicsFragment extends BaseListFragment implements APIDelegate
         super.onCreate(savedInstanceState);
 
         tweetsAdapter = new TweetsAdapter(getActivity(), getLoaderManager(), infoTweets, user_entity.getString("name"), (int)column_entity.getId());
-        preLoadInfoTweetIfIsNecessary();
 
     }
 
@@ -317,31 +270,8 @@ public class TweetTopicsFragment extends BaseListFragment implements APIDelegate
         viewNoInternet = (LinearLayout) view.findViewById(R.id.tweet_view_no_internet);
         viewUpdate = (LinearLayout) view.findViewById(R.id.tweet_view_update);
 
-        boolean getTweetsFromInternet = false;
-
         if (infoTweets.size()<=0) {
-            showLoading();
-            getTweetsFromInternet = true;
-        } else {
-            if (column_entity.getInt("type_id") == TweetTopicsUtils.COLUMN_TIMELINE) {
-
-                int minutes = Integer.parseInt(Utils.getPreference(getActivity()).getString("prf_time_refresh", "10"));
-
-                if (minutes > 0) {
-                    int miliseconds = minutes * 60 * 1000;
-                    Date date = new Date(tweetsAdapter.getItem(0).getDate().getTime() + miliseconds);
-
-                    if (new Date().after(date)) {
-                        showUpdating();
-                        getTweetsFromInternet = true;
-                    }
-                }
-
-            }
-        }
-
-        if (getTweetsFromInternet) {
-            reload();
+            preLoadInfoTweetFromDB();
         }
 
         return view;
