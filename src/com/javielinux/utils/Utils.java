@@ -1120,7 +1120,7 @@ public class Utils {
 				newHeight = (newWidth*height) / width;
 			}
 			
-			if (height>newHeight) {
+
 		        float scaleWidth = ((float) newWidth) / width;
 				float scaleHeight = ((float) newHeight) / height;
 				
@@ -1128,9 +1128,7 @@ public class Utils {
 		        matrix.postScale(scaleWidth, scaleHeight);	        
 				
 		        return Bitmap.createBitmap(bitmapOrg, 0, 0, width, height, matrix, false);
-			} else {
-				return bitmapOrg;
-			}
+
 			/*
 			Options opt = new Options();
 			opt.inSampleSize = 2;

@@ -103,7 +103,12 @@ public class TweetsAdapter extends ArrayAdapter<InfoTweet> {
     }
 
     private void loadLinks(int position) {
-        String linkForImage = infoTweetArrayList.get(position).getBestLink();
+        if (infoTweetArrayList.size()<=0) return;
+        String linkForImage = "";
+        try {
+            linkForImage = infoTweetArrayList.get(position).getBestLink();
+        } catch (IndexOutOfBoundsException e) {}
+
         if (!linkForImage.equals("") && !linkForImage.startsWith("@") && !linkForImage.startsWith("#")) {
             if (!CacheData.existCacheInfoLink(linkForImage)) {
                 try {
