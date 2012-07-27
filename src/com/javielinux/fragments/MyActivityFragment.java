@@ -328,6 +328,10 @@ public class MyActivityFragment extends Fragment {
         }
     }
 
+    public void createUserColumn(long userId, int typeId) {
+        ((TweetTopicsActivity)getActivity()).createUserColumn(userId, typeId);
+    }
+
     public void newUserTwitter() {
         if (Utils.isLite(getActivity())) {
             if (DataFramework.getInstance().getEntityList("users", "service = \"twitter.com\" or service is null").size() < 1) {

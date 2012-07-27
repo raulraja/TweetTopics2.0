@@ -80,6 +80,9 @@ public class TweetTopicsFragment extends BaseListFragment implements APIDelegate
                 infoTweets.addAll(result.getInfoTweets());
                 tweetsAdapter.setHideMessages(result.getCountHide());
                 tweetsAdapter.setLastReadPosition(result.getPosition());
+
+                listView.getRefreshableView().setSelection(result.getPosition()+1);
+
                 positionLastRead = result.getPosition();
                 tweetsAdapter.notifyDataSetChanged();
 
@@ -264,7 +267,6 @@ public class TweetTopicsFragment extends BaseListFragment implements APIDelegate
 
         });
 
-        listView.getRefreshableView().setSelection(tweetsAdapter.getLastReadPosition()+1);
 
         viewLoading = (LinearLayout) view.findViewById(R.id.tweet_view_loading);
         viewNoInternet = (LinearLayout) view.findViewById(R.id.tweet_view_no_internet);

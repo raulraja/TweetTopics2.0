@@ -5,10 +5,7 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
+import android.widget.*;
 import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
 import com.javielinux.fragments.MyActivityFragment;
@@ -192,6 +189,15 @@ public class MyActivityAdapter extends BaseAdapter {
             TextView name = (TextView)v.findViewById(R.id.my_activity_user_name);
             name.setText(item.getString("name"));
 
+            ImageButton imgButtonTimeline = (ImageButton) v.findViewById(R.id.my_activity_timeline);
+            imgButtonTimeline.setTag(id);
+            imgButtonTimeline.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    myActivityFragment.createUserColumn(Integer.valueOf(view.getTag().toString()), TweetTopicsUtils.COLUMN_TIMELINE);
+                }
+            });
+
             ImageView imgCounterTimeline = (ImageView)v.findViewById(R.id.my_activity_counter_timeline);
             int totalTimeline = DataFramework.getInstance().getEntityListCount("tweets_user", "type_id = " + TweetTopicsUtils.TWEET_TYPE_TIMELINE
                     + " AND user_tt_id="+item.getId() + " AND tweet_id >'" + Utils.fillZeros(""+item.getString("last_timeline_id"))+"'");
@@ -202,6 +208,15 @@ public class MyActivityAdapter extends BaseAdapter {
                 imgCounterTimeline.setVisibility(View.GONE);
             }
 
+            ImageButton imgButtonMentions = (ImageButton) v.findViewById(R.id.my_activity_mentions);
+            imgButtonMentions.setTag(id);
+            imgButtonMentions.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    myActivityFragment.createUserColumn(Integer.valueOf(view.getTag().toString()), TweetTopicsUtils.COLUMN_MENTIONS);
+                }
+            });
+
             ImageView imgCounterMentions = (ImageView)v.findViewById(R.id.my_activity_counter_mentions);
             int totalMentions = DataFramework.getInstance().getEntityListCount("tweets_user", "type_id = " + TweetTopicsUtils.TWEET_TYPE_MENTIONS
                     + " AND user_tt_id="+item.getId() + " AND tweet_id >'" + Utils.fillZeros(""+item.getString("last_mention_id"))+"'");
@@ -211,6 +226,15 @@ public class MyActivityAdapter extends BaseAdapter {
             } else {
                 imgCounterMentions.setVisibility(View.GONE);
             }
+
+            ImageButton imgButtonDMs = (ImageButton) v.findViewById(R.id.my_activity_directs);
+            imgButtonDMs.setTag(id);
+            imgButtonDMs.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    myActivityFragment.createUserColumn(Integer.valueOf(view.getTag().toString()), TweetTopicsUtils.COLUMN_DIRECT_MESSAGES);
+                }
+            });
 
             ImageView imgCounterDirectMessages = (ImageView)v.findViewById(R.id.my_activity_counter_directs);
             int totalDirectMessages = DataFramework.getInstance().getEntityListCount("tweets_user", "type_id = " + TweetTopicsUtils.TWEET_TYPE_DIRECTMESSAGES

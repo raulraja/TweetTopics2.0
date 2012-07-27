@@ -331,8 +331,8 @@ public class WidgetCounters4x1 extends AppWidgetProvider {
 			Intent i = new Intent(context, TweetTopicsActivity.class);
 			i.setAction(Intent.ACTION_VIEW);
 			i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-			i.putExtra("start_user_id", userId+"");
-			i.putExtra("start_column", TweetTopicsUtils.TWEET_TYPE_TIMELINE+"");
+            i.putExtra(TweetTopicsActivity.KEY_EXTRAS_GOTO_COLUMN_USER, userId);
+            i.putExtra(TweetTopicsActivity.KEY_EXTRAS_GOTO_COLUMN_TYPE, TweetTopicsUtils.COLUMN_TIMELINE);
 			context.startActivity(i);
 		}
 		
@@ -340,8 +340,8 @@ public class WidgetCounters4x1 extends AppWidgetProvider {
 			Intent i = new Intent(context, TweetTopicsActivity.class);
 			i.setAction(Intent.ACTION_VIEW);
 			i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-			i.putExtra("start_user_id", userId+"");
-			i.putExtra("start_column", TweetTopicsUtils.TWEET_TYPE_MENTIONS+"");
+            i.putExtra(TweetTopicsActivity.KEY_EXTRAS_GOTO_COLUMN_USER, userId);
+            i.putExtra(TweetTopicsActivity.KEY_EXTRAS_GOTO_COLUMN_TYPE, TweetTopicsUtils.COLUMN_MENTIONS);
 			context.startActivity(i);		
 		}
 		
@@ -349,8 +349,8 @@ public class WidgetCounters4x1 extends AppWidgetProvider {
 			Intent i = new Intent(context, TweetTopicsActivity.class);
 			i.setAction(Intent.ACTION_VIEW);
 			i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-			i.putExtra("start_user_id", userId+"");
-			i.putExtra("start_column", TweetTopicsUtils.TWEET_TYPE_DIRECTMESSAGES+"");
+            i.putExtra(TweetTopicsActivity.KEY_EXTRAS_GOTO_COLUMN_USER, userId);
+            i.putExtra(TweetTopicsActivity.KEY_EXTRAS_GOTO_COLUMN_TYPE, TweetTopicsUtils.COLUMN_DIRECT_MESSAGES);
 			context.startActivity(i);		
 		}
 		
@@ -358,7 +358,7 @@ public class WidgetCounters4x1 extends AppWidgetProvider {
 			Intent i = new Intent(context, TweetTopicsActivity.class);
 			i.setAction(Intent.ACTION_VIEW);
 			i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-			i.putExtra("start_user_id", userId+"");
+            i.putExtra(TweetTopicsActivity.KEY_EXTRAS_GOTO_COLUMN_TYPE, TweetTopicsUtils.COLUMN_MY_ACTIVITY);
 			context.startActivity(i);		
 		}
 		

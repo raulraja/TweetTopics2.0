@@ -37,6 +37,9 @@ import java.util.Random;
 
 public class TweetTopicsActivity extends BaseActivity {
 
+    public static final String KEY_EXTRAS_GOTO_COLUMN_USER = "KEY_EXTRAS_GOTO_COLUMN_USER";
+    public static final String KEY_EXTRAS_GOTO_COLUMN_TYPE = "KEY_EXTRAS_GOTO_COLUMN_TYPE";
+
     protected static final int NEW_ID = Menu.FIRST;
     protected static final int PREFERENCES_ID = Menu.FIRST + 1;
     protected static final int EXIT_ID = Menu.FIRST + 2;
@@ -97,33 +100,54 @@ public class TweetTopicsActivity extends BaseActivity {
                     search.setValue("search_id", data.getLongExtra(DataFramework.KEY_ID, -1));
                     search.save();
 
-                    Handler myHandler = new Handler();
-                    myHandler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            refreshActionBarColumns();
-                            fragmentAdapter.refreshColumnList();
-                            pager.setCurrentItem(count, false);
-                        }
-                    }, 100);
+                    goToColumn(count, true);
+
                 }
 
                 break;
             case ACTIVITY_TRENDS_LOCATION:
                 if (resultCode == Activity.RESULT_OK) {
-                    final int position = data.getIntExtra("position", 0);
-
-                    Handler myHandler = new Handler();
-                    myHandler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            refreshActionBarColumns();
-                            fragmentAdapter.refreshColumnList();
-                            pager.setCurrentItem(position, false);
-                        }
-                    }, 100);
+                    goToColumn(data.getIntExtra("position", 0), true);
                 }
                 break;
+        }
+
+    }
+
+    private void goToColumn(final int position, final boolean refreshBarColumn) {
+        Handler myHandler = new Handler();
+        myHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (refreshBarColumn) {
+                    fragmentAdapter.refreshColumnList();
+                    refreshActionBarColumns();
+                }
+                pager.setCurrentItem(position, false);
+            }
+        }, 100);
+    }
+
+    public void createUserColumn(long userId, int typeId) {
+
+        ArrayList<Entity> created_column_list = DataFramework.getInstance().getEntityList("columns", "user_id=" + userId + " AND type_id = " + typeId);
+
+        int position = 0;
+
+        if (created_column_list.size() == 0) {
+            position = DataFramework.getInstance().getEntityListCount("columns", "") + 1;
+
+            Entity user_list = new Entity("columns");
+            user_list.setValue("type_id", typeId);
+            user_list.setValue("position", position);
+            user_list.setValue("user_id", userId);
+            user_list.save();
+
+            goToColumn(position, true);
+
+        } else {
+            position = created_column_list.get(0).getInt("position");
+            goToColumn(position, false);
         }
 
     }
@@ -136,6 +160,19 @@ public class TweetTopicsActivity extends BaseActivity {
             DataFramework.getInstance().open(this, Utils.packageName);
         } catch (Exception e) {
             e.printStackTrace();
+        }
+
+        int goToColumnType = -1;
+        long goToColumnUser = -1;
+
+        Bundle extras = getIntent().getExtras();
+        if (extras!=null) {
+            if (extras.containsKey(KEY_EXTRAS_GOTO_COLUMN_TYPE)) {
+                goToColumnType = extras.getInt(KEY_EXTRAS_GOTO_COLUMN_TYPE);
+            }
+            if (extras.containsKey(KEY_EXTRAS_GOTO_COLUMN_USER)) {
+                goToColumnUser = extras.getLong(KEY_EXTRAS_GOTO_COLUMN_USER);
+            }
         }
 
         Utils.setActivity(this);
@@ -237,6 +274,16 @@ public class TweetTopicsActivity extends BaseActivity {
         reloadBarAvatar();
 
         refreshActionBarColumns();
+
+        if (goToColumnType>=0 && goToColumnUser>=0) {
+            if (goToColumnType==TweetTopicsUtils.COLUMN_TIMELINE
+                    || goToColumnType==TweetTopicsUtils.COLUMN_MENTIONS
+                    || goToColumnType==TweetTopicsUtils.COLUMN_DIRECT_MESSAGES) {
+                createUserColumn(goToColumnUser, goToColumnType);
+            }
+        } else {
+            // TODO comprobar la columna activa de la base de datos
+        }
 
     }
 
@@ -586,13 +633,7 @@ public class TweetTopicsActivity extends BaseActivity {
             public void onAnimationEnd(Animator animator) {
                 layoutBackgroundColumnsBarContainer.setVisibility(View.GONE);
                 if (pos>=0) {
-                    Handler myHandler = new Handler();
-                    myHandler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            pager.setCurrentItem(pos, true);
-                        }
-                    }, 100);
+                    goToColumn(pos, false);
                 }
             }
 
