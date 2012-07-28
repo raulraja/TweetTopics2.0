@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layouts.LoadMoreListItem xmlns:android="http://schemas.android.com/apk/res/android"
+<com.javielinux.components.LoadMoreListItem xmlns:android="http://schemas.android.com/apk/res/android"
 	android:orientation="horizontal"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
@@ -21,4 +21,4 @@
 		android:visibility="invisible"
 		android:layout_marginRight="6sp"
 		android:layout_centerHorizontal="true" android:layout_centerVertical="true" />
-</layouts.LoadMoreListItem>
+</com.javielinux.components.LoadMoreListItem>

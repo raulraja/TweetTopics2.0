@@ -19,6 +19,8 @@ import android.widget.*;
 import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
 import com.javielinux.adapters.LinksAdapter;
+import com.javielinux.components.DraggableHorizontalView;
+import com.javielinux.components.OnRearrangeListener;
 import com.javielinux.dialogs.AlertDialogFragment;
 import com.javielinux.dialogs.HashTagDialogFragment;
 import com.javielinux.fragmentadapter.TweetTopicsFragmentAdapter;
@@ -28,8 +30,6 @@ import com.nineoldandroids.animation.Animator;
 import com.nineoldandroids.animation.AnimatorSet;
 import com.nineoldandroids.animation.ObjectAnimator;
 import com.viewpagerindicator.TitlePageIndicator;
-import layouts.DraggableHorizontalView;
-import layouts.OnRearrangeListener;
 import preferences.Preferences;
 
 import java.util.ArrayList;
@@ -70,6 +70,11 @@ public class TweetTopicsActivity extends BaseActivity {
     private ImageView imgBarAvatar;
     private ImageView imgNewStatus;
 
+    private LinearLayout layoutOptionsColumns;
+    private LinearLayout layoutMainOptionsColumns;
+    private Button btnOptionsColumnsMain;
+    private Button btnOptionsColumnsDelete;
+
     private LinearLayout layoutLinks;
     private LinearLayout layoutMainLinks;
     private GridView gvLinks;
@@ -79,78 +84,6 @@ public class TweetTopicsActivity extends BaseActivity {
     private int statusBarHeight;
     private int widthScreen;
     private int heightScreen;
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-
-        super.onActivityResult(requestCode, resultCode, data);
-
-        switch (requestCode) {
-            case ACTIVITY_NEWEDITSEARCH:
-                boolean create_column = data.getBooleanExtra("view", false);
-
-                if (create_column) {
-                    final int count = DataFramework.getInstance().getEntityListCount("columns", "") + 1;
-
-                    Entity type = new Entity("type_columns", (long) TweetTopicsUtils.COLUMN_SEARCH);
-                    Entity search = new Entity("columns");
-                    search.setValue("description", type.getString("description"));
-                    search.setValue("type_id", type);
-                    search.setValue("position", count);
-                    search.setValue("search_id", data.getLongExtra(DataFramework.KEY_ID, -1));
-                    search.save();
-
-                    goToColumn(count, true);
-
-                }
-
-                break;
-            case ACTIVITY_TRENDS_LOCATION:
-                if (resultCode == Activity.RESULT_OK) {
-                    goToColumn(data.getIntExtra("position", 0), true);
-                }
-                break;
-        }
-
-    }
-
-    private void goToColumn(final int position, final boolean refreshBarColumn) {
-        Handler myHandler = new Handler();
-        myHandler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if (refreshBarColumn) {
-                    fragmentAdapter.refreshColumnList();
-                    refreshActionBarColumns();
-                }
-                pager.setCurrentItem(position, false);
-            }
-        }, 100);
-    }
-
-    public void createUserColumn(long userId, int typeId) {
-
-        ArrayList<Entity> created_column_list = DataFramework.getInstance().getEntityList("columns", "user_id=" + userId + " AND type_id = " + typeId);
-
-        int position = 0;
-
-        if (created_column_list.size() == 0) {
-            position = DataFramework.getInstance().getEntityListCount("columns", "") + 1;
-
-            Entity user_list = new Entity("columns");
-            user_list.setValue("type_id", typeId);
-            user_list.setValue("position", position);
-            user_list.setValue("user_id", userId);
-            user_list.save();
-
-            goToColumn(position, true);
-
-        } else {
-            position = created_column_list.get(0).getInt("position");
-            goToColumn(position, false);
-        }
-
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -219,6 +152,33 @@ public class TweetTopicsActivity extends BaseActivity {
             }
         });
 
+        layoutOptionsColumns = (LinearLayout) findViewById(R.id.tweettopics_ll_options_columns);
+        layoutMainOptionsColumns = (LinearLayout) findViewById(R.id.tweettopics_ll_main_options_columns);
+        layoutMainOptionsColumns.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                hideOptionsColumns();
+            }
+        });
+        btnOptionsColumnsMain = (Button) findViewById(R.id.tweettopics_ll_options_columns_btn_main);
+        btnOptionsColumnsMain.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int pos = Integer.valueOf(view.getTag().toString());
+                Toast.makeText(TweetTopicsActivity.this,getString(R.string.column_main_message, fragmentAdapter.setColumnActive(pos)),Toast.LENGTH_LONG).show();
+                hideOptionsColumns();
+            }
+        });
+        btnOptionsColumnsDelete = (Button) findViewById(R.id.tweettopics_ll_options_columns_btn_delete);
+        btnOptionsColumnsDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int pos = Integer.valueOf(view.getTag().toString());
+                showDialogDeleteColumn(pos);
+                hideOptionsColumns();
+            }
+        });
+
         layoutMainLinks = (LinearLayout) findViewById(R.id.tweettopics_ll_main_links);
         layoutMainLinks.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -252,6 +212,16 @@ public class TweetTopicsActivity extends BaseActivity {
             public void onRearrange(int oldIndex, int newIndex) {
                 Toast.makeText(TweetTopicsActivity.this,"Paco pisha se ha pasado de la columna " + oldIndex + " a la " + newIndex,Toast.LENGTH_LONG).show();
             }
+            @Override
+            public void onStartDrag(int x, int index) {
+                showOptionsColumns(x, index);
+            }
+
+            @Override
+            public void onMoveDragged(int index) {
+                hideOptionsColumns();
+            }
+
         });
         layoutBackgroundColumnsBar.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -282,7 +252,42 @@ public class TweetTopicsActivity extends BaseActivity {
                 createUserColumn(goToColumnUser, goToColumnType);
             }
         } else {
-            // TODO comprobar la columna activa de la base de datos
+            int col = fragmentAdapter.getPositionColumnActive();
+            if (col>0) goToColumn(col, false);
+        }
+
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        super.onActivityResult(requestCode, resultCode, data);
+
+        switch (requestCode) {
+            case ACTIVITY_NEWEDITSEARCH:
+                boolean create_column = data.getBooleanExtra("view", false);
+
+                if (create_column) {
+                    final int count = DataFramework.getInstance().getEntityListCount("columns", "") + 1;
+
+                    Entity type = new Entity("type_columns", (long) TweetTopicsUtils.COLUMN_SEARCH);
+                    Entity search = new Entity("columns");
+                    search.setValue("description", type.getString("description"));
+                    search.setValue("type_id", type);
+                    search.setValue("position", count);
+                    search.setValue("search_id", data.getLongExtra(DataFramework.KEY_ID, -1));
+                    search.save();
+
+                    goToColumn(count, true);
+
+                }
+
+                break;
+            case ACTIVITY_TRENDS_LOCATION:
+                if (resultCode == Activity.RESULT_OK) {
+                    goToColumn(data.getIntExtra("position", 0), true);
+                }
+                break;
         }
 
     }
@@ -313,12 +318,16 @@ public class TweetTopicsActivity extends BaseActivity {
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            if (isShowColumnsItems) {
-                showActionBarIndicatorAndMovePager(-1);
+            if (isShowOptionsColumns()) {
+                hideOptionsColumns();
                 return false;
             }
             if (isShowLinks()) {
                 hideLinks();
+                return false;
+            }
+            if (isShowColumnsItems) {
+                showActionBarIndicatorAndMovePager(-1);
                 return false;
             }
         }
@@ -360,6 +369,56 @@ public class TweetTopicsActivity extends BaseActivity {
         }
     }
 
+    public ViewPager getViewPager() {
+        return pager;
+    }
+
+    public TweetTopicsFragmentAdapter getFragmentPagerAdapter() {
+        return fragmentAdapter;
+    }
+
+    /*
+        ACTIONS
+     */
+
+    private void goToColumn(final int position, final boolean refreshBarColumn) {
+        Handler myHandler = new Handler();
+        myHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (refreshBarColumn) {
+                    fragmentAdapter.refreshColumnList();
+                    refreshActionBarColumns();
+                }
+                pager.setCurrentItem(position, false);
+            }
+        }, 100);
+    }
+
+    public void createUserColumn(long userId, int typeId) {
+
+        ArrayList<Entity> created_column_list = DataFramework.getInstance().getEntityList("columns", "user_id=" + userId + " AND type_id = " + typeId);
+
+        int position = 0;
+
+        if (created_column_list.size() == 0) {
+            position = DataFramework.getInstance().getEntityListCount("columns", "") + 1;
+
+            Entity user_list = new Entity("columns");
+            user_list.setValue("type_id", typeId);
+            user_list.setValue("position", position);
+            user_list.setValue("user_id", userId);
+            user_list.save();
+
+            goToColumn(position, true);
+
+        } else {
+            position = created_column_list.get(0).getInt("position");
+            goToColumn(position, false);
+        }
+
+    }
+
     private boolean deleteColumn(final int position) {
 
         ArrayList<Entity> deleted_column = DataFramework.getInstance().getEntityList("columns", "position=" + position);
@@ -395,75 +454,6 @@ public class TweetTopicsActivity extends BaseActivity {
         return result;
     }
 
-    public ViewPager getViewPager() {
-        return pager;
-    }
-
-    public TweetTopicsFragmentAdapter getFragmentPagerAdapter() {
-        return fragmentAdapter;
-    }
-
-    public void goToLink(String link) {
-//        if (CacheData.getCacheImages().containsKey(link)) {
-//            CacheData.getCacheImages().get(link);
-//        } else {
-//
-//        }
-        if (isShowLinks()) hideLinks();
-        if (link.startsWith("@")) {
-            Intent intent = new Intent(this, UserActivity.class);
-            intent.putExtra(UserActivity.KEY_EXTRAS_USER, link);
-            startActivity(intent);
-        } else if (link.startsWith("#")) {
-            HashTagDialogFragment frag = new HashTagDialogFragment();
-            Bundle args = new Bundle();
-            args.putString("hashtag", link);
-            frag.setArguments(args);
-            frag.show(getSupportFragmentManager(), "dialog");
-        } else {
-            if (link.startsWith("www")) {
-                link = "http://"+link;
-            }
-            Uri uri = Uri.parse(link);
-            Intent intent = new Intent(android.content.Intent.ACTION_VIEW, uri);
-            startActivity(intent);
-        }
-    }
-
-    public void hideLinks() {
-        ObjectAnimator scaleX = ObjectAnimator.ofFloat(layoutLinks, "scaleX", 1f, 0f);
-        scaleX.setDuration(150);
-        ObjectAnimator scaleY = ObjectAnimator.ofFloat(layoutLinks, "scaleY", 1f, 0f);
-        scaleY.setDuration(150);
-        ObjectAnimator fadeAnim = ObjectAnimator.ofFloat(layoutLinks, "alpha", 1f, 0f);
-        fadeAnim.setDuration(150);
-        AnimatorSet animatorSet = new AnimatorSet();
-        animatorSet.playTogether(scaleX, scaleY, fadeAnim);
-        animatorSet.addListener(new Animator.AnimatorListener() {
-            @Override
-            public void onAnimationStart(Animator animator) {
-            }
-
-            @Override
-            public void onAnimationEnd(Animator animator) {
-                layoutMainLinks.setVisibility(View.INVISIBLE);
-            }
-
-            @Override
-            public void onAnimationCancel(Animator animator) {
-            }
-
-            @Override
-            public void onAnimationRepeat(Animator animator) {
-            }
-        });
-        animatorSet.start();
-
-    }
-
-    public boolean isShowLinks() {
-        return layoutMainLinks.getVisibility()==View.VISIBLE;
-    }
 
     public void newSearch() {
         Intent newsearch = new Intent(this, TabNewEditSearch.class);
@@ -650,61 +640,81 @@ public class TweetTopicsActivity extends BaseActivity {
 
     }
 
-    private void showDialogDeleteColumn(final int position) {
+    /*
+       SHOW OPTIONS COMLUMNS
+    */
 
-        AlertDialogFragment frag = new AlertDialogFragment();
-        Bundle args = new Bundle();
-        args.putInt(AlertDialogFragment.KEY_ALERT_TITLE, R.string.delete);
-        args.putInt(AlertDialogFragment.KEY_ALERT_MESSAGE, R.string.column_delete);
-        args.putBoolean(AlertDialogFragment.KEY_ALERT_HAS_NEGATIVE_BUTTON, true);
-        frag.setArguments(args);
-        frag.setAlertButtonListener(new AlertDialogFragment.AlertButtonListener() {
+    public void showOptionsColumns(int positionX, int index) {
+
+
+        int x = positionX - (layoutOptionsColumns.getWidth()/2);
+        if (x<0) x = 0;
+        if (x>widthScreen-layoutOptionsColumns.getWidth()) x = widthScreen-layoutOptionsColumns.getWidth();
+        int y = (int)getResources().getDimension(R.dimen.actionbar_columns_height) - Utils.dip2px(this, 20);
+
+        int xCenterView = x;
+
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        params.setMargins(x, y, 0, 0);
+        layoutOptionsColumns.setLayoutParams(params);
+
+        layoutMainOptionsColumns.setVisibility(View.VISIBLE);
+
+        btnOptionsColumnsMain.setTag(index);
+        btnOptionsColumnsDelete.setTag(index);
+
+        ObjectAnimator translationX = ObjectAnimator.ofFloat(layoutOptionsColumns, "translationX", xCenterView-x, 0f);
+        translationX.setDuration(150);
+        ObjectAnimator scaleX = ObjectAnimator.ofFloat(layoutOptionsColumns, "scaleX", 0f, 1f);
+        scaleX.setDuration(150);
+        ObjectAnimator scaleY = ObjectAnimator.ofFloat(layoutOptionsColumns, "scaleY", 0f, 1f);
+        scaleY.setDuration(150);
+        ObjectAnimator fadeAnim = ObjectAnimator.ofFloat(layoutOptionsColumns, "alpha", 0f, 1f);
+        fadeAnim.setDuration(150);
+        AnimatorSet animatorSet = new AnimatorSet();
+        animatorSet.playTogether(translationX, scaleX, scaleY, fadeAnim);
+        animatorSet.start();
+
+    }
+
+    public void hideOptionsColumns() {
+        ObjectAnimator scaleX = ObjectAnimator.ofFloat(layoutOptionsColumns, "scaleX", 1f, 0f);
+        scaleX.setDuration(150);
+        ObjectAnimator scaleY = ObjectAnimator.ofFloat(layoutOptionsColumns, "scaleY", 1f, 0f);
+        scaleY.setDuration(150);
+        ObjectAnimator fadeAnim = ObjectAnimator.ofFloat(layoutOptionsColumns, "alpha", 1f, 0f);
+        fadeAnim.setDuration(150);
+        AnimatorSet animatorSet = new AnimatorSet();
+        animatorSet.playTogether(scaleX, scaleY, fadeAnim);
+        animatorSet.addListener(new Animator.AnimatorListener() {
             @Override
-            public void OnAlertButtonOk() {
-
-                if (deleteColumn(position))
-                    Toast.makeText(TweetTopicsActivity.this, R.string.column_delete_ok,Toast.LENGTH_LONG).show();
+            public void onAnimationStart(Animator animator) {
             }
 
             @Override
-            public void OnAlertButtonCancel() {
+            public void onAnimationEnd(Animator animator) {
+                layoutMainOptionsColumns.setVisibility(View.INVISIBLE);
             }
 
             @Override
-            public void OnAlertButtonNeutral() {
+            public void onAnimationCancel(Animator animator) {
             }
 
             @Override
-            public void OnAlertItems(int which) {
+            public void onAnimationRepeat(Animator animator) {
             }
         });
-        frag.show(getSupportFragmentManager(), "dialog");
+        animatorSet.start();
+
     }
 
-    private void showDialogExit() {
-
-        int minutes = Integer.parseInt(Utils.getPreference(this).getString("prf_time_notifications", "15"));
-
-        if (minutes > 0) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle(R.string.dialog_exit);
-            builder.setMessage(R.string.dialog_exit_msg);
-            builder.setPositiveButton(R.string.alert_dialog_ok, new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int whichButton) {
-                    PreferenceUtils.saveNotificationsApp(TweetTopicsActivity.this, false);
-                    TweetTopicsActivity.this.finish();
-                }
-            });
-            builder.setNegativeButton(R.string.alert_dialog_cancel, new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int whichButton) {
-                }
-            });
-            builder.create();
-            builder.show();
-        } else {
-            TweetTopicsActivity.this.finish();
-        }
+    public boolean isShowOptionsColumns() {
+        return layoutMainOptionsColumns.getVisibility()==View.VISIBLE;
     }
+
+    /*
+        SHOW LINKS
+     */
 
     public void showLinks(View view, InfoTweet infoTweet) {
 
@@ -783,6 +793,129 @@ public class TweetTopicsActivity extends BaseActivity {
             AnimatorSet animatorSet = new AnimatorSet();
             animatorSet.playTogether(translationX, scaleX, scaleY, fadeAnim);
             animatorSet.start();
+        }
+    }
+
+    public void goToLink(String link) {
+//        if (CacheData.getCacheImages().containsKey(link)) {
+//            CacheData.getCacheImages().get(link);
+//        } else {
+//
+//        }
+        if (isShowLinks()) hideLinks();
+        if (link.startsWith("@")) {
+            Intent intent = new Intent(this, UserActivity.class);
+            intent.putExtra(UserActivity.KEY_EXTRAS_USER, link);
+            startActivity(intent);
+        } else if (link.startsWith("#")) {
+            HashTagDialogFragment frag = new HashTagDialogFragment();
+            Bundle args = new Bundle();
+            args.putString("hashtag", link);
+            frag.setArguments(args);
+            frag.show(getSupportFragmentManager(), "dialog");
+        } else {
+            if (link.startsWith("www")) {
+                link = "http://"+link;
+            }
+            Uri uri = Uri.parse(link);
+            Intent intent = new Intent(android.content.Intent.ACTION_VIEW, uri);
+            startActivity(intent);
+        }
+    }
+
+    public void hideLinks() {
+        ObjectAnimator scaleX = ObjectAnimator.ofFloat(layoutLinks, "scaleX", 1f, 0f);
+        scaleX.setDuration(150);
+        ObjectAnimator scaleY = ObjectAnimator.ofFloat(layoutLinks, "scaleY", 1f, 0f);
+        scaleY.setDuration(150);
+        ObjectAnimator fadeAnim = ObjectAnimator.ofFloat(layoutLinks, "alpha", 1f, 0f);
+        fadeAnim.setDuration(150);
+        AnimatorSet animatorSet = new AnimatorSet();
+        animatorSet.playTogether(scaleX, scaleY, fadeAnim);
+        animatorSet.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animator) {
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animator) {
+                layoutMainLinks.setVisibility(View.INVISIBLE);
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animator) {
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animator) {
+            }
+        });
+        animatorSet.start();
+
+    }
+
+    public boolean isShowLinks() {
+        return layoutMainLinks.getVisibility()==View.VISIBLE;
+    }
+
+    /*
+        DIALOGS
+     */
+
+
+    private void showDialogDeleteColumn(final int position) {
+
+        AlertDialogFragment frag = new AlertDialogFragment();
+        Bundle args = new Bundle();
+        args.putInt(AlertDialogFragment.KEY_ALERT_TITLE, R.string.delete);
+        args.putInt(AlertDialogFragment.KEY_ALERT_MESSAGE, R.string.column_delete);
+        args.putBoolean(AlertDialogFragment.KEY_ALERT_HAS_NEGATIVE_BUTTON, true);
+        frag.setArguments(args);
+        frag.setAlertButtonListener(new AlertDialogFragment.AlertButtonListener() {
+            @Override
+            public void OnAlertButtonOk() {
+
+                if (deleteColumn(position))
+                    Toast.makeText(TweetTopicsActivity.this, R.string.column_delete_ok,Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void OnAlertButtonCancel() {
+            }
+
+            @Override
+            public void OnAlertButtonNeutral() {
+            }
+
+            @Override
+            public void OnAlertItems(int which) {
+            }
+        });
+        frag.show(getSupportFragmentManager(), "dialog");
+    }
+
+    private void showDialogExit() {
+
+        int minutes = Integer.parseInt(Utils.getPreference(this).getString("prf_time_notifications", "15"));
+
+        if (minutes > 0) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle(R.string.dialog_exit);
+            builder.setMessage(R.string.dialog_exit_msg);
+            builder.setPositiveButton(R.string.alert_dialog_ok, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int whichButton) {
+                    PreferenceUtils.saveNotificationsApp(TweetTopicsActivity.this, false);
+                    TweetTopicsActivity.this.finish();
+                }
+            });
+            builder.setNegativeButton(R.string.alert_dialog_cancel, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int whichButton) {
+                }
+            });
+            builder.create();
+            builder.show();
+        } else {
+            TweetTopicsActivity.this.finish();
         }
     }
 

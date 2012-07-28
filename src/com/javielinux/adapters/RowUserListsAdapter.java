@@ -8,9 +8,9 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import com.android.dataframework.Entity;
+import com.javielinux.components.AlphaTextView;
 import com.javielinux.tweettopics2.R;
 import com.javielinux.utils.Utils;
-import layouts.AlphaTextView;
 
 import java.io.File;
 import java.util.ArrayList;

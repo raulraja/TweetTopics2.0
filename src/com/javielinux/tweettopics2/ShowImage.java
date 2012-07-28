@@ -9,8 +9,8 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import com.javielinux.components.ImageViewZoomTouch;
 import com.javielinux.utils.Utils;
-import layouts.ImageViewZoomTouch;
 
 public class ShowImage extends Activity
 {

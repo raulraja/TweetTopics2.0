@@ -1,6 +1,5 @@
 package preferences;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -15,10 +14,11 @@ import android.widget.ListView;
 import android.widget.TextView;
 import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
+import com.javielinux.tweettopics2.BaseActivity;
 import com.javielinux.tweettopics2.R;
 import com.javielinux.utils.Utils;
 
-public class TweetProgrammed extends Activity {
+public class TweetProgrammed extends BaseActivity {
 	
 	private static final int ADD_ID = Menu.FIRST;
 	private static final int BACK_ID = Menu.FIRST+1;

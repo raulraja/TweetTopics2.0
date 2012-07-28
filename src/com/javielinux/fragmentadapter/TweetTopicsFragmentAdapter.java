@@ -79,6 +79,33 @@ public class TweetTopicsFragmentAdapter extends FragmentPagerAdapter  {
         return null;
     }
 
+    public int getPositionColumnActive() {
+        int count = 0;
+        for (Entity column : fragmentList) {
+            if (column.getInt("active")==1) {
+                return count;
+            }
+            count++;
+        }
+        return 0;
+    }
+
+    public String setColumnActive(int position) {
+        String text = "";
+        int count = 0;
+        for (Entity column : fragmentList) {
+            if (position == count) {
+                column.setValue("active", 1);
+                text = (String) getPageTitle(count);
+            } else {
+                column.setValue("active", 0);
+            }
+            if (column.getInt("type_id") != TweetTopicsUtils.COLUMN_MY_ACTIVITY) column.save();
+            count++;
+        }
+        return text;
+    }
+
     @Override
     public Fragment getItem(int index) {
         Log.d(Utils.TAG, "Creando columna " + index + " : " + fragmentList.get(index).getString("description").toUpperCase());

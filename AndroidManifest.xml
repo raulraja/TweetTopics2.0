@@ -16,8 +16,8 @@
     	<activity android:name="com.javielinux.twitter.AuthorizationActivity"></activity>
 		<activity android:name="TabNewEditSearch"></activity>
 
-        <activity android:name="TweetActivity" android:theme="@android:style/Theme.Translucent"></activity>
-        <activity android:name="UserActivity" android:theme="@android:style/Theme.Translucent"></activity>
+        <activity android:name="TweetActivity" android:theme="@style/Theme.Twitter.Translucent"></activity>
+        <activity android:name="UserActivity" android:theme="@style/Theme.Twitter.Translucent"></activity>
         <activity android:name="UserListsActivity"></activity>
         <activity android:name="TrendsLocationActivity"></activity>
 
@@ -26,22 +26,22 @@
 		<activity android:name="TabGeo"></activity>
 		<activity android:name="MapSearch"></activity>
 		<activity android:name="TabAvanced"></activity>
-		<activity android:name="preferences.Preferences" android:theme="@android:style/Theme.Black"></activity>
-		<activity android:name="preferences.IntegrationADW" android:theme="@android:style/Theme.Black"></activity>
-		<activity android:name="preferences.TweetQuick" android:theme="@android:style/Theme.Black"></activity>
-		<activity android:name="preferences.QuietWords" android:theme="@android:style/Theme.Black"></activity>
-		<activity android:name="preferences.NewEditTweetQuick" android:theme="@android:style/Theme.Black"></activity>
-		<activity android:name="preferences.RetweetsTypes" android:theme="@android:style/Theme.Black"></activity>
-		<activity android:name="preferences.Colors" android:theme="@android:style/Theme.Black"></activity>
-		<activity android:name="preferences.TweetDraft" android:theme="@android:style/Theme.Black"></activity>
-		<activity android:name="preferences.TweetProgrammed" android:theme="@android:style/Theme.Black"></activity>
-		<activity android:name="preferences.NewEditTweetProgrammed" android:theme="@android:style/Theme.Black"></activity>
-		<activity android:name="preferences.ColorsApp" android:theme="@android:style/Theme.Black"></activity>
-		<activity android:name="ShowImage" android:theme="@android:style/Theme.Translucent"></activity>
+		<activity android:name="preferences.Preferences" android:theme="@android:style/Theme.Holo"></activity>
+		<activity android:name="preferences.IntegrationADW" android:theme="@android:style/Theme.Holo"></activity>
+		<activity android:name="preferences.TweetQuick" android:theme="@android:style/Theme.Holo"></activity>
+		<activity android:name="preferences.QuietWords" android:theme="@android:style/Theme.Holo"></activity>
+		<activity android:name="preferences.NewEditTweetQuick" android:theme="@android:style/Theme.Holo"></activity>
+		<activity android:name="preferences.RetweetsTypes" android:theme="@android:style/Theme.Holo"></activity>
+		<activity android:name="preferences.Colors" android:theme="@android:style/Theme.Holo"></activity>
+		<activity android:name="preferences.TweetDraft" android:theme="@android:style/Theme.Holo"></activity>
+		<activity android:name="preferences.TweetProgrammed" android:theme="@android:style/Theme.Holo"></activity>
+		<activity android:name="preferences.NewEditTweetProgrammed" android:theme="@android:style/Theme.Holo"></activity>
+		<activity android:name="preferences.ColorsApp" android:theme="@android:style/Theme.Holo"></activity>
+		<activity android:name="ShowImage" android:theme="@style/Theme.TwitterBlack.Translucent"></activity>
 		<activity android:name="QRCode"></activity>
 		<activity android:name="AdjustImage"></activity>
-		<activity android:name="preferences.SubMenuTweet" android:theme="@android:style/Theme.Black"></activity>
-		<activity android:name="updatestatus.LaunchServiceUpdateStatus" android:theme="@android:style/Theme.Translucent"></activity>
+		<activity android:name="preferences.SubMenuTweet" android:theme="@android:style/Theme.Holo"></activity>
+		<activity android:name="updatestatus.LaunchServiceUpdateStatus" android:theme="@style/Theme.TwitterBlack.Translucent"></activity>
 		<activity android:name="EditUserTwitter"></activity>
 		
 		<receiver android:name="tweetprogrammed.OnAlarmReceiverTweetProgrammed" android:process=":remote" ></receiver>
@@ -69,7 +69,7 @@
             </intent-filter>
 		</activity>
 		
-		<activity android:name="UploadTweetQuick" android:theme="@android:style/Theme.Translucent">
+		<activity android:name="UploadTweetQuick" android:theme="@style/Theme.TwitterBlack.Translucent">
 			<intent-filter android:label="TweetQuick" android:icon="@drawable/icon_tweetquick">
 				<action android:name="android.intent.action.SEND" />
 				<category android:name="android.intent.category.DEFAULT" />
@@ -93,7 +93,7 @@
 			<meta-data android:name="android.appwidget.provider" android:resource="@xml/widget_data_counter_2x1" />
 		</receiver>
 
-		<activity android:name="widget.WidgetCountersConf2x1" android:theme="@android:style/Theme.Translucent">
+		<activity android:name="widget.WidgetCountersConf2x1" android:theme="@style/Theme.TwitterBlack.Translucent">
 		</activity>
 
         <receiver android:name="widget.WidgetCounters4x1" android:label="@string/name_widget_counter_4x1">
@@ -112,7 +112,7 @@
 			<meta-data android:name="android.appwidget.provider" android:resource="@xml/widget_data_counter_4x1" />
 		</receiver>
 		
-		<activity android:name="widget.WidgetCountersConf4x1" android:theme="@android:style/Theme.Translucent">
+		<activity android:name="widget.WidgetCountersConf4x1" android:theme="@style/Theme.TwitterBlack.Translucent">
 		</activity>
 		
 		
@@ -129,7 +129,7 @@
 		
 		<service android:name="widget.ServiceWidgetTweets4x2" />
 
-		<activity android:name="widget.WidgetTweetsConf4x2" android:theme="@android:style/Theme.Translucent">
+		<activity android:name="widget.WidgetTweetsConf4x2" android:theme="@style/Theme.TwitterBlack.Translucent">
 		</activity>
 		
 		<service android:name="preferences.ServiceTweetQuick"/>

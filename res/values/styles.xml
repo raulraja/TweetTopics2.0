@@ -10,6 +10,13 @@
         <item name="android:textSize">14sp</item>
         <item name="android:textColorLink">#FFEE0000</item>
     </style>
+
+    <style name="ButtonOptions">
+        <item name="android:textSize">11sp</item>
+        <item name="android:layout_margin">5sp</item>
+        <item name="android:textColor">?color_title_general</item>
+        <item name="android:background">@android:color/transparent</item>
+    </style>
     
     <style name="LoadMore">
         <item name="android:textSize">16sp</item>

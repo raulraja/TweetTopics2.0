@@ -3,7 +3,7 @@
 // - improve timer performance (especially on Eee Pad)
 // - improve child rearranging
 
-package layouts;
+package com.javielinux.components;
 
 import android.app.Activity;
 import android.content.Context;
@@ -319,9 +319,13 @@ public class DraggableHorizontalView extends ViewGroup implements View.OnTouchLi
 		
 		v.clearAnimation();
 		v.startAnimation(animSet);
+
+        if (onRearrangeListener != null) onRearrangeListener.onStartDrag(x, dragged);
+
     }
     protected void animateGap(int target)
     {
+        if (onRearrangeListener != null) onRearrangeListener.onMoveDragged(dragged);
     	for (int i = 0; i < getChildCount(); i++)
     	{
     		View v = getChildAt(i);

@@ -8,12 +8,12 @@ import android.view.ViewGroup;
 import android.widget.*;
 import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
+import com.javielinux.components.AlphaTextView;
 import com.javielinux.fragments.MyActivityFragment;
 import com.javielinux.tweettopics2.R;
 import com.javielinux.tweettopics2.ThemeManager;
 import com.javielinux.utils.TweetTopicsUtils;
 import com.javielinux.utils.Utils;
-import layouts.AlphaTextView;
 
 import java.util.ArrayList;
 

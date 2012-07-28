@@ -1,4 +1,4 @@
-package layouts;
+package com.javielinux.components;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -8,12 +8,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.javielinux.tweettopics2.R;
 
-public class LoadMoreBreakListItem extends RelativeLayout {
+public class LoadMoreListItem extends RelativeLayout {
 
 	private TextView loadMoreText;
 	private ProgressBar progressIndicator;
 
-	public LoadMoreBreakListItem(Context context, AttributeSet attrs) {
+	public LoadMoreListItem(Context context, AttributeSet attrs) {
 		super(context, attrs);
 	}
 	
@@ -24,29 +24,22 @@ public class LoadMoreBreakListItem extends RelativeLayout {
 	
 	public void showProgress() {
 		progressIndicator.setVisibility(View.VISIBLE);
-		showLoadingTextText();
 	}
 
 	public void hideProgress() {
-		progressIndicator.setVisibility(View.GONE);
-		showText();
+		progressIndicator.setVisibility(View.INVISIBLE);
 	}
 
-	public void showLoadingTextText() {
-		String headerText = getResources().getString(R.string.loading);
+	public void showHeaderText() {
+		String headerText = getResources().getString(R.string.load_more_header);
 		loadMoreText.setText(headerText);
 	}
 
-	public void showText() {
+	public void showFooterText() {
 		String headerText = getResources().getString(R.string.load_more_footer);
 		loadMoreText.setText(headerText);
 	}
 
-	public void showText(String date) {
-		String headerText = getResources().getString(R.string.time_without_timeline, date);
-		loadMoreText.setText(headerText);
-	}
-	
 	private void findViews() {
 		loadMoreText = (TextView)findViewById(R.id.load_more_text);
 		progressIndicator = (ProgressBar)findViewById(R.id.load_more_progress);

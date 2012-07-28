@@ -71,7 +71,7 @@ public class TweetActivity extends BaseLayersActivity {
 
             @Override
             public void onClick(View v) {
-                goToLink(infoTweet.isRetweet()?infoTweet.getUsernameRetweet():infoTweet.getUsername());
+                goToLink("@"+(infoTweet.isRetweet()?infoTweet.getUsernameRetweet():infoTweet.getUsername()));
             }
 
         });

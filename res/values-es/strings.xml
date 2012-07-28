@@ -3,6 +3,10 @@
 
     <!-- v 2.0  -->
 
+    <string name="column_main_message">%1$s es principal ahora</string>
+
+    <string name="main">Principal</string>
+
     <string name="info_user_counters">%1$s tweets | %2$s seguidores | %3$s amigos</string>
 
     <string name="column_delete_ok">La columna se ha eliminado</string>

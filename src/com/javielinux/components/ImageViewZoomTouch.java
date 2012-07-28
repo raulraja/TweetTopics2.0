@@ -1,4 +1,4 @@
-package layouts;
+package com.javielinux.components;
 
 /**
  * Created by IntelliJ IDEA.

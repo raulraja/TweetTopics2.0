@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
+import android.view.Window;
 import com.javielinux.tweettopics2.R;
 import com.javielinux.utils.Utils;
 
@@ -16,7 +17,9 @@ public class IntegrationADW extends ListActivity {
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);       
+        super.onCreate(savedInstanceState);
+
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
         
         setContentView(R.layout.pref_adw);
         

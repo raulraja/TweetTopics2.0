@@ -11,15 +11,16 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.EditText;
 import android.widget.ListView;
 import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
+import com.javielinux.components.ColorDialog;
 import com.javielinux.tweettopics2.NewStatusActivity;
 import com.javielinux.tweettopics2.R;
 import com.javielinux.utils.LinksUtils;
 import com.javielinux.utils.Utils;
-import layouts.ColorDialog;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -42,8 +43,10 @@ public class ColorsApp extends ListActivity implements ColorDialog.OnChangeColor
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);       
-        
+        super.onCreate(savedInstanceState);
+
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+
         try {
             DataFramework.getInstance().open(ColorsApp.this, Utils.packageName);
         } catch (Exception e) {

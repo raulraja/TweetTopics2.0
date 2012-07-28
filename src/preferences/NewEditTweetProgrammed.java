@@ -1,7 +1,10 @@
 package preferences;
 
 
-import android.app.*;
+import android.app.AlertDialog;
+import android.app.DatePickerDialog;
+import android.app.Dialog;
+import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
@@ -10,6 +13,7 @@ import android.widget.*;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
+import com.javielinux.tweettopics2.BaseActivity;
 import com.javielinux.tweettopics2.R;
 import com.javielinux.utils.Utils;
 import tweetprogrammed.OnAlarmReceiverTweetProgrammed;
@@ -18,7 +22,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-public class NewEditTweetProgrammed extends Activity {
+public class NewEditTweetProgrammed extends BaseActivity {
 	
     static final int TIME_DIALOG_ID = 0;
     static final int DATE_DIALOG_ID = 1;

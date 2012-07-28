@@ -15,12 +15,12 @@
                               android:visibility="gone"
                 >
 
-            <layouts.DraggableHorizontalView android:id="@+id/tweettopics_bar_columns"
+            <com.javielinux.components.DraggableHorizontalView android:id="@+id/tweettopics_bar_columns"
                                              android:layout_height="@dimen/actionbar_columns_height"
                                              android:layout_width="fill_parent"
                     >
 
-            </layouts.DraggableHorizontalView>
+            </com.javielinux.components.DraggableHorizontalView>
 
         </LinearLayout>
 
@@ -77,6 +77,38 @@
                       android:columnWidth="60dp"
                       android:gravity="center_horizontal"
                       android:id="@+id/tweettopics_gv_links" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout android:layout_height="fill_parent"
+                  android:layout_width="fill_parent"
+                  android:visibility="invisible"
+                  android:id="@+id/tweettopics_ll_main_options_columns"
+            >
+
+        <LinearLayout android:layout_height="wrap_content"
+                      android:layout_width="wrap_content"
+                      android:orientation="horizontal"
+                      android:id="@+id/tweettopics_ll_options_columns"
+                      android:background="@drawable/popup_full_dark">
+
+            <Button android:layout_height="wrap_content"
+                      android:layout_width="wrap_content"
+                      android:gravity="center"
+                      android:drawableTop="@drawable/gd_action_bar_check"
+                      style="@style/ButtonOptions"
+                      android:text="@string/main"
+                      android:id="@+id/tweettopics_ll_options_columns_btn_main" />
+
+            <Button android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:gravity="center"
+                    android:drawableTop="@drawable/gd_action_bar_trashcan"
+                    style="@style/ButtonOptions"
+                    android:text="@string/delete"
+                    android:id="@+id/tweettopics_ll_options_columns_btn_delete" />
 
         </LinearLayout>
 

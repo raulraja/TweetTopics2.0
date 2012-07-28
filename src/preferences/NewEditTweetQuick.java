@@ -1,6 +1,5 @@
 package preferences;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -10,10 +9,11 @@ import android.widget.*;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
+import com.javielinux.tweettopics2.BaseActivity;
 import com.javielinux.tweettopics2.R;
 import com.javielinux.utils.Utils;
 
-public class NewEditTweetQuick extends Activity {
+public class NewEditTweetQuick extends BaseActivity {
 	
 	private long mCurrentId = -1;
 	private EditText mETName;

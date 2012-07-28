@@ -1,4 +1,4 @@
-package layouts;
+package com.javielinux.components;
 
 import android.content.Context;
 import android.graphics.Bitmap;

@@ -22,7 +22,7 @@
  *
  */
 
-package layouts;
+package com.javielinux.components;
 
 import android.app.AlertDialog;
 import android.content.Context;

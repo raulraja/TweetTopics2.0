@@ -1,6 +1,5 @@
 package preferences;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -16,10 +15,11 @@ import android.widget.TextView;
 import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
 import com.javielinux.adapters.RetweetsTypesAdapter;
+import com.javielinux.tweettopics2.BaseActivity;
 import com.javielinux.tweettopics2.R;
 import com.javielinux.utils.Utils;
 
-public class RetweetsTypes extends Activity {
+public class RetweetsTypes extends BaseActivity {
 	
 	private static final int ADD_ID = Menu.FIRST;
 	private static final int BACK_ID = Menu.FIRST+1;
