@@ -3,8 +3,11 @@ package com.javielinux.tweettopics2;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.*;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
@@ -13,6 +16,7 @@ import android.graphics.drawable.StateListDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.support.v4.view.ViewPager;
 import android.view.*;
 import android.widget.*;
@@ -43,9 +47,8 @@ public class TweetTopicsActivity extends BaseActivity {
     protected static final int NEW_ID = Menu.FIRST;
     protected static final int PREFERENCES_ID = Menu.FIRST + 1;
     protected static final int EXIT_ID = Menu.FIRST + 2;
-    protected static final int MANAGER_USER_ID = Menu.FIRST + 3;
-    protected static final int SIZE_TEXT_ID = Menu.FIRST + 4;
-    protected static final int TRENDS_LOCATION = Menu.FIRST + 5;
+    protected static final int SIZE_TEXT_ID = Menu.FIRST + 3;
+    protected static final int TRENDS_LOCATION = Menu.FIRST + 4;
 
     public static final int ACTIVITY_NEWEDITSEARCH = 0;
     public static final int ACTIVITY_PREFERENCES = 1;
@@ -93,6 +96,34 @@ public class TweetTopicsActivity extends BaseActivity {
             DataFramework.getInstance().open(this, Utils.packageName);
         } catch (Exception e) {
             e.printStackTrace();
+        }
+
+        if (PreferenceUtils.getFinishForceClose(this)){
+            PreferenceUtils.setFinishForceClose(this, false);
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle(R.string.title_crash);
+            builder.setMessage(R.string.msg_crash);
+            builder.setPositiveButton(R.string.alert_dialog_ok, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int whichButton) {
+                    Utils.sendLastCrash(TweetTopicsActivity.this);
+                }
+            });
+            builder.setNegativeButton(R.string.alert_dialog_cancel, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int whichButton) {
+                }
+            });
+            builder.create();
+            builder.show();
+        }
+
+        Thread.UncaughtExceptionHandler currentHandler = Thread.getDefaultUncaughtExceptionHandler();
+        if (currentHandler != null) {
+            Thread.setDefaultUncaughtExceptionHandler(new ErrorReporter(currentHandler, getApplication()));
+        }
+
+        // borrar notificaciones
+        if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean("prf_notif_delete_notifications_inside", true)) {
+            ((NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE)).cancelAll();
         }
 
         int goToColumnType = -1;
@@ -256,6 +287,24 @@ public class TweetTopicsActivity extends BaseActivity {
             if (col>0) goToColumn(col, false);
         }
 
+        // comprobar si hay que proponer ir al market
+
+        int access_count = PreferenceUtils.getApplicationAccessCount(this);
+
+        if (access_count <= 20) {
+            if (access_count == 20) {
+                try {
+                    // TODO Cambiar este diálogo y ponerlo bien
+                    AlertDialog dialog = DialogUtils.RateAppDialogBuilder.create(this);
+                    dialog.show();
+                } catch (PackageManager.NameNotFoundException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            PreferenceUtils.setApplicationAccessCount(this, access_count + 1);
+        }
+
     }
 
     @Override
@@ -302,8 +351,6 @@ public class TweetTopicsActivity extends BaseActivity {
                 .setIcon(android.R.drawable.ic_menu_preferences);
         menu.add(0, EXIT_ID, 0, R.string.exit)
                 .setIcon(android.R.drawable.ic_menu_revert);
-        menu.add(0, MANAGER_USER_ID, 0, R.string.manager_user)
-                .setIcon(android.R.drawable.ic_menu_agenda);
         menu.add(0, TRENDS_LOCATION, 0, R.string.trending_topics)
                 .setIcon(R.drawable.gd_action_bar_trending);
         return true;
@@ -342,9 +389,6 @@ public class TweetTopicsActivity extends BaseActivity {
             case SIZE_TEXT_ID:
                 showSizeText();
                 return true;
-            case MANAGER_USER_ID:
-                newUser();
-                return true;
             case PREFERENCES_ID:
                 Intent i = new Intent(this, Preferences.class);
                 startActivityForResult(i, ACTIVITY_PREFERENCES);
@@ -363,10 +407,6 @@ public class TweetTopicsActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        Entity user = DataFramework.getInstance().getTopEntity("users", "active=1", "");
-        if (user == null) {
-            newUser();
-        }
     }
 
     public ViewPager getViewPager() {
@@ -463,11 +503,6 @@ public class TweetTopicsActivity extends BaseActivity {
     public void newStatus() {
         Intent newstatus = new Intent(this, NewStatusActivity.class);
         startActivityForResult(newstatus, ACTIVITY_NEWSTATUS);
-    }
-
-    public void newUser() {
-        Intent newuser = new Intent(this, Users.class);
-        startActivityForResult(newuser, ACTIVITY_USER);
     }
 
     private Bitmap getThumb(String s)

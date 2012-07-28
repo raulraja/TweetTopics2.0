@@ -686,7 +686,7 @@ public class NewStatusActivity extends BaseActivity {
         TextView username = (TextView) v.findViewById(R.id.username);
         username.setText(R.string.add);
 
-        
+        /*
         v.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -694,7 +694,7 @@ public class NewStatusActivity extends BaseActivity {
 				NewStatusActivity.this.startActivityForResult(newuser, ACTIVITY_USER);
 			}
         });
-
+        */
         mDataUsers.addView(v);
     }
     

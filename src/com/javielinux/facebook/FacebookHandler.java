@@ -19,7 +19,7 @@ import com.facebook.android.DialogError;
 import com.facebook.android.Facebook;
 import com.facebook.android.Facebook.DialogListener;
 import com.facebook.android.FacebookError;
-import com.javielinux.tweettopics2.Users;
+import com.javielinux.fragments.MyActivityFragment;
 import com.javielinux.utils.Utils;
 import org.json.JSONObject;
 
@@ -34,9 +34,9 @@ public class FacebookHandler {
 	
 	private WebView mWebView;
 	boolean isWebViewShown;
-	
-	private Users mUsersActivity = null;
-	
+
+	private MyActivityFragment myActivityFragment = null;
+
     private Activity activity;
     LinearLayout layout;
 	
@@ -55,16 +55,16 @@ public class FacebookHandler {
     	}
     }
     
-	public void setUsersActivity(Users mUsersActivity) {
-		this.mUsersActivity = mUsersActivity;
+	public void setMyActivityFragment(MyActivityFragment myActivityFragment) {
+		this.myActivityFragment = myActivityFragment;
 	}
 	
     private Handler handler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
 			if (msg.what == 0) {
-				if (mUsersActivity!=null) {
-					mUsersActivity.fillData();	
+				if (myActivityFragment!=null) {
+                    myActivityFragment.fillData();
 				}
 			}
 		}

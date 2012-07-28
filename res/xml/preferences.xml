@@ -3,18 +3,6 @@
         xmlns:android="http://schemas.android.com/apk/res/android">
         
     <PreferenceCategory
-            android:title="@string/title_prf_accounts"
-            >
-            
-        <Preference
-                android:key="prf_manage_accounts"
-                android:title="@string/title_prf_manage_accounts"
-                android:summary="@string/summary_prf_manage_accounts"
-                android:dialogTitle="@string/title_prf_manage_accounts" />
-        
-	</PreferenceCategory>  
-        
-    <PreferenceCategory
             android:title="@string/title_prf_preferences"
             >
 	

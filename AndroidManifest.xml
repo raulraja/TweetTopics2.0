@@ -21,8 +21,7 @@
         <activity android:name="UserListsActivity"></activity>
         <activity android:name="TrendsLocationActivity"></activity>
 
-		<activity android:name="Users"></activity>
-		<activity android:name="TabGeneral"></activity>
+        <activity android:name="TabGeneral"></activity>
 		<activity android:name="TabGeo"></activity>
 		<activity android:name="MapSearch"></activity>
 		<activity android:name="TabAvanced"></activity>

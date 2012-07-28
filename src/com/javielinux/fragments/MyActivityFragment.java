@@ -508,8 +508,7 @@ public class MyActivityFragment extends Fragment {
         }
         if (network == Utils.NETWORK_FACEBOOK) {
             FacebookHandler fbh = new FacebookHandler(getActivity());
-            // TODO
-            //fbh.setUsersActivity(getActivity());
+            fbh.setMyActivityFragment(this);
             fbh.newUser();
         }
     }

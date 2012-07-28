@@ -21,7 +21,6 @@ import android.util.Log;
 import android.widget.Toast;
 import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
-import com.javielinux.error_reporter.ErrorReporter;
 import com.javielinux.infos.InfoLink;
 import com.javielinux.tweettopics2.R;
 import com.javielinux.tweettopics2.ThemeManager;
@@ -1755,8 +1754,9 @@ public class Utils {
         cnt.startActivity(msg);*/
         Intent gmail = new Intent(Intent.ACTION_VIEW);
         gmail.setClassName("com.google.android.gm","com.google.android.gm.ComposeActivityGmail");
-        gmail.putExtra(Intent.EXTRA_EMAIL, new String[] { "tweettopics.issues@gmail.com" });
-        gmail.setData(Uri.parse("tweettopics.issues@gmail.com"));
+        //gmail.putExtra(Intent.EXTRA_EMAIL, new String[] { "tweettopics.issues@gmail.com" });
+        gmail.putExtra(Intent.EXTRA_EMAIL, new String[] { "javi.pacheco@gmail.com", "franciscodr@gmail.com" });
+        gmail.setData(Uri.parse("javi.pacheco@gmail.com"));
         gmail.putExtra(Intent.EXTRA_SUBJECT, "TweetTopics crash");
         gmail.setType("plain/text");
         gmail.putExtra(Intent.EXTRA_TEXT, ErrorReporter.getErrors(cnt));

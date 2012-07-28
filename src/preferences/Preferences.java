@@ -29,7 +29,6 @@ import com.android.dataframework.Entity;
 import com.javielinux.tweettopics2.AdjustImage;
 import com.javielinux.tweettopics2.R;
 import com.javielinux.tweettopics2.ThemeManager;
-import com.javielinux.tweettopics2.Users;
 import com.javielinux.utils.DialogUtils.PersonalDialogBuilder;
 import com.javielinux.utils.FileUtils;
 import com.javielinux.utils.PreferenceUtils;
@@ -236,20 +235,7 @@ public class Preferences extends PreferenceActivity {
 			}
         	
         });
-        
-        Preference manageAccounts = (Preference) findPreference("prf_manage_accounts");
-        
-        manageAccounts.setOnPreferenceClickListener(new OnPreferenceClickListener() {
 
-			@Override
-			public boolean onPreferenceClick(Preference preference) {
-		    	Intent newuser = new Intent(Preferences.this, Users.class);
-				startActivity(newuser);
-				return false;
-			}
-        	
-        });
-        
         Preference colorsApp = (Preference) findPreference("prf_colors_app");
         
         colorsApp.setOnPreferenceClickListener(new OnPreferenceClickListener() {

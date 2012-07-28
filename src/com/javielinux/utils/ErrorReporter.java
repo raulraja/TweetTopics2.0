@@ -1,4 +1,4 @@
-package com.javielinux.error_reporter;
+package com.javielinux.utils;
 
 
 import android.app.Application;
@@ -9,8 +9,6 @@ import android.os.Build;
 import android.os.Environment;
 import android.util.Log;
 import com.javielinux.twitter.TwitterApplication;
-import com.javielinux.utils.PreferenceUtils;
-import com.javielinux.utils.Utils;
 
 import java.io.*;
 
