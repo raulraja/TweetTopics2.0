@@ -473,13 +473,15 @@ public class InfoTweet implements Parcelable {
         parcel.writeInt(linksCount);
         parcel.writeString(bestLink);
 
-        parcel.writeInt(urls.size());
-        for (URLContent url : urls) {
-            parcel.writeString(url.normal);
-            parcel.writeString(url.display);
-            parcel.writeString(url.expanded);
-            parcel.writeString(url.linkMediaThumb);
-            parcel.writeString(url.linkMediaLarge);
+        if (urls!=null) {
+            parcel.writeInt(urls.size());
+            for (URLContent url : urls) {
+                parcel.writeString(url.normal);
+                parcel.writeString(url.display);
+                parcel.writeString(url.expanded);
+                parcel.writeString(url.linkMediaThumb);
+                parcel.writeString(url.linkMediaLarge);
+            }
         }
     }
 

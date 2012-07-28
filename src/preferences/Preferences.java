@@ -140,12 +140,11 @@ public class Preferences extends PreferenceActivity {
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
         requestWindowFeature(Window.FEATURE_NO_TITLE);
+        super.onCreate(savedInstanceState);
         
         addPreferencesFromResource(R.xml.preferences);
-        
+
         ThemeManager mThemeManager = new ThemeManager(this);
         
         colors = mThemeManager.getColors();
