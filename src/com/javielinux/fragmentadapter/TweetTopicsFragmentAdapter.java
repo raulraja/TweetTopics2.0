@@ -41,7 +41,7 @@ public class TweetTopicsFragmentAdapter extends FragmentPagerAdapter  {
 
             // incluyo las columnas de la base de datos
 
-            fragmentList.addAll(DataFramework.getInstance().getEntityList("columns"));
+            fragmentList.addAll(DataFramework.getInstance().getEntityList("columns", "", "position asc"));
 
             notifyDataSetChanged();
         }
@@ -125,6 +125,8 @@ public class TweetTopicsFragmentAdapter extends FragmentPagerAdapter  {
                 return new ListUserFragment(fragmentList.get(index).getId());
             case TweetTopicsUtils.COLUMN_TRENDING_TOPIC:
                 return new TrendingTopicsFragment(fragmentList.get(index).getId());
+            case TweetTopicsUtils.COLUMN_FAVORITES:
+                return new FavoritesFragment(fragmentList.get(index).getId());
             default:
                 return new NoFoundFragment(fragmentList.get(index).getString("description"));
         }
@@ -165,7 +167,7 @@ public class TweetTopicsFragmentAdapter extends FragmentPagerAdapter  {
             myActivity.setValue("type_id", TweetTopicsUtils.COLUMN_MY_ACTIVITY);
             fragmentList.add(myActivity);
 
-            fragmentList.addAll(DataFramework.getInstance().getEntityList("columns"));
+            fragmentList.addAll(DataFramework.getInstance().getEntityList("columns","","position asc"));
 
             notifyDataSetChanged();
         }

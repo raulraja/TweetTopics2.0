@@ -377,7 +377,6 @@
   <string name="retweet">Retuit</string>
   <string name="now">ara</string>
   <string name="edit_message">Edita el missatge</string>
-  <string name="show_retweets">Veure els teus retuits</string>
   <string name="user">Usuari</string>
   <string name="word">Paraula</string>
   <string name="title_quiet_words">Usuari o paraula</string>
@@ -558,12 +557,10 @@
   <string name="range">Rang</string>
   <string name="map">Mapa</string>
   <string name="reply">Respon</string>
-  <string name="retweet">Retuit</string>
   <string name="links">Enllaços</string>
   <string name="readafter">Desar per a llegir més tard</string>
   <string name="more">Més</string>
   <string name="send">Envia</string>
-  <string name="add_user">Nou usuari</string>
   <string name="refresh_avatar">Actualitza</string>
   <string name="delete_user">Esborra</string>
   <string name="user_list">Llista d\'usuaris</string>
@@ -632,7 +629,6 @@
   <string name="bt_more">Més</string>
   <string name="import_correct">Importació feta correctament</string>
   <string name="import_no_correct">Error en fer la importació</string>
-  <string name="shorter">Escurça</string>
   <string name="tab_general">General</string>
   <string name="tab_avanced">Avançat</string>
   <string name="tab_geo">Localització</string>

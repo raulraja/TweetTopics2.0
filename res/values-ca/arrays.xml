@@ -245,6 +245,7 @@
     <item>Actualitza avatar</item>
     <item>Elimina</item>
     <item>Veure llistes</item>
+    <item>Favorits</item>
   </string-array>
   <string-array name="actions_samples_search">
     <item>Android: General</item>

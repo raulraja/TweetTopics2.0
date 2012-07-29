@@ -507,8 +507,7 @@
     <string name="retweet">Retweet</string>
     <string name="now">jetzt</string>
     <string name="edit_message">Tweet bearbeiten</string>
-    <string name="show_retweets">Zeige Deine Retweets</string>
-    
+
     <string name="user">Benutzer</string>
     <string name="word">Wort</string>
     <string name="title_quiet_words">Benutzer oder Schl&#252;sselwort</string>
@@ -748,12 +747,10 @@
     <string name="range">Umfang</string>
     <string name="map">Karte</string>
     <string name="reply">Antwort</string>
-    <string name="retweet">Retweet</string>
     <string name="links">Links</string>
     <string name="readafter">Gespeichert zum sp&#228;ter lesen</string>
     <string name="more">Mehr</string>
     <string name="send">Senden</string>
-    <string name="add_user">Benutzer hinzuf&#252;gen</string>
     <string name="refresh_avatar">Avatar aktualisieren</string>
     <string name="delete_user">Konto l&#246;schen</string>
     <string name="user_list">Benutzer-Liste</string>
@@ -840,9 +837,7 @@
     
     <string name="import_correct">Erfolgreich importiert</string>
     <string name="import_no_correct">Fehler beim importieren</string>
-    
-    <string name="shorter">Verk&#252;rzen</string>
-    
+
     <string name="tab_general">Allgemein</string>
     <string name="tab_avanced">Erweitert</string>
     <string name="tab_geo">Lokation</string>

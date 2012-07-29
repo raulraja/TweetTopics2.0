@@ -573,8 +573,7 @@
     <string name="retweet">Retweet</string>
     <string name="now">now</string>
     <string name="edit_message">Edit message</string>
-    <string name="show_retweets">Show your retweets</string>
-    
+
     <string name="user">User</string>
     <string name="word">Word</string>
     <string name="title_quiet_words">User or word</string>
@@ -655,8 +654,7 @@
     <string name="txt_geoloc_off">Geolocation deactivated</string>
     
     <string name="geoloc">Geoloc</string>
-    <string name="shorter">Shorter</string>
-    
+
     <string name="txt_type_reply">Reply to</string>
     <string name="txt_type_retweet">Original retweet</string>
     <string name="txt_type_dm">Direct message to</string>
@@ -814,12 +812,10 @@
     <string name="range">Range</string>
     <string name="map">Map</string>
     <string name="reply">Reply</string>
-    <string name="retweet">Retweet</string>
     <string name="links">Links</string>
     <string name="readafter">Save to read later</string>
     <string name="more">More</string>
     <string name="send">Send</string>
-    <string name="add_user">Add user</string>
     <string name="refresh_avatar">Refresh avatar</string>
     <string name="delete_user">Delete</string>
     <string name="user_list">Members list</string>

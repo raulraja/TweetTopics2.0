@@ -252,6 +252,7 @@
     	<item>Refresh avatar</item>
     	<item>Delete</item>
         <item>Show lists</item>
+        <item>Favorites</item>
     </string-array>
     
     <string-array name="actions_samples_search">

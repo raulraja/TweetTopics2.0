@@ -241,7 +241,7 @@ public class TweetTopicsActivity extends BaseActivity {
 
         layoutBackgroundColumnsBar.setOnRearrangeListener(new OnRearrangeListener() {
             public void onRearrange(int oldIndex, int newIndex) {
-                Toast.makeText(TweetTopicsActivity.this,"Paco pisha se ha pasado de la columna " + oldIndex + " a la " + newIndex,Toast.LENGTH_LONG).show();
+                reorganizeColumns(oldIndex, newIndex);
             }
             @Override
             public void onStartDrag(int x, int index) {
@@ -587,6 +587,34 @@ public class TweetTopicsActivity extends BaseActivity {
 
     private void reloadBarAvatar() {
         imgBarAvatar.setImageBitmap(fragmentAdapter.getIconItem(pager.getCurrentItem()));
+    }
+
+    private void reorganizeColumns(final int starting_position, final int ending_position) {
+
+        ArrayList<Entity> moved_column = DataFramework.getInstance().getEntityList("columns", "position=" + starting_position);
+
+        if (moved_column.size() > 0) {
+            if (starting_position > ending_position) {
+                DataFramework.getInstance().getDB().execSQL("UPDATE columns SET position=position+1 WHERE position BETWEEN " + ending_position + " AND " + (starting_position - 1));
+            } else if (starting_position < ending_position) {
+                DataFramework.getInstance().getDB().execSQL("UPDATE columns SET position=position-1 WHERE position BETWEEN " + (starting_position + 1) + " AND " + ending_position);
+            }
+
+            boolean result = false;
+
+            moved_column.get(0).setValue("position", ending_position);
+            result = moved_column.get(0).save();
+
+            if (result) {
+                Handler myHandler = new Handler();
+                myHandler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        fragmentAdapter.refreshColumnList();
+                    }
+                }, 100);
+            }
+        }
     }
 
     public void showActionBarColumns() {

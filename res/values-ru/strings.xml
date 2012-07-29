@@ -227,8 +227,7 @@
     <string name="retweet">Ретвит</string>
     <string name="now">сейчас</string>
     <string name="edit_message">Редактировать сообщение</string>
-    <string name="show_retweets">Показать ретвит</string>
-    
+
     <string name="user">Пользователь</string>
     <string name="word">Слово</string>
     <string name="title_quiet_words">Пользователь и слово</string>
@@ -468,7 +467,6 @@
     <string name="range">Диапазон</string>
     <string name="map">Карта</string>
     <string name="reply">Ответ</string>
-    <string name="retweet">Ретвит</string>
     <string name="links">Ссылки</string>
     <string name="readafter">Сохранить, чтобы прочитать позже</string>
     <string name="more">Еще</string>
@@ -560,9 +558,7 @@
     
     <string name="import_correct">Успешный импорт</string>
     <string name="import_no_correct">Ошибка при импорте</string>
-    
-    <string name="shorter">Сокращения</string>
-    
+
     <string name="tab_general">Общее</string>
     <string name="tab_avanced">Продвинутый</string>
     <string name="tab_geo">Местоположение</string>

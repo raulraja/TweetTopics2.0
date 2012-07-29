@@ -252,6 +252,7 @@
     	<item>Actualizar avatar</item>
     	<item>Eliminar</item>
         <item>Ver listas</item>
+        <item>Favoritos</item>
     </string-array>
         
     <string-array name="actions_samples_search">

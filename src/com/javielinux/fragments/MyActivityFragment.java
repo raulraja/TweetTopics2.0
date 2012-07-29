@@ -281,6 +281,15 @@ public class MyActivityFragment extends Fragment {
             ent.delete();
 
             fillData();
+
+            Handler myHandler = new Handler();
+            myHandler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    ((TweetTopicsActivity)getActivity()).getFragmentPagerAdapter().refreshColumnList();
+                    ((TweetTopicsActivity)getActivity()).refreshActionBarColumns();
+                }
+            }, 100);
         }
     }
 
@@ -330,6 +339,11 @@ public class MyActivityFragment extends Fragment {
 
     public void createUserColumn(long userId, int typeId) {
         ((TweetTopicsActivity)getActivity()).createUserColumn(userId, typeId);
+    }
+
+    public void createUserFavoritesColumn() {
+        if (idUser > 0)
+            createUserColumn(idUser, TweetTopicsUtils.COLUMN_FAVORITES);
     }
 
     public void newUserTwitter() {
@@ -486,7 +500,10 @@ public class MyActivityFragment extends Fragment {
                     showDeleteUserDialog();
                 } else if (which == 4) {
                     showUserLists();
+                } else if (which == 5) {
+                    createUserFavoritesColumn();
                 }
+
             }
         });
         frag.show(getFragmentManager(), "dialog");
