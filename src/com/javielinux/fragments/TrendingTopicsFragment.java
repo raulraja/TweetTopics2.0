@@ -60,6 +60,10 @@ public class TrendingTopicsFragment extends BaseListFragment implements APIDeleg
         column_entity = new Entity("columns", column_id);
     }
 
+    public Entity getColumnEntity() {
+        return column_entity;
+    }
+
     public void loadTrendsLocation() {
         Log.d(Utils.TAG, "reloadColumnUser : " + column_entity.getInt("type_id"));
 

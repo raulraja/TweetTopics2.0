@@ -253,6 +253,10 @@
     	<item>Delete</item>
         <item>Show lists</item>
         <item>Favorites</item>
+        <item>Retweets by user</item>
+        <item>Retweets by others</item>
+        <item>Followers</item>
+        <item>Followings</item>
     </string-array>
     
     <string-array name="actions_samples_search">

@@ -1,6 +1,7 @@
 package com.javielinux.fragments;
 
 import android.support.v4.app.Fragment;
+import com.android.dataframework.Entity;
 
 abstract public class BaseListFragment extends Fragment {
 
@@ -11,5 +12,7 @@ abstract public class BaseListFragment extends Fragment {
     }
 
     abstract void setFlinging(boolean flinging);
+
+    abstract public Entity getColumnEntity();
 
 }

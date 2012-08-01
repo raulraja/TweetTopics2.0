@@ -48,6 +48,10 @@ public class ListUserFragment extends BaseListFragment implements APIDelegate<Ba
         list_user_entity = new Entity("user_lists", Long.parseLong(column_entity.getValue("userlist_id").toString()));
     }
 
+    public Entity getColumnEntity() {
+        return column_entity;
+    }
+
     public void showUpdating() {
         viewUpdate.setVisibility(View.VISIBLE);
     }

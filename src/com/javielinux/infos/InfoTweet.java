@@ -559,4 +559,9 @@ public class InfoTweet implements Parcelable {
     public int getLinksCount() {
         return linksCount;
     }
+
+    @Override
+    public boolean equals(Object other) {
+        return  (id == ((InfoTweet)other).getId());
+    }
 }

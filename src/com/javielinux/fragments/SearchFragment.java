@@ -51,6 +51,10 @@ public class SearchFragment extends BaseListFragment implements APIDelegate<Base
         search_entity = new EntitySearch(Long.parseLong(column_entity.getValue("search_id").toString()));
     }
 
+    public Entity getColumnEntity() {
+        return column_entity;
+    }
+
     private void preLoadInfoTweetIfIsNecessary() {
 
         ArrayList<Entity> tweets;

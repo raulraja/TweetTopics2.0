@@ -346,6 +346,26 @@ public class MyActivityFragment extends Fragment {
             createUserColumn(idUser, TweetTopicsUtils.COLUMN_FAVORITES);
     }
 
+    public void createUserFollowersColumn() {
+        if (idUser > 0)
+            createUserColumn(idUser, TweetTopicsUtils.COLUMN_FOLLOWERS);
+    }
+
+    public void createUserFollowingsColumn() {
+        if (idUser > 0)
+            createUserColumn(idUser, TweetTopicsUtils.COLUMN_FOLLOWINGS);
+    }
+
+    public void createUserRetweetByUserColumn() {
+        if (idUser > 0)
+            createUserColumn(idUser, TweetTopicsUtils.COLUMN_RETWEETS_BY_YOU);
+    }
+
+    public void createUserRetweetByOtherColumn() {
+        if (idUser > 0)
+            createUserColumn(idUser, TweetTopicsUtils.COLUMN_RETWEETS_BY_OTHERS);
+    }
+
     public void newUserTwitter() {
         if (Utils.isLite(getActivity())) {
             if (DataFramework.getInstance().getEntityList("users", "service = \"twitter.com\" or service is null").size() < 1) {
@@ -502,6 +522,14 @@ public class MyActivityFragment extends Fragment {
                     showUserLists();
                 } else if (which == 5) {
                     createUserFavoritesColumn();
+                } else if (which == 6) {
+                    createUserRetweetByUserColumn();
+                } else if (which == 7) {
+                    createUserRetweetByOtherColumn();
+                } else if (which == 8) {
+                    createUserFollowersColumn();
+                } else if (which == 9) {
+                    createUserFollowingsColumn();
                 }
 
             }

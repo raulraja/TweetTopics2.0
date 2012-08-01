@@ -18,6 +18,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.*;
 import android.widget.*;
 import com.android.dataframework.DataFramework;
@@ -610,6 +611,7 @@ public class TweetTopicsActivity extends BaseActivity {
                 myHandler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
+                        Log.d("TweetTopics2.0","Eliminando las columnas");
                         fragmentAdapter.refreshColumnList();
                     }
                 }, 100);
@@ -1054,6 +1056,5 @@ public class TweetTopicsActivity extends BaseActivity {
         });
         builder.create();
         builder.show();
-
     }
 }

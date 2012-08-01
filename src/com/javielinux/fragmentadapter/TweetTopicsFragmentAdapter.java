@@ -7,6 +7,7 @@ import android.graphics.drawable.Drawable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
@@ -17,15 +18,17 @@ import com.javielinux.utils.Utils;
 
 import java.util.ArrayList;
 
-public class TweetTopicsFragmentAdapter extends FragmentPagerAdapter  {
+public class TweetTopicsFragmentAdapter extends FragmentPagerAdapter {
 
     private Context context;
     private MyActivityFragment myActivityFragment;
     private ArrayList<Entity> fragmentList = new ArrayList<Entity>();
+    private FragmentManager fragmentManager;
 
     public TweetTopicsFragmentAdapter(Context context, FragmentManager fragmentManager) {
         super(fragmentManager);
         this.context = context;
+        this.fragmentManager = fragmentManager;
         fillColumnList();
     }
 
@@ -63,7 +66,10 @@ public class TweetTopicsFragmentAdapter extends FragmentPagerAdapter  {
         if (fragmentList.size() > 0) {
             int typeColumn = fragmentList.get(position).getInt("type_id");
             if (typeColumn == TweetTopicsUtils.COLUMN_TIMELINE || typeColumn == TweetTopicsUtils.COLUMN_MENTIONS
-                    || typeColumn == TweetTopicsUtils.COLUMN_DIRECT_MESSAGES || typeColumn == TweetTopicsUtils.COLUMN_SENT_DIRECT_MESSAGES) {
+                    || typeColumn == TweetTopicsUtils.COLUMN_DIRECT_MESSAGES || typeColumn == TweetTopicsUtils.COLUMN_SENT_DIRECT_MESSAGES
+                    || typeColumn == TweetTopicsUtils.COLUMN_RETWEETS_BY_OTHERS || typeColumn == TweetTopicsUtils.COLUMN_RETWEETS_BY_YOU
+                    || typeColumn == TweetTopicsUtils.COLUMN_FOLLOWERS || typeColumn == TweetTopicsUtils.COLUMN_FOLLOWINGS
+                    || typeColumn == TweetTopicsUtils.COLUMN_FAVORITES) {
                 return Utils.getBitmapAvatar(fragmentList.get(position).getEntity("user_id").getId(), Utils.AVATAR_MEDIUM);
             }
             if (typeColumn == TweetTopicsUtils.COLUMN_SEARCH) {
@@ -127,8 +133,29 @@ public class TweetTopicsFragmentAdapter extends FragmentPagerAdapter  {
                 return new TrendingTopicsFragment(fragmentList.get(index).getId());
             case TweetTopicsUtils.COLUMN_FAVORITES:
                 return new FavoritesFragment(fragmentList.get(index).getId());
+            case TweetTopicsUtils.COLUMN_RETWEETS_BY_OTHERS:
+            case TweetTopicsUtils.COLUMN_RETWEETS_BY_YOU:
+                return new RetweetFragment(fragmentList.get(index).getId());
+            case TweetTopicsUtils.COLUMN_FOLLOWERS:
+            case TweetTopicsUtils.COLUMN_FOLLOWINGS:
+                return new UsersFragment(fragmentList.get(index).getId());
             default:
                 return new NoFoundFragment(fragmentList.get(index).getString("description"));
+        }
+    }
+
+    @Override
+    public int getItemPosition(Object item) {
+        BaseListFragment fragment = (BaseListFragment)item;
+        Entity column_entity = fragment.getColumnEntity();
+
+        int position = fragmentList.indexOf(column_entity);
+        if (position < 0) {
+            Log.d("TweetTopics2.0","Fragment doesn't exist");
+            return POSITION_NONE;
+        } else {
+            Log.d("TweetTopics2.0","Fragment exists: " + column_entity.getString("title") + " - " + position);
+            return position;
         }
     }
 
@@ -154,13 +181,25 @@ public class TweetTopicsFragmentAdapter extends FragmentPagerAdapter  {
 
     }
 
+    public void clearColumnList() {
+
+        try {
+            fragmentList.clear();
+
+            Entity myActivity = new Entity("columns");
+            myActivity.setValue("type_id", TweetTopicsUtils.COLUMN_MY_ACTIVITY);
+            fragmentList.add(myActivity);
+
+            notifyDataSetChanged();
+        }
+        catch (Exception exception) {
+            exception.printStackTrace();
+        }
+    }
+
     public void refreshColumnList() {
 
         try {
-            /*int last_position = fragmentList.get(fragmentList.size()-1).getInt("position");
-
-            fragmentList.addAll(DataFramework.getInstance().getEntityList("columns","position>" + last_position));*/
-
             fragmentList.clear();
 
             Entity myActivity = new Entity("columns");

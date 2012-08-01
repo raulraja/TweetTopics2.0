@@ -68,6 +68,10 @@ public class TweetTopicsFragment extends BaseListFragment implements APIDelegate
 
     }
 
+    public Entity getColumnEntity() {
+        return column_entity;
+    }
+
     private void preLoadInfoTweetFromDB() {
 
         showLoading();

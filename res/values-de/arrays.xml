@@ -239,6 +239,10 @@
     	<item>L&#246;schen</item>
         <item>Listen anzeigen</item>
         <item>Favoriten</item>
+        <item>Benutzer retweets</item>
+        <item>Retweets von anderen</item>
+        <item>Followers</item>
+        <item>Followings</item>
     </string-array>
     
     <string-array name="actions_samples_search">

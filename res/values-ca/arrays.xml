@@ -246,6 +246,10 @@
     <item>Elimina</item>
     <item>Veure llistes</item>
     <item>Favorits</item>
+    <item>Retuits per l\'usuari</item>
+    <item>Retuits per altres</item>
+    <item>Seguidors</item>
+    <item>Seguits</item>
   </string-array>
   <string-array name="actions_samples_search">
     <item>Android: General</item>
