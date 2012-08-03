@@ -4,6 +4,7 @@
 package com.javielinux.adapters;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -16,8 +17,10 @@ import java.util.ArrayList;
 public class IconAndTextSimpleAdapter extends ArrayAdapter<IconAndTextSimpleAdapter.IconAndText> {
 
     public static class IconAndText {
-        public int resource;
+        public int resource = 0;
+        public Bitmap bitmap;
         public String text;
+        public Object extra;
     }
 
 	private Context context;
@@ -37,9 +40,13 @@ public class IconAndTextSimpleAdapter extends ArrayAdapter<IconAndTextSimpleAdap
 		} else {
 			v = convertView;
 		}
-		
-		ImageView icon = (ImageView)v.findViewById(R.id.icon);
-		icon.setImageResource(item.resource);
+
+        ImageView icon = (ImageView)v.findViewById(R.id.icon);
+        if (item.bitmap!=null) {
+            icon.setImageBitmap(item.bitmap);
+        } else {
+            icon.setImageResource(item.resource);
+        }
 		
 		TextView name = (TextView)v.findViewById(R.id.name);
 		

@@ -1,18 +1,24 @@
 package com.javielinux.utils;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.CursorIndexOutOfBoundsException;
+import android.support.v4.app.FragmentActivity;
 import android.text.ClipboardManager;
 import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
+import com.javielinux.adapters.IconAndTextSimpleAdapter;
 import com.javielinux.adapters.UsersAdapter;
+import com.javielinux.dialogs.OnSelectedIconAndText;
+import com.javielinux.dialogs.TwitterUsersConnectedDialogFragment;
 import com.javielinux.infos.InfoTweet;
 import com.javielinux.tweettopics2.NewStatusActivity;
 import com.javielinux.tweettopics2.R;
+import com.javielinux.twitter.ConnectionManager;
 import preferences.RetweetsTypes;
+import twitter4j.TwitterException;
 import updatestatus.ServiceUpdateStatus;
 
 import java.util.ArrayList;
@@ -26,7 +32,7 @@ public class TweetActions {
     public static final int ACTIVITY_WALLPAPER = 4;
     public static final int ACTIVITY_COLORS_APP = 5;
 
-    public static boolean execByCode(String code, Activity activity, InfoTweet infoTweet) {
+    public static boolean execByCode(String code, FragmentActivity activity, InfoTweet infoTweet) {
         /*
           "reply", "retweet", "lastread", "readafter",
           "favorite", "share", "mention", "map",
@@ -41,7 +47,7 @@ public class TweetActions {
         } else if (code.equals("readafter")) {
             saveTweet(activity, infoTweet);
         } else if (code.equals("favorite")) {
-            //this.goToFavorite(mTweetTopicsCore);
+            goToFavorite(activity, infoTweet);
         } else if (code.equals("share")) {
             goToShare(activity, infoTweet);
         } else if (code.equals("mention")) {
@@ -58,24 +64,68 @@ public class TweetActions {
         return false;
     }
 
-    public static void copyToClipboard(Activity activity, InfoTweet infoTweet) {
+    public static void goToFavorite(final FragmentActivity activity, final InfoTweet infoTweet) {
+        ArrayList<Entity> ents = DataFramework.getInstance().getEntityList("users", "service is null or service = \"twitter.com\"");
+        if (ents.size()==1) {
+            createFavorite(activity, infoTweet, ents.get(0).getId());
+        } else {
+            TwitterUsersConnectedDialogFragment frag = new TwitterUsersConnectedDialogFragment(new OnSelectedIconAndText() {
+                @Override
+                public void OnSelectedItem(IconAndTextSimpleAdapter.IconAndText item) {
+                    createFavorite(activity, infoTweet, Long.parseLong(item.extra.toString()));
+                }
+            });
+            frag.show(activity.getSupportFragmentManager(), "dialog");
+        }
+    }
+
+    public static boolean createFavorite(FragmentActivity activity, InfoTweet infoTweet, long id) {
+        try {
+
+            ConnectionManager.getInstance().open(activity);
+
+
+            if (infoTweet.getTypeFrom()==InfoTweet.FROM_STATUS && infoTweet.getIdDB()>0) {
+                try {
+                    Entity ent = new Entity("tweets_user", infoTweet.getIdDB());
+                    ent.setValue("is_favorite", 1);
+                    ent.save();
+                } catch (CursorIndexOutOfBoundsException e) {
+                    e.printStackTrace();
+                }
+            }
+            ConnectionManager.getInstance().getTwitter(id).createFavorite(infoTweet.getId());
+            Utils.showMessage(activity, activity.getString(R.string.favorite_save));
+
+            infoTweet.setFavorited(true);
+
+            return true;
+
+        } catch (TwitterException e) {
+            e.printStackTrace();
+            Utils.showMessage(activity, activity.getString(R.string.favorite_no_save));
+            return false;
+        }
+    }
+
+    public static void copyToClipboard(FragmentActivity activity, InfoTweet infoTweet) {
         ClipboardManager clipboard = (ClipboardManager) activity.getSystemService(Context.CLIPBOARD_SERVICE);
         clipboard.setText(infoTweet.getText());
         Utils.showMessage(activity, activity.getString(R.string.copied_to_clipboard));
     }
 
-    public static void goToMention(Activity activity, InfoTweet infoTweet) {
+    public static void goToMention(FragmentActivity activity, InfoTweet infoTweet) {
         updateStatus(activity, NewStatusActivity.TYPE_NORMAL, "@" + infoTweet.getUsername(), infoTweet);
     }
 
-    public static void goToShare(Activity activity, InfoTweet infoTweet) {
+    public static void goToShare(FragmentActivity activity, InfoTweet infoTweet) {
         Intent msg = new Intent(Intent.ACTION_SEND);
         msg.putExtra(Intent.EXTRA_TEXT, infoTweet.getUsername() + ": " + infoTweet.getText());
         msg.setType("text/plain");
         activity.startActivity(msg);
     }
 
-    public static void saveTweet(Activity activity, InfoTweet infoTweet) {
+    public static void saveTweet(FragmentActivity activity, InfoTweet infoTweet) {
         try {
             if (infoTweet.isSavedTweet()) {
                 Entity ent = new Entity("saved_tweets", infoTweet.getIdDB());
@@ -105,7 +155,7 @@ public class TweetActions {
         }
     }
 
-    public static void goToReply(Activity activity, InfoTweet infoTweet) {
+    public static void goToReply(FragmentActivity activity, InfoTweet infoTweet) {
         if (infoTweet.isDm()) {
             directMessage(activity, infoTweet.getUsername());
         } else {
@@ -127,7 +177,7 @@ public class TweetActions {
 
     }
 
-    public static void showDialogReply(final Activity activity, final InfoTweet it) {
+    public static void showDialogReply(final FragmentActivity activity, final InfoTweet it) {
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
         builder.setTitle(R.string.actions)
                 .setItems(R.array.actions_reply, new DialogInterface.OnClickListener() {
@@ -177,7 +227,7 @@ public class TweetActions {
         builder.show();
     }
 
-    public static void directMessage(Activity activity, String username) {
+    public static void directMessage(FragmentActivity activity, String username) {
         Intent newstatus = new Intent(activity, NewStatusActivity.class);
         newstatus.putExtra("type", NewStatusActivity.TYPE_DIRECT_MESSAGE);
         newstatus.putExtra("username_direct_message", username);
@@ -185,7 +235,7 @@ public class TweetActions {
 
     }
 
-    public static void updateStatus(final Activity activity, final String text) {
+    public static void updateStatus(final FragmentActivity activity, final String text) {
         ArrayList<Entity> ents = DataFramework.getInstance().getEntityList("users", "service is null or service = \"twitter.com\"");
 
         if (ents.size() == 1) {
@@ -216,11 +266,11 @@ public class TweetActions {
         }
     }
 
-    public static void updateStatus(Activity activity, int type, String text, InfoTweet tweet) {
+    public static void updateStatus(FragmentActivity activity, int type, String text, InfoTweet tweet) {
         updateStatus(activity, type, text, tweet, "");
     }
 
-    private static void updateStatus(Activity activity, int type, String text, InfoTweet tweet, String prev) {
+    private static void updateStatus(FragmentActivity activity, int type, String text, InfoTweet tweet, String prev) {
         Intent newstatus = new Intent(activity, NewStatusActivity.class);
         newstatus.putExtra("text", text);
         newstatus.putExtra("type", type);
@@ -242,7 +292,7 @@ public class TweetActions {
         activity.startActivityForResult(newstatus, ACTIVITY_NEWSTATUS);
     }
 
-    public static void showDialogRetweet(final Activity activity, final InfoTweet it) {
+    public static void showDialogRetweet(final FragmentActivity activity, final InfoTweet it) {
         final ArrayList<String> phrases = new ArrayList<String>();
         ArrayList<Entity> ents = DataFramework.getInstance().getEntityList("types_retweets");
 
@@ -305,7 +355,7 @@ public class TweetActions {
         builder.show();
     }
 
-    public static void sendStatus(Activity activity, String users, String text) {
+    public static void sendStatus(FragmentActivity activity, String users, String text) {
         Entity ent = new Entity("send_tweets");
         ent.setValue("users", users);
         ent.setValue("text", text);
@@ -322,7 +372,7 @@ public class TweetActions {
     }
 
 
-    public static void sendRetweet(Activity activity, String users, long tweet_id) {
+    public static void sendRetweet(FragmentActivity activity, String users, long tweet_id) {
         Entity ent = new Entity("send_tweets");
         ent.setValue("users", users);
         ent.setValue("is_sent", 0);
@@ -333,7 +383,7 @@ public class TweetActions {
         activity.startService(new Intent(activity, ServiceUpdateStatus.class));
     }
 
-    public static void retweetStatus(final Activity activity, final long tweet_id) {
+    public static void retweetStatus(final FragmentActivity activity, final long tweet_id) {
 
         ArrayList<Entity> ents = DataFramework.getInstance().getEntityList("users", "service is null or service = \"twitter.com\"");
 

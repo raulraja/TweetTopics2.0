@@ -24,6 +24,7 @@
             <LinearLayout android:layout_width="fill_parent"
                           android:layout_height="wrap_content"
                           android:orientation="vertical"
+                          android:layout_marginRight="30dp"
                           android:layout_toRightOf="@id/tweet_avatar"
                           android:id="@+id/tweet_user_name_layout_sidebar"
                     >
@@ -53,7 +54,7 @@
                     style="@style/ButtonSidebar"
                     android:layout_alignParentRight="true"
                     android:drawableTop="?icon_favorite_off"
-                    android:id="@+id/tweet_btn_reply" android:layout_width="wrap_content"
+                    android:id="@+id/tweet_btn_favorite" android:layout_width="wrap_content"
                     android:layout_height="wrap_content"></Button>
 
         </RelativeLayout>

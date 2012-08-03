@@ -320,6 +320,10 @@ public class InfoTweet implements Parcelable {
 		return favorited;
 	}
 
+    public void setFavorited(boolean favorited) {
+        this.favorited = favorited;
+    }
+
 	public boolean isRetweet() {
 		return retweet;
 	}

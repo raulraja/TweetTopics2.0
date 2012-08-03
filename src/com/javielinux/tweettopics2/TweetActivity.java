@@ -125,6 +125,7 @@ public class TweetActivity extends BaseLayersActivity {
         indicator = (TabPageIndicator)findViewById(R.id.tweet_indicator);
         indicator.setViewPager(pager);
 
+        (findViewById(R.id.tweet_btn_favorite)).setOnClickListener(clickFavorite);
         (findViewById(R.id.tweet_btn_reply)).setOnClickListener(clickReply);
         (findViewById(R.id.tweet_btn_retweet)).setOnClickListener(clickRetweet);
         (findViewById(R.id.tweet_btn_translate)).setOnClickListener(clickTranslate);
@@ -166,6 +167,14 @@ public class TweetActivity extends BaseLayersActivity {
             llRoot.setBackgroundResource((themeManager.getTheme() == 1) ? R.drawable.bg_sidebar_left : R.drawable.bg_sidebar_left_dark);
         }
     }
+
+    View.OnClickListener clickFavorite = new View.OnClickListener() {
+
+        @Override
+        public void onClick(View view) {
+            TweetActions.goToFavorite(TweetActivity.this, infoTweet);
+        }
+    };
 
     View.OnClickListener clickReply = new View.OnClickListener() {
 
