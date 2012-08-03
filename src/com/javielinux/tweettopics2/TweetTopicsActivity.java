@@ -45,19 +45,14 @@ public class TweetTopicsActivity extends BaseActivity {
     public static final String KEY_EXTRAS_GOTO_COLUMN_USER = "KEY_EXTRAS_GOTO_COLUMN_USER";
     public static final String KEY_EXTRAS_GOTO_COLUMN_TYPE = "KEY_EXTRAS_GOTO_COLUMN_TYPE";
 
-    protected static final int NEW_ID = Menu.FIRST;
-    protected static final int PREFERENCES_ID = Menu.FIRST + 1;
-    protected static final int EXIT_ID = Menu.FIRST + 2;
-    protected static final int SIZE_TEXT_ID = Menu.FIRST + 3;
-    protected static final int TRENDS_LOCATION = Menu.FIRST + 4;
+    protected static final int PREFERENCES_ID = Menu.FIRST;
+    protected static final int EXIT_ID = Menu.FIRST + 1;
+    protected static final int SIZE_TEXT_ID = Menu.FIRST + 2;
 
     public static final int ACTIVITY_NEWEDITSEARCH = 0;
     public static final int ACTIVITY_PREFERENCES = 1;
     public static final int ACTIVITY_NEWSTATUS = 2;
-    public static final int ACTIVITY_USER = 3;
-    public static final int ACTIVITY_WALLPAPER = 4;
-    public static final int ACTIVITY_COLORS_APP = 5;
-    public static final int ACTIVITY_TRENDS_LOCATION = 6;
+    public static final int ACTIVITY_TRENDS_LOCATION = 3;
 
     private ViewPager pager;
     private TweetTopicsFragmentAdapter fragmentAdapter;
@@ -315,21 +310,24 @@ public class TweetTopicsActivity extends BaseActivity {
 
         switch (requestCode) {
             case ACTIVITY_NEWEDITSEARCH:
-                boolean create_column = data.getBooleanExtra("view", false);
 
-                if (create_column) {
-                    final int count = DataFramework.getInstance().getEntityListCount("columns", "") + 1;
+                if (data != null && data.getExtras()!=null && data.getExtras().containsKey("view")) {
+                    boolean create_column = data.getExtras().getBoolean("view", false);
 
-                    Entity type = new Entity("type_columns", (long) TweetTopicsUtils.COLUMN_SEARCH);
-                    Entity search = new Entity("columns");
-                    search.setValue("description", type.getString("description"));
-                    search.setValue("type_id", type);
-                    search.setValue("position", count);
-                    search.setValue("search_id", data.getLongExtra(DataFramework.KEY_ID, -1));
-                    search.save();
+                    if (create_column) {
+                        final int count = DataFramework.getInstance().getEntityListCount("columns", "") + 1;
 
-                    goToColumn(count, true);
+                        Entity type = new Entity("type_columns", (long) TweetTopicsUtils.COLUMN_SEARCH);
+                        Entity search = new Entity("columns");
+                        search.setValue("description", type.getString("description"));
+                        search.setValue("type_id", type);
+                        search.setValue("position", count);
+                        search.setValue("search_id", data.getLongExtra(DataFramework.KEY_ID, -1));
+                        search.save();
 
+                        goToColumn(count, true);
+
+                    }
                 }
 
                 break;
@@ -344,16 +342,12 @@ public class TweetTopicsActivity extends BaseActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        menu.add(0, NEW_ID, 0, R.string.new_search)
-                .setIcon(android.R.drawable.ic_menu_add);
         menu.add(0, SIZE_TEXT_ID, 0, R.string.size)
                 .setIcon(R.drawable.ic_menu_font_size);
         menu.add(0, PREFERENCES_ID, 0, R.string.preferences)
                 .setIcon(android.R.drawable.ic_menu_preferences);
         menu.add(0, EXIT_ID, 0, R.string.exit)
                 .setIcon(android.R.drawable.ic_menu_revert);
-        menu.add(0, TRENDS_LOCATION, 0, R.string.trending_topics)
-                .setIcon(R.drawable.gd_action_bar_trending);
         return true;
     }
 
@@ -384,9 +378,6 @@ public class TweetTopicsActivity extends BaseActivity {
 
     public boolean onMenuItemSelected(int featureId, MenuItem item) {
         switch (item.getItemId()) {
-            case NEW_ID:
-                newSearch();
-                return true;
             case SIZE_TEXT_ID:
                 showSizeText();
                 return true;
@@ -396,10 +387,6 @@ public class TweetTopicsActivity extends BaseActivity {
                 return true;
             case EXIT_ID:
                 showDialogExit();
-                return true;
-            case TRENDS_LOCATION:
-                Intent trendslocation_intent = new Intent(this, TrendsLocationActivity.class);
-                startActivityForResult(trendslocation_intent, ACTIVITY_TRENDS_LOCATION);
                 return true;
         }
         return false;
@@ -422,7 +409,7 @@ public class TweetTopicsActivity extends BaseActivity {
         ACTIONS
      */
 
-    private void goToColumn(final int position, final boolean refreshBarColumn) {
+    public void goToColumn(final int position, final boolean refreshBarColumn) {
         Handler myHandler = new Handler();
         myHandler.postDelayed(new Runnable() {
             @Override
@@ -501,6 +488,11 @@ public class TweetTopicsActivity extends BaseActivity {
         startActivityForResult(newsearch, ACTIVITY_NEWEDITSEARCH);
     }
 
+    public void newTrending() {
+        Intent trendslocation_intent = new Intent(this, TrendsLocationActivity.class);
+        startActivityForResult(trendslocation_intent, TweetTopicsActivity.ACTIVITY_TRENDS_LOCATION);
+    }
+
     public void newStatus() {
         Intent newstatus = new Intent(this, NewStatusActivity.class);
         startActivityForResult(newstatus, ACTIVITY_NEWSTATUS);
@@ -552,7 +544,9 @@ public class TweetTopicsActivity extends BaseActivity {
     }
 
     public void refreshMyActivity() {
-        fragmentAdapter.getMyActivityFragment().fillData();
+        try {
+            fragmentAdapter.getMyActivityFragment().fillData();
+        } catch (NullPointerException e) {}
     }
 
     public void refreshTheme() {
@@ -565,7 +559,7 @@ public class TweetTopicsActivity extends BaseActivity {
         layoutBackgroundColumnsBarContainer.setBackgroundDrawable(ImageUtils.createBackgroundDrawable(this, themeManager.getColor("color_top_bar"), false, 0));
 
         StateListDrawable statesButton = new StateListDrawable();
-        statesButton.addState(new int[] {android.R.attr.state_pressed}, ImageUtils.createBackgroundDrawable(this, themeManager.getColor("color_button_press_bar"), false, 0));
+        statesButton.addState(new int[] {android.R.attr.state_pressed}, ImageUtils.createBackgroundDrawable(this, themeManager.getColor("color_button_press_default"), false, 0));
         statesButton.addState(new int[] {-android.R.attr.state_pressed}, ImageUtils.createBackgroundDrawable(this, themeManager.getColor("color_top_bar"), false, 0));
 
         imgBarAvatar.setBackgroundDrawable(statesButton);
@@ -584,6 +578,7 @@ public class TweetTopicsActivity extends BaseActivity {
         states.addState(new int[] {android.R.attr.state_selected}, d);
         states.addState(new int[] {android.R.attr.color}, new ColorDrawable(themeManager.getColor("color_indicator_text")));
         indicator.setBackgroundDrawable(states);
+        indicator.setTextSize(26);
     }
 
     private void reloadBarAvatar() {

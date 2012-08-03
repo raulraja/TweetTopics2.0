@@ -144,7 +144,7 @@ public class TweetsLinkAdapter extends ArrayAdapter<String> {
                     aQuery.id(viewHolder.txtUserName).text("@"+user.getName());
                     aQuery.id(viewHolder.txtUserCounters).text(getContext().getString(R.string.info_user_counters, user.getTweets(), user.getFollowers(), user.getFollowing()));
 
-                    aQuery.id(viewHolder.userAvatar).image(user.getUrlAvatar(), true, true, 0, R.drawable.avatar, aQuery.getCachedImage(R.drawable.avatar), AQuery.FADE_IN_NETWORK);
+                    aQuery.id(viewHolder.userAvatar).image(user.getUrlAvatar(), true, true, 0, R.drawable.avatar, aQuery.getCachedImage(R.drawable.avatar), 0);
 
                 } else {
                     viewHolder.containerLoading.setVisibility(View.VISIBLE);
@@ -199,7 +199,7 @@ public class TweetsLinkAdapter extends ArrayAdapter<String> {
                             viewHolder.containerLink.setVisibility(View.GONE);
                             viewHolder.containerUser.setVisibility(View.GONE);
                             viewHolder.containerHashTag.setVisibility(View.GONE);
-                            aQuery.id(viewHolder.imgImage).image(il.getLinkImageLarge(), true, true, 0, R.drawable.icon_tweet_image_large, aQuery.getCachedImage(R.drawable.icon_tweet_image_large), AQuery.FADE_IN_NETWORK);
+                            aQuery.id(viewHolder.imgImage).image(il.getLinkImageLarge(), true, true, 0, R.drawable.icon_tweet_image_large, aQuery.getCachedImage(R.drawable.icon_tweet_image_large), 0);
                             aQuery.id(viewHolder.linkImage).text(il.getService());
                             break;
                         case InfoLink.VIDEO:
@@ -209,7 +209,7 @@ public class TweetsLinkAdapter extends ArrayAdapter<String> {
                             viewHolder.containerLink.setVisibility(View.GONE);
                             viewHolder.containerUser.setVisibility(View.GONE);
                             viewHolder.containerHashTag.setVisibility(View.GONE);
-                            aQuery.id(viewHolder.imgVideo).image(il.getLinkImageLarge(), true, true, 0, R.drawable.icon_tweet_video_large, aQuery.getCachedImage(R.drawable.icon_tweet_video_large), AQuery.FADE_IN_NETWORK);
+                            aQuery.id(viewHolder.imgVideo).image(il.getLinkImageLarge(), true, true, 0, R.drawable.icon_tweet_video_large, aQuery.getCachedImage(R.drawable.icon_tweet_video_large), 0);
                             aQuery.id(viewHolder.txtTitleVideo).text(il.getTitle());
                             if (il.getDurationVideo()==0) {
                                 viewHolder.txtDurationVideo.setVisibility(View.GONE);
@@ -239,7 +239,7 @@ public class TweetsLinkAdapter extends ArrayAdapter<String> {
                                 viewHolder.imgLink.setVisibility(View.GONE);
                             } else {
                                 viewHolder.imgLink.setVisibility(View.VISIBLE);
-                                aQuery.id(viewHolder.imgLink).image(il.getLinkImageThumb(), true, true, 0, R.drawable.icon_tweet_link, aQuery.getCachedImage(R.drawable.icon_tweet_link), AQuery.FADE_IN_NETWORK);
+                                aQuery.id(viewHolder.imgLink).image(il.getLinkImageThumb(), true, true, 0, R.drawable.icon_tweet_link, aQuery.getCachedImage(R.drawable.icon_tweet_link), 0);
                             }
 
                             break;

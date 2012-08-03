@@ -15,7 +15,6 @@ import android.widget.*;
 import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
 import com.androidquery.AQuery;
-import com.androidquery.util.Constants;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.javielinux.api.APIDelegate;
 import com.javielinux.api.APITweetTopics;
@@ -365,15 +364,30 @@ public class TweetsAdapter extends ArrayAdapter<InfoTweet> {
 
         if (isRetweet) {
 
-            aQuery.id(viewHolder.retweetAvatar).image(mUrlAvatar, true, true, 0, R.drawable.avatar_small);
-            aQuery.id(viewHolder.avatarView).image(mRetweetUrlAvatar, true, true, 0, R.drawable.avatar, aQuery.getCachedImage(R.drawable.avatar), Constants.FADE_IN_NETWORK);
+            Bitmap retweetAvatar = aQuery.getCachedImage(mUrlAvatar);
+            if (retweetAvatar!=null) {
+                aQuery.id(viewHolder.retweetAvatar).image(retweetAvatar);
+            } else {
+                aQuery.id(viewHolder.retweetAvatar).image(mUrlAvatar, true, true, 0, R.drawable.avatar_small);
+            }
+
+            Bitmap avatar = aQuery.getCachedImage(mRetweetUrlAvatar);
+            if (avatar!=null) {
+                aQuery.id(viewHolder.avatarView).image(avatar);
+            } else {
+                aQuery.id(viewHolder.avatarView).image(mRetweetUrlAvatar, true, true, 0, R.drawable.avatar, aQuery.getCachedImage(R.drawable.avatar), 0);
+            }
 
             viewHolder.avatarView.setTag(infoTweet.getUsernameRetweet());
 
         } else {
 
             Bitmap avatar = aQuery.getCachedImage(mUrlAvatar);
-            aQuery.id(viewHolder.avatarView).image(mUrlAvatar, true, true, 0, R.drawable.avatar, aQuery.getCachedImage(R.drawable.avatar), Constants.FADE_IN_NETWORK);
+            if (avatar!=null) {
+                aQuery.id(viewHolder.avatarView).image(avatar);
+            } else {
+                aQuery.id(viewHolder.avatarView).image(mUrlAvatar, true, true, 0, R.drawable.avatar, aQuery.getCachedImage(R.drawable.avatar), 0);
+            }
 
             viewHolder.avatarView.setTag(infoTweet.getUsername());
         }
@@ -420,7 +434,12 @@ public class TweetsAdapter extends ArrayAdapter<InfoTweet> {
                 if (thumb.equals("")) {
                     aQuery.id(viewHolder.tweetPhotoImg).image(typeResource);
                 } else {
-                    aQuery.id(viewHolder.tweetPhotoImg).image(infoLink.getLinkImageThumb(), true, true, 0, typeResource, aQuery.getCachedImage(typeResource), AQuery.FADE_IN_NETWORK);
+                    Bitmap image = aQuery.getCachedImage(infoLink.getLinkImageThumb());
+                    if (image!=null) {
+                        aQuery.id(viewHolder.tweetPhotoImg).image(image);
+                    } else {
+                        aQuery.id(viewHolder.tweetPhotoImg).image(infoLink.getLinkImageThumb(), true, true, 0, typeResource, aQuery.getCachedImage(typeResource), 0);
+                    }
                 }
 
             } else { // si no tenemos InfoLink en cache

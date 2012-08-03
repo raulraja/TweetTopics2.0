@@ -50,6 +50,9 @@
 		<item name="background_reply">@drawable/background_reply</item>
 		
 		<item name="color_background_text_info_background">#ccFFFFFF</item>
+
+        <item name="color_button_press_default">#FF33b5e5</item>
+        <item name="button_transparent_background">@drawable/button_transparent_background</item>
 			 
 		<!-- Colors -->
         <item name="android:windowBackground">@color/color_foreground</item>
@@ -66,6 +69,25 @@
         <item name="android:buttonStyle">@style/Widget.Button</item>
         <item name="android:editTextStyle">@style/Widget.EditText</item>
         <item name="android:listViewStyle">@style/Widget.ListView</item>
+
+        <!-- Icons -->
+
+        <item name="icon_social_add_user">@drawable/icon_social_add_user</item>
+        <item name="icon_action_search">@drawable/icon_action_search</item>
+        <item name="icon_action_settings">@drawable/icon_action_settings</item>
+        <item name="icon_content_add_trending">@drawable/icon_content_add_trending</item>
+        <item name="icon_content_edit">@drawable/icon_content_edit</item>
+        <item name="icon_content_favorite">@drawable/icon_content_favorite</item>
+        <item name="icon_action_more_options">@drawable/icon_action_more_options</item>
+        <item name="icon_content_delete">@drawable/icon_content_delete</item>
+        <item name="icon_content_timeline">@drawable/icon_content_timeline</item>
+        <item name="icon_content_mentions">@drawable/icon_content_mentions</item>
+        <item name="icon_content_direct">@drawable/icon_content_direct</item>
+        <item name="icon_content_translate">@drawable/icon_content_translate</item>
+        <item name="icon_favorite_off">@drawable/icon_favorite_off</item>
+        <item name="icon_favorite_on">@drawable/icon_favorite_on</item>
+        <item name="icon_social_reply">@drawable/icon_social_reply</item>
+        <item name="icon_social_retweet">@drawable/icon_social_retweet</item>
 
 	</style>
 
@@ -118,6 +140,9 @@
 		<item name="background_reply">@drawable/background_reply_dark</item>
 		
 		<item name="color_background_text_info_background">#99000000</item>
+
+        <item name="color_button_press_default">#FF33b5e5</item>
+        <item name="button_transparent_background">@drawable/button_transparent_background</item>
 			 
 		<!-- Colors -->
         <item name="android:windowBackground">@color/color_foreground</item>
@@ -134,6 +159,25 @@
         <item name="android:buttonStyle">@style/Widget.Button</item>
         <item name="android:editTextStyle">@style/Widget.EditText</item>
         <item name="android:listViewStyle">@style/Widget.ListView</item>
+
+        <!-- Icons -->
+
+        <item name="icon_social_add_user">@drawable/icon_social_add_user_dark</item>
+        <item name="icon_action_search">@drawable/icon_action_search_dark</item>
+        <item name="icon_action_settings">@drawable/icon_action_settings_dark</item>
+        <item name="icon_content_add_trending">@drawable/icon_content_add_trending_dark</item>
+        <item name="icon_content_edit">@drawable/icon_content_edit_dark</item>
+        <item name="icon_content_favorite">@drawable/icon_content_favorite_dark</item>
+        <item name="icon_action_more_options">@drawable/icon_action_more_options_dark</item>
+        <item name="icon_content_delete">@drawable/icon_content_delete_dark</item>
+        <item name="icon_content_timeline">@drawable/icon_content_timeline_dark</item>
+        <item name="icon_content_mentions">@drawable/icon_content_mentions_dark</item>
+        <item name="icon_content_direct">@drawable/icon_content_direct_dark</item>
+        <item name="icon_content_translate">@drawable/icon_content_translate_dark</item>
+        <item name="icon_favorite_off">@drawable/icon_favorite_off_dark</item>
+        <item name="icon_favorite_on">@drawable/icon_favorite_on_dark</item>
+        <item name="icon_social_reply">@drawable/icon_social_reply_dark</item>
+        <item name="icon_social_retweet">@drawable/icon_social_retweet_dark</item>
 	
 	</style>
 

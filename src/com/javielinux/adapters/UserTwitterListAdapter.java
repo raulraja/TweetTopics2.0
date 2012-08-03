@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import com.androidquery.AQuery;
-import com.androidquery.util.Constants;
 import com.javielinux.infos.InfoUsers;
 import com.javielinux.tweettopics2.R;
 import twitter4j.RateLimitStatus;
@@ -42,7 +41,7 @@ public class UserTwitterListAdapter extends ArrayAdapter<InfoUsers> {
 
         AQuery aQuery = listAQuery.recycle(convertView);
 
-        aQuery.id(R.id.icon).image(user.getUrlAvatar(), true, true, 0, R.drawable.avatar, aQuery.getCachedImage(R.drawable.avatar), Constants.FADE_IN_NETWORK);
+        aQuery.id(R.id.icon).image(user.getUrlAvatar(), true, true, 0, R.drawable.avatar, aQuery.getCachedImage(R.drawable.avatar), 0);
 		
 		TextView name = (TextView)v.findViewById(R.id.name);
 		

@@ -45,7 +45,7 @@
                         android:layout_width="@dimen/actionbar_height"
                         android:padding="6dp"
                         android:layout_alignParentRight="true"
-                        android:src="@drawable/action_bar_compose" />
+                        android:src="?icon_content_edit" />
 
             <ImageView
                         android:layout_height="@dimen/actionbar_height"
@@ -97,7 +97,7 @@
             <Button android:layout_height="wrap_content"
                       android:layout_width="wrap_content"
                       android:gravity="center"
-                      android:drawableTop="@drawable/gd_action_bar_check"
+                      android:drawableTop="@drawable/icon_content_favorite_dark"
                       style="@style/ButtonOptions"
                       android:text="@string/main"
                       android:id="@+id/tweettopics_ll_options_columns_btn_main" />
@@ -105,7 +105,7 @@
             <Button android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
                     android:gravity="center"
-                    android:drawableTop="@drawable/gd_action_bar_trashcan"
+                    android:drawableTop="@drawable/icon_content_delete_dark"
                     style="@style/ButtonOptions"
                     android:text="@string/delete"
                     android:id="@+id/tweettopics_ll_options_columns_btn_delete" />

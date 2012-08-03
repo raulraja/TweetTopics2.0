@@ -2,6 +2,7 @@ package com.javielinux.fragments;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -14,7 +15,6 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,6 +30,7 @@ import com.javielinux.api.response.ProfileImageResponse;
 import com.javielinux.dialogs.AlertDialogFragment;
 import com.javielinux.dialogs.CreateDefaultColumnsUserDialogFragment;
 import com.javielinux.dialogs.SelectImageDialogFragment;
+import com.javielinux.dialogs.TypeSocialNetworksDialogFragment;
 import com.javielinux.facebook.FacebookHandler;
 import com.javielinux.tweettopics2.*;
 import com.javielinux.twitter.AuthorizationActivity;
@@ -149,22 +150,29 @@ public class MyActivityFragment extends Fragment {
             view.setBackgroundDrawable(bmp);
         }
 
-        Button btTwitter = (Button) view.findViewById(R.id.bt_twitter);
-        btTwitter.setOnClickListener(new View.OnClickListener() {
+        view.findViewById(R.id.my_activity_add_user).setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                newUserTwitter();
+                showDialogSocialNetworks();
             }
 
         });
 
-        Button btFacebook = (Button) view.findViewById(R.id.bt_facebook);
-        btFacebook.setOnClickListener(new View.OnClickListener() {
+        view.findViewById(R.id.my_activity_add_search).setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                newUserFacebook();
+                newSearch();
+            }
+
+        });
+
+        view.findViewById(R.id.my_activity_add_trending).setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                newTrending();
             }
 
         });
@@ -181,6 +189,23 @@ public class MyActivityFragment extends Fragment {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
+    }
+
+    public void showDialogSocialNetworks() {
+        TypeSocialNetworksDialogFragment frag = new TypeSocialNetworksDialogFragment(new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                if (i==0) {
+                    newUserTwitter();
+                } else if (i==1) {
+                    newUserFacebook();
+                }
+            }
+        });
+        Bundle args = new Bundle();
+        args.putInt("title", R.string.select_network);
+        frag.setArguments(args);
+        frag.show(getFragmentManager(), "dialog");
     }
 
     public void changeAvatar() {
@@ -335,6 +360,14 @@ public class MyActivityFragment extends Fragment {
                 startAuthorization(Utils.NETWORK_FACEBOOK);
             }
         }
+    }
+
+    public void newSearch() {
+        ((TweetTopicsActivity)getActivity()).newSearch();
+    }
+
+    public void newTrending() {
+        ((TweetTopicsActivity)getActivity()).newTrending();
     }
 
     public void createUserColumn(long userId, int typeId) {

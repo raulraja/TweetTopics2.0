@@ -1,5 +1,6 @@
 package com.javielinux.adapters;
 
+import android.graphics.Bitmap;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.LoaderManager;
 import android.view.View;
@@ -91,7 +92,12 @@ public class LinksAdapter extends BaseAdapter {
             InfoUsers infoUser = CacheData.getCacheUser(link);
             if (infoUser!=null) {
 
-                aQuery.id(viewHolder.image).image(infoUser.getUrlAvatar(), true, true, 0, typeResource, aQuery.getCachedImage(typeResource), AQuery.FADE_IN_NETWORK);
+                Bitmap avatar = aQuery.getCachedImage(infoUser.getUrlAvatar());
+                if (avatar!=null) {
+                    aQuery.id(viewHolder.image).image(avatar);
+                } else {
+                    aQuery.id(viewHolder.image).image(infoUser.getUrlAvatar(), true, true, 0, typeResource, aQuery.getCachedImage(typeResource), 0);
+                }
 
                 viewHolder.title.setText(writeTitle(link));
                 hasImage = true;
@@ -121,7 +127,12 @@ public class LinksAdapter extends BaseAdapter {
                 if (thumb.equals("")) {
                     aQuery.id(viewHolder.image).image(typeResource);
                 } else {
-                    aQuery.id(viewHolder.image).image(thumb, true, true, 0, typeResource, aQuery.getCachedImage(typeResource), AQuery.FADE_IN_NETWORK);
+                    Bitmap image = aQuery.getCachedImage(thumb);
+                    if (image!=null) {
+                        aQuery.id(viewHolder.image).image(image);
+                    } else {
+                        aQuery.id(viewHolder.image).image(thumb, true, true, 0, typeResource, aQuery.getCachedImage(typeResource), 0);
+                    }
                 }
                 hasImage = true;
                 viewHolder.title.setText(writeTitle(item.getLink()));

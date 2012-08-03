@@ -189,62 +189,70 @@ public class MyActivityAdapter extends BaseAdapter {
             TextView name = (TextView)v.findViewById(R.id.my_activity_user_name);
             name.setText(item.getString("name"));
 
-            ImageButton imgButtonTimeline = (ImageButton) v.findViewById(R.id.my_activity_timeline);
-            imgButtonTimeline.setTag(id);
-            imgButtonTimeline.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    myActivityFragment.createUserColumn(Integer.valueOf(view.getTag().toString()), TweetTopicsUtils.COLUMN_TIMELINE);
-                }
-            });
+            LinearLayout llButtons = (LinearLayout) v.findViewById(R.id.my_activity_buttons);
 
-            ImageView imgCounterTimeline = (ImageView)v.findViewById(R.id.my_activity_counter_timeline);
-            int totalTimeline = DataFramework.getInstance().getEntityListCount("tweets_user", "type_id = " + TweetTopicsUtils.TWEET_TYPE_TIMELINE
-                    + " AND user_tt_id="+item.getId() + " AND tweet_id >'" + Utils.fillZeros(""+item.getString("last_timeline_id"))+"'");
-            if (totalTimeline>0) {
-                imgCounterTimeline.setVisibility(View.VISIBLE);
-                imgCounterTimeline.setImageBitmap(Utils.getBitmapNumber(context, totalTimeline, Color.RED, Utils.TYPE_RECTANGLE, 11));
+            if (item.getString("service").equals("facebook")) {
+                llButtons.setVisibility(View.GONE);
             } else {
-                imgCounterTimeline.setVisibility(View.GONE);
+                llButtons.setVisibility(View.VISIBLE);
+                ImageButton imgButtonTimeline = (ImageButton) v.findViewById(R.id.my_activity_timeline);
+                imgButtonTimeline.setTag(id);
+                imgButtonTimeline.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        myActivityFragment.createUserColumn(Integer.valueOf(view.getTag().toString()), TweetTopicsUtils.COLUMN_TIMELINE);
+                    }
+                });
+
+                ImageView imgCounterTimeline = (ImageView)v.findViewById(R.id.my_activity_counter_timeline);
+                int totalTimeline = DataFramework.getInstance().getEntityListCount("tweets_user", "type_id = " + TweetTopicsUtils.TWEET_TYPE_TIMELINE
+                        + " AND user_tt_id="+item.getId() + " AND tweet_id >'" + Utils.fillZeros(""+item.getString("last_timeline_id"))+"'");
+                if (totalTimeline>0) {
+                    imgCounterTimeline.setVisibility(View.VISIBLE);
+                    imgCounterTimeline.setImageBitmap(Utils.getBitmapNumber(context, totalTimeline, Color.RED, Utils.TYPE_RECTANGLE, 11));
+                } else {
+                    imgCounterTimeline.setVisibility(View.GONE);
+                }
+
+                ImageButton imgButtonMentions = (ImageButton) v.findViewById(R.id.my_activity_mentions);
+                imgButtonMentions.setTag(id);
+                imgButtonMentions.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        myActivityFragment.createUserColumn(Integer.valueOf(view.getTag().toString()), TweetTopicsUtils.COLUMN_MENTIONS);
+                    }
+                });
+
+                ImageView imgCounterMentions = (ImageView)v.findViewById(R.id.my_activity_counter_mentions);
+                int totalMentions = DataFramework.getInstance().getEntityListCount("tweets_user", "type_id = " + TweetTopicsUtils.TWEET_TYPE_MENTIONS
+                        + " AND user_tt_id="+item.getId() + " AND tweet_id >'" + Utils.fillZeros(""+item.getString("last_mention_id"))+"'");
+                if (totalMentions>0) {
+                    imgCounterMentions.setVisibility(View.VISIBLE);
+                    imgCounterMentions.setImageBitmap(Utils.getBitmapNumber(context, totalMentions, Color.RED, Utils.TYPE_RECTANGLE, 11));
+                } else {
+                    imgCounterMentions.setVisibility(View.GONE);
+                }
+
+                ImageButton imgButtonDMs = (ImageButton) v.findViewById(R.id.my_activity_directs);
+                imgButtonDMs.setTag(id);
+                imgButtonDMs.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        myActivityFragment.createUserColumn(Integer.valueOf(view.getTag().toString()), TweetTopicsUtils.COLUMN_DIRECT_MESSAGES);
+                    }
+                });
+
+                ImageView imgCounterDirectMessages = (ImageView)v.findViewById(R.id.my_activity_counter_directs);
+                int totalDirectMessages = DataFramework.getInstance().getEntityListCount("tweets_user", "type_id = " + TweetTopicsUtils.TWEET_TYPE_DIRECTMESSAGES
+                        + " AND user_tt_id="+item.getId() + " AND tweet_id >'" + Utils.fillZeros(""+item.getString("last_direct_id"))+"'");
+                if (totalDirectMessages>0) {
+                    imgCounterDirectMessages.setVisibility(View.VISIBLE);
+                    imgCounterDirectMessages.setImageBitmap(Utils.getBitmapNumber(context, totalDirectMessages, Color.RED, Utils.TYPE_RECTANGLE, 11));
+                } else {
+                    imgCounterDirectMessages.setVisibility(View.GONE);
+                }
             }
 
-            ImageButton imgButtonMentions = (ImageButton) v.findViewById(R.id.my_activity_mentions);
-            imgButtonMentions.setTag(id);
-            imgButtonMentions.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    myActivityFragment.createUserColumn(Integer.valueOf(view.getTag().toString()), TweetTopicsUtils.COLUMN_MENTIONS);
-                }
-            });
-
-            ImageView imgCounterMentions = (ImageView)v.findViewById(R.id.my_activity_counter_mentions);
-            int totalMentions = DataFramework.getInstance().getEntityListCount("tweets_user", "type_id = " + TweetTopicsUtils.TWEET_TYPE_MENTIONS
-                    + " AND user_tt_id="+item.getId() + " AND tweet_id >'" + Utils.fillZeros(""+item.getString("last_mention_id"))+"'");
-            if (totalMentions>0) {
-                imgCounterMentions.setVisibility(View.VISIBLE);
-                imgCounterMentions.setImageBitmap(Utils.getBitmapNumber(context, totalMentions, Color.RED, Utils.TYPE_RECTANGLE, 11));
-            } else {
-                imgCounterMentions.setVisibility(View.GONE);
-            }
-
-            ImageButton imgButtonDMs = (ImageButton) v.findViewById(R.id.my_activity_directs);
-            imgButtonDMs.setTag(id);
-            imgButtonDMs.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    myActivityFragment.createUserColumn(Integer.valueOf(view.getTag().toString()), TweetTopicsUtils.COLUMN_DIRECT_MESSAGES);
-                }
-            });
-
-            ImageView imgCounterDirectMessages = (ImageView)v.findViewById(R.id.my_activity_counter_directs);
-            int totalDirectMessages = DataFramework.getInstance().getEntityListCount("tweets_user", "type_id = " + TweetTopicsUtils.TWEET_TYPE_DIRECTMESSAGES
-                    + " AND user_tt_id="+item.getId() + " AND tweet_id >'" + Utils.fillZeros(""+item.getString("last_direct_id"))+"'");
-            if (totalDirectMessages>0) {
-                imgCounterDirectMessages.setVisibility(View.VISIBLE);
-                imgCounterDirectMessages.setImageBitmap(Utils.getBitmapNumber(context, totalDirectMessages, Color.RED, Utils.TYPE_RECTANGLE, 11));
-            } else {
-                imgCounterDirectMessages.setVisibility(View.GONE);
-            }
 
         } else if (element.type==MY_ACTIVITY_SEARCH) {
 

@@ -30,35 +30,62 @@
             />
 
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <LinearLayout
                   android:layout_width="fill_parent"
-                  android:layout_height="wrap_content"
+                  android:layout_height="@dimen/footer_buttons_height"
                   android:orientation="horizontal"
+                  android:gravity="center_vertical"
                   android:id="@+id/layout_foot"
-                  android:paddingTop="3dip"
                   android:background="?attr/bottom_bar_background"
             >
 
-        <Button
-                android:drawableLeft="@drawable/icon_twitter_large"
+        <ImageButton
+                android:src="?icon_social_add_user"
                 style="@style/ButtonImageFootSidebar"
-                android:text="@string/add_twitter"
+                android:gravity="center"
                 android:layout_weight="1"
-                android:id="@+id/bt_twitter" android:layout_width="wrap_content"
-                android:layout_height="fill_parent"></Button>
+                android:id="@+id/my_activity_add_user" android:layout_width="wrap_content"
+                android:layout_height="wrap_content"></ImageButton>
 
         <ImageView
                 android:background="@drawable/action_bar_divider"
                 android:layout_width="wrap_content" android:layout_height="wrap_content"
                 ></ImageView>
 
-        <Button
-                android:drawableLeft="@drawable/icon_facebook_large"
+        <ImageButton
+                android:src="?icon_action_search"
                 style="@style/ButtonImageFootSidebar"
-                android:text="@string/add_facebook"
+                android:gravity="center"
                 android:layout_weight="1"
-                android:id="@+id/bt_facebook" android:layout_width="wrap_content"
-                android:layout_height="fill_parent"></Button>
+                android:id="@+id/my_activity_add_search" android:layout_width="wrap_content"
+                android:layout_height="wrap_content"></ImageButton>
+
+        <ImageView
+                android:background="@drawable/action_bar_divider"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                ></ImageView>
+
+        <ImageButton
+                android:src="?icon_content_add_trending"
+                style="@style/ButtonImageFootSidebar"
+                android:gravity="center"
+                android:layout_weight="1"
+                android:id="@+id/my_activity_add_trending" android:layout_width="wrap_content"
+                android:layout_height="wrap_content"></ImageButton>
+
+        <ImageView
+                android:background="@drawable/action_bar_divider"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                ></ImageView>
+
+        <ImageButton
+                android:src="?icon_action_more_options"
+                style="@style/ButtonImageFootSidebar"
+                android:gravity="center"
+                android:layout_weight="1"
+                android:id="@+id/my_activity_more_options" android:layout_width="wrap_content"
+                android:layout_height="wrap_content"></ImageButton>
+
     </LinearLayout>
 
 

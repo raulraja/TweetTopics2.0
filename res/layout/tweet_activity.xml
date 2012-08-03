@@ -49,6 +49,13 @@
                     style="@style/TweetTextSidebar"
                     />
 
+            <Button
+                    style="@style/ButtonSidebar"
+                    android:layout_alignParentRight="true"
+                    android:drawableTop="?icon_favorite_off"
+                    android:id="@+id/tweet_btn_reply" android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"></Button>
+
         </RelativeLayout>
 
         <LinearLayout android:layout_height="wrap_content"
@@ -59,30 +66,30 @@
                     style="@style/ButtonSidebar"
                     android:layout_weight="1"
                     android:text="@string/reply"
-                    android:drawableTop="@drawable/icon_reply"
-                    android:id="@+id/tweet_btn_reply" android:layout_width="wrap_content"
+                    android:drawableTop="?icon_social_reply"
+                    android:id="@+id/tweet_btn_reply" android:layout_width="0px"
                     android:layout_height="wrap_content"></Button>
             <Button
                     style="@style/ButtonSidebar"
                     android:layout_weight="1"
                     android:text="@string/retweet"
-                    android:drawableTop="@drawable/icon_retweet"
-                    android:id="@+id/tweet_btn_retweet" android:layout_width="wrap_content"
+                    android:drawableTop="?icon_social_retweet"
+                    android:id="@+id/tweet_btn_retweet" android:layout_width="0px"
                     android:layout_height="wrap_content"></Button>
             <Button
                     style="@style/ButtonSidebar"
                     android:layout_weight="1"
                     android:text="@string/translate"
-                    android:drawableTop="@drawable/icon_translate"
-                    android:id="@+id/tweet_btn_translate" android:layout_width="wrap_content"
+                    android:drawableTop="?icon_content_translate"
+                    android:id="@+id/tweet_btn_translate" android:layout_width="0px"
                     android:layout_height="wrap_content"></Button>
 
             <Button
                     style="@style/ButtonSidebar"
                     android:layout_weight="1"
                     android:text="@string/more"
-                    android:drawableTop="@drawable/icon_more"
-                    android:id="@+id/tweet_btn_more" android:layout_width="wrap_content"
+                    android:drawableTop="?icon_action_more_options"
+                    android:id="@+id/tweet_btn_more" android:layout_width="0px"
                     android:layout_height="wrap_content"></Button>
 
         </LinearLayout>

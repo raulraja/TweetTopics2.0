@@ -2,51 +2,74 @@
 <resources>
 
     <declare-styleable name="PullToRefresh">
-        <attr name="adapterViewBackground" format="reference|color" />
-        <attr name="headerBackground" format="reference|color" />
-        <attr name="headerTextColor" format="color" />
+        <attr name="adapterViewBackground" format="reference|color"/>
+        <attr name="headerBackground" format="reference|color"/>
+        <attr name="headerTextColor" format="color"/>
         <attr name="mode">
-            <flag name="pullDownFromTop" value="0x1" />
-            <flag name="pullUpFromBottom" value="0x2" />
+            <flag name="pullDownFromTop" value="0x1"/>
+            <flag name="pullUpFromBottom" value="0x2"/>
         </attr>
     </declare-styleable>
-  
-  <attr name="color_tweet_usename" format="color" />
-  <attr name="color_tweet_source" format="color" />
-  <attr name="color_tweet_date" format="color" />
-  <attr name="color_tweet_text" format="color" />
-  <attr name="color_tweet_retweet" format="color" />
-  
-  <attr name="color_title_general" format="color" />
-  <attr name="color_desc_general" format="color" />
-  
-  <attr name="color_link_general" format="color" />
-  
-  <attr name="color_textbutton_general" format="color" />
-  
-  <attr name="color_textbutton_sidebar" format="color" />
 
-  <attr name="color_bgbutton_push_sidebar" format="color" />
-  
-  <attr name="color_title_search" format="color" />
-  <attr name="color_title_search_short" format="color" />
-  
-  <attr name="color_grid_search" format="color" />
-    
-  <attr name="bottom_bar_background" format="string" />
-  
-  <attr name="bg_sidebar" format="string" />
-  
-  <attr name="color_shadow_listview" format="color" />
-  
-  <attr name="color_background_solid" format="color" />
-  
-  <attr name="color_background_text_info_background" format="color" />
-  
-  <attr name="background_app" format="string" />
-  <attr name="background_user" format="string" />
-  
-  <attr name="background_reply" format="string" />
+    <attr name="color_tweet_usename" format="color"/>
+    <attr name="color_tweet_source" format="color"/>
+    <attr name="color_tweet_date" format="color"/>
+    <attr name="color_tweet_text" format="color"/>
+    <attr name="color_tweet_retweet" format="color"/>
 
-    
+    <attr name="color_title_general" format="color"/>
+    <attr name="color_desc_general" format="color"/>
+
+    <attr name="color_link_general" format="color"/>
+
+    <attr name="color_textbutton_general" format="color"/>
+
+    <attr name="color_textbutton_sidebar" format="color"/>
+
+    <attr name="color_bgbutton_push_sidebar" format="color"/>
+
+    <attr name="color_title_search" format="color"/>
+    <attr name="color_title_search_short" format="color"/>
+
+    <attr name="color_grid_search" format="color"/>
+
+    <attr name="bottom_bar_background" format="string"/>
+
+    <attr name="bg_sidebar" format="string"/>
+
+    <attr name="color_shadow_listview" format="color"/>
+
+    <attr name="color_background_solid" format="color"/>
+
+    <attr name="color_background_text_info_background" format="color"/>
+
+    <attr name="background_app" format="string"/>
+    <attr name="background_user" format="string"/>
+
+    <attr name="background_reply" format="string"/>
+
+    <attr name="color_button_press_default" format="color"/>
+
+    <attr name="button_transparent_background" format="string"/>
+
+    <!-- Icons -->
+
+    <attr name="icon_social_add_user" format="string"/>
+    <attr name="icon_action_search" format="string"/>
+    <attr name="icon_action_settings" format="string"/>
+    <attr name="icon_content_add_trending" format="string"/>
+    <attr name="icon_content_edit" format="string"/>
+    <attr name="icon_content_favorite" format="string"/>
+    <attr name="icon_action_more_options" format="string"/>
+    <attr name="icon_content_delete" format="string"/>
+    <attr name="icon_content_timeline" format="string"/>
+    <attr name="icon_content_mentions" format="string"/>
+    <attr name="icon_content_direct" format="string"/>
+    <attr name="icon_content_translate" format="string"/>
+    <attr name="icon_favorite_off" format="string"/>
+    <attr name="icon_favorite_on" format="string"/>
+    <attr name="icon_social_reply" format="string"/>
+    <attr name="icon_social_retweet" format="string"/>
+
+
 </resources>

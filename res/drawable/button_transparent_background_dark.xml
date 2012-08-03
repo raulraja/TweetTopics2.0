@@ -5,7 +5,7 @@
 ﻿    <item android:state_window_focused="false" android:state_enabled="false"
         android:drawable="@android:color/transparent" />
     <item android:state_pressed="true" 
-        android:drawable="@drawable/button_sidebar_pressed_dark" />
+        android:drawable="@drawable/button_transparent_pressed_dark" />
     <item android:state_focused="true" android:state_enabled="true"
         android:drawable="@android:color/transparent" />
     <item android:state_enabled="true"
