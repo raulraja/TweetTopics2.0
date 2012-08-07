@@ -3,6 +3,7 @@ package com.javielinux.tweettopics2;
 
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -15,9 +16,11 @@ import com.javielinux.api.request.LoadUserRequest;
 import com.javielinux.api.response.ErrorResponse;
 import com.javielinux.api.response.LoadImageWidgetResponse;
 import com.javielinux.api.response.LoadUserResponse;
+import com.javielinux.fragmentadapter.UserFragmentAdapter;
 import com.javielinux.infos.InfoUsers;
 import com.javielinux.utils.CacheData;
 import com.javielinux.utils.Utils;
+import com.viewpagerindicator.TabPageIndicator;
 
 import java.io.File;
 
@@ -25,9 +28,9 @@ public class UserActivity extends BaseLayersActivity {
 
     public static final String KEY_EXTRAS_USER = "user";
 
-    /*private ViewPager pager;
-    private TweetFragmentAdapter fragmentAdapter;
-    private TabPageIndicator indicator;    */
+    private ViewPager pager;
+    private UserFragmentAdapter fragmentAdapter;
+    private TabPageIndicator indicator;
     private ThemeManager themeManager;
 
     private String username = null;
@@ -35,12 +38,17 @@ public class UserActivity extends BaseLayersActivity {
 
     private ImageView imgAvatar;
     private TextView txtUsername;
+    private TextView txtFullName;
     private TextView txtText;
 
     private RelativeLayout llRoot;
 
     private LinearLayout viewLoading;
     private RelativeLayout viewInfo;
+
+    private TextView txtTweets;
+    private TextView txtFollowers;
+    private TextView txtFollowing;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -50,13 +58,13 @@ public class UserActivity extends BaseLayersActivity {
         themeManager.setTranslucentTheme();
 
         Bundle extras = getIntent().getExtras();
-        if (extras!=null) {
+        if (extras != null) {
             if (extras.containsKey(KEY_EXTRAS_USER)) {
                 username = extras.getString(KEY_EXTRAS_USER).replace("@", "");
             }
         }
 
-        if (username==null) {
+        if (username == null) {
             Utils.showMessage(UserActivity.this, UserActivity.this.getString(R.string.no_server));
             finish();
         }
@@ -68,7 +76,7 @@ public class UserActivity extends BaseLayersActivity {
         viewLoading = (LinearLayout) findViewById(R.id.user_view_loading);
         viewInfo = (RelativeLayout) findViewById(R.id.user_view_info);
 
-        imgAvatar = ((ImageView)findViewById(R.id.user_avatar));
+        imgAvatar = ((ImageView) findViewById(R.id.user_avatar));
         imgAvatar.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -78,20 +86,25 @@ public class UserActivity extends BaseLayersActivity {
 
         });
 
-        llRoot = (RelativeLayout)findViewById(R.id.user_ll);
-        txtUsername = ((TextView)findViewById(R.id.user_username));
-        txtText = ((TextView)findViewById(R.id.user_text));
+        txtTweets = ((TextView) findViewById(R.id.user_n_tweets));
+        txtFollowers = ((TextView) findViewById(R.id.user_followers));
+        txtFollowing = ((TextView) findViewById(R.id.user_following));
 
-        /*
-       fragmentAdapter = new TweetFragmentAdapter(this, getSupportFragmentManager(), infoTweet);
+        llRoot = (RelativeLayout) findViewById(R.id.user_ll);
+        txtFullName = ((TextView) findViewById(R.id.user_fullname));
+        txtUsername = ((TextView) findViewById(R.id.user_username));
+        txtText = ((TextView) findViewById(R.id.user_text));
 
-       pager = (ViewPager)findViewById(R.id.tweet_pager);
-       pager.setAdapter(fragmentAdapter);
 
-       indicator = (TabPageIndicator)findViewById(R.id.tweet_indicator);
-       indicator.setViewPager(pager); */
+        fragmentAdapter = new UserFragmentAdapter(this, getSupportFragmentManager(), infoUser);
 
-        if (infoUser!=null) {
+        pager = (ViewPager) findViewById(R.id.user_pager);
+        pager.setAdapter(fragmentAdapter);
+
+        indicator = (TabPageIndicator) findViewById(R.id.user_indicator);
+        indicator.setViewPager(pager);
+
+        if (infoUser != null) {
             populateFields();
         } else {
             showLoading();
@@ -143,17 +156,21 @@ public class UserActivity extends BaseLayersActivity {
 
         }
 
-        txtUsername.setText( name + ((fullname.equals(""))?"":" (" + fullname + ")") );
-
+        txtUsername.setText("@" + name);
+        txtFullName.setText(((fullname.equals("")) ? name : fullname));
         txtText.setText(infoUser.getBio());
+
+        txtTweets.setText("" + infoUser.getTweets());
+        txtFollowers.setText("" + infoUser.getFollowers());
+        txtFollowing.setText("" + infoUser.getFollowing());
     }
 
     private void refreshTheme() {
         if (activityAnimation == Utils.ACTIVITY_ANIMATION_RIGHT) {
-            llRoot.setPadding(29,0,0,0);
+            llRoot.setPadding(29, 0, 0, 0);
             llRoot.setBackgroundResource((themeManager.getTheme() == 1) ? R.drawable.bg_sidebar : R.drawable.bg_sidebar_dark);
         } else {
-            llRoot.setPadding(0,29,0,0);
+            llRoot.setPadding(0, 29, 0, 0);
             llRoot.setBackgroundResource((themeManager.getTheme() == 1) ? R.drawable.bg_sidebar_left : R.drawable.bg_sidebar_left_dark);
         }
     }

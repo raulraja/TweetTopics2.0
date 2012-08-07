@@ -7,6 +7,7 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.graphics.*;
 import android.graphics.drawable.BitmapDrawable;
@@ -35,6 +36,7 @@ import com.nineoldandroids.animation.Animator;
 import com.nineoldandroids.animation.AnimatorSet;
 import com.nineoldandroids.animation.ObjectAnimator;
 import com.viewpagerindicator.TitlePageIndicator;
+import notifications.OnAlarmReceiver;
 import preferences.Preferences;
 
 import java.util.ArrayList;
@@ -88,6 +90,8 @@ public class TweetTopicsActivity extends BaseActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        OnAlarmReceiver.callAlarm(this);
+
         try {
             DataFramework.getInstance().open(this, Utils.packageName);
         } catch (Exception e) {
@@ -115,6 +119,10 @@ public class TweetTopicsActivity extends BaseActivity {
         Thread.UncaughtExceptionHandler currentHandler = Thread.getDefaultUncaughtExceptionHandler();
         if (currentHandler != null) {
             Thread.setDefaultUncaughtExceptionHandler(new ErrorReporter(currentHandler, getApplication()));
+        }
+
+        if (PreferenceManager.getDefaultSharedPreferences(this).getString("prf_orientation", "1").equals("2")) {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
         }
 
         // borrar notificaciones

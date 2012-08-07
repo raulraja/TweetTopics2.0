@@ -265,6 +265,18 @@
         <item name="android:textColor">?color_tweet_text</item>
         <item name="android:textSize">10sp</item>
      </style>
+
+    <style name="UserTitle">
+        <item name="android:layout_marginTop">5dip</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">?color_tweet_usename</item>
+        <item name="android:textSize">17sp</item>
+    </style>
+
+    <style name="UserSubTitle">
+        <item name="android:layout_marginBottom">2dip</item>
+        <item name="android:textColor">?color_tweet_text</item>
+    </style>
      
     <style name="TweetTitle">
         <item name="android:layout_marginTop">5dip</item>

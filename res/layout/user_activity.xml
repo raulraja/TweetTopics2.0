@@ -51,10 +51,16 @@
                           android:layout_toRightOf="@id/user_avatar"
                     >
                 <TextView
+                        android:id="@+id/user_fullname"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        style="@style/UserTitle" android:singleLine="true"/>
+
+                <TextView
                         android:id="@+id/user_username"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        style="@style/TweetTitle" android:singleLine="true"/>
+                        style="@style/UserSubTitle" android:singleLine="true"/>
 
             </LinearLayout>
 
@@ -65,6 +71,57 @@
                     android:maxLines="4"
                     android:layout_below="@+id/user_avatar"
                     style="@style/TweetTextSidebar"
+                    />
+
+            <LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content"
+                          android:layout_marginTop="5dip"
+                          android:layout_below="@id/user_text"
+                          android:id="@+id/user_container_counter"
+                          android:layout_marginBottom="10dip"
+                          android:orientation="horizontal" android:gravity="center_horizontal">
+                <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content"
+                              android:layout_marginLeft="10dip"
+                              android:layout_marginRight="10dip"
+                              android:layout_weight="1"
+                              android:id="@+id/user_bt_tweets"
+                              android:background="@android:drawable/menuitem_background"
+                              android:orientation="vertical" android:gravity="center_horizontal">
+                    <TextView style="@style/TweetUserNumbers" android:text="1000" android:id="@+id/user_n_tweets" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
+                    <TextView style="@style/TweetUserNumbersSubtitle" android:text="@string/tweets" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
+                </LinearLayout>
+                <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content"
+                              android:layout_marginLeft="10dip"
+                              android:layout_marginRight="10dip"
+                              android:layout_weight="1"
+                              android:id="@+id/user_bt_followers"
+                              android:background="@android:drawable/menuitem_background"
+                              android:orientation="vertical" android:gravity="center_horizontal">
+                    <TextView style="@style/TweetUserNumbers" android:text="10" android:id="@+id/user_followers" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
+                    <TextView style="@style/TweetUserNumbersSubtitle" android:text="@string/followers" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
+                </LinearLayout>
+                <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content"
+                              android:layout_marginLeft="10dip"
+                              android:layout_marginRight="10dip"
+                              android:layout_weight="1"
+                              android:id="@+id/user_bt_following"
+                              android:background="@android:drawable/menuitem_background"
+                              android:orientation="vertical" android:gravity="center_horizontal">
+                    <TextView style="@style/TweetUserNumbers" android:text="1000" android:id="@+id/user_following" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
+                    <TextView style="@style/TweetUserNumbersSubtitle" android:text="@string/friends" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
+                </LinearLayout>
+            </LinearLayout>
+
+            <com.viewpagerindicator.TabPageIndicator
+                    android:id="@+id/user_indicator"
+                    android:layout_below="@id/user_container_counter"
+                    android:layout_height="wrap_content"
+                    android:layout_width="fill_parent"
+                    />
+            <android.support.v4.view.ViewPager
+                    android:id="@+id/user_pager"
+                    android:layout_below="@id/user_indicator"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
                     />
 
         </RelativeLayout>

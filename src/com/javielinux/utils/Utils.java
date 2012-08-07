@@ -78,7 +78,7 @@ public class Utils {
 	
 	public static final String URL_SHARE_THEME_QR = "http://chart.apis.google.com/chart?cht=qr&chs=300x300&chl=tweettopics%%theme";
 	
-	public static final String TAG = "TweetTopics2";
+	public static final String TAG = "TweetTopics2Dev";
 	public static final String TAG_ALARM = "TweetTopics2Alarm";
 	public static final String TAG_WIDGET = "TweetTopics2Widget";
 	
