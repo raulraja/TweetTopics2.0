@@ -116,7 +116,7 @@ public class RetweetFragment extends BaseListFragment implements APIDelegate<Bas
         listView.getRefreshableView().setAdapter(tweetsAdapter);
         listView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener() {
             @Override
-            public void onRefresh() {
+            public void onRefresh(PullToRefreshBase refreshView) {
                 reload();
             }
         });

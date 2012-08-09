@@ -124,7 +124,7 @@ public class TweetTopicsFragment extends BaseListFragment implements APIDelegate
             public void onError(ErrorResponse error) {
                 reload();
             }
-        }, new TwitterUserDBRequest(column_entity.getInt("type_id"), user_entity.getId(), typeUserColumn));
+        }, new TwitterUserDBRequest(column_entity.getInt("type_id"), user_entity.getId(), null, typeUserColumn));
 
     }
 
@@ -233,7 +233,7 @@ public class TweetTopicsFragment extends BaseListFragment implements APIDelegate
         listView.getRefreshableView().setAdapter(tweetsAdapter);
         listView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener() {
             @Override
-            public void onRefresh() {
+            public void onRefresh(PullToRefreshBase refreshView) {
                 reload();
             }
         });

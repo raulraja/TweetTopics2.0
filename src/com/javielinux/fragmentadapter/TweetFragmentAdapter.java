@@ -56,11 +56,16 @@ public class TweetFragmentAdapter extends FragmentPagerAdapter  {
        if (tweet_fragment_code.get(index)==TAB_LINKS) {
             return new TweetLinksFragment(infoTweet);
        } else if (tweet_fragment_code.get(index)==TAB_CONVERSATION) {
-           return new TweetConversationFragment();
+           return new TweetConversationFragment(infoTweet);
        } else if (tweet_fragment_code.get(index)==TAB_MAP) {
            return new TweetMapFragment();
        }
         return new Fragment();
+    }
+
+    @Override
+    public int getItemPosition(Object object) {
+        return FragmentPagerAdapter.POSITION_NONE;
     }
 
     @Override

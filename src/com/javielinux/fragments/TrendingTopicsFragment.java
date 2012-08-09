@@ -120,7 +120,7 @@ public class TrendingTopicsFragment extends BaseListFragment implements APIDeleg
         trendsLocationlistView.getRefreshableView().setAdapter(trendingTopicsAdapter);
         trendsLocationlistView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener() {
             @Override
-            public void onRefresh() {
+            public void onRefresh(PullToRefreshBase refreshView) {
                 loadTrendsLocation();
             }
         });
@@ -137,7 +137,7 @@ public class TrendingTopicsFragment extends BaseListFragment implements APIDeleg
         trendslistView.getRefreshableView().setAdapter(trendsAdapter);
         trendslistView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener() {
             @Override
-            public void onRefresh() {
+            public void onRefresh(PullToRefreshBase refreshView) {
                 loadTrends();
             }
         });

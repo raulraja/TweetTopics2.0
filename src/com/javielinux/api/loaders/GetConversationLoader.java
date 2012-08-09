@@ -7,6 +7,9 @@ import com.javielinux.api.request.GetConversationRequest;
 import com.javielinux.api.response.BaseResponse;
 import com.javielinux.api.response.ErrorResponse;
 import com.javielinux.api.response.GetConversationResponse;
+import com.javielinux.database.EntityTweetUser;
+import com.javielinux.infos.InfoSaveTweets;
+import com.javielinux.infos.InfoTweet;
 import com.javielinux.twitter.ConnectionManager;
 import twitter4j.TwitterException;
 
@@ -27,9 +30,10 @@ public class GetConversationLoader extends AsynchronousLoader<BaseResponse> {
             GetConversationResponse response = new GetConversationResponse();
 
             ConnectionManager.getInstance().open(getContext());
-            twitter4j.Status status = ConnectionManager.getInstance().getTwitter(request.getUserId()).showStatus(request.getId());
+            twitter4j.Status status = ConnectionManager.getInstance().getAnonymousTwitter().showStatus(request.getId());
 
-            response.setConversationStatus(status);
+            InfoTweet infoTweet = new InfoTweet(status);
+            response.setConversationTweet(infoTweet);
 
             // TODO : ver como funciona el publish progress en los loaders
             /*

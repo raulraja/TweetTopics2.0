@@ -18,17 +18,21 @@ import com.javielinux.adapters.TweetsAdapter;
 import com.javielinux.api.APIDelegate;
 import com.javielinux.api.APITweetTopics;
 import com.javielinux.api.request.SearchRequest;
+import com.javielinux.api.request.TwitterUserDBRequest;
 import com.javielinux.api.response.BaseResponse;
 import com.javielinux.api.response.ErrorResponse;
 import com.javielinux.api.response.SearchResponse;
+import com.javielinux.api.response.TwitterUserDBResponse;
 import com.javielinux.database.EntitySearch;
 import com.javielinux.infos.InfoSaveTweets;
 import com.javielinux.infos.InfoTweet;
 import com.javielinux.tweettopics2.R;
 import com.javielinux.tweettopics2.TweetActivity;
+import com.javielinux.utils.TweetTopicsUtils;
 import com.javielinux.utils.Utils;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 public class SearchFragment extends BaseListFragment implements APIDelegate<BaseResponse> {
 
@@ -55,66 +59,59 @@ public class SearchFragment extends BaseListFragment implements APIDelegate<Base
         return column_entity;
     }
 
-    private void preLoadInfoTweetIfIsNecessary() {
+    private void preLoadInfoTweetFromDB() {
 
-        ArrayList<Entity> tweets;
+        showLoading();
 
-        try {
-            tweets = DataFramework.getInstance().getEntityList("tweets", "search_id = " + search_entity.getId(), "date desc");
-        } catch (Exception exception) {
-            tweets = DataFramework.getInstance().getEntityList("tweets", "search_id = " + search_entity.getId(), "date desc", "0," + Utils.MAX_ROW_BYSEARCH);
-        }
+        APITweetTopics.execute(getActivity(), getLoaderManager(), new APIDelegate() {
+            @Override
+            public void onResults(BaseResponse r) {
+                TwitterUserDBResponse result = (TwitterUserDBResponse) r;
+                infoTweets.clear();
+                infoTweets.addAll(result.getInfoTweets());
+                tweetsAdapter.setHideMessages(result.getCountHide());
+                tweetsAdapter.setLastReadPosition(result.getPosition());
 
-        int pos = 0;
-        int count = 0;
-        boolean found = false;
-        int countHide = 0;
+                listView.getRefreshableView().setSelection(result.getPosition()+1);
 
-        for (int i = 0; i < tweets.size(); i++) {
+                positionLastRead = result.getPosition();
+                tweetsAdapter.notifyDataSetChanged();
 
-            boolean delete_tweet = false;
+                boolean getTweetsFromInternet = false;
 
-            if (i > 0) {
-                if (tweets.get(i).getLong("tweet_id") == tweets.get(i - 1).getLong("tweet_id")) {
-                    delete_tweet = true;
-                }
-            }
-            if (delete_tweet) {
-                try {
-                    tweets.get(i).delete();
+                if (infoTweets.size()<=0) {
+                    getTweetsFromInternet = true;
+                } else {
+                    if (column_entity.getInt("type_id") == TweetTopicsUtils.COLUMN_TIMELINE) {
 
-                } catch (Exception exception) {
-                    exception.printStackTrace();
-                }
-            } else {
-                InfoTweet infoTweet = new InfoTweet(tweets.get(i));
-                if (!found && search_entity.getValueLastId() >= tweets.get(i).getLong("tweet_id")) {
-                    infoTweet.setLastRead(true);
-                    pos = count;
-                    found = true;
-                }
+                        int minutes = Integer.parseInt(Utils.getPreference(getActivity()).getString("prf_time_refresh", "10"));
 
+                        if (minutes > 0) {
+                            int miliseconds = minutes * 60 * 1000;
+                            Date date = new Date(tweetsAdapter.getItem(0).getDate().getTime() + miliseconds);
 
-                if (i >= tweets.size() - 1 && !found) {
-                    infoTweet.setLastRead(true);
-                    pos = count;
-                    found = true;
+                            if (new Date().after(date)) {
+                                showUpdating();
+                                getTweetsFromInternet = true;
+                            }
+                        }
+
+                    }
                 }
 
-                infoTweet.setRead(found);
-
-                try {
-                    infoTweets.add(infoTweet);
-                    count++;
-                } catch (OutOfMemoryError er) {
-                    i = tweets.size();
+                if (getTweetsFromInternet) {
+                    reload();
+                } else {
+                    showTweetsList();
                 }
+
             }
 
-        }
-
-        tweetsAdapter.setLastReadPosition(pos);
-        positionLastRead = pos;
+            @Override
+            public void onError(ErrorResponse error) {
+                reload();
+            }
+        }, new TwitterUserDBRequest(column_entity.getInt("type_id"), -1, search_entity, -1));
 
     }
 
@@ -199,9 +196,6 @@ public class SearchFragment extends BaseListFragment implements APIDelegate<Base
         super.onCreate(savedInstanceState);
 
         tweetsAdapter = new TweetsAdapter(getActivity(), getLoaderManager(), infoTweets, "", (int)column_entity.getId());
-        if (search_entity.getInt("notifications") == 1)
-            preLoadInfoTweetIfIsNecessary();
-
     }
 
     @Override
@@ -219,7 +213,7 @@ public class SearchFragment extends BaseListFragment implements APIDelegate<Base
         listView.getRefreshableView().setAdapter(tweetsAdapter);
         listView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener() {
             @Override
-            public void onRefresh() {
+            public void onRefresh(PullToRefreshBase refreshView) {
                 reload();
             }
         });
@@ -261,12 +255,14 @@ public class SearchFragment extends BaseListFragment implements APIDelegate<Base
         viewNoInternet = (LinearLayout) view.findViewById(R.id.tweet_view_no_internet);
         viewUpdate = (LinearLayout) view.findViewById(R.id.tweet_view_update);
 
-        if (infoTweets.size()<=0)
-            showLoading();
-        else
+        if (infoTweets.size()<=0) {
+            if (search_entity.getInt("notifications") == 1)
+                preLoadInfoTweetFromDB();
+            else
+                reload();
+        } else {
             showUpdating();
-
-        reload();
+        }
 
         return view;
     }

@@ -115,7 +115,7 @@ public class UsersFragment extends BaseListFragment implements APIDelegate<BaseR
         listView.getRefreshableView().setAdapter(tweetsAdapter);
         listView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener() {
             @Override
-            public void onRefresh() {
+            public void onRefresh(PullToRefreshBase refreshView) {
                 reload();
             }
         });

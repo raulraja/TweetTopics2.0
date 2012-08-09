@@ -1,17 +1,17 @@
 package com.javielinux.api.response;
 
 
-import twitter4j.Status;
+import com.javielinux.infos.InfoTweet;
 
 public class GetConversationResponse implements BaseResponse {
-    private Status conversationStatus;
+    private InfoTweet conversationTweet;
 
-    public Status getConversationStatus() {
-        return conversationStatus;
+    public InfoTweet getConversationTweet() {
+        return conversationTweet;
     }
 
-    public void setConversationStatus(Status conversationStatus) {
-        this.conversationStatus = conversationStatus;
+    public void setConversationTweet(InfoTweet conversationTweet) {
+        this.conversationTweet = conversationTweet;
     }
 
     @Override

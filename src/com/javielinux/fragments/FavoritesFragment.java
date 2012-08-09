@@ -118,7 +118,7 @@ public class FavoritesFragment extends BaseListFragment implements APIDelegate<B
         listView.getRefreshableView().setAdapter(tweetsAdapter);
         listView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener() {
             @Override
-            public void onRefresh() {
+            public void onRefresh(PullToRefreshBase refreshView) {
                 reload();
             }
         });
