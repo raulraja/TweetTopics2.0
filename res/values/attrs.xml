@@ -70,6 +70,8 @@
     <attr name="icon_favorite_on" format="string"/>
     <attr name="icon_social_reply" format="string"/>
     <attr name="icon_social_retweet" format="string"/>
+    <attr name="icon_action_web" format="string"/>
+    <attr name="icon_action_highlight" format="string"/>
 
 
 </resources>

@@ -88,6 +88,8 @@
         <item name="icon_favorite_on">@drawable/icon_favorite_on</item>
         <item name="icon_social_reply">@drawable/icon_social_reply</item>
         <item name="icon_social_retweet">@drawable/icon_social_retweet</item>
+        <item name="icon_action_web">@drawable/icon_action_web</item>
+        <item name="icon_action_highlight">@drawable/icon_action_highlight</item>
 
 	</style>
 
@@ -178,6 +180,8 @@
         <item name="icon_favorite_on">@drawable/icon_favorite_on_dark</item>
         <item name="icon_social_reply">@drawable/icon_social_reply_dark</item>
         <item name="icon_social_retweet">@drawable/icon_social_retweet_dark</item>
+        <item name="icon_action_web">@drawable/icon_action_web_dark</item>
+        <item name="icon_action_highlight">@drawable/icon_action_highlight_dark</item>
 	
 	</style>
 

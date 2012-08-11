@@ -118,6 +118,10 @@ public class TweetActions {
         updateStatus(activity, NewStatusActivity.TYPE_NORMAL, "@" + infoTweet.getUsername(), infoTweet);
     }
 
+    public static void goToMention(FragmentActivity activity, String username) {
+        updateStatus(activity, NewStatusActivity.TYPE_NORMAL, "@" + username, null);
+    }
+
     public static void goToShare(FragmentActivity activity, InfoTweet infoTweet) {
         Intent msg = new Intent(Intent.ACTION_SEND);
         msg.putExtra(Intent.EXTRA_TEXT, infoTweet.getUsername() + ": " + infoTweet.getText());

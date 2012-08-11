@@ -142,7 +142,7 @@
                 android:layout_toRightOf="@id/tweet_links_row_hashtag_image"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="@style/TitleTrendingTopics" />
+                style="@style/TitleListBig" />
 
 
     </RelativeLayout>

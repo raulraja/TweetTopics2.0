@@ -491,8 +491,18 @@
         <item name="android:textColor">?color_title_general</item>
     </style>
 
-    <style name="TitleTrendingTopics">
+    <style name="TitleListBig">
         <item name="android:textSize">20sp</item>
+        <item name="android:textColor">?color_title_general</item>
+    </style>
+
+    <style name="TitleListMiddle">
+        <item name="android:textSize">17sp</item>
+        <item name="android:textColor">?color_title_general</item>
+    </style>
+
+    <style name="TitleListSmall">
+        <item name="android:textSize">13sp</item>
         <item name="android:textColor">?color_title_general</item>
     </style>
 

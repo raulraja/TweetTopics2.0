@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/default_padding"
+    >
+
+    <RelativeLayout
+          android:id="@+id/user_profile_row_container_text"
+          android:layout_width="fill_parent"
+          android:layout_height="wrap_content"
+          android:visibility="gone">
+
+
+        <TextView android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:id="@+id/user_profile_row_text"
+                  style="@style/TitleListBig"/>
+
+
+    </RelativeLayout>
+
+    <RelativeLayout
+            android:id="@+id/user_profile_row_container_friendly"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone">
+
+
+        <TextView android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  style="@style/TitleListMiddle"
+                  android:id="@+id/user_profile_row_friendly_user1" />
+
+        <ImageView  android:id="@+id/user_profile_row_friendly_connect"
+                    android:layout_toRightOf="@id/user_profile_row_friendly_user1"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/connects_on_on"
+                    android:paddingRight="@dimen/default_padding"
+                    android:paddingLeft="@dimen/default_padding"
+                    android:layout_width="wrap_content"></ImageView>
+
+        <TextView android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  style="@style/TitleListMiddle"
+                  android:layout_toRightOf="@id/user_profile_row_friendly_connect"
+                  android:id="@+id/user_profile_row_friendly_user2" />
+
+
+    </RelativeLayout>
+
+
+</LinearLayout>

@@ -73,47 +73,46 @@
                     style="@style/TweetTextSidebar"
                     />
 
-            <LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content"
-                          android:layout_marginTop="5dip"
+            <LinearLayout android:layout_height="wrap_content"
+                          android:layout_width="fill_parent"
                           android:layout_below="@id/user_text"
-                          android:id="@+id/user_container_counter"
-                          android:layout_marginBottom="10dip"
-                          android:orientation="horizontal" android:gravity="center_horizontal">
-                <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content"
-                              android:layout_marginLeft="10dip"
-                              android:layout_marginRight="10dip"
-                              android:layout_weight="1"
-                              android:id="@+id/user_bt_tweets"
-                              android:background="@android:drawable/menuitem_background"
-                              android:orientation="vertical" android:gravity="center_horizontal">
-                    <TextView style="@style/TweetUserNumbers" android:text="1000" android:id="@+id/user_n_tweets" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
-                    <TextView style="@style/TweetUserNumbersSubtitle" android:text="@string/tweets" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
-                </LinearLayout>
-                <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content"
-                              android:layout_marginLeft="10dip"
-                              android:layout_marginRight="10dip"
-                              android:layout_weight="1"
-                              android:id="@+id/user_bt_followers"
-                              android:background="@android:drawable/menuitem_background"
-                              android:orientation="vertical" android:gravity="center_horizontal">
-                    <TextView style="@style/TweetUserNumbers" android:text="10" android:id="@+id/user_followers" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
-                    <TextView style="@style/TweetUserNumbersSubtitle" android:text="@string/followers" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
-                </LinearLayout>
-                <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content"
-                              android:layout_marginLeft="10dip"
-                              android:layout_marginRight="10dip"
-                              android:layout_weight="1"
-                              android:id="@+id/user_bt_following"
-                              android:background="@android:drawable/menuitem_background"
-                              android:orientation="vertical" android:gravity="center_horizontal">
-                    <TextView style="@style/TweetUserNumbers" android:text="1000" android:id="@+id/user_following" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
-                    <TextView style="@style/TweetUserNumbersSubtitle" android:text="@string/friends" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
-                </LinearLayout>
+                          android:id="@+id/user_actions_container">
+
+                <Button
+                        style="@style/ButtonSidebar"
+                        android:layout_weight="1"
+                        android:text="@string/mention"
+                        android:drawableTop="?icon_social_reply"
+                        android:id="@+id/user_btn_reply" android:layout_width="0px"
+                        android:layout_height="wrap_content"></Button>
+                <Button
+                        style="@style/ButtonSidebar"
+                        android:layout_weight="1"
+                        android:text="@string/web"
+                        android:drawableTop="?icon_action_web"
+                        android:id="@+id/user_btn_web" android:layout_width="0px"
+                        android:layout_height="wrap_content"></Button>
+                <Button
+                        style="@style/ButtonSidebar"
+                        android:layout_weight="1"
+                        android:text="@string/highlight"
+                        android:drawableTop="?icon_action_highlight"
+                        android:id="@+id/user_btn_highlight" android:layout_width="0px"
+                        android:layout_height="wrap_content"></Button>
+
+                <Button
+                        style="@style/ButtonSidebar"
+                        android:layout_weight="1"
+                        android:text="@string/more"
+                        android:drawableTop="?icon_action_more_options"
+                        android:id="@+id/user_btn_more" android:layout_width="0px"
+                        android:layout_height="wrap_content"></Button>
+
             </LinearLayout>
 
             <com.viewpagerindicator.TabPageIndicator
                     android:id="@+id/user_indicator"
-                    android:layout_below="@id/user_container_counter"
+                    android:layout_below="@id/user_actions_container"
                     android:layout_height="wrap_content"
                     android:layout_width="fill_parent"
                     />

@@ -3,6 +3,10 @@
 
     <!-- v 2.0  -->
 
+    <string name="user_no_web">Usuario no tiene web</string>
+
+    <string name="highlight">Destacar</string>
+
     <string name="column_main_message">%1$s es principal ahora</string>
 
     <string name="main">Principal</string>

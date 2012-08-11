@@ -1003,7 +1003,8 @@ public class NewStatusActivity extends BaseActivity {
             public void userLoaded(InfoUsers iu) {
                 progressDialog.dismiss();
                 if (iu!=null) {
-                    if (iu.isFollower()) {
+                    // TODO Mirar esto bien
+                    if (iu.isFollower("")) {
                         Utils.showMessage(NewStatusActivity.this, NewStatusActivity.this.getString(R.string.verify_dm_yes, iu.getName()));
                         if (fromAutocomplete) {
                             mDMUsername = iu.getName();

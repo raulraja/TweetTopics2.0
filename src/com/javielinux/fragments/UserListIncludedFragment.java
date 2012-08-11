@@ -8,12 +8,12 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import com.javielinux.tweettopics2.R;
 
-public class UserInfoFragment extends Fragment {
+public class UserListIncludedFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = View.inflate(getActivity(), R.layout.user_info_fragment, null);
-        ((TextView)view.findViewById(R.id.text)).setText("User info");
+        View view = View.inflate(getActivity(), R.layout.user_list_included_fragment, null);
+        ((TextView)view.findViewById(R.id.text)).setText("User list included");
         return view;
     }
 

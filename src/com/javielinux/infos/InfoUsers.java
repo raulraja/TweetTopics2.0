@@ -1,15 +1,29 @@
 package com.javielinux.infos;
 
 
+import com.android.dataframework.DataFramework;
+import com.android.dataframework.Entity;
 import com.javielinux.twitter.ConnectionManager;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.User;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
 public class InfoUsers {
+
+    public static class Friend {
+        public Friend(String user) {
+            this.user = user;
+        }
+
+        public String user;
+        public boolean checked;
+        public boolean friend;
+        public boolean follower;
+    }
 
     public static String SIZE_ORIGINAL = "original";
     public static String SIZE_MINI = "mini";
@@ -30,10 +44,9 @@ public class InfoUsers {
 	private Date dateTweet = null;
 	private String bio = "";
 
-    private static HashMap<Long,Boolean> friend = new HashMap<Long,Boolean>();
-    private static HashMap<Long,Boolean> follower = new HashMap<Long,Boolean>();
-	
-	public InfoUsers() {
+    private HashMap<String, Friend> friendly = new HashMap<String, Friend> ();
+
+    public InfoUsers() {
 	}
 
     public InfoUsers(User user) {
@@ -49,8 +62,11 @@ public class InfoUsers {
         if (user.getStatus()!=null) setTextTweet(user.getStatus().getText());
         setUrlAvatar(user.getProfileImageURL().toString());
 
-        //infoUsers.setFollower(ConnectionManager.getInstance().getTwitter(request.getUserId()).existsFriendship(request.getUser(), screenName));
-        //infoUsers.setFriend(ConnectionManager.getInstance().getTwitter(request.getUserId()).existsFriendship(screenName, request.getUser()));
+        ArrayList<Entity> ents = DataFramework.getInstance().getEntityList("users", "service is null or service = \"twitter.com\"");
+
+        for (Entity ent : ents) {
+            friendly.put(ent.getString("name"), new Friend(ent.getString("name")));
+        }
 
     }
 
@@ -151,29 +167,50 @@ public class InfoUsers {
 		return urlAvatar.replace("_normal", "").replace("JPG", "jpg");
 	}
 
-
-	public void addFriend(long id, boolean isFriend) {
-        friend.put(id, isFriend);
-	}
-
-    public boolean hasFriend(long id) {
-        return friend.containsKey(id);
+    public HashMap<String, Friend> getFriendly() {
+        return friendly;
     }
 
-    public void checkFriend(long id) {
-        if (!hasFriend(id)) {
+	public void addFriendly(String name) {
+        friendly.put(name, new Friend(name));
+	}
+
+    public boolean hasFriendly(String name) {
+        return friendly.containsKey(name);
+    }
+
+    public boolean isCheckFriendly(String name) {
+        if (hasFriendly(name)) {
+           return friendly.get(name).checked;
+        }
+        return false;
+    }
+
+    public void checkFriend(String name) {
+        if (!hasFriendly(name)) {
+            addFriendly(name);
+        }
+        if (!isCheckFriendly(name)) {
+            Friend friend = friendly.get(name);
             try {
-                Twitter twitter = ConnectionManager.getInstance().getTwitter(id);
-                addFriend(id, twitter.existsFriendship(getName(), twitter.getScreenName()));
+                Twitter twitter = ConnectionManager.getInstance().getAnonymousTwitter();
+                friend.friend = twitter.existsFriendship(getName(), twitter.getScreenName());
+                friend.follower = twitter.existsFriendship(twitter.getScreenName(), getName());
+                friendly.remove(name);
+                friendly.put(name, friend);
             } catch (TwitterException e) {
                 e.printStackTrace();
             }
         }
     }
 
-	public boolean isFriend(long id) {
-        return (friend.containsKey(id) && friend.get(id));
+	public boolean isFriend(String name) {
+        return (friendly.containsKey(name) && friendly.get(name).friend);
 	}
+
+    public boolean isFollower(String name) {
+        return (friendly.containsKey(name) && friendly.get(name).follower);
+    }
 
 
 	public void setFullname(String fullname) {
@@ -204,29 +241,6 @@ public class InfoUsers {
 	public Date getCreated() {
 		return created;
 	}
-
-    public void addFollower(long id, boolean isFollower) {
-        follower.put(id, isFollower);
-    }
-
-    public boolean hasFollower(long id) {
-        return follower.containsKey(id);
-    }
-
-    public void checkFollower(long id) {
-        if (!hasFollower(id)) {
-            try {
-                Twitter twitter = ConnectionManager.getInstance().getTwitter(id);
-                addFollower(id, twitter.existsFriendship(twitter.getScreenName(), getName()));
-            } catch (TwitterException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    public boolean isFollower(long id) {
-        return (follower.containsKey(id) && follower.get(id));
-    }
 
 	public void setLocation(String location) {
 		this.location = location;

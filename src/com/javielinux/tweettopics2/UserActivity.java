@@ -1,7 +1,11 @@
 package com.javielinux.tweettopics2;
 
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.view.View;
@@ -19,10 +23,13 @@ import com.javielinux.api.response.LoadUserResponse;
 import com.javielinux.fragmentadapter.UserFragmentAdapter;
 import com.javielinux.infos.InfoUsers;
 import com.javielinux.utils.CacheData;
+import com.javielinux.utils.TweetActions;
+import com.javielinux.utils.UserActions;
 import com.javielinux.utils.Utils;
 import com.viewpagerindicator.TabPageIndicator;
 
 import java.io.File;
+import java.util.ArrayList;
 
 public class UserActivity extends BaseLayersActivity {
 
@@ -45,10 +52,6 @@ public class UserActivity extends BaseLayersActivity {
 
     private LinearLayout viewLoading;
     private RelativeLayout viewInfo;
-
-    private TextView txtTweets;
-    private TextView txtFollowers;
-    private TextView txtFollowing;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -86,23 +89,19 @@ public class UserActivity extends BaseLayersActivity {
 
         });
 
-        txtTweets = ((TextView) findViewById(R.id.user_n_tweets));
-        txtFollowers = ((TextView) findViewById(R.id.user_followers));
-        txtFollowing = ((TextView) findViewById(R.id.user_following));
-
         llRoot = (RelativeLayout) findViewById(R.id.user_ll);
         txtFullName = ((TextView) findViewById(R.id.user_fullname));
         txtUsername = ((TextView) findViewById(R.id.user_username));
         txtText = ((TextView) findViewById(R.id.user_text));
 
-
-        fragmentAdapter = new UserFragmentAdapter(this, getSupportFragmentManager(), infoUser);
+        (findViewById(R.id.user_btn_reply)).setOnClickListener(clickMention);
+        (findViewById(R.id.user_btn_web)).setOnClickListener(clickWeb);
+        (findViewById(R.id.user_btn_highlight)).setOnClickListener(clickHighlight);
+        (findViewById(R.id.user_btn_more)).setOnClickListener(clickMore);
 
         pager = (ViewPager) findViewById(R.id.user_pager);
-        pager.setAdapter(fragmentAdapter);
 
         indicator = (TabPageIndicator) findViewById(R.id.user_indicator);
-        indicator.setViewPager(pager);
 
         if (infoUser != null) {
             populateFields();
@@ -131,6 +130,11 @@ public class UserActivity extends BaseLayersActivity {
     }
 
     private void populateFields() {
+
+        fragmentAdapter = new UserFragmentAdapter(this, getSupportFragmentManager(), infoUser);
+        pager.setAdapter(fragmentAdapter);
+        indicator.setViewPager(pager);
+
         String urlAvatar = infoUser.getUrlAvatar();
         String name = infoUser.getName();
         String fullname = infoUser.getFullname();
@@ -160,10 +164,89 @@ public class UserActivity extends BaseLayersActivity {
         txtFullName.setText(((fullname.equals("")) ? name : fullname));
         txtText.setText(infoUser.getBio());
 
-        txtTweets.setText("" + infoUser.getTweets());
-        txtFollowers.setText("" + infoUser.getFollowers());
-        txtFollowing.setText("" + infoUser.getFollowing());
     }
+
+    View.OnClickListener clickMention = new View.OnClickListener() {
+
+        @Override
+        public void onClick(View view) {
+            TweetActions.goToMention(UserActivity.this, infoUser.getName());
+        }
+    };
+
+    View.OnClickListener clickWeb = new View.OnClickListener() {
+
+        @Override
+        public void onClick(View view) {
+            if (infoUser.getUrl()!=null && !infoUser.getUrl().equals("")) {
+                goToLink(infoUser.getUrl());
+            } else {
+                Utils.showMessage(UserActivity.this, getString(R.string.user_no_web));
+            }
+        }
+    };
+
+    View.OnClickListener clickHighlight = new View.OnClickListener() {
+
+        @Override
+        public void onClick(View view) {
+            UserActions.goToColoringTweets(UserActivity.this, infoUser);
+        }
+    };
+
+    View.OnClickListener clickMore = new View.OnClickListener() {
+
+        @Override
+        public void onClick(View view) {
+
+            final ArrayList<String> arCode = new ArrayList<String>();
+            ArrayList<String> ar = new ArrayList<String>();
+
+            ar.add(getString(R.string.view_photo_profile));
+            arCode.add("view_photo_profile");
+
+            ar.add(getString(R.string.create_block));
+            arCode.add("create_block");
+
+            ar.add(getString(R.string.report_spam));
+            arCode.add("report_spam");
+
+            ar.add(getString(R.string.included_list));
+            arCode.add("included_list");
+
+            ar.add(getString(R.string.hide));
+            arCode.add("hide");
+
+            ar.add(getString(R.string.create_topic));
+            arCode.add("create_topic");
+
+            ar.add(getString(R.string.send_direct_message));
+            arCode.add("send_direct");
+
+            CharSequence[] c = new CharSequence[ar.size()];
+            for (int i=0; i<ar.size(); i++) {
+                c[i] = ar.get(i);
+            }
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(UserActivity.this);
+            builder.setTitle(R.string.actions);
+            builder.setItems(c, new DialogInterface.OnClickListener() {
+
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    UserActions.execByCode(arCode.get(which), UserActivity.this, infoUser);
+                }
+
+
+            });
+            builder.setNegativeButton(R.string.alert_dialog_cancel, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int whichButton) {
+                }
+            });
+            builder.create();
+            builder.show();
+        }
+    };
 
     private void refreshTheme() {
         if (activityAnimation == Utils.ACTIVITY_ANIMATION_RIGHT) {
@@ -183,6 +266,19 @@ public class UserActivity extends BaseLayersActivity {
     private void hideLoading() {
         viewLoading.setVisibility(View.GONE);
         viewInfo.setVisibility(View.VISIBLE);
+    }
+
+    public void goToLink(String url) {
+        try {
+            if (url.startsWith("www")) {
+                url = "http://"+url;
+            }
+            Uri uri = Uri.parse(url);
+            Intent intent = new Intent(android.content.Intent.ACTION_VIEW, uri);
+            startActivity(intent);
+        } catch (Exception e) {
+            Utils.showMessage(this, getString(R.string.error_view_url) + " " + url);
+        }
     }
 
 }

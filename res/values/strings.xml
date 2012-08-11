@@ -3,6 +3,14 @@
 
     <!-- v 2.0  -->
 
+    <string name="hide">Hide</string>
+    <string name="view_photo_profile">View photo profile</string>
+    <string name="included_list">Included in list</string>
+
+    <string name="user_no_web">User haven\'t web</string>
+
+    <string name="highlight">Highlight</string>
+
     <string name="column_main_message">%1$s is main now</string>
 
     <string name="main">Main</string>

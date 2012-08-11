@@ -9,6 +9,6 @@
         android:layout_height="wrap_content"
         android:layout_width="fill_parent"
         android:padding="12dp"
-        style="@style/TitleTrendingTopics" />
+         />
 
 </LinearLayout>
