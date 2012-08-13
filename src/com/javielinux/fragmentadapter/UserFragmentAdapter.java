@@ -59,7 +59,7 @@ public class UserFragmentAdapter extends FragmentPagerAdapter {
         if (user_fragment_code.get(index) == TAB_INFO) {
             return new UserProfileFragment(infoUsers);
         } else if (user_fragment_code.get(index) == TAB_TIMELINE) {
-            return new UserTimelineFragment();
+            return new UserTimelineFragment(infoUsers);
         } else if (user_fragment_code.get(index) == TAB_MENTIONS) {
             return new UserMentionsFragment();
         } else if (user_fragment_code.get(index) == TAB_LIST) {

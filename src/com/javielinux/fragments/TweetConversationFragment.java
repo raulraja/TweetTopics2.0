@@ -28,6 +28,7 @@ public class TweetConversationFragment extends Fragment implements APIDelegate<B
 
     private InfoTweet infoTweet;
     private ArrayList<InfoTweet> tweet_list;
+    private View footer_view;
     private ListView list;
 
     private TweetsConversationAdapter adapter;
@@ -47,8 +48,11 @@ public class TweetConversationFragment extends Fragment implements APIDelegate<B
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = View.inflate(getActivity(), R.layout.tweet_conversation_fragment, null);
+        footer_view = View.inflate(getActivity(), R.layout.tweet_conversation_foot_fragment, null);
+        footer_view.findViewById(R.id.tweet_conversation_loading).setVisibility(View.GONE);
 
-        list =  ((ListView)view.findViewById(R.id.tweet_conversation_list));
+        list = ((ListView)view.findViewById(R.id.tweet_conversation_list));
+        list.addFooterView(footer_view);
 
         list.setAdapter(adapter);
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -84,6 +88,8 @@ public class TweetConversationFragment extends Fragment implements APIDelegate<B
         long inReplyToId = infoTweet.getToReplyId();
         boolean getTweetsFromDB = true;
 
+        footer_view.findViewById(R.id.tweet_conversation_loading).setVisibility(View.VISIBLE);
+
         while (getTweetsFromDB) {
 
             ArrayList<Entity> conversation_tweet_list = DataFramework.getInstance().getEntityList("tweets_user", "tweet_id='" + Utils.fillZeros(String.valueOf(inReplyToId)) + "'");
@@ -93,7 +99,7 @@ public class TweetConversationFragment extends Fragment implements APIDelegate<B
                 getConversationTweetsFromInternet(inReplyToId);
             } else {
                 inReplyToId = Long.parseLong(conversation_tweet_list.get(0).getString("reply_tweet_id"));
-                tweet_list.add(0, new InfoTweet(conversation_tweet_list.get(0)));
+                tweet_list.add(new InfoTweet(conversation_tweet_list.get(0)));
             }
         }
 
@@ -101,7 +107,10 @@ public class TweetConversationFragment extends Fragment implements APIDelegate<B
     }
 
     private void getConversationTweetsFromInternet(long tweet_id) {
-        APITweetTopics.execute(getActivity(), getLoaderManager(), this, new GetConversationRequest(-1, tweet_id));
+        if (tweet_id > 0)
+            APITweetTopics.execute(getActivity(), getLoaderManager(), this, new GetConversationRequest(-1, tweet_id));
+        else
+            footer_view.findViewById(R.id.tweet_conversation_loading).setVisibility(View.GONE);
     }
 
     @Override
@@ -109,15 +118,18 @@ public class TweetConversationFragment extends Fragment implements APIDelegate<B
         GetConversationResponse result = (GetConversationResponse) response;
 
         long inReplyToId = result.getConversationTweet().getToReplyId();
-        tweet_list.add(0, result.getConversationTweet());
+        tweet_list.add(result.getConversationTweet());
         adapter.notifyDataSetChanged();
 
         if (inReplyToId > 0)
             getConversationTweetsFromInternet(inReplyToId);
+        else
+            footer_view.findViewById(R.id.tweet_conversation_loading).setVisibility(View.GONE);
     }
 
     @Override
     public void onError(ErrorResponse error) {
+        footer_view.findViewById(R.id.tweet_conversation_loading).setVisibility(View.GONE);
         error.getError().printStackTrace();
     }
 }

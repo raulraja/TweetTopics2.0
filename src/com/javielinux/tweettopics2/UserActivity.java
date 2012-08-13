@@ -163,7 +163,6 @@ public class UserActivity extends BaseLayersActivity {
         txtUsername.setText("@" + name);
         txtFullName.setText(((fullname.equals("")) ? name : fullname));
         txtText.setText(infoUser.getBio());
-
     }
 
     View.OnClickListener clickMention = new View.OnClickListener() {

@@ -24,6 +24,7 @@ public class LoadTypeStatusLoader extends AsynchronousLoader<BaseResponse> {
 	public static int FRIENDS = 6;
 	public static int TIMELINE = 7;
 	public static int LIST = 8;
+    public static int USER_TIMELINE = 9;
 
     private LoadTypeStatusRequest request;
 
@@ -122,16 +123,21 @@ public class LoadTypeStatusLoader extends AsynchronousLoader<BaseResponse> {
 					InfoTweet row = new InfoTweet(user);
 					result.add(row);
 				}
-			} else if (request.getType()==TIMELINE) {
-				ResponseList<twitter4j.Status> statii = ConnectionManager.getInstance().getTwitter(request.getUserId()).getHomeTimeline();
-				for (int i=0; i<statii.size(); i++) {
-					result.add(new InfoTweet(statii.get(i)));
-				}
+            } else if (request.getType()==TIMELINE) {
+                ResponseList<twitter4j.Status> statii = ConnectionManager.getInstance().getTwitter(request.getUserId()).getHomeTimeline();
+                for (int i=0; i<statii.size(); i++) {
+                    result.add(new InfoTweet(statii.get(i)));
+                }
 			} else if (request.getType()==LIST) {
 				ResponseList<twitter4j.Status> statii = ConnectionManager.getInstance().getTwitter(request.getUserId()).getUserListStatuses(request.getListId(), new Paging(1));
 				for (int i=0; i<statii.size(); i++) {
 					result.add(new InfoTweet(statii.get(i)));
 				}
+            } else if (request.getType()==USER_TIMELINE) {
+                ResponseList<twitter4j.Status> statii = ConnectionManager.getInstance().getAnonymousTwitter().getUserTimeline(request.getUser());
+                for (int i=0; i<statii.size(); i++) {
+                    result.add(new InfoTweet(statii.get(i)));
+                }
 			}
 
             response.setInfoTweets(result);

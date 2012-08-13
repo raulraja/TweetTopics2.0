@@ -5,8 +5,9 @@
               android:orientation="vertical">
 
     <ListView android:id="@+id/tweet_conversation_list"
-              android:cacheColorHint="@android:color/transparent"
-              android:layout_height="fill_parent"
-              android:layout_width="fill_parent" />
+        android:cacheColorHint="@android:color/transparent"
+        android:footerDividersEnabled="false"
+        android:layout_height="fill_parent"
+        android:layout_width="fill_parent" />
 
 </LinearLayout>
