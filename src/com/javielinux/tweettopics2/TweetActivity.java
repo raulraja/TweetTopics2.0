@@ -21,12 +21,14 @@ import com.javielinux.api.response.LoadImageWidgetResponse;
 import com.javielinux.dialogs.HashTagDialogFragment;
 import com.javielinux.fragmentadapter.TweetFragmentAdapter;
 import com.javielinux.infos.InfoTweet;
+import com.javielinux.utils.PreferenceUtils;
 import com.javielinux.utils.TweetActions;
 import com.javielinux.utils.Utils;
 import com.viewpagerindicator.TabPageIndicator;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class TweetActivity extends BaseLayersActivity {
 
@@ -129,6 +131,7 @@ public class TweetActivity extends BaseLayersActivity {
         (findViewById(R.id.tweet_btn_reply)).setOnClickListener(clickReply);
         (findViewById(R.id.tweet_btn_retweet)).setOnClickListener(clickRetweet);
         (findViewById(R.id.tweet_btn_translate)).setOnClickListener(clickTranslate);
+        (findViewById(R.id.tweet_btn_translate)).setOnLongClickListener(longClickTranslate);
         (findViewById(R.id.tweet_btn_more)).setOnClickListener(clickMore);
 
         llRoot = (LinearLayout)findViewById(R.id.tweet_ll);
@@ -192,11 +195,28 @@ public class TweetActivity extends BaseLayersActivity {
         }
     };
 
+    View.OnLongClickListener longClickTranslate = new View.OnLongClickListener() {
+
+        @Override
+        public boolean onLongClick(View view) {
+            PreferenceUtils.saveTraslationDefaultLanguage(TweetActivity.this, "");
+
+            TweetActions.showDialogTranslation(TweetActivity.this, fragmentAdapter, indicator);
+
+            return true;
+        }
+    };
+
     View.OnClickListener clickTranslate = new View.OnClickListener() {
 
         @Override
         public void onClick(View view) {
-            Utils.showMessage(TweetActivity.this, "TODO translate");
+            if (PreferenceUtils.getTraslationDefaultLanguage(TweetActivity.this) == "")
+                TweetActions.showDialogTranslation(TweetActivity.this, fragmentAdapter, indicator);
+            else {
+                fragmentAdapter.addTranslateColumn(PreferenceUtils.getTraslationDefaultLanguage(TweetActivity.this));
+                indicator.notifyDataSetChanged();
+            }
         }
     };
 

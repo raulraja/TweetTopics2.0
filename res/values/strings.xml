@@ -43,6 +43,8 @@
     <string name="title_saved_links">Links</string>
     <string name="trending_topics_back">Return to trending topics</string>
 
+    <string name="translate_default_language_text">Set language as default</string>
+
     <!-- v 1.74  -->
 
     <string name="volume_control_search_user">Username</string>

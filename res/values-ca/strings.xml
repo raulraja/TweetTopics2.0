@@ -16,6 +16,8 @@
   <string name="title_saved_images">Imatges</string>
   <string name="title_saved_links">Enllaços</string>
 
+  <string name="translate_default_language_text">Establir l\'idioma per defecte</string>
+
   <!-- v 1.74  -->
 
   <string name="volume_control_search_user">Nom d\'usuari</string>

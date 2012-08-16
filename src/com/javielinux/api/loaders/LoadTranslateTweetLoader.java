@@ -27,7 +27,8 @@ public class LoadTranslateTweetLoader extends AsynchronousLoader<BaseResponse> {
     	try {
             LoadTranslateTweetResponse response = new LoadTranslateTweetResponse();
 
-			String lang = Utils.preference.getString("prf_translate", "es");
+			//String lang = Utils.preference.getString("prf_translate", "es");
+            String lang = request.getLanguage();
 
             Translate.setKey("2EFDAEA6BE06919111E8FA1FB505BF7A2FC6161B");
             Language language = Language.ENGLISH;

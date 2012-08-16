@@ -39,6 +39,8 @@
     <string name="title_saved_links">Enlaces</string>
     <string name="trending_topics_back">Volver a trending topics</string>
 
+    <string name="translate_default_language_text">Establecer el idioma por defecto</string>
+
     <!-- v 1.74  -->
 
     <string name="volume_control_search_user">Usuario</string>

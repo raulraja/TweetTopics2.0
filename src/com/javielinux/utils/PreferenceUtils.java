@@ -18,6 +18,7 @@ public class PreferenceUtils {
     private static final String WORK_ALARM_KEY = "work_alarm"; // usado para saber si la alarma esta trabajando
     private static final String WORK_APP_KEY = "work_app"; // usado para saber si la app esta abierta
     private static final String NOTIFICATIONS_KEY = "notifications_app"; // usado cuando sales de la aplicacion
+    private static final String TRANSLATION_LANGUAGE_KEY = "translation_language"; // usado cuando sales de la aplicacion
 
     public static boolean getFinishForceClose(Context cnt) {
         SharedPreferences prefs = cnt.getSharedPreferences(Utils.APPLICATION_PREFERENCES, Context.MODE_PRIVATE);
@@ -572,4 +573,18 @@ public class PreferenceUtils {
         editor.commit();
     }
 
+    public static String getTraslationDefaultLanguage(Context cnt) {
+        SharedPreferences prefs = cnt.getSharedPreferences(Utils.APPLICATION_PREFERENCES, Context.MODE_PRIVATE);
+        if (prefs.contains(TRANSLATION_LANGUAGE_KEY)) {
+            return prefs.getString(TRANSLATION_LANGUAGE_KEY, "");
+        }
+        return "";
+    }
+
+    public static void saveTraslationDefaultLanguage(Context cnt, String language) {
+        SharedPreferences prefs = cnt.getSharedPreferences(Utils.APPLICATION_PREFERENCES, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString(TRANSLATION_LANGUAGE_KEY, language);
+        editor.commit();
+    }
 }

@@ -7,21 +7,27 @@ import android.content.Intent;
 import android.database.CursorIndexOutOfBoundsException;
 import android.support.v4.app.FragmentActivity;
 import android.text.ClipboardManager;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.CheckBox;
 import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
 import com.javielinux.adapters.IconAndTextSimpleAdapter;
 import com.javielinux.adapters.UsersAdapter;
 import com.javielinux.dialogs.OnSelectedIconAndText;
 import com.javielinux.dialogs.TwitterUsersConnectedDialogFragment;
+import com.javielinux.fragmentadapter.TweetFragmentAdapter;
 import com.javielinux.infos.InfoTweet;
 import com.javielinux.tweettopics2.NewStatusActivity;
 import com.javielinux.tweettopics2.R;
 import com.javielinux.twitter.ConnectionManager;
+import com.viewpagerindicator.TabPageIndicator;
 import preferences.RetweetsTypes;
 import twitter4j.TwitterException;
 import updatestatus.ServiceUpdateStatus;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class TweetActions {
 
@@ -375,7 +381,6 @@ public class TweetActions {
         activity.startService(new Intent(activity, ServiceUpdateStatus.class));
     }
 
-
     public static void sendRetweet(FragmentActivity activity, String users, long tweet_id) {
         Entity ent = new Entity("send_tweets");
         ent.setValue("users", users);
@@ -422,5 +427,42 @@ public class TweetActions {
 
     }
 
+    public static void showDialogTranslation(final FragmentActivity activity, final TweetFragmentAdapter fragmentAdapter, final TabPageIndicator indicator) {
 
+        LayoutInflater adbInflater = LayoutInflater.from(activity);
+        View translate_dialog_footer = adbInflater.inflate(R.layout.translate_dialog_footer, null);
+        final CheckBox translate_default_language_checkbox = (CheckBox)translate_dialog_footer.findViewById(R.id.translate_default_language_checkbox);
+
+        final ArrayList<String> languages_text = new ArrayList<String>();
+        Collections.addAll(languages_text, activity.getResources().getStringArray(R.array.languages_translates));
+
+        final ArrayList<String> languages_values = new ArrayList<String>();
+        Collections.addAll(languages_values, activity.getResources().getStringArray(R.array.languages_translates_values));
+
+        CharSequence[] languages_char_sequence = new CharSequence[languages_text.size()];
+        for (int i=0; i < languages_text.size(); i++) {
+            languages_char_sequence[i] = languages_text.get(i);
+        }
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        builder.setTitle(R.string.language);
+        builder.setView(translate_dialog_footer);
+
+        builder.setItems(languages_char_sequence, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if (translate_default_language_checkbox.isChecked())
+                    PreferenceUtils.saveTraslationDefaultLanguage(activity, languages_values.get(which));
+
+                fragmentAdapter.addTranslateColumn(languages_values.get(which));
+                indicator.notifyDataSetChanged();
+            }
+        });
+
+        builder.setNegativeButton(R.string.alert_dialog_cancel, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {}
+        });
+        builder.create();
+        builder.show();
+    }
 }
