@@ -1,6 +1,7 @@
 package com.javielinux.infos;
 
 
+import android.content.Context;
 import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
 import com.javielinux.twitter.ConnectionManager;
@@ -186,16 +187,19 @@ public class InfoUsers {
         return false;
     }
 
-    public void checkFriend(String name) {
+    public void checkFriend(Context context, String name) {
         if (!hasFriendly(name)) {
             addFriendly(name);
         }
         if (!isCheckFriendly(name)) {
             Friend friend = friendly.get(name);
             try {
+                //Entity ent = DataFramework.getInstance().getTopEntity("users", "name = '"+getName()+"'", "");
+                ConnectionManager.getInstance().open(context);
                 Twitter twitter = ConnectionManager.getInstance().getAnonymousTwitter();
-                friend.friend = twitter.existsFriendship(getName(), twitter.getScreenName());
-                friend.follower = twitter.existsFriendship(twitter.getScreenName(), getName());
+                friend.friend = twitter.existsFriendship(getName(), name);
+                friend.follower = twitter.existsFriendship(name, getName());
+                friend.checked = true;
                 friendly.remove(name);
                 friendly.put(name, friend);
             } catch (TwitterException e) {

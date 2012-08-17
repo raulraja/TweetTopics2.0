@@ -4,10 +4,12 @@ package com.javielinux.adapters;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
+import android.widget.*;
+import com.javielinux.api.APIDelegate;
+import com.javielinux.api.APITweetTopics;
+import com.javielinux.api.request.CheckFriendlyUserRequest;
+import com.javielinux.api.response.BaseResponse;
+import com.javielinux.api.response.ErrorResponse;
 import com.javielinux.infos.InfoUsers;
 import com.javielinux.tweettopics2.R;
 
@@ -19,6 +21,8 @@ import java.util.Map;
 public class UserProfileAdapter extends BaseAdapter {
 
     public static class ViewHolder {
+
+        public LinearLayout containerLoading;
 
         public RelativeLayout containerText;
         public TextView txtText;
@@ -33,6 +37,8 @@ public class UserProfileAdapter extends BaseAdapter {
     public static ViewHolder generateViewHolder(View v) {
 
         ViewHolder viewHolder = new ViewHolder();
+
+        viewHolder.containerLoading = (LinearLayout) v.findViewById(R.id.user_profile_container_loading);
 
         viewHolder.containerText = (RelativeLayout) v.findViewById(R.id.user_profile_row_container_text);
         viewHolder.txtText = (TextView) v.findViewById(R.id.user_profile_row_text);
@@ -128,16 +134,49 @@ public class UserProfileAdapter extends BaseAdapter {
         if (item.type==KEY_INFO_TEXT) {
             viewHolder.containerFriendly.setVisibility(View.GONE);
             viewHolder.containerText.setVisibility(View.VISIBLE);
+            viewHolder.containerLoading.setVisibility(View.GONE);
 
             viewHolder.txtText.setText(item.text);
         }
 
         if (item.type==KEY_INFO_FRIENDLY) {
-            viewHolder.containerFriendly.setVisibility(View.VISIBLE);
-            viewHolder.containerText.setVisibility(View.GONE);
 
-            viewHolder.txtUser1.setText(infoUser.getName());
-            viewHolder.txtUser2.setText(item.friend.user);
+            if (item.friend.checked) {
+                viewHolder.containerFriendly.setVisibility(View.VISIBLE);
+                viewHolder.containerText.setVisibility(View.GONE);
+                viewHolder.containerLoading.setVisibility(View.GONE);
+
+                viewHolder.txtUser1.setText(infoUser.getName());
+                viewHolder.txtUser2.setText(item.friend.user);
+
+                if (item.friend.friend && item.friend.friend) {
+                    viewHolder.imgConnectUser.setImageResource(R.drawable.connects_on_on);
+                } else if (item.friend.friend && !item.friend.friend) {
+                    viewHolder.imgConnectUser.setImageResource(R.drawable.connects_on_off);
+                } else if (!item.friend.friend && item.friend.friend) {
+                    viewHolder.imgConnectUser.setImageResource(R.drawable.connects_off_on);
+                } else {
+                    viewHolder.imgConnectUser.setImageResource(R.drawable.connects_off_off);
+                }
+
+            } else {
+                viewHolder.containerFriendly.setVisibility(View.GONE);
+                viewHolder.containerText.setVisibility(View.GONE);
+                viewHolder.containerLoading.setVisibility(View.VISIBLE);
+
+                APITweetTopics.execute(activity, activity.getSupportLoaderManager(), new APIDelegate() {
+                    @Override
+                    public void onResults(BaseResponse result) {
+                         notifyDataSetChanged();
+                    }
+
+                    @Override
+                    public void onError(ErrorResponse error) {
+
+                    }
+                }, new CheckFriendlyUserRequest(infoUser, item.friend.user));
+
+            }
 
         }
 		
