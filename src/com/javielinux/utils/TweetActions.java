@@ -451,8 +451,10 @@ public class TweetActions {
         builder.setItems(languages_char_sequence, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                if (translate_default_language_checkbox.isChecked())
+                if (translate_default_language_checkbox.isChecked()) {
                     PreferenceUtils.saveTraslationDefaultLanguage(activity, languages_values.get(which));
+                    Utils.showMessage(activity, R.string.default_language_setting_message);
+                }
 
                 fragmentAdapter.addTranslateColumn(languages_values.get(which));
                 indicator.notifyDataSetChanged();

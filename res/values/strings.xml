@@ -44,6 +44,7 @@
     <string name="trending_topics_back">Return to trending topics</string>
 
     <string name="translate_default_language_text">Set language as default</string>
+    <string name="default_language_setting_message">Language has been set as default. If you want to select other language, you must long-press the translate button</string>
 
     <!-- v 1.74  -->
 

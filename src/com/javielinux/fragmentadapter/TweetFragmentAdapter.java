@@ -57,11 +57,14 @@ public class TweetFragmentAdapter extends FragmentPagerAdapter  {
     }
 
     public void addTranslateColumn(String language) {
-        tweet_fragment_code.add(TAB_TRANSLATE);
-        tweet_fragment_titles.add(context.getString(R.string.translate) + " " + language.toUpperCase());
-        tweet_fragment_language.add(language);
 
-        notifyDataSetChanged();
+        if (!tweet_fragment_language.contains(language)) {
+            tweet_fragment_code.add(TAB_TRANSLATE);
+            tweet_fragment_titles.add(context.getString(R.string.translate) + " " + language.toUpperCase());
+            tweet_fragment_language.add(language);
+
+            notifyDataSetChanged();
+        }
     }
 
     @Override

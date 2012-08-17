@@ -40,6 +40,7 @@
     <string name="trending_topics_back">Volver a trending topics</string>
 
     <string name="translate_default_language_text">Establecer el idioma por defecto</string>
+    <string name="default_language_setting_message">Se ha establecido el idioma por defecto. Si quieres seleccionar otro idioma, debes hacer un long-press sobre el botón de traducir</string>
 
     <!-- v 1.74  -->
 
