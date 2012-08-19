@@ -45,6 +45,7 @@
 
     <string name="translate_default_language_text">Set language as default</string>
     <string name="default_language_setting_message">Language has been set as default. If you want to select other language, you must long-press the translate button</string>
+    <string name="original_tweet">Original tweet</string>
 
     <!-- v 1.74  -->
 

@@ -20,6 +20,7 @@ import com.javielinux.fragmentadapter.TweetFragmentAdapter;
 import com.javielinux.infos.InfoTweet;
 import com.javielinux.tweettopics2.NewStatusActivity;
 import com.javielinux.tweettopics2.R;
+import com.javielinux.tweettopics2.TweetActivity;
 import com.javielinux.twitter.ConnectionManager;
 import com.viewpagerindicator.TabPageIndicator;
 import preferences.RetweetsTypes;
@@ -427,10 +428,9 @@ public class TweetActions {
 
     }
 
-    public static void showDialogTranslation(final FragmentActivity activity, final TweetFragmentAdapter fragmentAdapter, final TabPageIndicator indicator) {
+    public static void showDialogTranslation(final TweetActivity activity) {
 
-        LayoutInflater adbInflater = LayoutInflater.from(activity);
-        View translate_dialog_footer = adbInflater.inflate(R.layout.translate_dialog_footer, null);
+        View translate_dialog_footer = View.inflate(activity, R.layout.translate_dialog_footer, null);
         final CheckBox translate_default_language_checkbox = (CheckBox)translate_dialog_footer.findViewById(R.id.translate_default_language_checkbox);
 
         final ArrayList<String> languages_text = new ArrayList<String>();
@@ -456,8 +456,7 @@ public class TweetActions {
                     Utils.showMessage(activity, R.string.default_language_setting_message);
                 }
 
-                fragmentAdapter.addTranslateColumn(languages_values.get(which));
-                indicator.notifyDataSetChanged();
+                activity.translateTweet(languages_values.get(which));
             }
         });
 
