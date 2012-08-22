@@ -273,6 +273,13 @@ public class MyActivityFragment extends Fragment {
         }
     }
 
+    public void editSearch(Entity search) {
+        Intent edit_search = new Intent(getActivity(), SearchActivity.class);
+        edit_search.putExtra(DataFramework.KEY_ID, search.getId());
+
+        startActivity(edit_search);
+    }
+
     public void clickUser(Entity user) {
         idUser = user.getId();
         if (user.getString("service").equals("facebook")) {
@@ -590,4 +597,68 @@ public class MyActivityFragment extends Fragment {
             fbh.newUser();
         }
     }
+
+    /*public void showOptionsColumns(int positionX, int index) {
+
+
+        int x = positionX - (layoutOptionsColumns.getWidth()/2);
+        if (x<0) x = 0;
+        if (x>widthScreen-layoutOptionsColumns.getWidth()) x = widthScreen-layoutOptionsColumns.getWidth();
+        int y = (int)getResources().getDimension(R.dimen.actionbar_columns_height) - Utils.dip2px(this, 20);
+
+        int xCenterView = x;
+
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        params.setMargins(x, y, 0, 0);
+        layoutOptionsColumns.setLayoutParams(params);
+
+        layoutMainOptionsColumns.setVisibility(View.VISIBLE);
+
+        btnOptionsColumnsMain.setTag(index);
+        btnOptionsColumnsDelete.setTag(index);
+
+        ObjectAnimator translationX = ObjectAnimator.ofFloat(layoutOptionsColumns, "translationX", xCenterView-x, 0f);
+        translationX.setDuration(150);
+        ObjectAnimator scaleX = ObjectAnimator.ofFloat(layoutOptionsColumns, "scaleX", 0f, 1f);
+        scaleX.setDuration(150);
+        ObjectAnimator scaleY = ObjectAnimator.ofFloat(layoutOptionsColumns, "scaleY", 0f, 1f);
+        scaleY.setDuration(150);
+        ObjectAnimator fadeAnim = ObjectAnimator.ofFloat(layoutOptionsColumns, "alpha", 0f, 1f);
+        fadeAnim.setDuration(150);
+        AnimatorSet animatorSet = new AnimatorSet();
+        animatorSet.playTogether(translationX, scaleX, scaleY, fadeAnim);
+        animatorSet.start();
+
+    }
+
+    public void hideOptionsColumns() {
+        ObjectAnimator scaleX = ObjectAnimator.ofFloat(layoutOptionsColumns, "scaleX", 1f, 0f);
+        scaleX.setDuration(150);
+        ObjectAnimator scaleY = ObjectAnimator.ofFloat(layoutOptionsColumns, "scaleY", 1f, 0f);
+        scaleY.setDuration(150);
+        ObjectAnimator fadeAnim = ObjectAnimator.ofFloat(layoutOptionsColumns, "alpha", 1f, 0f);
+        fadeAnim.setDuration(150);
+        AnimatorSet animatorSet = new AnimatorSet();
+        animatorSet.playTogether(scaleX, scaleY, fadeAnim);
+        animatorSet.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animator) {
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animator) {
+                layoutMainOptionsColumns.setVisibility(View.INVISIBLE);
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animator) {
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animator) {
+            }
+        });
+        animatorSet.start();
+
+    }*/
 }

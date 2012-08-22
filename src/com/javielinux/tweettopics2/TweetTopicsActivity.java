@@ -492,8 +492,10 @@ public class TweetTopicsActivity extends BaseActivity {
 
 
     public void newSearch() {
-        Intent newsearch = new Intent(this, TabNewEditSearch.class);
-        startActivityForResult(newsearch, ACTIVITY_NEWEDITSEARCH);
+        Intent newsearch = new Intent(this, SearchActivity.class);
+        startActivity(newsearch);
+        //Intent newsearch = new Intent(this, TabNewEditSearch.class);
+        //startActivityForResult(newsearch, ACTIVITY_NEWEDITSEARCH);
     }
 
     public void newTrending() {

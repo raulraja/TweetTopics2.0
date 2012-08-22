@@ -18,7 +18,6 @@ public class TweetFragmentAdapter extends FragmentPagerAdapter  {
     public static int TAB_LINKS = 0;
     public static int TAB_CONVERSATION = 1;
     public static int TAB_MAP = 2;
-    public static int TAB_TRANSLATE = 3;
 
     private InfoTweet infoTweet;
 

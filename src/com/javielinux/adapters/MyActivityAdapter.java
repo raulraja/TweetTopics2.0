@@ -282,6 +282,13 @@ public class MyActivityAdapter extends BaseAdapter {
                 myActivityFragment.clickSearch((Entity) view.getTag());
             }
         });
+        v.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                myActivityFragment.editSearch((Entity) view.getTag());
+                return true;
+            }
+        });
 
         ImageView img = (ImageView)v.findViewById(R.id.my_activity_search_img);
 

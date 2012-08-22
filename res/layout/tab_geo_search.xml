@@ -5,27 +5,27 @@
     android:layout_height="fill_parent">
 <ScrollView android:id="@+id/ScrollView01" android:layout_width="fill_parent" android:layout_height="fill_parent">
 <LinearLayout android:orientation="vertical" android:layout_height="fill_parent" android:layout_width="fill_parent" android:padding="10sp">
-	<CheckBox style="@style/SearchText" android:text="@string/use_geo" android:id="@+id/cb_use_geo" android:layout_width="wrap_content" android:layout_height="wrap_content"></CheckBox>
+	<CheckBox style="@style/SearchText" android:text="@string/use_geo" android:id="@+id/cb_use_geo" android:layout_width="wrap_content" android:layout_height="wrap_content" />
 	
 	<RadioGroup android:id="@+id/rg_type_geo" android:layout_width="wrap_content" android:layout_height="wrap_content" android:visibility="gone" android:layout_marginLeft="15dip">
-		<RadioButton style="@style/SearchText" android:text="@+string/use_geo_gps" android:id="@+id/rb_use_gps" android:layout_width="wrap_content" android:layout_height="wrap_content"></RadioButton>
-		<RadioButton style="@style/SearchText" android:text="@+string/use_geo_map" android:id="@+id/rb_use_map" android:layout_width="wrap_content" android:layout_height="wrap_content"></RadioButton>
+		<RadioButton style="@style/SearchText" android:text="@string/use_geo_gps" android:id="@+id/rb_use_gps" android:layout_width="wrap_content" android:layout_height="wrap_content" />
+		<RadioButton style="@style/SearchText" android:text="@string/use_geo_map" android:id="@+id/rb_use_map" android:layout_width="wrap_content" android:layout_height="wrap_content" />
 	</RadioGroup>
 	
 	<LinearLayout android:id="@+id/ll_map" android:layout_height="wrap_content" android:layout_width="fill_parent" android:visibility="gone" android:layout_marginLeft="30dip">
-		<EditText android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_weight="1" android:layout_margin="3sp" android:id="@+id/et_latitude" android:editable="false" android:visibility="gone"></EditText>
-		<EditText android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_weight="1" android:layout_margin="3sp" android:id="@+id/et_longitude" android:editable="false" android:visibility="gone"></EditText>
-		<Button android:text="@string/position" android:id="@+id/bt_map" android:layout_width="wrap_content" android:layout_height="wrap_content" android:visibility="gone"></Button>
+		<EditText android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_weight="1" android:layout_margin="3sp" android:id="@+id/et_latitude" android:editable="false" android:visibility="gone" />
+		<EditText android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_weight="1" android:layout_margin="3sp" android:id="@+id/et_longitude" android:editable="false" android:visibility="gone" />
+		<Button android:text="@string/position" android:id="@+id/bt_map" android:layout_width="wrap_content" android:layout_height="wrap_content" android:visibility="gone" />
 	</LinearLayout>
 	
 	<LinearLayout android:id="@+id/ll_distance" android:layout_height="wrap_content" android:layout_width="fill_parent" android:orientation="vertical" android:visibility="gone" android:layout_marginLeft="15dip">
-		<TextView style="@style/SearchText" android:id="@+id/distance" android:layout_height="wrap_content" android:text="@string/distance" android:layout_margin="3sp" android:layout_width="fill_parent"></TextView>
-		<SeekBar android:id="@+id/sb_distance" android:layout_width="fill_parent" android:layout_height="wrap_content" android:max="150"></SeekBar>
+		<TextView style="@style/SearchText" android:id="@+id/distance" android:layout_height="wrap_content" android:text="@string/distance" android:layout_margin="3sp" android:layout_width="fill_parent" />
+		<SeekBar android:id="@+id/sb_distance" android:layout_width="fill_parent" android:layout_height="wrap_content" android:max="150" />
 	</LinearLayout>
 	
 	<RadioGroup android:id="@+id/rg_type_distance" android:layout_width="wrap_content" android:layout_height="wrap_content" android:saveEnabled="false" android:visibility="gone" android:orientation="horizontal" android:layout_marginLeft="30dip">
-		<RadioButton style="@style/SearchText" android:text="@+string/miles" android:id="@+id/rb_distance_miles" android:layout_width="wrap_content" android:layout_height="wrap_content"></RadioButton>
-		<RadioButton style="@style/SearchText" android:text="@+string/km" android:id="@+id/rb_distance_km" android:layout_width="wrap_content" android:layout_height="wrap_content"></RadioButton>
+		<RadioButton style="@style/SearchText" android:text="@string/miles" android:id="@+id/rb_distance_miles" android:layout_width="wrap_content" android:layout_height="wrap_content" />
+		<RadioButton style="@style/SearchText" android:text="@string/km" android:id="@+id/rb_distance_km" android:layout_width="wrap_content" android:layout_height="wrap_content" />
 	</RadioGroup>
 </LinearLayout>
 </ScrollView>

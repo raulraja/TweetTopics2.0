@@ -25,12 +25,12 @@
 		<item name="color_link_general">#FF0000FF</item>
 		
 		<item name="color_textbutton_general">#FFFFFFFF</item>
-		
+
 		<item name="color_textbutton_sidebar">#FF000000</item>
 
         <item name="color_bgbutton_push_sidebar">#FF33b5e5</item>
 		
-		<item name="color_title_search">#FF000000</item>
+		<item name="color_title_search">#FFFFFFFF</item>
 		
 		<item name="color_title_search_short">#FF333333</item>
 				
@@ -122,9 +122,9 @@
 
         <item name="color_bgbutton_push_sidebar">#FF33b5e5</item>
 		
-		<item name="color_title_search">#FF000000</item>
+		<item name="color_title_search">#FFFFFFFF</item>
 		
-		<item name="color_title_search_short">#FF333333</item>
+		<item name="color_title_search_short">#FFCCCCCC</item>
 		
 		<item name="bottom_bar_background">@drawable/bottom_bar_background_dark</item>
 		

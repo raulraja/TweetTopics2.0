@@ -95,6 +95,7 @@
     <style name="Widget.EditText" parent="android:Widget.EditText">
         <item name="android:textAppearance">@style/TextAppearance.EditText</item>
         <item name="android:background">@drawable/edit_text</item>
+        <item name="android:textColor">@color/color_tweet_text</item>
         <item name="android:gravity">top</item>
      </style>
      
