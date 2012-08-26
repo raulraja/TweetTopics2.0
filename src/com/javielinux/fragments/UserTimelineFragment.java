@@ -1,6 +1,7 @@
 package com.javielinux.fragments;
 
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +20,8 @@ import com.javielinux.api.response.LoadTypeStatusResponse;
 import com.javielinux.infos.InfoTweet;
 import com.javielinux.infos.InfoUsers;
 import com.javielinux.tweettopics2.R;
+import com.javielinux.tweettopics2.ThemeManager;
+import com.javielinux.utils.ImageUtils;
 
 import java.util.ArrayList;
 
@@ -50,7 +53,16 @@ public class UserTimelineFragment extends Fragment implements APIDelegate<BaseRe
         View view = View.inflate(getActivity(), R.layout.user_timeline_fragment, null);
 
         list = ((ListView)view.findViewById(R.id.user_timeline_list));
-
+        // poner estilo de la listas de las preferencias del usuario
+        ThemeManager themeManager = new ThemeManager(getActivity());
+        list.setDivider(ImageUtils.createDividerDrawable(getActivity(), themeManager.getColor("color_divider_tweet")));
+        if (PreferenceManager.getDefaultSharedPreferences(getActivity()).getBoolean("prf_use_divider_tweet", true)) {
+            list.setDividerHeight(2);
+        } else {
+            list.setDividerHeight(0);
+        }
+        list.setFadingEdgeLength(6);
+        list.setCacheColorHint(themeManager.getColor("color_shadow_listview"));
         list.setAdapter(adapter);
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

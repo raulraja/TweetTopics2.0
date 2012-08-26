@@ -104,6 +104,8 @@ public class APILoader implements LoaderManager.LoaderCallbacks {
             loader = new TwitterUserDBLoader(context, (TwitterUserDBRequest)baseRequest);
         } else if (baseRequest instanceof CheckFriendlyUserRequest) {
             loader = new CheckFriendlyUserLoader(context, (CheckFriendlyUserRequest)baseRequest);
+        }  else if (baseRequest instanceof ExecuteActionUserRequest) {
+            loader = new ExecuteActionUserLoader(context, (ExecuteActionUserRequest)baseRequest);
         }
 
         return loader;

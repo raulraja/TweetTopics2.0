@@ -5,6 +5,7 @@ import android.content.Context;
 import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
 import com.javielinux.twitter.ConnectionManager;
+import twitter4j.Relationship;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.User;
@@ -176,6 +177,11 @@ public class InfoUsers {
         friendly.put(name, new Friend(name));
 	}
 
+    public void replaceFriendly(String name, Friend friend) {
+        friendly.remove(name);
+        friendly.put(name, friend);
+    }
+
     public boolean hasFriendly(String name) {
         return friendly.containsKey(name);
     }
@@ -197,8 +203,9 @@ public class InfoUsers {
                 //Entity ent = DataFramework.getInstance().getTopEntity("users", "name = '"+getName()+"'", "");
                 ConnectionManager.getInstance().open(context);
                 Twitter twitter = ConnectionManager.getInstance().getAnonymousTwitter();
-                friend.friend = twitter.existsFriendship(getName(), name);
-                friend.follower = twitter.existsFriendship(name, getName());
+                Relationship relationship = twitter.showFriendship(getName(), name);
+                friend.friend = relationship.isSourceFollowingTarget();
+                friend.follower = relationship.isSourceFollowedByTarget();
                 friend.checked = true;
                 friendly.remove(name);
                 friendly.put(name, friend);

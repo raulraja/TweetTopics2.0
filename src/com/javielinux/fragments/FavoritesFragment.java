@@ -1,8 +1,8 @@
 package com.javielinux.fragments;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
-import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
@@ -19,19 +18,18 @@ import com.javielinux.api.APIDelegate;
 import com.javielinux.api.APITweetTopics;
 import com.javielinux.api.loaders.LoadTypeStatusLoader;
 import com.javielinux.api.request.LoadTypeStatusRequest;
-import com.javielinux.api.request.TwitterUserDBRequest;
-import com.javielinux.api.request.TwitterUserRequest;
-import com.javielinux.api.response.*;
-import com.javielinux.database.EntityTweetUser;
-import com.javielinux.infos.InfoSaveTweets;
+import com.javielinux.api.response.BaseResponse;
+import com.javielinux.api.response.ErrorResponse;
+import com.javielinux.api.response.LoadTypeStatusResponse;
 import com.javielinux.infos.InfoTweet;
 import com.javielinux.tweettopics2.R;
+import com.javielinux.tweettopics2.ThemeManager;
 import com.javielinux.tweettopics2.TweetActivity;
+import com.javielinux.utils.ImageUtils;
 import com.javielinux.utils.TweetTopicsUtils;
 import com.javielinux.utils.Utils;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 public class FavoritesFragment extends BaseListFragment implements APIDelegate<BaseResponse> {
 
@@ -114,7 +112,19 @@ public class FavoritesFragment extends BaseListFragment implements APIDelegate<B
         view = View.inflate(getActivity(), R.layout.tweettopics_fragment, null);
 
         listView = (PullToRefreshListView) view.findViewById(R.id.tweet_status_listview);
-        listView.getRefreshableView().setCacheColorHint(Color.TRANSPARENT);
+
+        // poner estilo de la listas de las preferencias del usuario
+        ThemeManager themeManager = new ThemeManager(getActivity());
+        listView.getRefreshableView().setDivider(ImageUtils.createDividerDrawable(getActivity(), themeManager.getColor("color_divider_tweet")));
+        if (PreferenceManager.getDefaultSharedPreferences(getActivity()).getBoolean("prf_use_divider_tweet", true)) {
+            listView.getRefreshableView().setDividerHeight(2);
+        } else {
+            listView.getRefreshableView().setDividerHeight(0);
+        }
+        listView.getRefreshableView().setFadingEdgeLength(6);
+        listView.getRefreshableView().setCacheColorHint(themeManager.getColor("color_shadow_listview"));
+
+
         listView.getRefreshableView().setAdapter(tweetsAdapter);
         listView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener() {
             @Override

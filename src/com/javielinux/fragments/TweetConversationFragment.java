@@ -1,6 +1,7 @@
 package com.javielinux.fragments;
 
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -8,19 +9,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
+import com.javielinux.adapters.TweetsConversationAdapter;
 import com.javielinux.api.APIDelegate;
 import com.javielinux.api.APITweetTopics;
 import com.javielinux.api.request.GetConversationRequest;
 import com.javielinux.api.response.BaseResponse;
 import com.javielinux.api.response.ErrorResponse;
 import com.javielinux.api.response.GetConversationResponse;
-import com.javielinux.utils.Utils;
-import com.javielinux.adapters.TweetsConversationAdapter;
 import com.javielinux.infos.InfoTweet;
 import com.javielinux.tweettopics2.R;
+import com.javielinux.tweettopics2.ThemeManager;
+import com.javielinux.utils.ImageUtils;
+import com.javielinux.utils.Utils;
 
 import java.util.ArrayList;
 
@@ -52,6 +54,16 @@ public class TweetConversationFragment extends Fragment implements APIDelegate<B
         footer_view.findViewById(R.id.tweet_conversation_loading).setVisibility(View.GONE);
 
         list = ((ListView)view.findViewById(R.id.tweet_conversation_list));
+        // poner estilo de la listas de las preferencias del usuario
+        ThemeManager themeManager = new ThemeManager(getActivity());
+        list.setDivider(ImageUtils.createDividerDrawable(getActivity(), themeManager.getColor("color_divider_tweet")));
+        if (PreferenceManager.getDefaultSharedPreferences(getActivity()).getBoolean("prf_use_divider_tweet", true)) {
+            list.setDividerHeight(2);
+        } else {
+            list.setDividerHeight(0);
+        }
+        list.setFadingEdgeLength(6);
+        list.setCacheColorHint(themeManager.getColor("color_shadow_listview"));
         list.addFooterView(footer_view);
 
         list.setAdapter(adapter);

@@ -64,7 +64,6 @@ public class TweetsAdapter extends ArrayAdapter<InfoTweet> {
     private ArrayList<InfoTweet> infoTweetArrayList;
     private long selected_id = -1;
     private int hide_messages = 0;
-    private boolean user_last_item_last_read = false;
     private int last_read_position = -1;
 
     private ThemeManager themeManager;
@@ -492,7 +491,4 @@ public class TweetsAdapter extends ArrayAdapter<InfoTweet> {
         this.last_read_position = last_read_position;
     }
 
-    public boolean isUserLastItemLastRead() {
-        return this.user_last_item_last_read;
-    }
 }

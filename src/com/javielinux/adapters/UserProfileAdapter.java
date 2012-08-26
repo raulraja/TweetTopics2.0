@@ -8,10 +8,12 @@ import android.widget.*;
 import com.javielinux.api.APIDelegate;
 import com.javielinux.api.APITweetTopics;
 import com.javielinux.api.request.CheckFriendlyUserRequest;
+import com.javielinux.api.request.ExecuteActionUserRequest;
 import com.javielinux.api.response.BaseResponse;
 import com.javielinux.api.response.ErrorResponse;
 import com.javielinux.infos.InfoUsers;
 import com.javielinux.tweettopics2.R;
+import com.javielinux.utils.UserActions;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -31,10 +33,11 @@ public class UserProfileAdapter extends BaseAdapter {
         public TextView txtUser1;
         public TextView txtUser2;
         public ImageView imgConnectUser;
+        public Button btnFollow;
 
     }
 
-    public static ViewHolder generateViewHolder(View v) {
+    public static ViewHolder generateViewHolder(final View v) {
 
         ViewHolder viewHolder = new ViewHolder();
 
@@ -47,6 +50,8 @@ public class UserProfileAdapter extends BaseAdapter {
         viewHolder.imgConnectUser = (ImageView) v.findViewById(R.id.user_profile_row_friendly_connect);
         viewHolder.txtUser1 = (TextView) v.findViewById(R.id.user_profile_row_friendly_user1);
         viewHolder.txtUser2 = (TextView) v.findViewById(R.id.user_profile_row_friendly_user2);
+
+        viewHolder.btnFollow = (Button) v.findViewById(R.id.user_profile_row_follow);
 
         return viewHolder;
     }
@@ -71,6 +76,20 @@ public class UserProfileAdapter extends BaseAdapter {
         reload();
 
 	}
+
+    public void changeRelationShip(InfoUsers.Friend friend) {
+        APITweetTopics.execute(activity, activity.getSupportLoaderManager(), new APIDelegate() {
+            @Override
+            public void onResults(BaseResponse result) {
+                notifyDataSetChanged();
+            }
+
+            @Override
+            public void onError(ErrorResponse error) {
+
+            }
+        }, new ExecuteActionUserRequest(UserActions.USER_ACTION_CHANGE_RELATIONSHIP, friend, infoUser));
+    }
 
     public void reload() {
         UserProfileItemAdapter item1 = new UserProfileItemAdapter();
@@ -149,14 +168,27 @@ public class UserProfileAdapter extends BaseAdapter {
                 viewHolder.txtUser1.setText(infoUser.getName());
                 viewHolder.txtUser2.setText(item.friend.user);
 
-                if (item.friend.friend && item.friend.friend) {
+                if (item.friend.friend && item.friend.follower) {
                     viewHolder.imgConnectUser.setImageResource(R.drawable.connects_on_on);
-                } else if (item.friend.friend && !item.friend.friend) {
+                } else if (item.friend.friend && !item.friend.follower) {
                     viewHolder.imgConnectUser.setImageResource(R.drawable.connects_on_off);
-                } else if (!item.friend.friend && item.friend.friend) {
+                } else if (!item.friend.friend && item.friend.follower) {
                     viewHolder.imgConnectUser.setImageResource(R.drawable.connects_off_on);
                 } else {
                     viewHolder.imgConnectUser.setImageResource(R.drawable.connects_off_off);
+                }
+
+                viewHolder.btnFollow.setTag(item.friend);
+                viewHolder.btnFollow.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        changeRelationShip((InfoUsers.Friend) view.getTag());
+                    }
+                });
+                if (item.friend.follower) {
+                    viewHolder.btnFollow.setText(R.string.unfollow);
+                } else {
+                    viewHolder.btnFollow.setText(R.string.follow);
                 }
 
             } else {
@@ -167,7 +199,7 @@ public class UserProfileAdapter extends BaseAdapter {
                 APITweetTopics.execute(activity, activity.getSupportLoaderManager(), new APIDelegate() {
                     @Override
                     public void onResults(BaseResponse result) {
-                         notifyDataSetChanged();
+                        notifyDataSetChanged();
                     }
 
                     @Override

@@ -1,8 +1,8 @@
 package com.javielinux.fragments;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,9 +27,13 @@ import com.javielinux.database.EntitySearch;
 import com.javielinux.infos.InfoSaveTweets;
 import com.javielinux.infos.InfoTweet;
 import com.javielinux.tweettopics2.R;
+import com.javielinux.tweettopics2.ThemeManager;
 import com.javielinux.tweettopics2.TweetActivity;
+import com.javielinux.utils.ImageUtils;
 import com.javielinux.utils.TweetTopicsUtils;
 import com.javielinux.utils.Utils;
+import widget.WidgetCounters2x1;
+import widget.WidgetCounters4x1;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -161,29 +165,31 @@ public class SearchFragment extends BaseListFragment implements APIDelegate<Base
         APITweetTopics.execute(getActivity(), getLoaderManager(), this, searchRequest);
     }
 
-    private boolean markPositionLastReadAsLastReadId() {
+    private void markPositionLastReadAsLastReadId() {
 
-        //TODO:sendBroadcastWidgets
-        //sendBroadcastWidgets();
-        if (tweetsAdapter != null) {
-            if (!tweetsAdapter.isUserLastItemLastRead()) {
-                if (tweetsAdapter.getCount() > positionLastRead) {
-                    try {
-                        long id = tweetsAdapter.getItem(positionLastRead).getId();
-                        if (search_entity != null) {
-                            search_entity.setValue("last_tweet_id", id + "");
-                            search_entity.save();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
 
-                            return true;
+                if (tweetsAdapter != null) {
+
+                    if (tweetsAdapter.getCount() > positionLastRead) {
+                        try {
+                            long id = tweetsAdapter.getItem(positionLastRead).getId();
+                            if (search_entity != null) {
+                                search_entity.setValue("last_tweet_id", id + "");
+                                search_entity.save();
+                            }
+                            sendBroadcastUpdateTweets();
+                        } catch (ArrayIndexOutOfBoundsException e) {
+                            e.printStackTrace();
                         }
-                    } catch (ArrayIndexOutOfBoundsException e) {
-                        e.printStackTrace();
                     }
+
                 }
             }
+        }).start();
 
-        }
-        return false;
     }
 
     @Override
@@ -208,8 +214,18 @@ public class SearchFragment extends BaseListFragment implements APIDelegate<Base
         view = View.inflate(getActivity(), R.layout.tweettopics_fragment, null);
 
         listView = (PullToRefreshListView) view.findViewById(R.id.tweet_status_listview);
+        // poner estilo de la listas de las preferencias del usuario
+        ThemeManager themeManager = new ThemeManager(getActivity());
+        listView.getRefreshableView().setDivider(ImageUtils.createDividerDrawable(getActivity(), themeManager.getColor("color_divider_tweet")));
+        if (PreferenceManager.getDefaultSharedPreferences(getActivity()).getBoolean("prf_use_divider_tweet", true)) {
+            listView.getRefreshableView().setDividerHeight(2);
+        } else {
+            listView.getRefreshableView().setDividerHeight(0);
+        }
+        listView.getRefreshableView().setFadingEdgeLength(6);
+        listView.getRefreshableView().setCacheColorHint(themeManager.getColor("color_shadow_listview"));
+
         tweetsAdapter.setParentListView(listView);
-        listView.getRefreshableView().setCacheColorHint(Color.TRANSPARENT);
         listView.getRefreshableView().setAdapter(tweetsAdapter);
         listView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener() {
             @Override
@@ -363,4 +379,10 @@ public class SearchFragment extends BaseListFragment implements APIDelegate<Base
         listView.onRefreshComplete();
         showNoInternet();
     }
+
+    private void sendBroadcastUpdateTweets() {
+        WidgetCounters4x1.updateAll(getActivity());
+        WidgetCounters2x1.updateAll(getActivity());
+    }
+
 }

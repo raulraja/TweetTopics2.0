@@ -242,15 +242,7 @@
 		    <PreferenceCategory
 		            android:title="@string/title_prf_content"
 		            >
-		            
-		        <ListPreference
-		        		android:defaultValue="es"
-		                android:key="prf_translate"
-		                android:title="@string/title_prf_translate"
-		                android:summary="@string/summary_prf_translate"
-		                android:entries="@array/languages_translates"
-		                android:entryValues="@array/languages_translates_values"
-		                android:dialogTitle="@string/language" />
+
 		           
 		        <Preference
 		                android:key="prf_quiet"

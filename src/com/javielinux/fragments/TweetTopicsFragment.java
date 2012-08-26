@@ -1,8 +1,8 @@
 package com.javielinux.fragments;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,8 +27,9 @@ import com.javielinux.database.EntityTweetUser;
 import com.javielinux.infos.InfoSaveTweets;
 import com.javielinux.infos.InfoTweet;
 import com.javielinux.tweettopics2.R;
+import com.javielinux.tweettopics2.ThemeManager;
 import com.javielinux.tweettopics2.TweetActivity;
-import com.javielinux.tweettopics2.TweetTopicsActivity;
+import com.javielinux.utils.ImageUtils;
 import com.javielinux.utils.TweetTopicsUtils;
 import com.javielinux.utils.Utils;
 import widget.WidgetCounters2x1;
@@ -169,41 +170,43 @@ public class TweetTopicsFragment extends BaseListFragment implements APIDelegate
         APITweetTopics.execute(getActivity(), getLoaderManager(), this, new TwitterUserRequest(column_entity.getInt("type_id"), user_entity.getId()));
     }
 
-    private boolean markPositionLastReadAsLastReadId() {
+    private void markPositionLastReadAsLastReadId() {
 
-        sendBroadcastUpdateTweets();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
 
-        if (tweetsAdapter != null) {
-            if (!tweetsAdapter.isUserLastItemLastRead()) {
-                if (tweetsAdapter.getCount() > positionLastRead) {
-                    try {
-                        long id = tweetsAdapter.getItem(positionLastRead).getId();
-                        if (user_entity != null) {
-                            switch (column_entity.getInt("type_id")) {
-                                case TweetTopicsUtils.COLUMN_TIMELINE:
-                                    user_entity.setValue("last_timeline_id", id + "");
-                                    user_entity.save();
-                                    break;
-                                case TweetTopicsUtils.COLUMN_MENTIONS:
-                                    user_entity.setValue("last_mention_id", id + "");
-                                    user_entity.save();
-                                    break;
-                                case TweetTopicsUtils.COLUMN_DIRECT_MESSAGES:
-                                    user_entity.setValue("last_direct_id", id + "");
-                                    user_entity.save();
-                                    break;
+                if (tweetsAdapter != null) {
+
+                    if (tweetsAdapter.getCount() > positionLastRead) {
+                        try {
+                            long id = tweetsAdapter.getItem(positionLastRead).getId();
+                            if (user_entity != null) {
+                                switch (column_entity.getInt("type_id")) {
+                                    case TweetTopicsUtils.COLUMN_TIMELINE:
+                                        user_entity.setValue("last_timeline_id", id + "");
+                                        user_entity.save();
+                                        break;
+                                    case TweetTopicsUtils.COLUMN_MENTIONS:
+                                        user_entity.setValue("last_mention_id", id + "");
+                                        user_entity.save();
+                                        break;
+                                    case TweetTopicsUtils.COLUMN_DIRECT_MESSAGES:
+                                        user_entity.setValue("last_direct_id", id + "");
+                                        user_entity.save();
+                                        break;
+                                }
+                                sendBroadcastUpdateTweets();
                             }
-
-                            return true;
+                        } catch (ArrayIndexOutOfBoundsException e) {
+                            e.printStackTrace();
                         }
-                    } catch (ArrayIndexOutOfBoundsException e) {
-                        e.printStackTrace();
                     }
+
                 }
             }
+        }).start();
 
-        }
-        return false;
     }
 
     @Override
@@ -229,7 +232,18 @@ public class TweetTopicsFragment extends BaseListFragment implements APIDelegate
         view = View.inflate(getActivity(), R.layout.tweettopics_fragment, null);
 
         listView = (PullToRefreshListView) view.findViewById(R.id.tweet_status_listview);
-        listView.getRefreshableView().setCacheColorHint(Color.TRANSPARENT);
+
+        // poner estilo de la listas de las preferencias del usuario
+        ThemeManager themeManager = new ThemeManager(getActivity());
+        listView.getRefreshableView().setDivider(ImageUtils.createDividerDrawable(getActivity(), themeManager.getColor("color_divider_tweet")));
+        if (PreferenceManager.getDefaultSharedPreferences(getActivity()).getBoolean("prf_use_divider_tweet", true)) {
+            listView.getRefreshableView().setDividerHeight(2);
+        } else {
+            listView.getRefreshableView().setDividerHeight(0);
+        }
+        listView.getRefreshableView().setFadingEdgeLength(6);
+        listView.getRefreshableView().setCacheColorHint(themeManager.getColor("color_shadow_listview"));
+
         listView.getRefreshableView().setAdapter(tweetsAdapter);
         listView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener() {
             @Override
@@ -399,7 +413,6 @@ public class TweetTopicsFragment extends BaseListFragment implements APIDelegate
     }
 
     private void sendBroadcastUpdateTweets() {
-        ((TweetTopicsActivity)getActivity()).refreshMyActivity();
         WidgetCounters4x1.updateAll(getActivity());
         WidgetCounters2x1.updateAll(getActivity());
     }

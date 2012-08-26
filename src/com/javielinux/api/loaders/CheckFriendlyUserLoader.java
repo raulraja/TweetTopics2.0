@@ -23,13 +23,9 @@ public class CheckFriendlyUserLoader extends AsynchronousLoader<BaseResponse> {
 
 		try {
             CheckFriendlyUserResponse response = new CheckFriendlyUserResponse();
-
             InfoUsers infoUsers = request.getInfoUsers();
-
             infoUsers.checkFriend(getContext(), request.getUser());
-
             response.setInfoUsers(infoUsers);
-
             return response;
 		} catch (NullPointerException e) {
 			e.printStackTrace();

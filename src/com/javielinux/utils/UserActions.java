@@ -1,6 +1,7 @@
 package com.javielinux.utils;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
@@ -11,45 +12,63 @@ import com.javielinux.infos.InfoUsers;
 import com.javielinux.tweettopics2.NewStatusActivity;
 import com.javielinux.tweettopics2.R;
 import com.javielinux.tweettopics2.TabNewEditSearch;
+import com.javielinux.twitter.ConnectionManager;
 import preferences.Colors;
+import twitter4j.Twitter;
+import twitter4j.TwitterException;
 
 import java.util.ArrayList;
 
 public class UserActions {
 
-    public static boolean execByCode(String code, FragmentActivity activity, InfoUsers infoUsers) {
-        if (code.equals("coloring")) {
-            goToColoringTweets(activity, infoUsers);
-        } else if (code.equals("create_block")) {
-            goToCreateBlock(activity, infoUsers);
-        } else if (code.equals("report_spam")) {
-            goToReportSpam(activity, infoUsers);
-        } else if (code.equals("included_list")) {
-            goToIncludeList(activity, infoUsers);
-        } else if (code.equals("hide")) {
-            goToHide(activity, infoUsers);
-        } else if (code.equals("create_topic")) {
-            goToCreateTopic(activity, infoUsers);
-        } else if (code.equals("send_direct")) {
-            goToDirect(activity, infoUsers);
-        }
-        return false;
+    public static String USER_ACTION_COLORING = "coloring";
+    public static String USER_ACTION_CREATE_BLOCK = "create_block";
+    public static String USER_ACTION_REPORT_SPAM = "report_spam";
+    public static String USER_ACTION_INCLUDED_LIST = "included_list";
+    public static String USER_ACTION_HIDE = "hide";
+    public static String USER_ACTION_CREATE_TOPIC = "create_topic";
+    public static String USER_ACTION_SEND_DIRECT = "send_direct";
+    public static String USER_ACTION_CHANGE_RELATIONSHIP = "change_relationship";
+
+    public static InfoUsers execByCode(String code, FragmentActivity activity, InfoUsers infoUsers) {
+         return execByCode(code, activity, infoUsers, null);
     }
 
-    private static void goToDirect(FragmentActivity activity, InfoUsers infoUsers) {
+    public static InfoUsers execByCode(String code, FragmentActivity activity, InfoUsers infoUsers, Object extra) {
+        if (code.equals(USER_ACTION_COLORING)) {
+            goToColoringTweets(activity, infoUsers);
+        } else if (code.equals(USER_ACTION_CREATE_BLOCK)) {
+            goToCreateBlock(activity, infoUsers);
+        } else if (code.equals(USER_ACTION_REPORT_SPAM)) {
+            goToReportSpam(activity, infoUsers);
+        } else if (code.equals(USER_ACTION_INCLUDED_LIST)) {
+            goToIncludeList(activity, infoUsers);
+        } else if (code.equals(USER_ACTION_HIDE)) {
+            goToHide(activity, infoUsers);
+        } else if (code.equals(USER_ACTION_CREATE_TOPIC)) {
+            goToCreateTopic(activity, infoUsers);
+        } else if (code.equals(USER_ACTION_SEND_DIRECT)) {
+            goToDirect(activity, infoUsers);
+        } else if (code.equals(USER_ACTION_CHANGE_RELATIONSHIP)) {
+            return goToChangeRelationship(activity, infoUsers, (InfoUsers.Friend)extra);
+        }
+        return null;
+    }
+
+    public static void goToDirect(FragmentActivity activity, InfoUsers infoUsers) {
         Intent newstatus = new Intent(activity, NewStatusActivity.class);
         newstatus.putExtra("type", NewStatusActivity.TYPE_DIRECT_MESSAGE);
         newstatus.putExtra("username_direct_message", infoUsers.getName());
         activity.startActivity(newstatus);
     }
 
-    private static void goToCreateTopic(FragmentActivity activity, InfoUsers infoUsers) {
+    public static void goToCreateTopic(FragmentActivity activity, InfoUsers infoUsers) {
         Intent newsearch = new Intent(activity, TabNewEditSearch.class);
         newsearch.putExtra("user", infoUsers.getName());
         activity.startActivity(newsearch);
     }
 
-    private static void goToHide(FragmentActivity activity, InfoUsers infoUsers) {
+    public static void goToHide(FragmentActivity activity, InfoUsers infoUsers) {
         Entity ent = new Entity("quiet");
         ent.setValue("word", infoUsers.getName());
         ent.setValue("type_id", 2);
@@ -57,18 +76,48 @@ public class UserActions {
         Utils.showMessage(activity, activity.getString(R.string.user_hidden_correct));
     }
 
-    private static void goToReportSpam(FragmentActivity activity, InfoUsers infoUsers) {
-        // TODO report spam
+    public static void goToReportSpam(Context context, InfoUsers infoUsers) {
+        ConnectionManager.getInstance().open(context);
+        Twitter twitter = ConnectionManager.getInstance().getTwitter(DBUtils.getIdFromUserName(infoUsers.getName()));
+        try {
+            twitter.reportSpam(infoUsers.getName());
+        } catch (TwitterException e) {
+            e.printStackTrace();
+        }
     }
 
-    private static void goToIncludeList(FragmentActivity activity, InfoUsers infoUsers) {
+    public static void goToIncludeList(Context context, InfoUsers infoUsers) {
         // TODO include list
     }
 
-    private static void goToCreateBlock(FragmentActivity activity, InfoUsers infoUsers) {
-        // TODO create block
+    public static void goToCreateBlock(Context context, InfoUsers infoUsers) {
+        ConnectionManager.getInstance().open(context);
+        Twitter twitter = ConnectionManager.getInstance().getTwitter(DBUtils.getIdFromUserName(infoUsers.getName()));
+        try {
+            twitter.createBlock(infoUsers.getName());
+        } catch (TwitterException e) {
+            e.printStackTrace();
+        }
     }
 
+    public static InfoUsers goToChangeRelationship(Context context, InfoUsers infoUsers, InfoUsers.Friend friend) {
+        ConnectionManager.getInstance().open(context);
+        Twitter twitter = ConnectionManager.getInstance().getTwitter(DBUtils.getIdFromUserName(friend.user));
+        try {
+            if (friend.follower) {
+                twitter.destroyFriendship(infoUsers.getName());
+                friend.follower = false;
+            } else {
+                twitter.createFriendship(infoUsers.getName());
+                friend.follower = true;
+            }
+            infoUsers.replaceFriendly(friend.user, friend);
+            return infoUsers;
+        } catch (TwitterException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
     public static void goToColoringTweets(final FragmentActivity activity, final InfoUsers infoUsers) {
 

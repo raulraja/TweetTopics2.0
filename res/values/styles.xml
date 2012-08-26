@@ -1,6 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!-- Estilos para eliminar valores por defecto en el tema Holo, como
+        por ejemplo el margin mínimo de los botones -->
+    <style name="BaseButton" parent="android:Widget.Holo.Button">
+        <item name="android:minHeight">0dp</item>
+        <item name="android:minWidth">0dp</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="BaseEditText" parent="@android:style/Widget.Holo.Light.EditText">
+        <item name="android:background">@android:drawable/editbox_background_normal</item>
+        <item name="android:textCursorDrawable">@drawable/cursor_black</item>
+    </style>
+
+    <!-- Action bar -->
+
     <style name="TitleActionBarColumnItem">
         <item name="android:textSize">10sp</item>
         <item name="android:textColor">?attr/color_grid_search</item>
@@ -85,24 +100,24 @@
         <item name="android:textAppearance">@style/TextAppearance</item>
     </style>
     
-    <style name="Widget.Button" parent="android:Widget.Button">
-        <item name="android:textAppearance">@style/TextAppearance.Button</item>
-        <item name="android:background">@drawable/button_background</item>
-        <item name="android:textColor">?color_textbutton_general</item>
-        <item name="android:padding">5dip</item>
-     </style>
+    <!--<style name="Widget.Button" parent="android:Widget.Button">-->
+        <!--<item name="android:textAppearance">@style/TextAppearance.Button</item>-->
+        <!--<item name="android:background">@drawable/button_background</item>-->
+        <!--<item name="android:textColor">?color_textbutton_general</item>-->
+        <!--<item name="android:padding">5dip</item>-->
+     <!--</style>-->
 
-    <style name="Widget.EditText" parent="android:Widget.EditText">
-        <item name="android:textAppearance">@style/TextAppearance.EditText</item>
-        <item name="android:background">@drawable/edit_text</item>
-        <item name="android:textColor">@color/color_tweet_text</item>
-        <item name="android:gravity">top</item>
-     </style>
-     
-    <style name="Widget.ListView" parent="android:Widget.ListView">
-        <item name="android:cacheColorHint">@color/color_foreground</item>
-    </style>
-    
+    <!--<style name="Widget.EditText" parent="android:Widget.EditText">-->
+        <!--<item name="android:textAppearance">@style/TextAppearance.EditText</item>-->
+        <!--<item name="android:background">@drawable/edit_text</item>-->
+        <!--<item name="android:textColor">@color/color_tweet_text</item>-->
+        <!--<item name="android:gravity">top</item>-->
+     <!--</style>-->
+
+    <!--<style name="Widget.ListView" parent="android:Widget.ListView">-->
+        <!--<item name="android:cacheColorHint">@color/color_foreground</item>-->
+    <!--</style>-->
+
     <style name="ButtonSidebar" parent="android:Widget.Button">
         <item name="android:textColor">?color_textbutton_sidebar</item>
         <item name="android:background">?button_transparent_background</item>

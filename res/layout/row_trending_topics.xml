@@ -8,6 +8,7 @@
     <TextView android:id="@+id/trend_name"
         android:layout_height="wrap_content"
         android:layout_width="fill_parent"
+        style="@style/TitleListBig"
         android:padding="12dp"
          />
 

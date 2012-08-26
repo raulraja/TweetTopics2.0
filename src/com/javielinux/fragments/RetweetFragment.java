@@ -1,8 +1,8 @@
 package com.javielinux.fragments;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,7 +23,9 @@ import com.javielinux.api.response.ErrorResponse;
 import com.javielinux.api.response.LoadTypeStatusResponse;
 import com.javielinux.infos.InfoTweet;
 import com.javielinux.tweettopics2.R;
+import com.javielinux.tweettopics2.ThemeManager;
 import com.javielinux.tweettopics2.TweetActivity;
+import com.javielinux.utils.ImageUtils;
 import com.javielinux.utils.TweetTopicsUtils;
 import com.javielinux.utils.Utils;
 
@@ -112,7 +114,17 @@ public class RetweetFragment extends BaseListFragment implements APIDelegate<Bas
         view = View.inflate(getActivity(), R.layout.tweettopics_fragment, null);
 
         listView = (PullToRefreshListView) view.findViewById(R.id.tweet_status_listview);
-        listView.getRefreshableView().setCacheColorHint(Color.TRANSPARENT);
+        // poner estilo de la listas de las preferencias del usuario
+        ThemeManager themeManager = new ThemeManager(getActivity());
+        listView.getRefreshableView().setDivider(ImageUtils.createDividerDrawable(getActivity(), themeManager.getColor("color_divider_tweet")));
+        if (PreferenceManager.getDefaultSharedPreferences(getActivity()).getBoolean("prf_use_divider_tweet", true)) {
+            listView.getRefreshableView().setDividerHeight(2);
+        } else {
+            listView.getRefreshableView().setDividerHeight(0);
+        }
+        listView.getRefreshableView().setFadingEdgeLength(6);
+        listView.getRefreshableView().setCacheColorHint(themeManager.getColor("color_shadow_listview"));
+
         listView.getRefreshableView().setAdapter(tweetsAdapter);
         listView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener() {
             @Override

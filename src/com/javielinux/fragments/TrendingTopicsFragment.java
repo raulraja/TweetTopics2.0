@@ -1,8 +1,8 @@
 package com.javielinux.fragments;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,7 +26,9 @@ import com.javielinux.api.response.TrendsResponse;
 import com.javielinux.database.EntitySearch;
 import com.javielinux.infos.InfoTweet;
 import com.javielinux.tweettopics2.R;
+import com.javielinux.tweettopics2.ThemeManager;
 import com.javielinux.tweettopics2.TweetActivity;
+import com.javielinux.utils.ImageUtils;
 import com.javielinux.utils.Utils;
 import com.nineoldandroids.animation.Animator;
 import com.nineoldandroids.animation.AnimatorSet;
@@ -115,8 +117,22 @@ public class TrendingTopicsFragment extends BaseListFragment implements APIDeleg
 
         view = View.inflate(getActivity(), R.layout.trendingtopics_fragment, null);
 
+        /**
+         * Lista de Trends
+         */
+
         trendsLocationlistView = (PullToRefreshListView) view.findViewById(R.id.trends_location_listview);
-        trendsLocationlistView.getRefreshableView().setCacheColorHint(Color.TRANSPARENT);
+        // poner estilo de la listas de las preferencias del usuario
+        ThemeManager themeManager = new ThemeManager(getActivity());
+        trendsLocationlistView.getRefreshableView().setDivider(ImageUtils.createDividerDrawable(getActivity(), themeManager.getColor("color_divider_tweet")));
+        if (PreferenceManager.getDefaultSharedPreferences(getActivity()).getBoolean("prf_use_divider_tweet", true)) {
+            trendsLocationlistView.getRefreshableView().setDividerHeight(2);
+        } else {
+            trendsLocationlistView.getRefreshableView().setDividerHeight(0);
+        }
+        trendsLocationlistView.getRefreshableView().setFadingEdgeLength(6);
+        trendsLocationlistView.getRefreshableView().setCacheColorHint(themeManager.getColor("color_shadow_listview"));
+
         trendsLocationlistView.getRefreshableView().setAdapter(trendingTopicsAdapter);
         trendsLocationlistView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener() {
             @Override
@@ -131,9 +147,22 @@ public class TrendingTopicsFragment extends BaseListFragment implements APIDeleg
             }
         });
 
+        /**
+         * Lista de tweets
+         */
+
         trendslistView = (PullToRefreshListView) view.findViewById(R.id.trends_listview);
+        // poner estilo de la listas de las preferencias del usuario
+        trendslistView.getRefreshableView().setDivider(ImageUtils.createDividerDrawable(getActivity(), themeManager.getColor("color_divider_tweet")));
+        if (PreferenceManager.getDefaultSharedPreferences(getActivity()).getBoolean("prf_use_divider_tweet", true)) {
+            trendslistView.getRefreshableView().setDividerHeight(2);
+        } else {
+            trendslistView.getRefreshableView().setDividerHeight(0);
+        }
+        trendslistView.getRefreshableView().setFadingEdgeLength(6);
+        trendslistView.getRefreshableView().setCacheColorHint(themeManager.getColor("color_shadow_listview"));
+
         trendsAdapter.setParentListView(trendslistView);
-        trendslistView.getRefreshableView().setCacheColorHint(Color.TRANSPARENT);
         trendslistView.getRefreshableView().setAdapter(trendsAdapter);
         trendslistView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener() {
             @Override

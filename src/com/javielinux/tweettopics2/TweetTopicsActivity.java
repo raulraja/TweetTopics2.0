@@ -173,6 +173,9 @@ public class TweetTopicsActivity extends BaseActivity {
             @Override
             public void onPageSelected(int i) {
                 reloadBarAvatar();
+                if (i==0) {
+                    refreshMyActivity();
+                }
             }
 
             @Override
