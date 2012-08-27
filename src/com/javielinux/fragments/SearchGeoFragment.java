@@ -1,18 +1,33 @@
 package com.javielinux.fragments;
 
 import android.content.Intent;
+import android.database.DataSetObserver;
+import android.location.Address;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
+import com.javielinux.adapters.AddressAdapter;
+import com.javielinux.api.APIDelegate;
+import com.javielinux.api.APITweetTopics;
+import com.javielinux.api.request.GetGeolocationAddressRequest;
+import com.javielinux.api.response.BaseResponse;
+import com.javielinux.api.response.ErrorResponse;
+import com.javielinux.api.response.GetGeolocationAddressResponse;
 import com.javielinux.database.EntitySearch;
 import com.javielinux.tweettopics2.MapSearch;
 import com.javielinux.tweettopics2.R;
 import com.javielinux.utils.Utils;
 
-public class SearchGeoFragment extends Fragment {
+import java.util.ArrayList;
+
+public class SearchGeoFragment extends Fragment implements APIDelegate<BaseResponse> {
 
     public static final int ACTIVITY_MAPSEARCH = 0;
 
@@ -22,6 +37,7 @@ public class SearchGeoFragment extends Fragment {
     private RadioGroup typeGeo;
     private RadioButton typeGeoGPS;
     private RadioButton typeGeoMap;
+    private AutoCompleteTextView place;
     private EditText latitude;
     private EditText longitude;
     private SeekBar distance;
@@ -29,10 +45,11 @@ public class SearchGeoFragment extends Fragment {
     private RadioGroup typeDistance;
     private RadioButton typeDistanceMiles;
     private RadioButton typeDistanceKM;
-    private Button btMap;
     private LinearLayout llMap;
     private LinearLayout llDistance;
 
+    private AddressAdapter address_adapter;
+    private ArrayList<Address> address_list;
     private int distance_value = 0;
 
     public SearchGeoFragment(EntitySearch search_entity) {
@@ -59,12 +76,29 @@ public class SearchGeoFragment extends Fragment {
         llMap = (LinearLayout)view.findViewById(R.id.ll_map);
         llDistance = (LinearLayout)view.findViewById(R.id.ll_distance);
 
+        place = (AutoCompleteTextView)view.findViewById(R.id.et_place);
+
+        address_list = new ArrayList<Address>();
+        address_adapter = new AddressAdapter(getActivity(), address_list);
+        place.setAdapter(address_adapter);
+        place.setVisibility(View.GONE);
+
+        place.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Address address = address_adapter.getAddressItem(i);
+
+                if (address != null) {
+                    latitude.setText(String.valueOf(address.getLatitude()));
+                    longitude.setText(String.valueOf(address.getLongitude()));
+                }
+            }
+        });
+
         latitude = (EditText)view.findViewById(R.id.et_latitude);
         longitude = (EditText)view.findViewById(R.id.et_longitude);
         distance = (SeekBar)view.findViewById(R.id.sb_distance);
         distanceTxt = (TextView)view.findViewById(R.id.distance);
-
-        btMap = (Button)view.findViewById(R.id.bt_map);
 
         distance.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -122,14 +156,27 @@ public class SearchGeoFragment extends Fragment {
             }
         });
 
-        btMap.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View arg0) {
-                Utils.showMessage(getActivity(), getActivity().getString(R.string.msg_finger_map));
-                Intent newsearch = new Intent(getActivity(), MapSearch.class);
-                startActivityForResult(newsearch, ACTIVITY_MAPSEARCH);
-            }
+        place.addTextChangedListener(new TextWatcher() {
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                String currentText = place.getText().toString();
 
+                if (currentText.length() >= 3)
+                    APITweetTopics.execute(getActivity(), getLoaderManager(), SearchGeoFragment.this, new GetGeolocationAddressRequest(getActivity(), currentText, false));
+            }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            public void afterTextChanged(Editable editable) {}
+        });
+
+        place.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (event != null&& (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) {
+                    String currentText = place.getText().toString();
+
+                    APITweetTopics.execute(getActivity(), getLoaderManager(), SearchGeoFragment.this, new GetGeolocationAddressRequest(getActivity(), currentText, true));
+                }
+                return false;
+            }
         });
 
         populateFields();
@@ -175,18 +222,19 @@ public class SearchGeoFragment extends Fragment {
     }
 
     private void showFieldsMap() {
+        place.setVisibility(View.VISIBLE);
         latitude.setVisibility(View.VISIBLE);
         longitude.setVisibility(View.VISIBLE);
-        btMap.setVisibility(View.VISIBLE);
     }
 
     private void hideFieldsMap() {
+        place.setVisibility(View.GONE);
         latitude.setVisibility(View.GONE);
         longitude.setVisibility(View.GONE);
-        btMap.setVisibility(View.GONE);
     }
 
     private void showFields() {
+        place.setVisibility(View.VISIBLE);
         llMap.setVisibility(View.VISIBLE);
         llDistance.setVisibility(View.VISIBLE);
         typeGeo.setVisibility(View.VISIBLE);
@@ -194,6 +242,7 @@ public class SearchGeoFragment extends Fragment {
     }
 
     private void hideFields() {
+        place.setVisibility(View.GONE);
         llMap.setVisibility(View.GONE);
         llDistance.setVisibility(View.GONE);
         typeGeo.setVisibility(View.GONE);
@@ -221,5 +270,40 @@ public class SearchGeoFragment extends Fragment {
             typeDistanceMiles.setChecked(true);
 
         reloadTextDistance();
+    }
+
+    @Override
+    public void onResults(BaseResponse response) {
+        GetGeolocationAddressResponse result = (GetGeolocationAddressResponse)response;
+
+        if (result.getSingleResult()) {
+
+            if (result.getAddressList().size() > 0) {
+                Address address = result.getAddressList().get(0);
+
+                String text = address.getAddressLine(0);
+
+                if (address.getCountryName() != null)
+                    text = text + " (" + address.getCountryName() + ")";
+
+                place.setText(text);
+                latitude.setText(String.valueOf(address.getLatitude()));
+                longitude.setText(String.valueOf(address.getLongitude()));
+            }
+        } else {
+            address_list.clear();
+
+            for(Address address: result.getAddressList()) {
+                address_list.add(address);
+            }
+
+            address_adapter.notifyDataSetChanged();
+        }
+    }
+
+    @Override
+    public void onError(ErrorResponse error) {
+        Log.d(getActivity().getResources().getString(R.string.app_name) + ".0",error.getMsgError());
+        error.getError().printStackTrace();
     }
 }

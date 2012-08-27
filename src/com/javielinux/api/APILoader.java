@@ -106,6 +106,10 @@ public class APILoader implements LoaderManager.LoaderCallbacks {
             loader = new CheckFriendlyUserLoader(context, (CheckFriendlyUserRequest)baseRequest);
         }  else if (baseRequest instanceof ExecuteActionUserRequest) {
             loader = new ExecuteActionUserLoader(context, (ExecuteActionUserRequest)baseRequest);
+        } else if (baseRequest instanceof GetGeolocationAddressRequest) {
+            loader = new GetGeolocationAddressLoader(context, (GetGeolocationAddressRequest)baseRequest);
+        } else if (baseRequest instanceof UserMentionsRequest) {
+            loader = new UserMentionsLoader(context, (UserMentionsRequest)baseRequest);
         }
 
         return loader;

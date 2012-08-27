@@ -47,6 +47,8 @@
     <string name="default_language_setting_message">Language has been set as default. If you want to select other language, you must long-press the translate button</string>
     <string name="original_tweet">Original tweet</string>
 
+    <string name="location_search_message">Enter a location</string>
+
     <!-- v 1.74  -->
 
     <string name="volume_control_search_user">Username</string>

@@ -43,6 +43,8 @@
     <string name="default_language_setting_message">Se ha establecido el idioma por defecto. Si quieres seleccionar otro idioma, debes hacer un long-press sobre el botón de traducir</string>
     <string name="original_tweet">Tweet original</string>
 
+    <string name="location_search_message">Introduzca una ubicación</string>
+
     <!-- v 1.74  -->
 
     <string name="volume_control_search_user">Usuario</string>
