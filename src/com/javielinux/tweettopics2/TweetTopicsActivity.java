@@ -31,12 +31,12 @@ import com.javielinux.dialogs.AlertDialogFragment;
 import com.javielinux.dialogs.HashTagDialogFragment;
 import com.javielinux.fragmentadapter.TweetTopicsFragmentAdapter;
 import com.javielinux.infos.InfoTweet;
+import com.javielinux.notifications.OnAlarmReceiver;
 import com.javielinux.utils.*;
 import com.nineoldandroids.animation.Animator;
 import com.nineoldandroids.animation.AnimatorSet;
 import com.nineoldandroids.animation.ObjectAnimator;
 import com.viewpagerindicator.TitlePageIndicator;
-import notifications.OnAlarmReceiver;
 import preferences.Preferences;
 
 import java.util.ArrayList;
@@ -947,7 +947,6 @@ public class TweetTopicsActivity extends BaseActivity {
         frag.setAlertButtonListener(new AlertDialogFragment.AlertButtonListener() {
             @Override
             public void OnAlertButtonOk() {
-
                 if (deleteColumn(position))
                     Toast.makeText(TweetTopicsActivity.this, R.string.column_delete_ok,Toast.LENGTH_LONG).show();
             }

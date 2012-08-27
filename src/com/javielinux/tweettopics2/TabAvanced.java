@@ -166,7 +166,7 @@ public class TabAvanced extends Activity {
     		
     		mSource.setText(ent.getString("source"));
     		
-    		if (ent.getInt("notifications")==1) {
+    		if (ent.getInt("com/javielinux/notifications")==1) {
     			searchIsNotification = true;
     			mNotifications.setChecked(true);
     			showFields();

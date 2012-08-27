@@ -1,4 +1,4 @@
-package tweetprogrammed;
+package com.javielinux.tweetprogrammed;
 
 
 import android.app.AlarmManager;

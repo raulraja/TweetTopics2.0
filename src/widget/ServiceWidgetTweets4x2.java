@@ -376,7 +376,7 @@ public class ServiceWidgetTweets4x2 extends Service {
 		    	try {
 			    	Log.d(Utils.TAG_WIDGET, "Cargando busqueda con id " + mCurrentSearch);	    	
 			    	EntitySearch mEntitySearch = new EntitySearch(mCurrentSearch);
-			    	if (mEntitySearch.getInt("notifications")==1) {
+			    	if (mEntitySearch.getInt("com/javielinux/notifications")==1) {
 			    		ArrayList<Entity> ents = DataFramework.getInstance().getEntityList("tweets", "favorite=0 and search_id="+mEntitySearch.getId(), "date desc");
 			    		for (int i=0; i<ents.size();i++) {
 			    			mTweets.add(new InfoTweet(ents.get(i)));

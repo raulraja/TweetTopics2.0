@@ -1,4 +1,4 @@
-package notifications;
+package com.javielinux.notifications;
 
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -23,28 +23,50 @@ import com.javielinux.twitter.ConnectionManager;
 import com.javielinux.utils.PreferenceUtils;
 import com.javielinux.utils.TweetTopicsUtils;
 import com.javielinux.utils.Utils;
-import notifications.AlarmAsyncTask.AlarmAsyncTaskResponder;
 import preferences.IntegrationADW;
 import preferences.IntegrationADWAdapter;
 import twitter4j.Twitter;
 import widget.WidgetCounters2x1;
 import widget.WidgetCounters4x1;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class AlarmOneNotificationAsyncTask extends AsyncTask<Void, Void, Void> {
+public class AlarmAsyncTask extends AsyncTask<Void, Void, Void> {
+	
+	class UserNotifications {
+		int mTotalTimeline = 0;
+		int mTotalMentions = 0;
+	    int mTotalDMs = 0;
+	    
+	    String mName = "";
+	    long id = -1;
+	    boolean show = false;
+	    /*
+	    int getTotal() {
+	    	return mTotalTimeline + mTotalMentions + mTotalDMs;
+	    }
+	    */
+	}
+	
+	class SearchNotifications {
+		int mTotal = 0;
+		String mName = "";
+	}
+	
+	boolean showSearchNotifications = false;
 	
 	private Twitter twitter;
 	
 	Context mContext;
 	SharedPreferences mPreferences;
 	
+	private int mType;
+	
 	// variables para mostrar la notificacion en android
 	
-    int mTotalSumMentions = 0;
-    int mTotalSumDMs = 0;
-    int mTotalSumSearches = 0;
-    boolean showNotification = false;
+	ArrayList<UserNotifications> mUserNotifications = new ArrayList<UserNotifications>();
+	ArrayList<SearchNotifications> mSearchNotifications = new ArrayList<SearchNotifications>();
 	
     // variables para ADW Launcher
     
@@ -52,27 +74,36 @@ public class AlarmOneNotificationAsyncTask extends AsyncTask<Void, Void, Void> {
     int mTotalMentionsADW = 0;
     int mTotalDMsAWD = 0;
     int mTotalSearchesAWD = 0;
-    
-    private int mType;
+
+	public interface AlarmAsyncTaskResponder {
+		public void alarmLoading();
+		public void alarmCancelled();
+		public void alarmLoaded(Void trends);
+	}
 
 	private AlarmAsyncTaskResponder responder;
 
-	public AlarmOneNotificationAsyncTask(AlarmAsyncTaskResponder responder, Context context, int type) {
+	public AlarmAsyncTask(AlarmAsyncTaskResponder responder, Context context, int type) {
 		this.responder = responder;
-		
-		mContext = context;
-		
 		mType = type;
-
-        ConnectionManager.getInstance().open(mContext);
-        twitter = ConnectionManager.getInstance().getAnonymousTwitter();
-    			
-    	PreferenceManager.setDefaultValues(mContext, R.xml.preferences, false);
-    	mPreferences = PreferenceManager.getDefaultSharedPreferences(mContext);
+    	mContext = context;
 	}
 
 	@Override
 	protected Void doInBackground(Void... args) {
+		try {
+            DataFramework.getInstance().open(mContext, Utils.packageName);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        ConnectionManager.getInstance().open(mContext);
+        
+        twitter = ConnectionManager.getInstance().getAnonymousTwitter();
+    			
+    	PreferenceManager.setDefaultValues(mContext, R.xml.preferences, false);
+    	mPreferences = PreferenceManager.getDefaultSharedPreferences(mContext);
+        
 		try {
 			if (!PreferenceUtils.getStatusWorkApp(mContext)) {
 				searchUser();
@@ -93,6 +124,8 @@ public class AlarmOneNotificationAsyncTask extends AsyncTask<Void, Void, Void> {
 		} finally {
             PreferenceUtils.saveStatusWorkAlarm(mContext, false);
 		}
+		
+		DataFramework.getInstance().close();
 
         PreferenceUtils.saveStatusWorkAlarm(mContext, false);
 
@@ -100,7 +133,7 @@ public class AlarmOneNotificationAsyncTask extends AsyncTask<Void, Void, Void> {
 		WidgetCounters4x1.updateAll(mContext);
 		
 		Log.d(Utils.TAG_ALARM, "Finalizado notificaciones en background");
-		
+
 		return null;
 	}
 
@@ -127,14 +160,10 @@ public class AlarmOneNotificationAsyncTask extends AsyncTask<Void, Void, Void> {
 	}
 	
 	public void searchUser() {
-		try {
-            DataFramework.getInstance().open(mContext, Utils.packageName);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
     	List<Entity> users = DataFramework.getInstance().getEntityList("users", "service is null or service = \"twitter.com\"");
 
+    	boolean timeline = mPreferences.getBoolean("prf_notif_in_timeline", false);
     	boolean mentions = mPreferences.getBoolean("prf_notif_in_mentions", true);
     	boolean dms = mPreferences.getBoolean("prf_notif_in_direct", true);
     	
@@ -146,14 +175,22 @@ public class AlarmOneNotificationAsyncTask extends AsyncTask<Void, Void, Void> {
     				Log.d(Utils.TAG_ALARM, "Cargar en background usuario " + twitter.getScreenName());
     			}
     			
-    			// TIMELINE
+    			UserNotifications un = new UserNotifications();
     			
-    			if (TweetTopicsUtils.hasColumn(users.get(i).getId(), TweetTopicsUtils.COLUMN_TIMELINE)) {
+    			un.mName = users.get(i).getString("name");
+    			un.id = users.get(i).getId();
+    			
+    			// TIMELINE
+
+                if (TweetTopicsUtils.hasColumn(users.get(i).getId(), TweetTopicsUtils.COLUMN_TIMELINE)) {
     				EntityTweetUser etuTimeline = new EntityTweetUser(users.get(i).getId(), TweetTopicsUtils.TWEET_TYPE_TIMELINE);
 	    			if (!PreferenceUtils.getStatusWorkApp(mContext) && mType!=OnAlarmReceiver.ALARM_ONLY_OTHERS) {
-	    				etuTimeline.saveTweets(mContext, twitter, true);
+	    				InfoSaveTweets info = etuTimeline.saveTweets(mContext, twitter, true);
+	    				if (info.getNewMessages()>0 && timeline) un.show = true;
 	    			}
    					mTotalTimelineADW += etuTimeline.getValueNewCount();
+    				if (timeline) un.mTotalTimeline = etuTimeline.getValueNewCount();
+	    			
     			}
     			
     			// MENTIONS
@@ -162,21 +199,23 @@ public class AlarmOneNotificationAsyncTask extends AsyncTask<Void, Void, Void> {
                     EntityTweetUser etuMentions = new EntityTweetUser(users.get(i).getId(), TweetTopicsUtils.TWEET_TYPE_MENTIONS);
                     if (!PreferenceUtils.getStatusWorkApp(mContext) && mType!=OnAlarmReceiver.ALARM_ONLY_TIMELINE) {
                         InfoSaveTweets info = etuMentions.saveTweets(mContext, twitter, true);
-                        if (info.getNewMessages()>0 && mentions) showNotification = true;
+                        if (info.getNewMessages()>0 && mentions) un.show = true;
                     }
-                    if (mentions) mTotalSumMentions += etuMentions.getValueNewCount();
 
+                    if (mentions) un.mTotalMentions = etuMentions.getValueNewCount();
                     mTotalMentionsADW += etuMentions.getValueNewCount();
                 }
     			
     			// DIRECTOS
+
                 if (TweetTopicsUtils.hasColumn(users.get(i).getId(), TweetTopicsUtils.COLUMN_DIRECT_MESSAGES)) {
                     EntityTweetUser etuDMs = new EntityTweetUser(users.get(i).getId(), TweetTopicsUtils.TWEET_TYPE_DIRECTMESSAGES);
                     if (!PreferenceUtils.getStatusWorkApp(mContext) && mType!=OnAlarmReceiver.ALARM_ONLY_TIMELINE) {
                         InfoSaveTweets info = etuDMs.saveTweets(mContext, twitter, true);
-                        if (info.getNewMessages()>0 && dms) showNotification = true;
+                        if (info.getNewMessages()>0 && dms) un.show = true;
                     }
-                    if (dms) mTotalSumDMs += etuDMs.getValueNewCount();
+                    if (dms) un.mTotalDMs = etuDMs.getValueNewCount();
+
                     mTotalDMsAWD += etuDMs.getValueNewCount();
                 }
     			
@@ -187,43 +226,46 @@ public class AlarmOneNotificationAsyncTask extends AsyncTask<Void, Void, Void> {
     				etuSentDMs.saveTweets(mContext, twitter, true);
     			}
     			
+    			mUserNotifications.add(un);
+    			
     		} catch (Exception ex) {
     			ex.printStackTrace();
     		}
     	}
-    	
-		DataFramework.getInstance().close();
+		
 	}
 	
 	public void searchNotifications() {
+
 		
-		if (mType!=OnAlarmReceiver.ALARM_ONLY_OTHERS) {
-			try {
-	            DataFramework.getInstance().open(mContext, Utils.packageName);
-	        } catch (Exception e) {
-	            e.printStackTrace();
-	        }
-			List<Entity> searchs = DataFramework.getInstance().getEntityList("search");
-			
-			for (int i=0; i<searchs.size(); i++) {
-				if (searchs.get(i).getInt("notifications")==1 && !PreferenceUtils.getStatusWorkApp(mContext)) {
-					EntitySearch es = new EntitySearch(searchs.get(i).getId());
-					
+		List<Entity> searchs = DataFramework.getInstance().getEntityList("search");
+		
+		for (int i=0; i<searchs.size(); i++) {
+			if (searchs.get(i).getInt("com/javielinux/notifications")==1 && !PreferenceUtils.getStatusWorkApp(mContext)) {
+				EntitySearch es = new EntitySearch(searchs.get(i).getId());
+				
+				if (mType!=OnAlarmReceiver.ALARM_ONLY_OTHERS) {
 					InfoSaveTweets info = es.saveTweets(mContext, twitter, true, -1);
-					
-					int count = es.getValueNewCount();
-					
-					mTotalSearchesAWD += count;
-
 					if (info.getNewMessages()>0 && searchs.get(i).getInt("notifications_bar")==1) {
-						mTotalSumSearches += count;
+						showSearchNotifications = true;
 					}
-					
 				}
-			}
-			DataFramework.getInstance().close();
-		}
+				
+				int count = es.getValueNewCount();
+				
+				mTotalSearchesAWD += count;
+				
+				if (searchs.get(i).getInt("notifications_bar")==1) {
+					SearchNotifications sn = new SearchNotifications();
+					sn.mTotal = count;
+					sn.mName = searchs.get(i).getString("name");
+					mSearchNotifications.add(sn);
 
+				}
+				
+			}
+		}
+		
 
 	}
 	
@@ -242,6 +284,10 @@ public class AlarmOneNotificationAsyncTask extends AsyncTask<Void, Void, Void> {
 	    		for (int i=1; i<=4; i++) {
 	    			String pref = IntegrationADW.getPreference(i);
 	    			if (pref.equals(IntegrationADWAdapter.PREFERENCES_SEARCH)) {
+	    				int mTotalSumSearches = 0;
+	    				for (SearchNotifications s : mSearchNotifications) {
+	    					mTotalSumSearches += s.mTotal;
+	    				}
 	    				if (mTotalSumSearches>0) {
 	    					color = IntegrationADW.getColor(IntegrationADWAdapter.PREFERENCES_SEARCH);
 	    					number = mTotalSumSearches;
@@ -291,35 +337,107 @@ public class AlarmOneNotificationAsyncTask extends AsyncTask<Void, Void, Void> {
     	}
     	
 	}
-	
-	public void shouldSendNotificationAndroid() {
-
-		if (showNotification && !PreferenceUtils.getStatusWorkApp(mContext)) {
-			String text = mContext.getString(R.string.notif_mentions) + ": " + mTotalSumMentions + " " + mContext.getString(R.string.notif_directs) + ": " + mTotalSumDMs + " " + mContext.getString(R.string.notif_searches) + ": " + mTotalSearchesAWD;
-			setMood(R.drawable.ic_stat_notification, text, -1);
+	/*
+	public void toDoVibrateAndSound() {
+		boolean vibrate = mPreferences.getBoolean("prf_vibrate_notifications", true);
+		boolean sound = mPreferences.getBoolean("prf_sound_notifications", true);
+		
+		AudioManager audioManager = ((AudioManager)mContext.getSystemService(Context.AUDIO_SERVICE));
+		
+		if (vibrate && audioManager.getVibrateSetting(AudioManager.VIBRATE_TYPE_NOTIFICATION)!=AudioManager.VIBRATE_SETTING_OFF) {
+			int mode = Integer.parseInt(mPreferences.getString("prf_time_vibrate", "3"));
+			if (mode==1) {
+				((Vibrator) mContext.getSystemService(Context.VIBRATOR_SERVICE)).vibrate(500);
+			}
+			if (mode==2) {
+				((Vibrator) mContext.getSystemService(Context.VIBRATOR_SERVICE)).vibrate(1000);
+			}
+			if (mode==3) {
+				long[] pattern = { 0, 500, 200, 500, 200 };
+				((Vibrator) mContext.getSystemService(Context.VIBRATOR_SERVICE)).vibrate(pattern, -1);  
+			}
+			if (mode==4) {
+				long[] pattern = { 0, 250, 200, 250, 200, 250, 200, 250, 200 };
+				((Vibrator) mContext.getSystemService(Context.VIBRATOR_SERVICE)).vibrate(pattern, -1);  
+			}
 		}
+		// sonar
+		if (sound && audioManager.getStreamVolume(AudioManager.STREAM_NOTIFICATION)>0) {
+			Ringtone rt = null;
+			String lringtone = mPreferences.getString("prf_ringtone", "");
+			if ( lringtone != "" ) {
+				rt = RingtoneManager.getRingtone(mContext, Uri.parse(lringtone)); 			 	   		 		     
+			} else {
+				rt = RingtoneManager.getRingtone(mContext, RingtoneManager.getActualDefaultRingtoneUri(mContext, RingtoneManager.TYPE_NOTIFICATION)); 
+			}
+
+			if (rt!=null) if (!rt.isPlaying()) rt.play();
+            //Ringtone rt = RingtoneManager.getRingtone(this, RingtoneManager.getActualDefaultRingtoneUri(this, RingtoneManager.TYPE_NOTIFICATION));
+            //if (!rt.isPlaying()) rt.play();
+		}
+	}
+	*/
+	public void shouldSendNotificationAndroid() {
+		
+		//boolean vibrateAndSound = false;
+		
+		for (UserNotifications u : mUserNotifications) {
+		
+			if (u.show && !PreferenceUtils.getStatusWorkApp(mContext)) {
+				
+				//vibrateAndSound = true;
+				
+				String text = "";
+				if (u.mTotalTimeline>0) {
+					text += mContext.getString(R.string.notif_timeline) + ": " + u.mTotalTimeline + " ";
+				}
+				text += mContext.getString(R.string.notif_mentions) + ": " + u.mTotalMentions + " " + mContext.getString(R.string.notif_directs) + ": " + u.mTotalDMs;
+				setMood(R.drawable.ic_stat_notification, "@"+u.mName, text, (int)u.id, u.id);
+			}
+		
+		}
+			
+		if (showSearchNotifications && !PreferenceUtils.getStatusWorkApp(mContext)) {
+			
+			int mTotalSumSearches = 0;
+			String names = "";
+			for (SearchNotifications s : mSearchNotifications) {
+				if (s.mTotal>0) {
+					if (mTotalSumSearches>0) names += ", ";
+					names += s.mName;
+					mTotalSumSearches += s.mTotal;
+				}
+			}
+			
+			//vibrateAndSound = true;
+			String text = mTotalSumSearches + " " + mContext.getString(R.string.messages_in) + ": " + names;
+			setMood(R.drawable.ic_stat_notification, mContext.getString(R.string.tweettopics_searches), text, 1000, -1);
+		}
+		
+		//if (vibrateAndSound) toDoVibrateAndSound();
 		
 	}
 
 	
-    private void setMood(int moodId, String text, int type) {
+    private void setMood(int moodId, String title, String text, int notify_id, long user_id) {
         Notification notification = new Notification(moodId, text, System.currentTimeMillis());
         notification.flags = Notification.FLAG_AUTO_CANCEL;
         Intent i = new Intent(mContext, TweetTopicsActivity.class);
-        //if (search_id>0) i.putExtra("notification_from_search_id", search_id);
         
-        if (type>=0) i.putExtra("notification_from_type", type);
+        if (user_id>=0) {
+        	i.putExtra("start_user_id", user_id+"");
+        }
         
-        PendingIntent contentIntent = PendingIntent.getActivity(mContext, 0, i, 0);
-        notification.setLatestEventInfo(mContext, mContext.getText(R.string.app_name), text, contentIntent);
+        PendingIntent contentIntent = PendingIntent.getActivity(mContext, notify_id, i, 0);
+        notification.setLatestEventInfo(mContext, title, text, contentIntent);
         
         boolean led = mPreferences.getBoolean("prf_led_notifications", true);
         if (led) {
         	String color = mPreferences.getString("prf_led_color", "#FFFF0000");
         	notification.ledARGB = Color.parseColor(color);//0xFFff0000;
         	notification.flags = Notification.FLAG_SHOW_LIGHTS | Notification.FLAG_AUTO_CANCEL;
-        	notification.ledOnMS = 300; 
-        	notification.ledOffMS = 1000;
+        	notification.ledOnMS = 100; 
+        	notification.ledOffMS = 100;
         }
         
         boolean vibrate = mPreferences.getBoolean("prf_vibrate_notifications", true);
@@ -354,7 +472,7 @@ public class AlarmOneNotificationAsyncTask extends AsyncTask<Void, Void, Void> {
 					
 		}
         
-        ((NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE)).notify(R.layout.tweettopics_activity, notification);
+        ((NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE)).notify(notify_id, notification);
     }
 
 }

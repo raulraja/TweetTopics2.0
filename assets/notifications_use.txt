@@ -1,9 +1,9 @@
 NOTIFICATIONS USE
 
-By using a topic notifications we ensure that the tweets will be stored in the com.javielinux.database of our phone. The oldest tweets in Twitter do not appear in searches, this can cause the lost of important tweets to us. With the notifications we ensure  that we always keep saved the last 500 tweets from each subject.
+By using a topic com.javielinux.notifications we ensure that the tweets will be stored in the com.javielinux.database of our phone. The oldest tweets in Twitter do not appear in searches, this can cause the lost of important tweets to us. With the com.javielinux.notifications we ensure  that we always keep saved the last 500 tweets from each subject.
 
-To use the notifications we must consider to make it in searches that have little activity. It would be illogical to store more information of than we can read or save.
+To use the com.javielinux.notifications we must consider to make it in searches that have little activity. It would be illogical to store more information of than we can read or save.
 
-If we use the notifications, in the search list an icon will appear whenever you have new messages in this thread with the number of unread messages. If you tick "Use the Android's notifications bar" the program will also trigger an Android 's toast, a vibration, a sound and LED (you can change it in Settings).
+If we use the com.javielinux.notifications, in the search list an icon will appear whenever you have new messages in this thread with the number of unread messages. If you tick "Use the Android's com.javielinux.notifications bar" the program will also trigger an Android 's toast, a vibration, a sound and LED (you can change it in Settings).
 
-Remember you can also change the time interval in which you want to look for new notifications on Twitter on Settings.
+Remember you can also change the time interval in which you want to look for new com.javielinux.notifications on Twitter on Settings.

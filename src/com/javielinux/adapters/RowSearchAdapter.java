@@ -76,7 +76,7 @@ public class RowSearchAdapter extends BaseAdapter {
 		}
 		
 		
-		if (item.getInt("notifications")==1) {
+		if (item.getInt("com/javielinux/notifications")==1) {
 						
 			tagNew.setVisibility(View.VISIBLE);
 			

@@ -44,12 +44,12 @@
 		<activity android:name="updatestatus.LaunchServiceUpdateStatus" android:theme="@style/Theme.TwitterBlack.Translucent" />
 		<activity android:name="EditUserTwitter" />
 		
-		<receiver android:name="tweetprogrammed.OnAlarmReceiverTweetProgrammed" android:process=":remote" ></receiver>
+		<receiver android:name="com.javielinux.tweetprogrammed.OnAlarmReceiverTweetProgrammed" android:process=":remote" ></receiver>
 		
-		<receiver android:name="notifications.Alarm1" android:process=":remote" ></receiver>
-		<receiver android:name="notifications.Alarm2" android:process=":remote" ></receiver>
+		<receiver android:name="com.javielinux.notifications.Alarm1" android:process=":remote" ></receiver>
+		<receiver android:name="com.javielinux.notifications.Alarm2" android:process=":remote" ></receiver>
 
-		<receiver android:name="notifications.OnBootReceiver">
+		<receiver android:name="com.javielinux.notifications.OnBootReceiver">
            <intent-filter>
                <action android:name="android.intent.action.BOOT_COMPLETED" />
                <category android:name="android.intent.category.LAUNCHER" />

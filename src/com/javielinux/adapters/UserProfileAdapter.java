@@ -13,6 +13,7 @@ import com.javielinux.api.response.BaseResponse;
 import com.javielinux.api.response.ErrorResponse;
 import com.javielinux.infos.InfoUsers;
 import com.javielinux.tweettopics2.R;
+import com.javielinux.utils.DBUtils;
 import com.javielinux.utils.UserActions;
 
 import java.util.ArrayList;
@@ -171,24 +172,29 @@ public class UserProfileAdapter extends BaseAdapter {
                 if (item.friend.friend && item.friend.follower) {
                     viewHolder.imgConnectUser.setImageResource(R.drawable.connects_on_on);
                 } else if (item.friend.friend && !item.friend.follower) {
-                    viewHolder.imgConnectUser.setImageResource(R.drawable.connects_on_off);
-                } else if (!item.friend.friend && item.friend.follower) {
                     viewHolder.imgConnectUser.setImageResource(R.drawable.connects_off_on);
+                } else if (!item.friend.friend && item.friend.follower) {
+                    viewHolder.imgConnectUser.setImageResource(R.drawable.connects_on_off);
                 } else {
                     viewHolder.imgConnectUser.setImageResource(R.drawable.connects_off_off);
                 }
 
-                viewHolder.btnFollow.setTag(item.friend);
-                viewHolder.btnFollow.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        changeRelationShip((InfoUsers.Friend) view.getTag());
+                if (DBUtils.getIdFromUserName(item.friend.user)>0) {
+                    viewHolder.btnFollow.setVisibility(View.VISIBLE);
+                    viewHolder.btnFollow.setTag(item.friend);
+                    viewHolder.btnFollow.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            changeRelationShip((InfoUsers.Friend) view.getTag());
+                        }
+                    });
+                    if (item.friend.follower) {
+                        viewHolder.btnFollow.setText(R.string.unfollow);
+                    } else {
+                        viewHolder.btnFollow.setText(R.string.follow);
                     }
-                });
-                if (item.friend.follower) {
-                    viewHolder.btnFollow.setText(R.string.unfollow);
                 } else {
-                    viewHolder.btnFollow.setText(R.string.follow);
+                    viewHolder.btnFollow.setVisibility(View.GONE);
                 }
 
             } else {

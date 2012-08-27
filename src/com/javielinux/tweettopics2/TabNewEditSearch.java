@@ -313,7 +313,7 @@ public class TabNewEditSearch extends TabActivity implements SaveFirstTweetsAsyn
     		
     		// borrar todos los tweets en el caso que deje de notificarse la b�squeda
     		
-    		if ((!mNotifications.isChecked()) && (ent.getInt("notifications")==1)) {
+    		if ((!mNotifications.isChecked()) && (ent.getInt("com/javielinux/notifications")==1)) {
     			DataFramework.getInstance().getDB().execSQL("DELETE FROM tweets WHERE search_id = " + mCurrentId + " AND favorite = 0");
     			ent.setValue("last_tweet_id", "0");
     			ent.setValue("last_tweet_id_notifications", "0");
@@ -322,14 +322,14 @@ public class TabNewEditSearch extends TabActivity implements SaveFirstTweetsAsyn
     		
     		// guarda los primeros tweets en el caso de empezar a notificar
     		
-    		if ((mNotifications.isChecked()) && (ent.getInt("notifications")==0)) {
+    		if ((mNotifications.isChecked()) && (ent.getInt("com/javielinux/notifications")==0)) {
     			saveTweets = true; 
     		}
     		
 	    	if (mNotifications.isChecked()) {
-	    		ent.setValue("notifications", 1);
+	    		ent.setValue("com/javielinux/notifications", 1);
 	    	} else {
-	    		ent.setValue("notifications", 0);
+	    		ent.setValue("com/javielinux/notifications", 0);
 	    	}
 	    	
 	    	CheckBox mNotificationsBar = (CheckBox)tabs.getTabContentView().getChildAt(nTabAdvanced).findViewById(R.id.cb_notifications_bar);

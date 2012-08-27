@@ -148,7 +148,7 @@ public class SearchAdvancedFragment extends Fragment {
         if (search_entity.getInt("no_retweet") == 1) noRetweet.setChecked(true);
 
 
-        if (search_entity.getInt("notifications") == 1) {
+        if (search_entity.getInt("com/javielinux/notifications") == 1) {
             searchIsNotification = true;
             notifications.setChecked(true);
             showFields();

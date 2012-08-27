@@ -8,6 +8,11 @@ import android.support.v4.app.FragmentActivity;
 import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
 import com.javielinux.adapters.ColoringTweetsAdapter;
+import com.javielinux.api.APIDelegate;
+import com.javielinux.api.APITweetTopics;
+import com.javielinux.api.request.ExecuteActionUserRequest;
+import com.javielinux.api.response.BaseResponse;
+import com.javielinux.api.response.ErrorResponse;
 import com.javielinux.infos.InfoUsers;
 import com.javielinux.tweettopics2.NewStatusActivity;
 import com.javielinux.tweettopics2.R;
@@ -29,26 +34,56 @@ public class UserActions {
     public static String USER_ACTION_CREATE_TOPIC = "create_topic";
     public static String USER_ACTION_SEND_DIRECT = "send_direct";
     public static String USER_ACTION_CHANGE_RELATIONSHIP = "change_relationship";
+    public static String USER_ACTION_VIEW_PHOTO_PROFILE = "view_photo_profile";
 
     public static InfoUsers execByCode(String code, FragmentActivity activity, InfoUsers infoUsers) {
          return execByCode(code, activity, infoUsers, null);
     }
 
-    public static InfoUsers execByCode(String code, FragmentActivity activity, InfoUsers infoUsers, Object extra) {
+    public static InfoUsers execByCode(String code, final FragmentActivity activity, InfoUsers infoUsers, Object extra) {
         if (code.equals(USER_ACTION_COLORING)) {
             goToColoringTweets(activity, infoUsers);
         } else if (code.equals(USER_ACTION_CREATE_BLOCK)) {
-            goToCreateBlock(activity, infoUsers);
+            APITweetTopics.execute(activity, activity.getSupportLoaderManager(), new APIDelegate() {
+                @Override
+                public void onResults(BaseResponse result) {
+                }
+
+                @Override
+                public void onError(ErrorResponse error) {
+
+                }
+            }, new ExecuteActionUserRequest(UserActions.USER_ACTION_CREATE_BLOCK, null, infoUsers));
         } else if (code.equals(USER_ACTION_REPORT_SPAM)) {
-            goToReportSpam(activity, infoUsers);
+            APITweetTopics.execute(activity, activity.getSupportLoaderManager(), new APIDelegate() {
+                @Override
+                public void onResults(BaseResponse result) {
+                }
+
+                @Override
+                public void onError(ErrorResponse error) {
+
+                }
+            }, new ExecuteActionUserRequest(UserActions.USER_ACTION_REPORT_SPAM, null, infoUsers));
         } else if (code.equals(USER_ACTION_INCLUDED_LIST)) {
-            goToIncludeList(activity, infoUsers);
+            APITweetTopics.execute(activity, activity.getSupportLoaderManager(), new APIDelegate() {
+                @Override
+                public void onResults(BaseResponse result) {
+                }
+
+                @Override
+                public void onError(ErrorResponse error) {
+
+                }
+            }, new ExecuteActionUserRequest(UserActions.USER_ACTION_INCLUDED_LIST, null, infoUsers));
         } else if (code.equals(USER_ACTION_HIDE)) {
             goToHide(activity, infoUsers);
         } else if (code.equals(USER_ACTION_CREATE_TOPIC)) {
             goToCreateTopic(activity, infoUsers);
         } else if (code.equals(USER_ACTION_SEND_DIRECT)) {
             goToDirect(activity, infoUsers);
+        } else if (code.equals(USER_ACTION_VIEW_PHOTO_PROFILE)) {
+            // TODO ver foto
         } else if (code.equals(USER_ACTION_CHANGE_RELATIONSHIP)) {
             return goToChangeRelationship(activity, infoUsers, (InfoUsers.Friend)extra);
         }
@@ -81,6 +116,7 @@ public class UserActions {
         Twitter twitter = ConnectionManager.getInstance().getTwitter(DBUtils.getIdFromUserName(infoUsers.getName()));
         try {
             twitter.reportSpam(infoUsers.getName());
+            Utils.showMessage(context, context.getString(R.string.user_report_spam));
         } catch (TwitterException e) {
             e.printStackTrace();
         }
@@ -94,7 +130,13 @@ public class UserActions {
         ConnectionManager.getInstance().open(context);
         Twitter twitter = ConnectionManager.getInstance().getTwitter(DBUtils.getIdFromUserName(infoUsers.getName()));
         try {
-            twitter.createBlock(infoUsers.getName());
+            if (twitter.existsBlock(infoUsers.getName())) {
+                twitter.destroyBlock(infoUsers.getName());
+                Utils.showMessage(context, context.getString(R.string.user_unlock));
+            } else {
+                twitter.createBlock(infoUsers.getName());
+                Utils.showMessage(context, context.getString(R.string.user_block));
+            }
         } catch (TwitterException e) {
             e.printStackTrace();
         }

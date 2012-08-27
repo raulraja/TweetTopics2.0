@@ -77,7 +77,7 @@ Version 1.64
 - When export HTML: Retweets appear and link to tweet on twitter (by @Devan0n)
 - Saves the state of geo (enabled or disabled) when you send tweets
 - Fixed problem when hidden tweets
-- Fixed errors in the vibration and sound notifications (by @comerycantar)
+- Fixed errors in the vibration and sound com.javielinux.notifications (by @comerycantar)
 - Fixed minor bugs
 
 Build number 52
@@ -143,7 +143,7 @@ Version 1.57
 - New widget 4x1 (version PRO). With TL counters, references, direct and search
 - Improvements in the widget 4x2 (version PRO)
 - Icon in the tweet list to know that is a conversation (by @oGPS)
-- Fixed error in background notifications when the TL is "Never" and mentions in time (by @eduardoA)
+- Fixed error in background com.javielinux.notifications when the TL is "Never" and mentions in time (by @eduardoA)
 - Fixed bugs
 
 Build number 45
@@ -197,7 +197,7 @@ Version 1.50
 - New submenu when you hold down a tweet. You can configure it in "Preferences - Submenu tweets"
 - You can send a tweet to multiple accounts simultaneously (PRO only)
 - You can change the button colors using filters
-- New way to send tweets using notifications. You do not have to wait
+- New way to send tweets using com.javielinux.notifications. You do not have to wait
 - You can block users and report spam (order by @ LluisLazaro)
 - Fixed bugs
 
@@ -276,7 +276,7 @@ Build number 33
 Version 1.38
 ============
 
-- Fixed problems with notifications
+- Fixed problems with com.javielinux.notifications
 
 Build number 32
 
@@ -284,7 +284,7 @@ Version 1.37
 ============
 
 - Notifications of users and searches, separate by default (by @kix2902)
-- Options grouped notifications in the preferences (as before)
+- Options grouped com.javielinux.notifications in the preferences (as before)
 - New options for images: save image SDCard, share, create QR code, etc.
 - New options for links and videos: share, create QR code, save to clipboard, etc.
 - Fixed problems with the widget (PRO only)
@@ -509,7 +509,7 @@ Version 1.11
 =============
 
 - Fixed the auto FC usernames
-- Fixed problems with notifications
+- Fixed problems with com.javielinux.notifications
 - New Item "Read more" at the end of listings to view older tweets
 - Save last message read automatically if you move between timeline, references and direct messages
 

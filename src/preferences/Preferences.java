@@ -26,6 +26,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
+import com.javielinux.notifications.OnAlarmReceiver;
 import com.javielinux.tweettopics2.AdjustImage;
 import com.javielinux.tweettopics2.R;
 import com.javielinux.tweettopics2.ThemeManager;
@@ -33,7 +34,6 @@ import com.javielinux.utils.DialogUtils.PersonalDialogBuilder;
 import com.javielinux.utils.FileUtils;
 import com.javielinux.utils.PreferenceUtils;
 import com.javielinux.utils.Utils;
-import notifications.OnAlarmReceiver;
 import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.File;

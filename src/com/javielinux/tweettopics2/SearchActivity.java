@@ -4,7 +4,8 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
-import android.view.*;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.*;
 import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
@@ -191,7 +192,7 @@ public class SearchActivity extends BaseActivity implements APIDelegate<BaseResp
         CheckBox notifications = (CheckBox)findViewById(R.id.cb_notifications);
 
         // Borrar todos los tweets en el caso que deje de notificarse la búsqueda
-        if (!notifications.isChecked() && search_entity.getInt("notifications") == 1) {
+        if (!notifications.isChecked() && search_entity.getInt("com/javielinux/notifications") == 1) {
             DataFramework.getInstance().getDB().execSQL("DELETE FROM tweets WHERE search_id = " + search_entity.getId() + " AND favorite = 0");
             search_entity.setValue("last_tweet_id", "0");
             search_entity.setValue("last_tweet_id_notifications", "0");
@@ -199,14 +200,14 @@ public class SearchActivity extends BaseActivity implements APIDelegate<BaseResp
         }
 
         // Guarda los primeros tweets en el caso de empezar a notificar
-        if (notifications.isChecked() && search_entity.getInt("notifications")==0) {
+        if (notifications.isChecked() && search_entity.getInt("com/javielinux/notifications")==0) {
             save_tweets = true;
         }
 
         if (notifications.isChecked())
-            search_entity.setValue("notifications", 1);
+            search_entity.setValue("com/javielinux/notifications", 1);
         else
-            search_entity.setValue("notifications", 0);
+            search_entity.setValue("com/javielinux/notifications", 0);
 
 
         CheckBox notificationsBar = (CheckBox)findViewById(R.id.cb_notifications_bar);

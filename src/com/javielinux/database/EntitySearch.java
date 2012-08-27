@@ -82,7 +82,7 @@ public class EntitySearch extends Entity {
 	}
 	
 	public int getValueNewCount() {
-		if (getInt("notifications")==1) {
+		if (getInt("com/javielinux/notifications")==1) {
 			return DataFramework.getInstance().getEntityListCount("tweets", "search_id = " + this.getId() 
    				+ " AND favorite = 0 AND tweet_id >'" + Utils.fillZeros(""+getString("last_tweet_id"))+"'");
 		} else {
@@ -290,7 +290,7 @@ public class EntitySearch extends Entity {
 
 		// obtener desde donde quiero hacer la consulta
 		
-		if (getInt("notifications")==1) {
+		if (getInt("com/javielinux/notifications")==1) {
 			String where = "search_id = " + this.getId() + " AND favorite = 0";
 			int nResult = DataFramework.getInstance().getEntityListCount("tweets", where);			
 			if (nResult>0) {

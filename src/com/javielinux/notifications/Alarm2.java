@@ -1,4 +1,4 @@
-package notifications;
+package com.javielinux.notifications;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -7,19 +7,19 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import com.javielinux.notifications.AlarmAsyncTask.AlarmAsyncTaskResponder;
 import com.javielinux.tweettopics2.R;
 import com.javielinux.utils.PreferenceUtils;
 import com.javielinux.utils.Utils;
-import notifications.AlarmAsyncTask.AlarmAsyncTaskResponder;
 
-public class Alarm1 extends BroadcastReceiver implements AlarmAsyncTaskResponder {
+public class Alarm2 extends BroadcastReceiver implements AlarmAsyncTaskResponder {
 	public AsyncTask<Void, Void, Void> task;  
     @Override
     public void onReceive(Context context, Intent intent) { 
     	
     	PreferenceManager.setDefaultValues(context, R.xml.preferences, false);
 		SharedPreferences preference = PreferenceManager.getDefaultSharedPreferences(context);
-		int minutes = Integer.parseInt(preference.getString("prf_time_notifications", "15"));
+		int minutes = Integer.parseInt(preference.getString("prf_time_notifications_mentions_dm", "15"));
     	
     	if ( (minutes>0) && (PreferenceUtils.getNotificationsApp(context)) ) {
 	    	if (!PreferenceUtils.getStatusWorkApp(context)) {

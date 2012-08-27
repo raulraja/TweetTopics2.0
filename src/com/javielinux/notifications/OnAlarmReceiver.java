@@ -1,4 +1,4 @@
-package notifications;
+package com.javielinux.notifications;
 
 
 import android.app.AlarmManager;

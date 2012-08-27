@@ -33,13 +33,13 @@ import com.javielinux.adapters.TweetLongerAdapter;
 import com.javielinux.components.AutoCompleteHashTagListItem;
 import com.javielinux.components.AutoCompleteListItem;
 import com.javielinux.infos.InfoUsers;
+import com.javielinux.tweetprogrammed.OnAlarmReceiverTweetProgrammed;
 import com.javielinux.utils.DialogUtils.BuyProDialogBuilder;
 import com.javielinux.utils.*;
 import preferences.NewEditTweetProgrammed;
 import preferences.Preferences;
 import preferences.TweetDraft;
 import task.LoadUserAsyncTask;
-import tweetprogrammed.OnAlarmReceiverTweetProgrammed;
 import updatestatus.ServiceUpdateStatus;
 
 import java.io.File;

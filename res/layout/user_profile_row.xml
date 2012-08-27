@@ -39,11 +39,13 @@
                   android:layout_height="wrap_content"
                   android:layout_toLeftOf="@id/user_profile_row_friendly_connect"
                   style="@style/TitleListSmall"
+                  android:singleLine="true"
                   android:id="@+id/user_profile_row_friendly_user1" />
 
         <TextView android:layout_width="wrap_content"
                   android:layout_height="wrap_content"
                   style="@style/TitleListSmall"
+                  android:singleLine="true"
                   android:layout_toRightOf="@id/user_profile_row_friendly_connect"
                   android:id="@+id/user_profile_row_friendly_user2" />
 
@@ -51,6 +53,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:id="@+id/user_profile_row_follow"
+                android:layout_marginTop="4dp"
                 android:layout_below="@id/user_profile_row_friendly_connect"
                  />
 

@@ -13,10 +13,10 @@ import android.widget.*;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
+import com.javielinux.tweetprogrammed.OnAlarmReceiverTweetProgrammed;
 import com.javielinux.tweettopics2.BaseActivity;
 import com.javielinux.tweettopics2.R;
 import com.javielinux.utils.Utils;
-import tweetprogrammed.OnAlarmReceiverTweetProgrammed;
 
 import java.util.ArrayList;
 import java.util.Calendar;

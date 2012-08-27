@@ -202,25 +202,25 @@ public class UserActivity extends BaseLayersActivity {
             ArrayList<String> ar = new ArrayList<String>();
 
             ar.add(getString(R.string.view_photo_profile));
-            arCode.add("view_photo_profile");
+            arCode.add(UserActions.USER_ACTION_VIEW_PHOTO_PROFILE);
 
             ar.add(getString(R.string.create_block));
-            arCode.add("create_block");
+            arCode.add(UserActions.USER_ACTION_CREATE_BLOCK);
 
             ar.add(getString(R.string.report_spam));
-            arCode.add("report_spam");
+            arCode.add(UserActions.USER_ACTION_REPORT_SPAM);
 
             ar.add(getString(R.string.included_list));
-            arCode.add("included_list");
+            arCode.add(UserActions.USER_ACTION_INCLUDED_LIST);
 
             ar.add(getString(R.string.hide));
-            arCode.add("hide");
+            arCode.add(UserActions.USER_ACTION_HIDE);
 
             ar.add(getString(R.string.create_topic));
-            arCode.add("create_topic");
+            arCode.add(UserActions.USER_ACTION_CREATE_TOPIC);
 
             ar.add(getString(R.string.send_direct_message));
-            arCode.add("send_direct");
+            arCode.add(UserActions.USER_ACTION_SEND_DIRECT);
 
             CharSequence[] c = new CharSequence[ar.size()];
             for (int i=0; i<ar.size(); i++) {

@@ -279,7 +279,7 @@ public class WidgetCounters4x1 extends AppWidgetProvider {
 		    	List<Entity> searchs = DataFramework.getInstance().getEntityList("search");
 				int totalNotification = 0;
 				for (int i=0; i<searchs.size(); i++) {
-					if (searchs.get(i).getInt("notifications")==1) {
+					if (searchs.get(i).getInt("com/javielinux/notifications")==1) {
 						EntitySearch es = new EntitySearch(searchs.get(i).getId());
 						totalNotification += es.getInt("new_tweets_count");
 					}
