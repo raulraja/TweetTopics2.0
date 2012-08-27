@@ -14,7 +14,6 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.StateListDrawable;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
@@ -24,11 +23,9 @@ import android.view.*;
 import android.widget.*;
 import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
-import com.javielinux.adapters.LinksAdapter;
 import com.javielinux.components.DraggableHorizontalView;
 import com.javielinux.components.OnRearrangeListener;
 import com.javielinux.dialogs.AlertDialogFragment;
-import com.javielinux.dialogs.HashTagDialogFragment;
 import com.javielinux.fragmentadapter.TweetTopicsFragmentAdapter;
 import com.javielinux.infos.InfoTweet;
 import com.javielinux.notifications.OnAlarmReceiver;
@@ -42,7 +39,7 @@ import preferences.Preferences;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class TweetTopicsActivity extends BaseActivity {
+public class TweetTopicsActivity extends BaseLayersActivity implements PopupLinks.PopupLinksListener {
 
     public static final String KEY_EXTRAS_GOTO_COLUMN_USER = "KEY_EXTRAS_GOTO_COLUMN_USER";
     public static final String KEY_EXTRAS_GOTO_COLUMN_TYPE = "KEY_EXTRAS_GOTO_COLUMN_TYPE";
@@ -76,15 +73,10 @@ public class TweetTopicsActivity extends BaseActivity {
     private Button btnOptionsColumnsMain;
     private Button btnOptionsColumnsDelete;
 
-    private LinearLayout layoutLinks;
-    private LinearLayout layoutMainLinks;
-    private GridView gvLinks;
-    private LinksAdapter linksAdapter;
-    private ArrayList<String> links = new ArrayList<String>();
-
-    private int statusBarHeight;
     private int widthScreen;
     private int heightScreen;
+
+    private PopupLinks popupLinks;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -217,25 +209,11 @@ public class TweetTopicsActivity extends BaseActivity {
             }
         });
 
-        layoutMainLinks = (LinearLayout) findViewById(R.id.tweettopics_ll_main_links);
-        layoutMainLinks.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                hideLinks();
-            }
-        });
+        // cargar el poppus de enlaces
 
-        layoutLinks = (LinearLayout) findViewById(R.id.tweettopics_ll_links);
-
-        linksAdapter = new LinksAdapter(this, getSupportLoaderManager(), links);
-        gvLinks = (GridView) findViewById(R.id.tweettopics_gv_links);
-        gvLinks.setAdapter(linksAdapter);
-        gvLinks.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                goToLink(links.get(i));
-            }
-        });
+        FrameLayout root = ((FrameLayout)findViewById(R.id.tweettopics_root));
+        popupLinks = new PopupLinks(this);
+        popupLinks.loadPopup(root);
 
         layoutBackgroundApp = (RelativeLayout) findViewById(R.id.tweettopics_layout_background_app);
 
@@ -375,8 +353,8 @@ public class TweetTopicsActivity extends BaseActivity {
                 hideOptionsColumns();
                 return false;
             }
-            if (isShowLinks()) {
-                hideLinks();
+            if (popupLinks.isShowLinks()) {
+                popupLinks.hideLinks();
                 return false;
             }
             if (isShowColumnsItems) {
@@ -385,6 +363,11 @@ public class TweetTopicsActivity extends BaseActivity {
             }
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
+    public void onShowLinks(View view, InfoTweet infoTweet) {
+        popupLinks.showLinks(view, infoTweet);
     }
 
     public boolean onMenuItemSelected(int featureId, MenuItem item) {
@@ -786,152 +769,6 @@ public class TweetTopicsActivity extends BaseActivity {
     }
 
     /*
-        SHOW LINKS
-     */
-
-    public void showLinks(View view, InfoTweet infoTweet) {
-
-        ArrayList<String> linksInText = LinksUtils.pullLinks(infoTweet.getText(), infoTweet.getContentURLs());
-
-        if (linksInText.size()==1) {
-            goToLink(linksInText.get(0));
-        } else {
-
-            int widthContainer = widthScreen;
-            int heightContainer = heightScreen;
-
-            links.clear();
-            links.addAll(linksInText);
-
-            int rows = 0;
-
-            if (links.size()>4) {
-                rows = links.size()/3;
-                if (links.size()%3>0) rows++;
-                gvLinks.setNumColumns(3);
-                widthContainer = (widthScreen/4)*3 + Utils.dip2px(this,40);
-            } else {
-                rows = links.size()/2;
-                if (links.size()%2>0) rows++;
-                gvLinks.setNumColumns(2);
-                widthContainer = (widthScreen/4)*2 + Utils.dip2px(this,30);
-            }
-            if (rows==1) {
-                heightContainer = Utils.dip2px(this,110);
-            } else {
-                heightContainer = Utils.dip2px(this,100) * rows;
-            }
-
-            linksAdapter.notifyDataSetChanged();
-
-            if (statusBarHeight<=0) {
-                Rect rect= new Rect();
-                getWindow().getDecorView().getWindowVisibleDisplayFrame(rect);
-                statusBarHeight= rect.top;
-            }
-            int[] loc = new int[2];
-            view.getLocationOnScreen(loc);
-
-            int widthView = view.getMeasuredWidth();
-            int heightView = view.getMeasuredHeight();
-
-            int x = loc[0] + (widthView/2) - (widthContainer/2);
-            int y = loc[1] - statusBarHeight + (heightView/2) - (heightContainer/2);
-
-            int xCenterView = loc[0] + (widthView/2);
-            int yCenterView = loc[1] - statusBarHeight + (heightView/2);
-
-            int top = (int)getResources().getDimension(R.dimen.actionbar_height);
-            int bottom = heightScreen-statusBarHeight;
-
-            if (x<0) x = 0;
-            if (y<top) y = top;
-            if (x>widthScreen-widthContainer) x = widthScreen-widthContainer;
-            if (y>bottom-heightContainer) y = bottom-heightContainer;
-
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            params.setMargins(x, y, 0, 0);
-            layoutLinks.setLayoutParams(params);
-
-            layoutMainLinks.setVisibility(View.VISIBLE);
-
-            ObjectAnimator translationX = ObjectAnimator.ofFloat(layoutLinks, "translationX", xCenterView-x, 0f);
-            translationX.setDuration(150);
-            ObjectAnimator scaleX = ObjectAnimator.ofFloat(layoutLinks, "scaleX", 0f, 1f);
-            scaleX.setDuration(150);
-            ObjectAnimator scaleY = ObjectAnimator.ofFloat(layoutLinks, "scaleY", 0f, 1f);
-            scaleY.setDuration(150);
-            ObjectAnimator fadeAnim = ObjectAnimator.ofFloat(layoutLinks, "alpha", 0f, 1f);
-            fadeAnim.setDuration(150);
-            AnimatorSet animatorSet = new AnimatorSet();
-            animatorSet.playTogether(translationX, scaleX, scaleY, fadeAnim);
-            animatorSet.start();
-        }
-    }
-
-    public void goToLink(String link) {
-//        if (CacheData.getCacheImages().containsKey(link)) {
-//            CacheData.getCacheImages().get(link);
-//        } else {
-//
-//        }
-        if (isShowLinks()) hideLinks();
-        if (link.startsWith("@")) {
-            Intent intent = new Intent(this, UserActivity.class);
-            intent.putExtra(UserActivity.KEY_EXTRAS_USER, link);
-            startActivity(intent);
-        } else if (link.startsWith("#")) {
-            HashTagDialogFragment frag = new HashTagDialogFragment();
-            Bundle args = new Bundle();
-            args.putString("hashtag", link);
-            frag.setArguments(args);
-            frag.show(getSupportFragmentManager(), "dialog");
-        } else {
-            if (link.startsWith("www")) {
-                link = "http://"+link;
-            }
-            Uri uri = Uri.parse(link);
-            Intent intent = new Intent(android.content.Intent.ACTION_VIEW, uri);
-            startActivity(intent);
-        }
-    }
-
-    public void hideLinks() {
-        ObjectAnimator scaleX = ObjectAnimator.ofFloat(layoutLinks, "scaleX", 1f, 0f);
-        scaleX.setDuration(150);
-        ObjectAnimator scaleY = ObjectAnimator.ofFloat(layoutLinks, "scaleY", 1f, 0f);
-        scaleY.setDuration(150);
-        ObjectAnimator fadeAnim = ObjectAnimator.ofFloat(layoutLinks, "alpha", 1f, 0f);
-        fadeAnim.setDuration(150);
-        AnimatorSet animatorSet = new AnimatorSet();
-        animatorSet.playTogether(scaleX, scaleY, fadeAnim);
-        animatorSet.addListener(new Animator.AnimatorListener() {
-            @Override
-            public void onAnimationStart(Animator animator) {
-            }
-
-            @Override
-            public void onAnimationEnd(Animator animator) {
-                layoutMainLinks.setVisibility(View.INVISIBLE);
-            }
-
-            @Override
-            public void onAnimationCancel(Animator animator) {
-            }
-
-            @Override
-            public void onAnimationRepeat(Animator animator) {
-            }
-        });
-        animatorSet.start();
-
-    }
-
-    public boolean isShowLinks() {
-        return layoutMainLinks.getVisibility()==View.VISIBLE;
-    }
-
-    /*
         DIALOGS
      */
 
@@ -1064,4 +901,5 @@ public class TweetTopicsActivity extends BaseActivity {
         builder.create();
         builder.show();
     }
+
 }

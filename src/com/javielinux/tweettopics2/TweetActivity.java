@@ -9,7 +9,9 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.text.Html;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -25,6 +27,7 @@ import com.javielinux.api.response.LoadTranslateTweetResponse;
 import com.javielinux.dialogs.HashTagDialogFragment;
 import com.javielinux.fragmentadapter.TweetFragmentAdapter;
 import com.javielinux.infos.InfoTweet;
+import com.javielinux.utils.PopupLinks;
 import com.javielinux.utils.PreferenceUtils;
 import com.javielinux.utils.TweetActions;
 import com.javielinux.utils.Utils;
@@ -35,9 +38,8 @@ import com.viewpagerindicator.TabPageIndicator;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Collections;
 
-public class TweetActivity extends BaseLayersActivity implements APIDelegate<BaseResponse> {
+public class TweetActivity extends BaseLayersActivity implements APIDelegate<BaseResponse>, PopupLinks.PopupLinksListener {
 
     public static final String KEY_EXTRAS_TWEET = "tweet";
 
@@ -54,7 +56,7 @@ public class TweetActivity extends BaseLayersActivity implements APIDelegate<Bas
 
     private LinearLayout llRoot;
     private LinearLayout viewLoading;
-
+    private PopupLinks popupLinks;
     private boolean is_translating;
 
     @Override
@@ -147,6 +149,9 @@ public class TweetActivity extends BaseLayersActivity implements APIDelegate<Bas
 
         llRoot = (LinearLayout)findViewById(R.id.tweet_ll);
         viewLoading = (LinearLayout)findViewById(R.id.tweet_text_loading);
+
+        popupLinks = new PopupLinks(this);
+        popupLinks.loadPopup((ViewGroup)findViewById(R.id.tweet_root));
 
         refreshTheme();
 
@@ -434,4 +439,21 @@ public class TweetActivity extends BaseLayersActivity implements APIDelegate<Bas
 
         showOriginalTweetText();
     }
+
+    @Override
+    public void onShowLinks(View view, InfoTweet infoTweet) {
+        popupLinks.showLinks(view, infoTweet);
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            if (popupLinks.isShowLinks()) {
+                popupLinks.hideLinks();
+                return false;
+            }
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
 }

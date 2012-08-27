@@ -25,7 +25,6 @@ import com.javielinux.infos.InfoLink;
 import com.javielinux.infos.InfoTweet;
 import com.javielinux.tweettopics2.R;
 import com.javielinux.tweettopics2.ThemeManager;
-import com.javielinux.tweettopics2.TweetTopicsActivity;
 import com.javielinux.tweettopics2.UserActivity;
 import com.javielinux.utils.*;
 
@@ -82,6 +81,15 @@ public class TweetsAdapter extends ArrayAdapter<InfoTweet> {
 
     public FragmentActivity getActivity() {
         return activity;
+    }
+
+
+    private void callLinksIfIsPossible(View view) {
+
+        if (getActivity() instanceof PopupLinks.PopupLinksListener) {
+            ((PopupLinks.PopupLinksListener)getActivity()).onShowLinks(view, (InfoTweet)view.getTag());
+        }
+
     }
 
     public void setParentListView(PullToRefreshListView parentListView) {
@@ -143,9 +151,16 @@ public class TweetsAdapter extends ArrayAdapter<InfoTweet> {
     }
 
     public TweetsAdapter(FragmentActivity activity, LoaderManager loaderManager, ArrayList<InfoTweet> infoTweetArrayList, String usernameColumn, int column) {
-
         super(activity, android.R.layout.simple_list_item_1, infoTweetArrayList);
+        init(activity, loaderManager, infoTweetArrayList, usernameColumn, column);
+    }
 
+    public TweetsAdapter(FragmentActivity activity, LoaderManager loaderManager, ArrayList<InfoTweet> infoTweetArrayList) {
+        super(activity, android.R.layout.simple_list_item_1, infoTweetArrayList);
+        init(activity, loaderManager, infoTweetArrayList, "", -1);
+    }
+
+    private void init(FragmentActivity activity, LoaderManager loaderManager, ArrayList<InfoTweet> infoTweetArrayList, String usernameColumn, int column) {
         this.activity = activity;
         listAQuery = new AQuery(activity);
 
@@ -404,9 +419,7 @@ public class TweetsAdapter extends ArrayAdapter<InfoTweet> {
             viewHolder.tweetPhotoImgContainer.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if (getActivity() instanceof TweetTopicsActivity) {
-                        ((TweetTopicsActivity)getActivity()).showLinks(view, (InfoTweet)view.getTag());
-                    }
+                    callLinksIfIsPossible(view);
                 }
             });
 

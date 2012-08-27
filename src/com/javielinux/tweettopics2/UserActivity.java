@@ -8,7 +8,9 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -21,17 +23,15 @@ import com.javielinux.api.response.ErrorResponse;
 import com.javielinux.api.response.LoadImageWidgetResponse;
 import com.javielinux.api.response.LoadUserResponse;
 import com.javielinux.fragmentadapter.UserFragmentAdapter;
+import com.javielinux.infos.InfoTweet;
 import com.javielinux.infos.InfoUsers;
-import com.javielinux.utils.CacheData;
-import com.javielinux.utils.TweetActions;
-import com.javielinux.utils.UserActions;
-import com.javielinux.utils.Utils;
+import com.javielinux.utils.*;
 import com.viewpagerindicator.TabPageIndicator;
 
 import java.io.File;
 import java.util.ArrayList;
 
-public class UserActivity extends BaseLayersActivity {
+public class UserActivity extends BaseLayersActivity implements PopupLinks.PopupLinksListener {
 
     public static final String KEY_EXTRAS_USER = "user";
 
@@ -52,6 +52,7 @@ public class UserActivity extends BaseLayersActivity {
 
     private LinearLayout viewLoading;
     private RelativeLayout viewInfo;
+    private PopupLinks popupLinks;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -124,6 +125,8 @@ public class UserActivity extends BaseLayersActivity {
             }, new LoadUserRequest(username));
         }
 
+        popupLinks = new PopupLinks(this);
+        popupLinks.loadPopup((ViewGroup)findViewById(R.id.user_root));
 
         refreshTheme();
 
@@ -278,6 +281,23 @@ public class UserActivity extends BaseLayersActivity {
         } catch (Exception e) {
             Utils.showMessage(this, getString(R.string.error_view_url) + " " + url);
         }
+    }
+
+
+    @Override
+    public void onShowLinks(View view, InfoTweet infoTweet) {
+        popupLinks.showLinks(view, infoTweet);
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            if (popupLinks.isShowLinks()) {
+                popupLinks.hideLinks();
+                return false;
+            }
+        }
+        return super.onKeyDown(keyCode, event);
     }
 
 }

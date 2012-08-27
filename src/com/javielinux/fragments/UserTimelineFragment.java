@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import com.javielinux.adapters.UserTimelineAdapter;
+import com.javielinux.adapters.TweetsAdapter;
 import com.javielinux.api.APIDelegate;
 import com.javielinux.api.APITweetTopics;
 import com.javielinux.api.loaders.LoadTypeStatusLoader;
@@ -19,8 +19,10 @@ import com.javielinux.api.response.ErrorResponse;
 import com.javielinux.api.response.LoadTypeStatusResponse;
 import com.javielinux.infos.InfoTweet;
 import com.javielinux.infos.InfoUsers;
+import com.javielinux.tweettopics2.BaseLayersActivity;
 import com.javielinux.tweettopics2.R;
 import com.javielinux.tweettopics2.ThemeManager;
+import com.javielinux.tweettopics2.TweetActivity;
 import com.javielinux.utils.ImageUtils;
 
 import java.util.ArrayList;
@@ -31,7 +33,7 @@ public class UserTimelineFragment extends Fragment implements APIDelegate<BaseRe
     private LinearLayout viewLoading;
     private ListView list;
 
-    private UserTimelineAdapter adapter;
+    private TweetsAdapter adapter;
     private InfoUsers infoUsers;
 
     public UserTimelineFragment(InfoUsers infoUsers) {
@@ -44,7 +46,7 @@ public class UserTimelineFragment extends Fragment implements APIDelegate<BaseRe
         super.onCreate(savedInstanceState);
 
         tweet_list = new ArrayList<InfoTweet>();
-        adapter = new UserTimelineAdapter(getActivity(), getLoaderManager(), tweet_list);
+        adapter = new TweetsAdapter(getActivity(), getLoaderManager(), tweet_list);
     }
 
     @Override
@@ -66,7 +68,13 @@ public class UserTimelineFragment extends Fragment implements APIDelegate<BaseRe
         list.setAdapter(adapter);
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {}
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                if (getActivity() instanceof BaseLayersActivity) {
+                    Bundle bundle = new Bundle();
+                    bundle.putParcelable(TweetActivity.KEY_EXTRAS_TWEET, adapter.getItem(position));
+                    ((BaseLayersActivity)getActivity()).startAnimationActivity(TweetActivity.class, bundle);
+                }
+            }
         });
 
         viewLoading = (LinearLayout) view.findViewById(R.id.user_timeline_loading);
@@ -116,4 +124,5 @@ public class UserTimelineFragment extends Fragment implements APIDelegate<BaseRe
         error.getError().printStackTrace();
         showTweetsList();
     }
+
 }

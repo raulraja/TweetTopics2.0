@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:background="#00000000"
+    android:id="@+id/tweettopics_root"
     android:layout_height="fill_parent"
     android:layout_width="fill_parent">
 
@@ -60,27 +61,6 @@
                                            android:layout_width="fill_parent" />
 
     </RelativeLayout>
-
-    <LinearLayout android:layout_height="fill_parent"
-                  android:layout_width="fill_parent"
-                  android:visibility="invisible"
-                  android:id="@+id/tweettopics_ll_main_links"
-                  >
-
-        <LinearLayout android:layout_height="wrap_content"
-                      android:layout_width="wrap_content"
-                      android:id="@+id/tweettopics_ll_links"
-                      android:background="@drawable/popup_full_dark">
-
-            <GridView android:layout_height="wrap_content"
-                      android:layout_width="wrap_content"
-                      android:columnWidth="60dp"
-                      android:gravity="center_horizontal"
-                      android:id="@+id/tweettopics_gv_links" />
-
-        </LinearLayout>
-
-    </LinearLayout>
 
     <LinearLayout android:layout_height="fill_parent"
                   android:layout_width="fill_parent"

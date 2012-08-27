@@ -29,15 +29,17 @@ public abstract class BaseLayersActivity extends BaseActivity {
 
     @Override
     protected void onPause() {
-        if (activityAnimation == Utils.ACTIVITY_ANIMATION_RIGHT) {
-            overridePendingTransition(R.anim.hold, R.anim.push_out_from_right);
-        } else {
-            overridePendingTransition(R.anim.hold, R.anim.push_out_from_left);
+        if (!(this instanceof TweetTopicsActivity)) {
+            if (activityAnimation == Utils.ACTIVITY_ANIMATION_RIGHT) {
+                overridePendingTransition(R.anim.hold, R.anim.push_out_from_right);
+            } else {
+                overridePendingTransition(R.anim.hold, R.anim.push_out_from_left);
+            }
         }
         super.onPause();
     }
 
-    protected void startAnimationActivity(Class klass, Bundle bundle) {
+    public void startAnimationActivity(Class klass, Bundle bundle) {
         Intent intent = new Intent(this, klass);
         if (bundle!=null) intent.putExtras(bundle);
         intent.putExtra(Utils.KEY_ACTIVITY_ANIMATION, (activityAnimation==Utils.ACTIVITY_ANIMATION_RIGHT)?Utils.ACTIVITY_ANIMATION_LEFT:Utils.ACTIVITY_ANIMATION_RIGHT);

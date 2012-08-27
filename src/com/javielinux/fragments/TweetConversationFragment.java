@@ -11,7 +11,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
-import com.javielinux.adapters.TweetsConversationAdapter;
+import com.javielinux.adapters.TweetsAdapter;
 import com.javielinux.api.APIDelegate;
 import com.javielinux.api.APITweetTopics;
 import com.javielinux.api.request.GetConversationRequest;
@@ -19,8 +19,10 @@ import com.javielinux.api.response.BaseResponse;
 import com.javielinux.api.response.ErrorResponse;
 import com.javielinux.api.response.GetConversationResponse;
 import com.javielinux.infos.InfoTweet;
+import com.javielinux.tweettopics2.BaseLayersActivity;
 import com.javielinux.tweettopics2.R;
 import com.javielinux.tweettopics2.ThemeManager;
+import com.javielinux.tweettopics2.TweetActivity;
 import com.javielinux.utils.ImageUtils;
 import com.javielinux.utils.Utils;
 
@@ -33,7 +35,7 @@ public class TweetConversationFragment extends Fragment implements APIDelegate<B
     private View footer_view;
     private ListView list;
 
-    private TweetsConversationAdapter adapter;
+    private TweetsAdapter adapter;
 
     public TweetConversationFragment(InfoTweet infoTweet) {
         this.infoTweet = infoTweet;
@@ -44,7 +46,7 @@ public class TweetConversationFragment extends Fragment implements APIDelegate<B
         super.onCreate(savedInstanceState);
 
         tweet_list = new ArrayList<InfoTweet>();
-        adapter = new TweetsConversationAdapter(getActivity(), getLoaderManager(), tweet_list);
+        adapter = new TweetsAdapter(getActivity(), getLoaderManager(), tweet_list);
     }
 
     @Override
@@ -69,7 +71,13 @@ public class TweetConversationFragment extends Fragment implements APIDelegate<B
         list.setAdapter(adapter);
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {}
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                if (getActivity() instanceof BaseLayersActivity) {
+                    Bundle bundle = new Bundle();
+                    bundle.putParcelable(TweetActivity.KEY_EXTRAS_TWEET, adapter.getItem(position));
+                    ((BaseLayersActivity)getActivity()).startAnimationActivity(TweetActivity.class, bundle);
+                }
+            }
         });
 
         getConversationTweets();
