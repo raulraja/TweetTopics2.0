@@ -33,18 +33,19 @@ public class SearchGeoFragment extends Fragment implements APIDelegate<BaseRespo
 
     private EntitySearch search_entity;
 
-    private CheckBox useGeo;
+    public CheckBox useGeo;
     private RadioGroup typeGeo;
-    private RadioButton typeGeoGPS;
-    private RadioButton typeGeoMap;
+    public RadioButton typeGeoGPS;
+    public RadioButton typeGeoMap;
     private AutoCompleteTextView place;
-    private EditText latitude;
-    private EditText longitude;
-    private SeekBar distance;
+    public EditText latitude;
+    public EditText longitude;
+    public SeekBar distance;
     private TextView distanceTxt;
     private RadioGroup typeDistance;
-    private RadioButton typeDistanceMiles;
-    private RadioButton typeDistanceKM;
+    public RadioButton typeDistanceMiles;
+    public RadioButton typeDistanceKM;
+    private LinearLayout llLocation;
     private LinearLayout llMap;
     private LinearLayout llDistance;
 
@@ -73,6 +74,7 @@ public class SearchGeoFragment extends Fragment implements APIDelegate<BaseRespo
         typeDistanceMiles = (RadioButton)view.findViewById(R.id.rb_distance_miles);
         typeDistanceKM = (RadioButton)view.findViewById(R.id.rb_distance_km);
 
+        llLocation = (LinearLayout)view.findViewById(R.id.ll_location);
         llMap = (LinearLayout)view.findViewById(R.id.ll_map);
         llDistance = (LinearLayout)view.findViewById(R.id.ll_distance);
 
@@ -81,7 +83,6 @@ public class SearchGeoFragment extends Fragment implements APIDelegate<BaseRespo
         address_list = new ArrayList<Address>();
         address_adapter = new AddressAdapter(getActivity(), address_list);
         place.setAdapter(address_adapter);
-        place.setVisibility(View.GONE);
 
         place.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -167,18 +168,6 @@ public class SearchGeoFragment extends Fragment implements APIDelegate<BaseRespo
             public void afterTextChanged(Editable editable) {}
         });
 
-        place.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (event != null&& (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) {
-                    String currentText = place.getText().toString();
-
-                    APITweetTopics.execute(getActivity(), getLoaderManager(), SearchGeoFragment.this, new GetGeolocationAddressRequest(getActivity(), currentText, true));
-                }
-                return false;
-            }
-        });
-
         populateFields();
 
         return view;
@@ -234,7 +223,7 @@ public class SearchGeoFragment extends Fragment implements APIDelegate<BaseRespo
     }
 
     private void showFields() {
-        place.setVisibility(View.VISIBLE);
+        llLocation.setVisibility(View.VISIBLE);
         llMap.setVisibility(View.VISIBLE);
         llDistance.setVisibility(View.VISIBLE);
         typeGeo.setVisibility(View.VISIBLE);
@@ -242,7 +231,7 @@ public class SearchGeoFragment extends Fragment implements APIDelegate<BaseRespo
     }
 
     private void hideFields() {
-        place.setVisibility(View.GONE);
+        llLocation.setVisibility(View.GONE);
         llMap.setVisibility(View.GONE);
         llDistance.setVisibility(View.GONE);
         typeGeo.setVisibility(View.GONE);

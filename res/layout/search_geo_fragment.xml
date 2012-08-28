@@ -34,17 +34,25 @@
                 style="@style/SearchText" />
         </RadioGroup>
 
-        <AutoCompleteTextView android:id="@+id/et_place"
-            android:completionThreshold="3"
-            android:hint="@string/location_search_message"
-            android:inputType="textNoSuggestions"
+        <LinearLayout android:id="@+id/ll_location"
             android:layout_below="@id/rg_type_geo"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
             android:layout_width="fill_parent"
-            android:visibility="gone" />
+            android:visibility="gone">
+
+            <AutoCompleteTextView android:id="@+id/et_place"
+                android:completionThreshold="3"
+                android:hint="@string/location_search_message"
+                android:inputType="textNoSuggestions"
+                android:layout_height="wrap_content"
+                android:layout_width="fill_parent"
+                android:visibility="gone" />
+
+        </LinearLayout>
 
         <LinearLayout android:id="@+id/ll_map"
-            android:layout_below="@id/et_place"
+            android:layout_below="@id/ll_location"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
             android:layout_marginLeft="30dip"

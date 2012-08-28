@@ -21,6 +21,10 @@ public class SearchFragmentAdapter extends FragmentPagerAdapter  {
     private ArrayList<Integer> tweet_fragment_code = new ArrayList<Integer>();
     private ArrayList<String> tweet_fragment_titles = new ArrayList<String>();
 
+    private SearchGeneralFragment search_general_fragment;
+    private SearchAdvancedFragment search_advanced_fragment;
+    private SearchGeoFragment search_geo_fragment;
+
     private Context context;
 
     public SearchFragmentAdapter(Context context, FragmentManager fragmentManager, EntitySearch search_entity) {
@@ -47,11 +51,14 @@ public class SearchFragmentAdapter extends FragmentPagerAdapter  {
     public Fragment getItem(int index) {
 
         if (tweet_fragment_code.get(index) == TAB_GENERAL) {
-            return new SearchGeneralFragment(search_entity);
+            search_general_fragment = new SearchGeneralFragment(search_entity);
+            return search_general_fragment;
         } else if (tweet_fragment_code.get(index) == TAB_ADVANCED) {
-            return new SearchAdvancedFragment(search_entity);
+            search_advanced_fragment = new SearchAdvancedFragment(search_entity);
+            return search_advanced_fragment;
         } else if (tweet_fragment_code.get(index) == TAB_GEOLOCATION) {
-            return new SearchGeoFragment(search_entity);
+            search_geo_fragment = new SearchGeoFragment(search_entity);
+            return search_geo_fragment;
         }
         return new Fragment();
     }
@@ -69,5 +76,17 @@ public class SearchFragmentAdapter extends FragmentPagerAdapter  {
     @Override
     public CharSequence getPageTitle(int position) {
         return tweet_fragment_titles.get(position % tweet_fragment_code.size()).toUpperCase();
+    }
+
+    public SearchGeneralFragment getSearchGeneralFragment() {
+        return search_general_fragment;
+    }
+
+    public SearchAdvancedFragment getSearchAdvancedFragment() {
+        return search_advanced_fragment;
+    }
+
+    public SearchGeoFragment getSearchGeoFragment() {
+        return search_geo_fragment;
     }
 }

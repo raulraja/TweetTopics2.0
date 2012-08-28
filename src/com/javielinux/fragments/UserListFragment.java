@@ -101,14 +101,15 @@ public class UserListFragment extends Fragment implements APIDelegate<BaseRespon
     @Override
     public void onResults(BaseResponse response) {
 
+        showUserLists();
+        user_list.clear();
+
         UserListsResponse result = (UserListsResponse) response;
 
         for (UserList userList: result.getUserList())
-            user_list.add(0, userList);
+            user_list.add(userList);
 
         adapter.notifyDataSetChanged();
-
-        showUserLists();
     }
 
     @Override

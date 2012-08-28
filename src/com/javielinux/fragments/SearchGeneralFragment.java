@@ -18,15 +18,15 @@ public class SearchGeneralFragment extends Fragment {
 
     private EntitySearch search_entity;
 
-    private EditText name;
-    private EditText searchOr;
-    private EditText searchAnd;
-    private EditText searchNot;
-    private EditText searchFromUser;
-    private EditText searchToUser;
-    private ImageButton btIcons;
-    private EditText iconId;
-    private EditText iconFile;
+    public EditText name;
+    public EditText searchOr;
+    public EditText searchAnd;
+    public EditText searchNot;
+    public EditText searchFromUser;
+    public EditText searchToUser;
+    public ImageButton btIcons;
+    public EditText iconId;
+    public EditText iconFile;
 
     public SearchGeneralFragment(EntitySearch search_entity) {
         this.search_entity = search_entity;

@@ -95,27 +95,27 @@ public class SearchActivity extends BaseActivity implements APIDelegate<BaseResp
 
         String name_value = "";
 
-        String searchAnd_value = ((EditText)findViewById(R.id.et_words_and)).getText().toString();
+        String searchAnd_value = fragmentAdapter.getSearchGeneralFragment().searchAnd.getText().toString();
         search_entity.setValue("words_and", searchAnd_value);
 
         if (!searchAnd_value.equals("")) if (name_value.length()<=0) name_value = searchAnd_value;
 
-        String searchOr_value = ((EditText)findViewById(R.id.et_words_or)).getText().toString();
+        String searchOr_value = fragmentAdapter.getSearchGeneralFragment().searchOr.getText().toString();
         search_entity.setValue("words_or", searchOr_value);
 
         if (!searchOr_value.equals("")) if (name_value.length()<=0) name_value = searchOr_value;
 
-        String searchNot_value = ((EditText)findViewById(R.id.et_words_not)).getText().toString();
+        String searchNot_value = fragmentAdapter.getSearchGeneralFragment().searchNot.getText().toString();
         search_entity.setValue("words_not", searchNot_value);
 
         if (!searchNot_value.equals("")) if (name_value.length()<=0) name_value = searchNot_value;
 
-        String searchFromUser_value = ((EditText)findViewById(R.id.et_from_user)).getText().toString();
+        String searchFromUser_value = fragmentAdapter.getSearchGeneralFragment().searchFromUser.getText().toString();
         search_entity.setValue("from_user", searchFromUser_value);
 
         if (!searchFromUser_value.equals("")) if (name_value.length()<=0) name_value = searchFromUser_value;
 
-        String searchToUser_value = ((EditText)findViewById(R.id.et_to_user)).getText().toString();
+        String searchToUser_value = fragmentAdapter.getSearchGeneralFragment().searchToUser.getText().toString();
         search_entity.setValue("to_user", searchToUser_value);
 
         if (!searchToUser_value.equals("")) if (name_value.length()<=0) name_value = searchToUser_value;
@@ -124,7 +124,7 @@ public class SearchActivity extends BaseActivity implements APIDelegate<BaseResp
             error = this.getString(R.string.error_search_text);
         }
 
-        EditText name = (EditText)findViewById(R.id.et_name);
+        EditText name = fragmentAdapter.getSearchGeneralFragment().name;
 
         if (name.getText().toString().equals("")) {
             if (name_value.length() > 1)
@@ -135,10 +135,10 @@ public class SearchActivity extends BaseActivity implements APIDelegate<BaseResp
             search_entity.setValue("name", name.getText().toString());
         }
 
-        EditText mEdIcon = (EditText)findViewById(R.id.icon_id);
+        EditText mEdIcon = fragmentAdapter.getSearchGeneralFragment().iconId;
         long icon_id = Long.parseLong(mEdIcon.getText().toString());
 
-        EditText mEdFile = (EditText)findViewById(R.id.icon_file);
+        EditText mEdFile = fragmentAdapter.getSearchGeneralFragment().iconFile;
         String token_file = mEdFile.getText().toString();
 
         search_entity.setValue("icon_id", icon_id);
@@ -162,34 +162,34 @@ public class SearchActivity extends BaseActivity implements APIDelegate<BaseResp
             search_entity.setValue("use_count", 0);
         }
 
-        Spinner languages = (Spinner)findViewById(R.id.sp_languages);
+        Spinner languages = fragmentAdapter.getSearchAdvancedFragment().languages;
 
         if (languages.getSelectedItemPosition() != AdapterView.INVALID_POSITION) {
            String[] language_values = getResources().getStringArray(R.array.languages_values);
             search_entity.setValue("lang", language_values[languages.getSelectedItemPosition()]);
         }
 
-        Spinner attitude = (Spinner)findViewById(R.id.sp_attitude);
+        Spinner attitude = fragmentAdapter.getSearchAdvancedFragment().attitude;
 
         if (attitude.getSelectedItemPosition() != AdapterView.INVALID_POSITION)
             search_entity.setValue("attitude", attitude.getSelectedItemPosition());
 
-        Spinner filter = (Spinner)findViewById(R.id.sp_filter);
+        Spinner filter = fragmentAdapter.getSearchAdvancedFragment().filter;
 
         if (filter.getSelectedItemPosition() != AdapterView.INVALID_POSITION)
             search_entity.setValue("filter", filter.getSelectedItemPosition());
 
-        CheckBox noRetweet = (CheckBox)findViewById(R.id.cb_no_retweet);
+        CheckBox noRetweet = fragmentAdapter.getSearchAdvancedFragment().noRetweet;
 
         if (noRetweet.isChecked())
             search_entity.setValue("no_retweet", 1);
         else
             search_entity.setValue("no_retweet", 0);
 
-        EditText searchSource = (EditText)findViewById(R.id.et_source);
+        EditText searchSource = fragmentAdapter.getSearchAdvancedFragment().source;
         search_entity.setValue("source", searchSource.getText().toString());
 
-        CheckBox notifications = (CheckBox)findViewById(R.id.cb_notifications);
+        CheckBox notifications = fragmentAdapter.getSearchAdvancedFragment().notifications;
 
         // Borrar todos los tweets en el caso que deje de notificarse la búsqueda
         if (!notifications.isChecked() && search_entity.getInt("com/javielinux/notifications") == 1) {
@@ -210,27 +210,27 @@ public class SearchActivity extends BaseActivity implements APIDelegate<BaseResp
             search_entity.setValue("com/javielinux/notifications", 0);
 
 
-        CheckBox notificationsBar = (CheckBox)findViewById(R.id.cb_notifications_bar);
+        CheckBox notificationsBar = fragmentAdapter.getSearchAdvancedFragment().notificationsBar;
 
         if (notificationsBar.isChecked())
             search_entity.setValue("notifications_bar", 1);
         else
             search_entity.setValue("notifications_bar", 0);
 
-        CheckBox useGeolocation = (CheckBox)findViewById(R.id.cb_use_geo);
+        CheckBox useGeolocation = fragmentAdapter.getSearchGeoFragment().useGeo;
 
         if (useGeolocation.isChecked()) {
             search_entity.setValue("use_geo", 1);
 
-            RadioButton typeGeolocationGPS = (RadioButton)findViewById(R.id.rb_use_gps);
+            RadioButton typeGeolocationGPS = fragmentAdapter.getSearchGeoFragment().typeGeoGPS;
 
             if (typeGeolocationGPS.isChecked())
                 search_entity.setValue("type_geo", 1);
             else
                 search_entity.setValue("type_geo", 0);
 
-            EditText latitude = (EditText)findViewById(R.id.et_latitude);
-            EditText longitude = (EditText)findViewById(R.id.et_longitude);
+            EditText latitude = fragmentAdapter.getSearchGeoFragment().latitude;
+            EditText longitude = fragmentAdapter.getSearchGeoFragment().longitude;
 
             try {
                 float latitude_value = Float.parseFloat(latitude.getText().toString());
@@ -243,14 +243,14 @@ public class SearchActivity extends BaseActivity implements APIDelegate<BaseResp
             }
 
             if (error.length()==0) {
-                SeekBar distance = (SeekBar)findViewById(R.id.sb_distance);
+                SeekBar distance = fragmentAdapter.getSearchGeoFragment().distance;
 
                 if (distance.getProgress() > 0) {
                     search_entity.setValue("distance", distance.getProgress());
 
-                    RadioButton typeDistance = (RadioButton)findViewById(R.id.rb_distance_km);
+                    RadioButton typeDistanceKm = fragmentAdapter.getSearchGeoFragment().typeDistanceKM;
 
-                    if (typeDistance.isChecked()) {
+                    if (typeDistanceKm.isChecked()) {
                         search_entity.setValue("type_distance", 1);
                     } else {
                         search_entity.setValue("type_distance", 0);

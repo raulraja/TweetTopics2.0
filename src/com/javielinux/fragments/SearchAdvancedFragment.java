@@ -20,13 +20,13 @@ public class SearchAdvancedFragment extends Fragment {
 
     private EntitySearch search_entity;
 
-    private Spinner languages;
-    private Spinner attitude;
-    private Spinner filter;
-    private CheckBox noRetweet;
-    private EditText source;
-    private CheckBox notifications;
-    private CheckBox notificationsBar;
+    public Spinner languages;
+    public Spinner attitude;
+    public Spinner filter;
+    public CheckBox noRetweet;
+    public EditText source;
+    public CheckBox notifications;
+    public CheckBox notificationsBar;
     private Button btInfoNotifications;
 
     private boolean searchIsNotification = false;
