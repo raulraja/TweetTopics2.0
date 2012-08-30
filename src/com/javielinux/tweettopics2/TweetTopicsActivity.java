@@ -78,6 +78,10 @@ public class TweetTopicsActivity extends BaseLayersActivity implements PopupLink
 
     private PopupLinks popupLinks;
 
+    public TweetTopicsActivity() {
+        super();
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -209,7 +213,7 @@ public class TweetTopicsActivity extends BaseLayersActivity implements PopupLink
             }
         });
 
-        // cargar el poppus de enlaces
+        // cargar el popup de enlaces
 
         FrameLayout root = ((FrameLayout)findViewById(R.id.tweettopics_root));
         popupLinks = new PopupLinks(this);

@@ -217,47 +217,51 @@ public class SearchActivity extends BaseActivity implements APIDelegate<BaseResp
         else
             search_entity.setValue("notifications_bar", 0);
 
-        CheckBox useGeolocation = fragmentAdapter.getSearchGeoFragment().useGeo;
+        if (fragmentAdapter.getSearchGeoFragment() != null) {
+            CheckBox useGeolocation = fragmentAdapter.getSearchGeoFragment().useGeo;
 
-        if (useGeolocation.isChecked()) {
-            search_entity.setValue("use_geo", 1);
+            if (useGeolocation.isChecked()) {
+                search_entity.setValue("use_geo", 1);
 
-            RadioButton typeGeolocationGPS = fragmentAdapter.getSearchGeoFragment().typeGeoGPS;
+                RadioButton typeGeolocationGPS = fragmentAdapter.getSearchGeoFragment().typeGeoGPS;
 
-            if (typeGeolocationGPS.isChecked())
-                search_entity.setValue("type_geo", 1);
-            else
-                search_entity.setValue("type_geo", 0);
+                if (typeGeolocationGPS.isChecked())
+                    search_entity.setValue("type_geo", 1);
+                else
+                    search_entity.setValue("type_geo", 0);
 
-            EditText latitude = fragmentAdapter.getSearchGeoFragment().latitude;
-            EditText longitude = fragmentAdapter.getSearchGeoFragment().longitude;
+                EditText latitude = fragmentAdapter.getSearchGeoFragment().latitude;
+                EditText longitude = fragmentAdapter.getSearchGeoFragment().longitude;
 
-            try {
-                float latitude_value = Float.parseFloat(latitude.getText().toString());
-                float longitude_value = Float.parseFloat(longitude.getText().toString());
+                try {
+                    float latitude_value = Float.parseFloat(latitude.getText().toString());
+                    float longitude_value = Float.parseFloat(longitude.getText().toString());
 
-                search_entity.setValue("latitude", latitude_value);
-                search_entity.setValue("longitude", longitude_value);
-            } catch (Exception exception) {
-                error = this.getString(R.string.error_search_coord);
-            }
-
-            if (error.length()==0) {
-                SeekBar distance = fragmentAdapter.getSearchGeoFragment().distance;
-
-                if (distance.getProgress() > 0) {
-                    search_entity.setValue("distance", distance.getProgress());
-
-                    RadioButton typeDistanceKm = fragmentAdapter.getSearchGeoFragment().typeDistanceKM;
-
-                    if (typeDistanceKm.isChecked()) {
-                        search_entity.setValue("type_distance", 1);
-                    } else {
-                        search_entity.setValue("type_distance", 0);
-                    }
-                } else {
-                    error = this.getString(R.string.error_search_distance);
+                    search_entity.setValue("latitude", latitude_value);
+                    search_entity.setValue("longitude", longitude_value);
+                } catch (Exception exception) {
+                    error = this.getString(R.string.error_search_coord);
                 }
+
+                if (error.length()==0) {
+                    SeekBar distance = fragmentAdapter.getSearchGeoFragment().distance;
+
+                    if (distance.getProgress() > 0) {
+                        search_entity.setValue("distance", distance.getProgress());
+
+                        RadioButton typeDistanceKm = fragmentAdapter.getSearchGeoFragment().typeDistanceKM;
+
+                        if (typeDistanceKm.isChecked()) {
+                            search_entity.setValue("type_distance", 1);
+                        } else {
+                            search_entity.setValue("type_distance", 0);
+                        }
+                    } else {
+                        error = this.getString(R.string.error_search_distance);
+                    }
+                }
+            } else {
+                search_entity.setValue("use_geo", 0);
             }
         } else {
             search_entity.setValue("use_geo", 0);

@@ -313,7 +313,7 @@ public class TweetTopicsFragment extends BaseListFragment implements APIDelegate
 
     @Override
     public void onResults(BaseResponse r) {
-
+        Log.d(Utils.TAG, "TweetTopicsFragment:onResults:" + column_entity.getInt("type_id"));
         TwitterUserResponse result = (TwitterUserResponse) r;
 
         hideUpdating();
@@ -416,5 +416,4 @@ public class TweetTopicsFragment extends BaseListFragment implements APIDelegate
         WidgetCounters4x1.updateAll(getActivity());
         WidgetCounters2x1.updateAll(getActivity());
     }
-
 }

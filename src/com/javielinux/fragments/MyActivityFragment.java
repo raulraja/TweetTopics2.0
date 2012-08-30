@@ -46,6 +46,7 @@ public class MyActivityFragment extends Fragment {
     public static final int ACTIVITY_NEW_TWITTER_USER = 0;
     public static final int ACTIVITY_EDIT_TWITTER_USER = 1;
     public static final int ACTIVITY_SHOW_USER_LISTS = 2;
+    public static final int ACTIVITY_EDIT_SEARCH = 3;
 
     private MyActivityAdapter adapter;
 
@@ -127,6 +128,18 @@ public class MyActivityFragment extends Fragment {
                         }
                     }, 100);
                 }
+                break;
+            case ACTIVITY_EDIT_SEARCH:
+
+                if (intent != null && intent.getExtras()!=null && intent.getExtras().containsKey("view")) {
+                    boolean view_column = intent.getExtras().getBoolean("view", false);
+
+                    if (view_column) {
+                        Entity search_entity = new Entity("search", intent.getLongExtra(DataFramework.KEY_ID, -1));
+                        clickSearch(search_entity);
+                    }
+                }
+
                 break;
         }
     }
@@ -269,7 +282,6 @@ public class MyActivityFragment extends Fragment {
                     ((TweetTopicsActivity)getActivity()).getViewPager().setCurrentItem(created_column_list.get(0).getInt("position"), false);
                 }
             }, 100);
-
         }
     }
 
@@ -277,7 +289,7 @@ public class MyActivityFragment extends Fragment {
         Intent edit_search = new Intent(getActivity(), SearchActivity.class);
         edit_search.putExtra(DataFramework.KEY_ID, search.getId());
 
-        startActivity(edit_search);
+        startActivityForResult(edit_search, ACTIVITY_EDIT_SEARCH);
     }
 
     public void clickUser(Entity user) {

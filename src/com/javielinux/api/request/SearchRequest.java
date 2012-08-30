@@ -24,4 +24,24 @@ public class SearchRequest implements BaseRequest {
     public void setSinceId(long since_id) {
         this.since_id = since_id;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        SearchRequest that = (SearchRequest) o;
+
+        if (since_id != that.since_id) return false;
+        if (entitySearch != null ? !entitySearch.equals(that.entitySearch) : that.entitySearch != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = entitySearch != null ? entitySearch.hashCode() : 0;
+        result = 31 * result + (int) (since_id ^ (since_id >>> 32));
+        return result;
+    }
 }

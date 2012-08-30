@@ -28,10 +28,10 @@ public class APILoader implements LoaderManager.LoaderCallbacks {
         this.baseRequest = baseRequest;
         try {
             if (loaderManager.getLoader(baseRequest.hashCode())==null) {
-                Log.d(Utils.TAG, "initLoader: " + baseRequest.hashCode());
+                Log.d(Utils.TAG, "initLoader: " + baseRequest.getClass().getName() + ": " + baseRequest.hashCode());
                 loaderManager.initLoader(baseRequest.hashCode(), null, this);
             } else {
-                Log.d(Utils.TAG, "restartLoader: " + baseRequest.hashCode());
+                Log.d(Utils.TAG, "restartLoader: " + baseRequest.getClass().getName() + ": " + baseRequest.hashCode());
                 loaderManager.restartLoader(baseRequest.hashCode(), null, this);
             }
         } catch (IllegalStateException e) {
@@ -122,12 +122,11 @@ public class APILoader implements LoaderManager.LoaderCallbacks {
         if (result.isError()) {
             delegate.onError((ErrorResponse)result);
         } else {
+            Log.d(Utils.TAG, "onLoadFinished: " + o.getClass().getName());
             delegate.onResults(result);
         }
     }
 
     @Override
-    public void onLoaderReset(Loader loader) {
-
-    }
+    public void onLoaderReset(Loader loader) {}
 }

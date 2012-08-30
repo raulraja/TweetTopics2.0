@@ -99,7 +99,6 @@ public class SearchFragment extends BaseListFragment implements APIDelegate<Base
                                 getTweetsFromInternet = true;
                             }
                         }
-
                     }
                 }
 
@@ -108,7 +107,6 @@ public class SearchFragment extends BaseListFragment implements APIDelegate<Base
                 } else {
                     showTweetsList();
                 }
-
             }
 
             @Override
@@ -116,7 +114,6 @@ public class SearchFragment extends BaseListFragment implements APIDelegate<Base
                 reload();
             }
         }, new TwitterUserDBRequest(column_entity.getInt("type_id"), -1, search_entity, -1));
-
     }
 
     @Override
@@ -155,7 +152,7 @@ public class SearchFragment extends BaseListFragment implements APIDelegate<Base
     }
 
     public void reload() {
-        Log.d(Utils.TAG, "reloadColumnUser : " + column_entity.getInt("type_id"));
+        Log.d(Utils.TAG, "reloadSearch : " + search_entity.getId());
 
         SearchRequest searchRequest = new SearchRequest(search_entity);
 
@@ -185,7 +182,6 @@ public class SearchFragment extends BaseListFragment implements APIDelegate<Base
                             e.printStackTrace();
                         }
                     }
-
                 }
             }
         }).start();
@@ -207,7 +203,7 @@ public class SearchFragment extends BaseListFragment implements APIDelegate<Base
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        Log.d(Utils.TAG, "onCreateView: " + column_entity.getString("description") + " : " + infoTweets.size());
+        Log.d(Utils.TAG, "onCreateView: " + column_entity.getString("description"));
 
         //markPositionLastReadAsLastReadId();
 
@@ -225,7 +221,6 @@ public class SearchFragment extends BaseListFragment implements APIDelegate<Base
         listView.getRefreshableView().setFadingEdgeLength(6);
         listView.getRefreshableView().setCacheColorHint(themeManager.getColor("color_shadow_listview"));
 
-        tweetsAdapter.setParentListView(listView);
         listView.getRefreshableView().setAdapter(tweetsAdapter);
         listView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener() {
             @Override
@@ -299,7 +294,7 @@ public class SearchFragment extends BaseListFragment implements APIDelegate<Base
 
     @Override
     public void onResults(BaseResponse response) {
-
+        Log.d(Utils.TAG, "SearchFragment:onResults:" + search_entity.getId());
         SearchResponse result = (SearchResponse) response;
 
         hideUpdating();
@@ -314,8 +309,10 @@ public class SearchFragment extends BaseListFragment implements APIDelegate<Base
 
             for (int i = infoTweetList.size()-1; i >=0; i--) {
                 try {
-                    infoTweets.add(0, infoTweetList.get(i));
-                    count++;
+                    if (!infoTweets.contains(infoTweetList.get(i))) {
+                        infoTweets.add(0, infoTweetList.get(i));
+                        count++;
+                    }
                 } catch (OutOfMemoryError er) {
                     i = infoTweetList.size();
                 }
@@ -384,5 +381,4 @@ public class SearchFragment extends BaseListFragment implements APIDelegate<Base
         WidgetCounters4x1.updateAll(getActivity());
         WidgetCounters2x1.updateAll(getActivity());
     }
-
 }
