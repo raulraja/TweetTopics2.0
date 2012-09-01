@@ -20,6 +20,7 @@
 <resources>
 
     <dimen name="actionbar_columns_height">80dp</dimen>
+    <dimen name="icon_columns_height">32dp</dimen>
 
     <dimen name="actionbar_height">43dp</dimen>
     <dimen name="sub_actionbar_height">32dp</dimen>
@@ -27,6 +28,10 @@
     <dimen name="height_image_tweet">220dp</dimen>
 
     <dimen name="default_padding">8dp</dimen>
+    <dimen name="default_separation">5dp</dimen>
     <dimen name="footer_buttons_height">45dp</dimen>
+
+    <dimen name="text_size_title_page_indicator">16sp</dimen>
+    <dimen name="text_size_title_page">10sp</dimen>
 
 </resources>

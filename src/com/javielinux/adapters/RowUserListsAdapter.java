@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import com.android.dataframework.Entity;
 import com.javielinux.components.AlphaTextView;
 import com.javielinux.tweettopics2.R;
+import com.javielinux.utils.ImageUtils;
 import com.javielinux.utils.Utils;
 
 import java.io.File;
@@ -85,7 +86,7 @@ public class RowUserListsAdapter extends ArrayAdapter<Entity> {
             File file = Utils.getFileForSaveURL(context, urlAvatar);
 
             if (!file.exists()) {
-                bmp = Utils.saveAvatar(urlAvatar, file);
+                bmp = ImageUtils.saveAvatar(urlAvatar, file);
     		} else {
 	    		bmp = BitmapFactory.decodeFile(file.getAbsolutePath());
 		    }

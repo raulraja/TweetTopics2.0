@@ -495,7 +495,12 @@ public class TweetTopicsActivity extends BaseLayersActivity implements PopupLink
 
     public void newStatus() {
         Intent newstatus = new Intent(this, NewStatusActivity.class);
+        newstatus.putExtra("start_user_id", getUserOwnerCurrentColumn());
         startActivityForResult(newstatus, ACTIVITY_NEWSTATUS);
+    }
+
+    public long getUserOwnerCurrentColumn() {
+        return fragmentAdapter.getUserOwnerColumn(pager.getCurrentItem());
     }
 
     private Bitmap getThumb(String s)
@@ -521,6 +526,7 @@ public class TweetTopicsActivity extends BaseLayersActivity implements PopupLink
 
         for (int i=0; i<fragmentAdapter.getFragmentList().size(); i++) {
             Button button = new Button(this);
+            button.setPadding(0,13,0,0);
             button.setTextSize(11);
             button.setCompoundDrawablePadding(2);
             button.setTextColor(themeManager.getColor("color_button_bar_title_column"));
@@ -528,18 +534,13 @@ public class TweetTopicsActivity extends BaseLayersActivity implements PopupLink
             if (bmp==null) {
                 bmp = BitmapFactory.decodeResource(getResources(), R.drawable.icon);
             }
-            bmp = Utils.getBitmap(bmp, Utils.dip2px(this, 52));
-            button.setCompoundDrawablesWithIntrinsicBounds(null, new BitmapDrawable(bmp), null, null);
+            bmp = ImageUtils.getBitmap(bmp, (int)getResources().getDimension(R.dimen.icon_columns_height));
+            button.setCompoundDrawablesWithIntrinsicBounds(null, new BitmapDrawable(getResources(), bmp), null, null);
             button.setText(fragmentAdapter.getPageTitle(i));
             button.setBackgroundColor(Color.TRANSPARENT);
             button.setClickable(false);
 
             layoutBackgroundColumnsBar.addView(button);
-            /*
-            ImageView separator = new ImageView(this);
-            separator.setBackgroundColor(Color.parseColor("#44000000"));
-            layoutBackgroundColumnsItems.addView(separator, new LinearLayout.LayoutParams(1, ViewGroup.LayoutParams.FILL_PARENT));
-            */
         }
     }
 
@@ -578,7 +579,7 @@ public class TweetTopicsActivity extends BaseLayersActivity implements PopupLink
         states.addState(new int[] {android.R.attr.state_selected}, d);
         states.addState(new int[] {android.R.attr.color}, new ColorDrawable(themeManager.getColor("color_indicator_text")));
         indicator.setBackgroundDrawable(states);
-        indicator.setTextSize(26);
+        indicator.setTextSize(getResources().getDimension(R.dimen.text_size_title_page_indicator));
     }
 
     private void reloadBarAvatar() {

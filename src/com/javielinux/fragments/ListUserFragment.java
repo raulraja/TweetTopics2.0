@@ -1,6 +1,5 @@
 package com.javielinux.fragments;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -21,6 +20,7 @@ import com.javielinux.api.response.BaseResponse;
 import com.javielinux.api.response.ErrorResponse;
 import com.javielinux.api.response.LoadTypeStatusResponse;
 import com.javielinux.infos.InfoTweet;
+import com.javielinux.tweettopics2.BaseLayersActivity;
 import com.javielinux.tweettopics2.R;
 import com.javielinux.tweettopics2.ThemeManager;
 import com.javielinux.tweettopics2.TweetActivity;
@@ -164,9 +164,11 @@ public class ListUserFragment extends BaseListFragment implements APIDelegate<Ba
 
     private void onListItemClick(View v, int position, long id) {
 
-        Intent intent = new Intent(getActivity(), TweetActivity.class);
-        intent.putExtra(TweetActivity.KEY_EXTRAS_TWEET, tweetsAdapter.getItem(position - 1));
-        startActivity(intent);
+        if (getActivity() instanceof BaseLayersActivity) {
+            Bundle bundle = new Bundle();
+            bundle.putParcelable(TweetActivity.KEY_EXTRAS_TWEET, tweetsAdapter.getItem(position - 1));
+            ((BaseLayersActivity)getActivity()).startAnimationActivity(TweetActivity.class, bundle);
+        }
 
     }
 

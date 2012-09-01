@@ -2,7 +2,6 @@ package com.javielinux.fragments;
 
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,16 +18,14 @@ import com.javielinux.api.response.BaseResponse;
 import com.javielinux.api.response.ErrorResponse;
 import com.javielinux.api.response.GetConversationResponse;
 import com.javielinux.infos.InfoTweet;
-import com.javielinux.tweettopics2.BaseLayersActivity;
 import com.javielinux.tweettopics2.R;
 import com.javielinux.tweettopics2.ThemeManager;
-import com.javielinux.tweettopics2.TweetActivity;
 import com.javielinux.utils.ImageUtils;
 import com.javielinux.utils.Utils;
 
 import java.util.ArrayList;
 
-public class TweetConversationFragment extends Fragment implements APIDelegate<BaseResponse> {
+public class TweetConversationFragment extends BaseListFragment implements APIDelegate<BaseResponse> {
 
     private InfoTweet infoTweet;
     private ArrayList<InfoTweet> tweet_list;
@@ -72,11 +69,7 @@ public class TweetConversationFragment extends Fragment implements APIDelegate<B
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                if (getActivity() instanceof BaseLayersActivity) {
-                    Bundle bundle = new Bundle();
-                    bundle.putParcelable(TweetActivity.KEY_EXTRAS_TWEET, adapter.getItem(position));
-                    ((BaseLayersActivity)getActivity()).startAnimationActivity(TweetActivity.class, bundle);
-                }
+                onClickItemList(adapter.getItem(position));
             }
         });
 
@@ -151,5 +144,15 @@ public class TweetConversationFragment extends Fragment implements APIDelegate<B
     public void onError(ErrorResponse error) {
         footer_view.findViewById(R.id.tweet_conversation_loading).setVisibility(View.GONE);
         error.getError().printStackTrace();
+    }
+
+    @Override
+    void setFlinging(boolean flinging) {
+        this.flinging = flinging;
+    }
+
+    @Override
+    public Entity getColumnEntity() {
+        return null;
     }
 }

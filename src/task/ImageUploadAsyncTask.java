@@ -7,6 +7,7 @@ import android.os.AsyncTask;
 import com.javielinux.tweettopics2.R;
 import com.javielinux.twitter.NetworkConfig;
 import com.javielinux.twitter.NetworkConfigParser;
+import com.javielinux.utils.ImageUtils;
 import com.javielinux.utils.Utils;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
@@ -74,7 +75,7 @@ public class ImageUploadAsyncTask extends AsyncTask<String, Void, ImageUploadAsy
     			}
     		}
     		*/
-    		iur.bmp = Utils.getBitmapFromFile(f, Utils.HEIGHT_THUMB_NEWSTATUS, true);
+    		iur.bmp = ImageUtils.getBitmapFromFile(f, Utils.HEIGHT_THUMB_NEWSTATUS, true);
     		    		
     		File file = new File(f);
     		

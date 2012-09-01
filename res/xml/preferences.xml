@@ -352,12 +352,6 @@
 		                android:entryValues="@array/entries_prf_orientation_values"
 		                android:dialogTitle="@string/title_prf_orientation" />
 		                
-		        <CheckBoxPreference
-		                android:defaultValue="false"
-		                android:key="prf_use_pulltorefresh"
-		                android:title="@string/title_prf_use_pulltorefresh"
-		                android:summary="@string/summary_prf_use_pulltorefresh" />
-		                
 		        <ListPreference
 		        		android:defaultValue="1"
 		                android:key="prf_positions_links"

@@ -6,6 +6,7 @@ import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.preference.PreferenceManager;
+import com.javielinux.utils.ImageUtils;
 import com.javielinux.utils.Utils;
 
 import java.util.ArrayList;
@@ -82,10 +83,10 @@ public class ThemeManager {
 	public Drawable getDrawableMainButton(int resource, int type){
 		Drawable d = mResources.getDrawable(resource);
 		if (type==TYPE_NORMAL) {
-			d = Utils.colorDrawable(d, getColor("color_main_button_normal"));
+			d = ImageUtils.colorDrawable(d, getColor("color_main_button_normal"));
 		}
 		if (type==TYPE_SELECTED) {
-			d = Utils.colorDrawable(d, getColor("color_main_button_selected"));
+			d = ImageUtils.colorDrawable(d, getColor("color_main_button_selected"));
 		}
 		return d;
 	}
@@ -93,15 +94,15 @@ public class ThemeManager {
 	public Drawable getDrawableTweetButton(int resource, int type){
 		Drawable d = mResources.getDrawable(resource);
 		if (type==TYPE_NORMAL) {
-			d = Utils.colorDrawable(d, getColor("color_tweet_buttons_normal"));
+			d = ImageUtils.colorDrawable(d, getColor("color_tweet_buttons_normal"));
 			d.setAlpha(255);
 		}
 		if (type==TYPE_PRESS) {
-			d = Utils.colorDrawable(d, getColor("color_tweet_buttons_press"));
+			d = ImageUtils.colorDrawable(d, getColor("color_tweet_buttons_press"));
 			d.setAlpha(255);
 		}
 		if (type==TYPE_OFF) {
-			d = Utils.colorDrawable(d, getColor("color_tweet_buttons_normal"));
+			d = ImageUtils.colorDrawable(d, getColor("color_tweet_buttons_normal"));
 			d.setAlpha(80);
 		}
 		return d;

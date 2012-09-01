@@ -8,6 +8,7 @@ import android.util.Log;
 import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
 import com.javielinux.tweettopics2.R;
+import com.javielinux.utils.ImageUtils;
 import com.javielinux.utils.Utils;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
@@ -219,7 +220,7 @@ public class ConnectionManager {
 				Bitmap avatar = BitmapFactory.decodeStream(new Utils.FlushedInputStream(user.getProfileImageURL().openStream()));
 
 				if (avatar!=null) {
-					String file = Utils.getFileAvatar(ent.getId());
+					String file = ImageUtils.getFileAvatar(ent.getId());
 					FileOutputStream out = new FileOutputStream(file);
 					avatar.compress(Bitmap.CompressFormat.JPEG, 90, out);
 					avatar.recycle();

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
+    <item>
+        <nine-patch
+                android:src="@drawable/shadow_horizontal_top_9p"
+                android:dither="true" />
+    </item>
+    <item>
+        <shape android:shape="rectangle">
+            <gradient
+                    android:startColor="#ffffff"
+                    android:endColor="#dddddd"
+                    android:angle="270"/>
+        </shape>
+    </item>
+</layer-list>

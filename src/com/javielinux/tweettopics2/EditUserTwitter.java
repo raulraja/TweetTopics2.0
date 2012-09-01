@@ -12,6 +12,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import com.android.dataframework.DataFramework;
 import com.javielinux.twitter.ConnectionManager;
+import com.javielinux.utils.ImageUtils;
 import com.javielinux.utils.Utils;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
@@ -112,7 +113,7 @@ public class EditUserTwitter extends BaseActivity implements Runnable {
             });
 
             mAvatar = (ImageButton) findViewById(R.id.bt_avatar);
-            mAvatar.setImageBitmap(Utils.getBitmapAvatar(mCurrentId, Utils.AVATAR_LARGE));
+            mAvatar.setImageBitmap(ImageUtils.getBitmapAvatar(mCurrentId, Utils.AVATAR_LARGE));
 
             mUserName = (TextView) findViewById(R.id.et_username);
             mUserName.setText(user.getScreenName());

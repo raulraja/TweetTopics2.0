@@ -2,35 +2,29 @@ package com.javielinux.fragments;
 
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.TextView;
+import com.android.dataframework.Entity;
 import com.javielinux.adapters.TweetsAdapter;
 import com.javielinux.api.APIDelegate;
 import com.javielinux.api.APITweetTopics;
-import com.javielinux.api.loaders.LoadTypeStatusLoader;
-import com.javielinux.api.request.LoadTypeStatusRequest;
 import com.javielinux.api.request.UserMentionsRequest;
 import com.javielinux.api.response.BaseResponse;
 import com.javielinux.api.response.ErrorResponse;
-import com.javielinux.api.response.LoadTypeStatusResponse;
 import com.javielinux.api.response.UserMentionsResponse;
 import com.javielinux.infos.InfoTweet;
 import com.javielinux.infos.InfoUsers;
-import com.javielinux.tweettopics2.BaseLayersActivity;
 import com.javielinux.tweettopics2.R;
 import com.javielinux.tweettopics2.ThemeManager;
-import com.javielinux.tweettopics2.TweetActivity;
 import com.javielinux.utils.ImageUtils;
 
 import java.util.ArrayList;
 
-public class UserMentionsFragment extends Fragment implements APIDelegate<BaseResponse> {
+public class UserMentionsFragment extends BaseListFragment implements APIDelegate<BaseResponse> {
 
     private ArrayList<InfoTweet> tweet_list;
     private LinearLayout viewLoading;
@@ -72,11 +66,7 @@ public class UserMentionsFragment extends Fragment implements APIDelegate<BaseRe
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                if (getActivity() instanceof BaseLayersActivity) {
-                    Bundle bundle = new Bundle();
-                    bundle.putParcelable(TweetActivity.KEY_EXTRAS_TWEET, adapter.getItem(position));
-                    ((BaseLayersActivity)getActivity()).startAnimationActivity(TweetActivity.class, bundle);
-                }
+                onClickItemList(adapter.getItem(position));
             }
         });
 
@@ -126,5 +116,15 @@ public class UserMentionsFragment extends Fragment implements APIDelegate<BaseRe
     public void onError(ErrorResponse error) {
         error.getError().printStackTrace();
         showTweetsList();
+    }
+
+    @Override
+    void setFlinging(boolean flinging) {
+        this.flinging = flinging;
+    }
+
+    @Override
+    public Entity getColumnEntity() {
+        return null;
     }
 }

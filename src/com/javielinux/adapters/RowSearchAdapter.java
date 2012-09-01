@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import com.android.dataframework.Entity;
 import com.javielinux.components.AlphaTextView;
 import com.javielinux.tweettopics2.R;
+import com.javielinux.utils.ImageUtils;
 import com.javielinux.utils.Utils;
 
 import java.util.List;
@@ -82,7 +83,7 @@ public class RowSearchAdapter extends BaseAdapter {
 			
 			try {
 				if (item.getLong("last_tweet_id")<item.getLong("last_tweet_id_notifications")) {							
-					tagNew.setImageBitmap(Utils.getBitmapNumber(mContext, item.getInt("new_tweets_count"), Color.GREEN, Utils.TYPE_CIRCLE));
+					tagNew.setImageBitmap(ImageUtils.getBitmapNumber(mContext, item.getInt("new_tweets_count"), Color.GREEN, Utils.TYPE_CIRCLE));
 				} else {
 					tagNew.setImageResource(R.drawable.tag_notification);
 				}

@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import com.android.dataframework.Entity;
 import com.javielinux.tweettopics2.R;
+import com.javielinux.utils.ImageUtils;
 import com.javielinux.utils.Utils;
 
 import java.util.List;
@@ -56,7 +57,7 @@ public class TweetQuickUserAdapter extends BaseAdapter {
         
         ImageView img = (ImageView)v.findViewById(R.id.icon);
         try {
-        	img.setImageBitmap(Utils.getBitmapAvatar(item.getId(), Utils.AVATAR_LARGE));	
+        	img.setImageBitmap(ImageUtils.getBitmapAvatar(item.getId(), Utils.AVATAR_LARGE));
         } catch (Exception e) {
         	e.printStackTrace();
         	img.setImageResource(R.drawable.avatar);

@@ -425,7 +425,7 @@ public class AlarmAsyncTask extends AsyncTask<Void, Void, Void> {
         Intent i = new Intent(mContext, TweetTopicsActivity.class);
         
         if (user_id>=0) {
-        	i.putExtra("start_user_id", user_id+"");
+        	i.putExtra("start_user_id", user_id);
         }
         
         PendingIntent contentIntent = PendingIntent.getActivity(mContext, notify_id, i, 0);

@@ -20,6 +20,7 @@ import com.javielinux.database.EntitySearch;
 import com.javielinux.tweettopics2.NewStatusActivity;
 import com.javielinux.tweettopics2.R;
 import com.javielinux.tweettopics2.TweetTopicsActivity;
+import com.javielinux.utils.ImageUtils;
 import com.javielinux.utils.TweetTopicsUtils;
 import com.javielinux.utils.Utils;
 
@@ -213,7 +214,7 @@ public class WidgetCounters4x1 extends AppWidgetProvider {
 		            e.printStackTrace();
 		        }
 				
-				views.setImageViewBitmap(R.id.img_avatar, Utils.getBitmapAvatar(userId, Utils.AVATAR_LARGE));
+				views.setImageViewBitmap(R.id.img_avatar, ImageUtils.getBitmapAvatar(userId, Utils.AVATAR_LARGE));
 				
 				views.setOnClickPendingIntent(R.id.img_avatar,
 						getLaunchPendingIntent(context, appWidgetId, GlobalsWidget.BUTTON_WIDGET_AVATAR));
@@ -257,21 +258,21 @@ public class WidgetCounters4x1 extends AppWidgetProvider {
 				
 		    	if (totalTimeline>0) {
 		    		views.setViewVisibility(R.id.count_timeline, View.VISIBLE);
-		    		views.setImageViewBitmap(R.id.count_timeline, Utils.getBitmapNumber(context, totalTimeline, Color.RED, Utils.TYPE_RECTANGLE));
+		    		views.setImageViewBitmap(R.id.count_timeline, ImageUtils.getBitmapNumber(context, totalTimeline, Color.RED, Utils.TYPE_RECTANGLE));
 		    	} else {
 		    		views.setViewVisibility(R.id.count_timeline, View.GONE);
 		    	}
 		    	
 		    	if (totalMentions>0) {
 		    		views.setViewVisibility(R.id.count_mentions, View.VISIBLE);
-		    		views.setImageViewBitmap(R.id.count_mentions, Utils.getBitmapNumber(context, totalMentions, Color.RED, Utils.TYPE_RECTANGLE));
+		    		views.setImageViewBitmap(R.id.count_mentions, ImageUtils.getBitmapNumber(context, totalMentions, Color.RED, Utils.TYPE_RECTANGLE));
 		    	} else {
 		    		views.setViewVisibility(R.id.count_mentions, View.GONE);
 		    	}
 		    	
 		    	if (totalDirectMessages>0) {
 		    		views.setViewVisibility(R.id.count_directmessages, View.VISIBLE);
-		    		views.setImageViewBitmap(R.id.count_directmessages, Utils.getBitmapNumber(context, totalDirectMessages, Color.RED, Utils.TYPE_RECTANGLE));
+		    		views.setImageViewBitmap(R.id.count_directmessages, ImageUtils.getBitmapNumber(context, totalDirectMessages, Color.RED, Utils.TYPE_RECTANGLE));
 		    	} else {
 		    		views.setViewVisibility(R.id.count_directmessages, View.GONE);
 		    	}
@@ -286,7 +287,7 @@ public class WidgetCounters4x1 extends AppWidgetProvider {
 				}
 				if (totalNotification>0) {
 					views.setViewVisibility(R.id.count_searches, View.VISIBLE);
-					views.setImageViewBitmap(R.id.count_searches, Utils.getBitmapNumber(context, totalNotification, Color.RED, Utils.TYPE_RECTANGLE));
+					views.setImageViewBitmap(R.id.count_searches, ImageUtils.getBitmapNumber(context, totalNotification, Color.RED, Utils.TYPE_RECTANGLE));
 				} else {
 					views.setViewVisibility(R.id.count_searches, View.GONE);
 				}
@@ -366,7 +367,7 @@ public class WidgetCounters4x1 extends AppWidgetProvider {
 			Intent i = new Intent(context, NewStatusActivity.class);
 			i.setAction(Intent.ACTION_VIEW);
 			i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-			i.putExtra("start_user_id", userId+"");
+			i.putExtra("start_user_id", userId);
 			context.startActivity(i);		
 		}
 		

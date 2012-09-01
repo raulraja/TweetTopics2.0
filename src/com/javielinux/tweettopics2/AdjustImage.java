@@ -15,6 +15,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 import com.android.dataframework.DataFramework;
+import com.javielinux.utils.ImageUtils;
 import com.javielinux.utils.Utils;
 import org.xmlpull.v1.XmlPullParserException;
 import preferences.Preferences;
@@ -128,7 +129,7 @@ public class AdjustImage extends BaseActivity implements OnTouchListener
         	mBitmap = BitmapFactory.decodeFile(file);
         } else {
         	Log.d(Utils.TAG, url);
-        	mBitmap = Utils.getBitmap(url, screen_h);
+        	mBitmap = ImageUtils.getBitmap(url, screen_h);
         }
         
         if (mBitmap==null) {

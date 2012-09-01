@@ -23,6 +23,7 @@ import com.javielinux.infos.InfoTweet;
 import com.javielinux.tweettopics2.R;
 import com.javielinux.tweettopics2.TweetTopicsActivity;
 import com.javielinux.twitter.ConnectionManager;
+import com.javielinux.utils.ImageUtils;
 import com.javielinux.utils.LinksUtils;
 import com.javielinux.utils.PreferenceUtils;
 import com.javielinux.utils.Utils;
@@ -210,7 +211,7 @@ public class ServiceWidgetTweets4x2 extends Service {
 	    	    			title = context.getString(R.string.mentions) + ": " + e.get(0).getString("name");
 	    	    		}
 	    	    		mRemoteView.setTextViewText(R.id.w_title, title);
-	    	    		Bitmap bmp = Utils.getBitmapAvatar(e.get(0).getId(), Utils.AVATAR_LARGE);
+	    	    		Bitmap bmp = ImageUtils.getBitmapAvatar(e.get(0).getId(), Utils.AVATAR_LARGE);
 	    	    		if (bmp==null) {
 	    	    			mRemoteView.setImageViewResource(R.id.w_icon, R.drawable.avatar);
 	    	    		} else {

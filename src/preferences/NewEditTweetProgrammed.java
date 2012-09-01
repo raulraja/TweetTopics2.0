@@ -16,6 +16,7 @@ import com.android.dataframework.Entity;
 import com.javielinux.tweetprogrammed.OnAlarmReceiverTweetProgrammed;
 import com.javielinux.tweettopics2.BaseActivity;
 import com.javielinux.tweettopics2.R;
+import com.javielinux.utils.ImageUtils;
 import com.javielinux.utils.Utils;
 
 import java.util.ArrayList;
@@ -216,7 +217,7 @@ public class NewEditTweetProgrammed extends BaseActivity {
     			im.setLayoutParams(new LinearLayout.LayoutParams(40,40));
     			im.setAdjustViewBounds(true);
     			try {
-    				im.setImageBitmap(Utils.getBitmapAvatar(mUsersId[i], Utils.AVATAR_LARGE));
+    				im.setImageBitmap(ImageUtils.getBitmapAvatar(mUsersId[i], Utils.AVATAR_LARGE));
     			} catch (Exception ex) {
 					ex.printStackTrace();
 					im.setImageResource(R.drawable.avatar);

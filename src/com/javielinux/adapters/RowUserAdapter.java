@@ -68,7 +68,7 @@ public class RowUserAdapter extends BaseAdapter {
         
         ImageView img = (ImageView)v.findViewById(R.id.icon);
         try {
-        	img.setImageBitmap(Utils.getBitmapAvatar(id, Utils.AVATAR_LARGE));	
+        	img.setImageBitmap(ImageUtils.getBitmapAvatar(id, Utils.AVATAR_LARGE));
         } catch (Exception e) {
         	e.printStackTrace();
         	img.setImageResource(R.drawable.avatar);

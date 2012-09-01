@@ -172,7 +172,7 @@ public class UserActivity extends BaseLayersActivity implements PopupLinks.Popup
 
         @Override
         public void onClick(View view) {
-            TweetActions.goToMention(UserActivity.this, infoUser.getName());
+            TweetActions.goToMention(UserActivity.this, userActive, infoUser.getName());
         }
     };
 

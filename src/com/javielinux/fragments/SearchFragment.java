@@ -1,6 +1,5 @@
 package com.javielinux.fragments;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -28,7 +27,6 @@ import com.javielinux.infos.InfoSaveTweets;
 import com.javielinux.infos.InfoTweet;
 import com.javielinux.tweettopics2.R;
 import com.javielinux.tweettopics2.ThemeManager;
-import com.javielinux.tweettopics2.TweetActivity;
 import com.javielinux.utils.ImageUtils;
 import com.javielinux.utils.TweetTopicsUtils;
 import com.javielinux.utils.Utils;
@@ -76,14 +74,14 @@ public class SearchFragment extends BaseListFragment implements APIDelegate<Base
                 tweetsAdapter.setHideMessages(result.getCountHide());
                 tweetsAdapter.setLastReadPosition(result.getPosition());
 
-                listView.getRefreshableView().setSelection(result.getPosition()+1);
+                listView.getRefreshableView().setSelection(result.getPosition() + 1);
 
                 positionLastRead = result.getPosition();
                 tweetsAdapter.notifyDataSetChanged();
 
                 boolean getTweetsFromInternet = false;
 
-                if (infoTweets.size()<=0) {
+                if (infoTweets.size() <= 0) {
                     getTweetsFromInternet = true;
                 } else {
                     if (column_entity.getInt("type_id") == TweetTopicsUtils.COLUMN_TIMELINE) {
@@ -197,7 +195,7 @@ public class SearchFragment extends BaseListFragment implements APIDelegate<Base
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        tweetsAdapter = new TweetsAdapter(getActivity(), getLoaderManager(), infoTweets, "", (int)column_entity.getId());
+        tweetsAdapter = new TweetsAdapter(getActivity(), getLoaderManager(), infoTweets, "", (int) column_entity.getId());
     }
 
     @Override
@@ -231,7 +229,7 @@ public class SearchFragment extends BaseListFragment implements APIDelegate<Base
         listView.getRefreshableView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> arg0, View view, int position, long id) {
-                onListItemClick(view, position, id);
+                onClickItemList(tweetsAdapter.getItem(position - 1));
             }
         });
 
@@ -241,7 +239,7 @@ public class SearchFragment extends BaseListFragment implements APIDelegate<Base
             public void onScroll(AbsListView arg0, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
                 if (positionLastRead > firstVisibleItem) {
                     positionLastRead = firstVisibleItem;
-                    if (firstVisibleItem==0) markPositionLastReadAsLastReadId();
+                    if (firstVisibleItem == 0) markPositionLastReadAsLastReadId();
                 }
             }
 
@@ -260,13 +258,13 @@ public class SearchFragment extends BaseListFragment implements APIDelegate<Base
 
         });
 
-        listView.getRefreshableView().setSelection(tweetsAdapter.getLastReadPosition()+1);
+        listView.getRefreshableView().setSelection(tweetsAdapter.getLastReadPosition() + 1);
 
         viewLoading = (LinearLayout) view.findViewById(R.id.tweet_view_loading);
         viewNoInternet = (LinearLayout) view.findViewById(R.id.tweet_view_no_internet);
         viewUpdate = (LinearLayout) view.findViewById(R.id.tweet_view_update);
 
-        if (infoTweets.size()<=0) {
+        if (infoTweets.size() <= 0) {
             if (search_entity.getInt("com/javielinux/notifications") == 1)
                 preLoadInfoTweetFromDB();
             else
@@ -281,15 +279,6 @@ public class SearchFragment extends BaseListFragment implements APIDelegate<Base
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-    }
-
-
-    private void onListItemClick(View v, int position, long id) {
-
-        Intent intent = new Intent(getActivity(), TweetActivity.class);
-        intent.putExtra(TweetActivity.KEY_EXTRAS_TWEET, tweetsAdapter.getItem(position - 1));
-        startActivity(intent);
-
     }
 
     @Override
@@ -307,7 +296,7 @@ public class SearchFragment extends BaseListFragment implements APIDelegate<Base
             int count = 0;
             int firstVisible = listView.getRefreshableView().getFirstVisiblePosition();
 
-            for (int i = infoTweetList.size()-1; i >=0; i--) {
+            for (int i = infoTweetList.size() - 1; i >= 0; i--) {
                 try {
                     if (!infoTweets.contains(infoTweetList.get(i))) {
                         infoTweets.add(0, infoTweetList.get(i));
@@ -339,7 +328,7 @@ public class SearchFragment extends BaseListFragment implements APIDelegate<Base
 
                 boolean found = false;
 
-                for (int i = tweets.size()-1; i >=0; i--) {
+                for (int i = tweets.size() - 1; i >= 0; i--) {
                     InfoTweet infoTweet = new InfoTweet(tweets.get(i));
 
                     if (!found && search_entity.getValueLastId() >= tweets.get(i).getLong("tweet_id")) {

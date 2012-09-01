@@ -73,5 +73,9 @@
     <attr name="icon_action_web" format="string"/>
     <attr name="icon_action_highlight" format="string"/>
 
+    <attr name="icon_action_shorter" format="string"/>
+    <attr name="icon_action_clock" format="string"/>
+    <attr name="icon_action_place" format="string"/>
+
 
 </resources>

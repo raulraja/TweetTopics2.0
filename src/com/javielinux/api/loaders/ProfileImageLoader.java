@@ -10,6 +10,7 @@ import com.javielinux.api.response.BaseResponse;
 import com.javielinux.api.response.ErrorResponse;
 import com.javielinux.api.response.ProfileImageResponse;
 import com.javielinux.twitter.ConnectionManager;
+import com.javielinux.utils.ImageUtils;
 import com.javielinux.utils.Utils;
 import twitter4j.TwitterException;
 import twitter4j.User;
@@ -44,7 +45,7 @@ public class ProfileImageLoader extends AsynchronousLoader<BaseResponse> {
                 Entity ent = new Entity("users", request.getUserId());
                 User user = ConnectionManager.getInstance().getTwitter(request.getUserId()).showUser(ent.getInt("user_id"));
                 Bitmap avatar = BitmapFactory.decodeStream(new Utils.FlushedInputStream(user.getProfileImageURL().openStream()));
-				String file = Utils.getFileAvatar(request.getUserId());
+				String file = ImageUtils.getFileAvatar(request.getUserId());
 
 				FileOutputStream out = new FileOutputStream(file);
 				avatar.compress(Bitmap.CompressFormat.JPEG, 90, out);
@@ -98,7 +99,7 @@ public class ProfileImageLoader extends AsynchronousLoader<BaseResponse> {
                 User user = ConnectionManager.getInstance().getTwitter(request.getUserId()).updateProfileImage(new FileInputStream(file_path));
 
                 Bitmap avatar = BitmapFactory.decodeFile(file_path);
-                String avatar_file_path = Utils.getFileAvatar(request.getUserId());
+                String avatar_file_path = ImageUtils.getFileAvatar(request.getUserId());
 
 				FileOutputStream out = new FileOutputStream(avatar_file_path);
 				avatar.compress(Bitmap.CompressFormat.JPEG, 90, out);

@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import com.android.dataframework.Entity;
 import com.javielinux.tweettopics2.R;
+import com.javielinux.utils.ImageUtils;
 import com.javielinux.utils.Utils;
 
 import java.util.ArrayList;
@@ -48,10 +49,10 @@ public class TweetProgrammedAdapter extends ArrayAdapter<Entity> {
 		
 		if (usersId.size()>0) {
 			ImageView avatar = (ImageView)v.findViewById(R.id.user_avatar);
-			avatar.setImageBitmap(Utils.getBitmapAvatar(usersId.get(0), Utils.AVATAR_LARGE));
+			avatar.setImageBitmap(ImageUtils.getBitmapAvatar(usersId.get(0), Utils.AVATAR_LARGE));
 			if (usersId.size()>1) {
 				tag_more.setVisibility(View.VISIBLE);				
-				tag_more.setImageBitmap(Utils.getBitmapNumber(mTweetProgrammed, usersId.size(), Color.RED, Utils.TYPE_BUBBLE, 12));
+				tag_more.setImageBitmap(ImageUtils.getBitmapNumber(mTweetProgrammed, usersId.size(), Color.RED, Utils.TYPE_BUBBLE, 12));
 			}
 		}
 		

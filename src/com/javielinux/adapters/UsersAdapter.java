@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import com.android.dataframework.Entity;
 import com.javielinux.tweettopics2.R;
+import com.javielinux.utils.ImageUtils;
 import com.javielinux.utils.Utils;
 
 import java.util.ArrayList;
@@ -36,7 +37,7 @@ public class UsersAdapter extends ArrayAdapter<Entity> {
 		}
 		
 		ImageView icon = (ImageView)v.findViewById(R.id.icon);
-		icon.setImageBitmap(Utils.getBitmapAvatar(user.getId(), Utils.AVATAR_LARGE));
+		icon.setImageBitmap(ImageUtils.getBitmapAvatar(user.getId(), Utils.AVATAR_LARGE));
 		
 		TextView name = (TextView)v.findViewById(R.id.name);
 		

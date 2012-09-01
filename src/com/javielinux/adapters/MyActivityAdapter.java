@@ -12,6 +12,7 @@ import com.javielinux.components.AlphaTextView;
 import com.javielinux.fragments.MyActivityFragment;
 import com.javielinux.tweettopics2.R;
 import com.javielinux.tweettopics2.ThemeManager;
+import com.javielinux.utils.ImageUtils;
 import com.javielinux.utils.TweetTopicsUtils;
 import com.javielinux.utils.Utils;
 
@@ -158,7 +159,7 @@ public class MyActivityAdapter extends BaseAdapter {
 
             ImageView img = (ImageView)v.findViewById(R.id.my_activity_user_icon);
             try {
-                img.setImageBitmap(Utils.getBitmapAvatar(id, Utils.AVATAR_LARGE));
+                img.setImageBitmap(ImageUtils.getBitmapAvatar(id, Utils.AVATAR_LARGE));
             } catch (Exception e) {
                 e.printStackTrace();
                 img.setImageResource(R.drawable.avatar);
@@ -209,7 +210,7 @@ public class MyActivityAdapter extends BaseAdapter {
                         + " AND user_tt_id="+item.getId() + " AND tweet_id >'" + Utils.fillZeros(""+item.getString("last_timeline_id"))+"'");
                 if (totalTimeline>0) {
                     imgCounterTimeline.setVisibility(View.VISIBLE);
-                    imgCounterTimeline.setImageBitmap(Utils.getBitmapNumber(context, totalTimeline, Color.RED, Utils.TYPE_RECTANGLE, 11));
+                    imgCounterTimeline.setImageBitmap(ImageUtils.getBitmapNumber(context, totalTimeline, Color.RED, Utils.TYPE_RECTANGLE, 11));
                 } else {
                     imgCounterTimeline.setVisibility(View.GONE);
                 }
@@ -228,7 +229,7 @@ public class MyActivityAdapter extends BaseAdapter {
                         + " AND user_tt_id="+item.getId() + " AND tweet_id >'" + Utils.fillZeros(""+item.getString("last_mention_id"))+"'");
                 if (totalMentions>0) {
                     imgCounterMentions.setVisibility(View.VISIBLE);
-                    imgCounterMentions.setImageBitmap(Utils.getBitmapNumber(context, totalMentions, Color.RED, Utils.TYPE_RECTANGLE, 11));
+                    imgCounterMentions.setImageBitmap(ImageUtils.getBitmapNumber(context, totalMentions, Color.RED, Utils.TYPE_RECTANGLE, 11));
                 } else {
                     imgCounterMentions.setVisibility(View.GONE);
                 }
@@ -247,7 +248,7 @@ public class MyActivityAdapter extends BaseAdapter {
                         + " AND user_tt_id="+item.getId() + " AND tweet_id >'" + Utils.fillZeros(""+item.getString("last_direct_id"))+"'");
                 if (totalDirectMessages>0) {
                     imgCounterDirectMessages.setVisibility(View.VISIBLE);
-                    imgCounterDirectMessages.setImageBitmap(Utils.getBitmapNumber(context, totalDirectMessages, Color.RED, Utils.TYPE_RECTANGLE, 11));
+                    imgCounterDirectMessages.setImageBitmap(ImageUtils.getBitmapNumber(context, totalDirectMessages, Color.RED, Utils.TYPE_RECTANGLE, 11));
                 } else {
                     imgCounterDirectMessages.setVisibility(View.GONE);
                 }
@@ -324,7 +325,7 @@ public class MyActivityAdapter extends BaseAdapter {
 
             try {
                 if (item.getLong("last_tweet_id")<item.getLong("last_tweet_id_notifications")) {
-                    tagNew.setImageBitmap(Utils.getBitmapNumber(context, item.getInt("new_tweets_count"), Color.GREEN, Utils.TYPE_CIRCLE));
+                    tagNew.setImageBitmap(ImageUtils.getBitmapNumber(context, item.getInt("new_tweets_count"), Color.GREEN, Utils.TYPE_CIRCLE));
                 } else {
                     tagNew.setImageResource(R.drawable.tag_notification);
                 }

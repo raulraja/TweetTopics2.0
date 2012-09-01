@@ -7,6 +7,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import com.android.dataframework.Entity;
 import com.javielinux.tweettopics2.R;
+import com.javielinux.utils.ImageUtils;
 import com.javielinux.utils.Utils;
 
 import java.util.List;
@@ -46,7 +47,7 @@ public class RowUsersNewStatusAdapter extends BaseAdapter {
 		}
 		
 		ImageView img = (ImageView)v.findViewById(R.id.img_icon);
-		img.setImageBitmap(Utils.getBitmapAvatar(item.getId(), Utils.AVATAR_LARGE));
+		img.setImageBitmap(ImageUtils.getBitmapAvatar(item.getId(), Utils.AVATAR_LARGE));
 
 		return v;
 		

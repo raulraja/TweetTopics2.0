@@ -9,6 +9,7 @@ import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
 import com.javielinux.adapters.IconAndTextSimpleAdapter;
 import com.javielinux.tweettopics2.R;
+import com.javielinux.utils.ImageUtils;
 import com.javielinux.utils.Utils;
 
 import java.util.ArrayList;
@@ -32,7 +33,7 @@ public class TwitterUsersConnectedDialogFragment extends DialogFragment {
 
         for (Entity ent : ents) {
             IconAndTextSimpleAdapter.IconAndText item = new IconAndTextSimpleAdapter.IconAndText();
-            item.bitmap = Utils.getBitmapAvatar(ent.getId(), Utils.AVATAR_LARGE);
+            item.bitmap = ImageUtils.getBitmapAvatar(ent.getId(), Utils.AVATAR_LARGE);
             item.text = ent.getString("name");
             item.extra = ent.getId();
             items.add(item);

@@ -1,10 +1,10 @@
 package com.javielinux.adapters;
 
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Shader;
 import android.graphics.drawable.BitmapDrawable;
+import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.LoaderManager;
 import android.text.Html;
@@ -23,6 +23,7 @@ import com.javielinux.api.response.ErrorResponse;
 import com.javielinux.api.response.LoadLinkResponse;
 import com.javielinux.infos.InfoLink;
 import com.javielinux.infos.InfoTweet;
+import com.javielinux.tweettopics2.BaseLayersActivity;
 import com.javielinux.tweettopics2.R;
 import com.javielinux.tweettopics2.ThemeManager;
 import com.javielinux.tweettopics2.UserActivity;
@@ -142,11 +143,13 @@ public class TweetsAdapter extends ArrayAdapter<InfoTweet> {
 
     public void launchVisibleTask() {
 
-        int firstPosition = parentListView.getRefreshableView().getFirstVisiblePosition();
-        int lastPosition = parentListView.getRefreshableView().getLastVisiblePosition();
+        if (parentListView!=null) {
+            int firstPosition = parentListView.getRefreshableView().getFirstVisiblePosition();
+            int lastPosition = parentListView.getRefreshableView().getLastVisiblePosition();
 
-        for (int i=firstPosition; i<=lastPosition; i++) {
-            loadLinks(i);
+            for (int i=firstPosition; i<=lastPosition; i++) {
+                loadLinks(i);
+            }
         }
     }
 
@@ -210,17 +213,6 @@ public class TweetsAdapter extends ArrayAdapter<InfoTweet> {
         viewHolder.retweetAvatar = (ImageView)v.findViewById(R.id.retweet_avatar);
         viewHolder.retweetUser = (TextView)v.findViewById(R.id.retweet_user);
         viewHolder.retweetText = (TextView)v.findViewById(R.id.retweet_text);
-
-        viewHolder.avatarView.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(), UserActivity.class);
-                intent.putExtra(UserActivity.KEY_EXTRAS_USER, v.getTag().toString());
-                v.getContext().startActivity(intent);
-            }
-
-        });
 
         return viewHolder;
     }
@@ -405,6 +397,20 @@ public class TweetsAdapter extends ArrayAdapter<InfoTweet> {
 
             viewHolder.avatarView.setTag(infoTweet.getUsername());
         }
+
+
+        viewHolder.avatarView.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                if (getActivity() instanceof BaseLayersActivity) {
+                    Bundle bundle = new Bundle();
+                    bundle.putString(UserActivity.KEY_EXTRAS_USER, v.getTag().toString());
+                    ((BaseLayersActivity)getActivity()).startAnimationActivity(UserActivity.class, bundle);
+                }
+            }
+
+        });
 
         // buscar imagenes de los tweets
 

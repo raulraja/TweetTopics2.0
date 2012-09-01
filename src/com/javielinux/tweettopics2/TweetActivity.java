@@ -235,7 +235,7 @@ public class TweetActivity extends BaseLayersActivity implements APIDelegate<Bas
 
         @Override
         public void onClick(View view) {
-            TweetActions.goToReply(TweetActivity.this, infoTweet);
+            TweetActions.goToReply(TweetActivity.this, userActive, infoTweet);
         }
     };
 
@@ -243,7 +243,7 @@ public class TweetActivity extends BaseLayersActivity implements APIDelegate<Bas
 
         @Override
         public void onClick(View view) {
-            TweetActions.showDialogRetweet(TweetActivity.this, infoTweet);
+            TweetActions.showDialogRetweet(TweetActivity.this, userActive, infoTweet);
         }
     };
 
@@ -361,7 +361,7 @@ public class TweetActivity extends BaseLayersActivity implements APIDelegate<Bas
 
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    TweetActions.execByCode(arCode.get(which), TweetActivity.this, infoTweet);
+                    TweetActions.execByCode(arCode.get(which), TweetActivity.this, userActive, infoTweet);
                 }
 
 

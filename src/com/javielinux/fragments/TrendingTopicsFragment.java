@@ -1,6 +1,5 @@
 package com.javielinux.fragments;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -27,7 +26,6 @@ import com.javielinux.database.EntitySearch;
 import com.javielinux.infos.InfoTweet;
 import com.javielinux.tweettopics2.R;
 import com.javielinux.tweettopics2.ThemeManager;
-import com.javielinux.tweettopics2.TweetActivity;
 import com.javielinux.utils.ImageUtils;
 import com.javielinux.utils.Utils;
 import com.nineoldandroids.animation.Animator;
@@ -107,7 +105,7 @@ public class TrendingTopicsFragment extends BaseListFragment implements APIDeleg
         super.onCreate(savedInstanceState);
 
         trendingTopicsAdapter = new TrendingTopicsAdapter(getActivity(), trends_location_list);
-        trendsAdapter = new TweetsAdapter(getActivity(), getLoaderManager(), trends_list, "", (int)column_entity.getId());
+        trendsAdapter = new TweetsAdapter(getActivity(), getLoaderManager(), trends_list, "", (int) column_entity.getId());
     }
 
     @Override
@@ -173,7 +171,7 @@ public class TrendingTopicsFragment extends BaseListFragment implements APIDeleg
         trendslistView.getRefreshableView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> arg0, View view, int position, long id) {
-                onTweetListItemClick(view, position, id);
+                onClickItemList(trendsAdapter.getItem(position - 1));
             }
         });
 
@@ -181,7 +179,7 @@ public class TrendingTopicsFragment extends BaseListFragment implements APIDeleg
         viewNoInternet = (LinearLayout) view.findViewById(R.id.trend_view_no_internet);
         viewTweetList = (LinearLayout) view.findViewById(R.id.trend_view_tweet_list);
 
-        Button btTrendsLocationBack = (Button)view.findViewById(R.id.bt_trendslocationback);
+        Button btTrendsLocationBack = (Button) view.findViewById(R.id.bt_trendslocationback);
         btTrendsLocationBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -284,20 +282,12 @@ public class TrendingTopicsFragment extends BaseListFragment implements APIDeleg
         animatorSet.start();
     }
 
-    private void onTweetListItemClick(View v, int position, long id) {
-
-        Intent intent = new Intent(getActivity(), TweetActivity.class);
-        intent.putExtra(TweetActivity.KEY_EXTRAS_TWEET, trendsAdapter.getItem(position - 1));
-        startActivity(intent);
-
-    }
-
     @Override
     public void onResults(BaseResponse result) {
 
-        if (result.getClass().equals(TrendsResponse.class)){
+        if (result.getClass().equals(TrendsResponse.class)) {
 
-            TrendsResponse trendsResponse = (TrendsResponse)result;
+            TrendsResponse trendsResponse = (TrendsResponse) result;
 
             trendsLocationlistView.setVisibility(View.VISIBLE);
             viewLoading.setVisibility(View.GONE);
@@ -314,7 +304,7 @@ public class TrendingTopicsFragment extends BaseListFragment implements APIDeleg
             trendingTopicsAdapter.notifyDataSetChanged();
         } else {
 
-            SearchResponse searchResponse = (SearchResponse)result;
+            SearchResponse searchResponse = (SearchResponse) result;
 
             viewTweetList.setVisibility(View.VISIBLE);
             viewLoading.setVisibility(View.GONE);

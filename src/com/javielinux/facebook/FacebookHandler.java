@@ -20,6 +20,7 @@ import com.facebook.android.Facebook;
 import com.facebook.android.Facebook.DialogListener;
 import com.facebook.android.FacebookError;
 import com.javielinux.fragments.MyActivityFragment;
+import com.javielinux.utils.ImageUtils;
 import com.javielinux.utils.Utils;
 import org.json.JSONObject;
 
@@ -186,7 +187,7 @@ public class FacebookHandler {
 	    				Bitmap avatar = BitmapFactory.decodeStream(new Utils.FlushedInputStream(url.openStream()));
 	    				
 	    				if (avatar!=null) {
-	    					String file = Utils.getFileAvatar(ent.getId());
+	    					String file = ImageUtils.getFileAvatar(ent.getId());
 	    					FileOutputStream out = new FileOutputStream(file);
 	    					avatar.compress(Bitmap.CompressFormat.JPEG, 90, out);
 	    					avatar.recycle();

@@ -7,12 +7,12 @@ import android.graphics.drawable.Drawable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
 import com.javielinux.fragments.*;
 import com.javielinux.tweettopics2.R;
+import com.javielinux.utils.ImageUtils;
 import com.javielinux.utils.TweetTopicsUtils;
 import com.javielinux.utils.Utils;
 
@@ -23,12 +23,10 @@ public class TweetTopicsFragmentAdapter extends FragmentPagerAdapter {
     private Context context;
     private MyActivityFragment myActivityFragment;
     private ArrayList<Entity> fragmentList = new ArrayList<Entity>();
-    private FragmentManager fragmentManager;
 
     public TweetTopicsFragmentAdapter(Context context, FragmentManager fragmentManager) {
         super(fragmentManager);
         this.context = context;
-        this.fragmentManager = fragmentManager;
         fillColumnList();
     }
 
@@ -70,7 +68,7 @@ public class TweetTopicsFragmentAdapter extends FragmentPagerAdapter {
                     || typeColumn == TweetTopicsUtils.COLUMN_RETWEETS_BY_OTHERS || typeColumn == TweetTopicsUtils.COLUMN_RETWEETS_BY_YOU
                     || typeColumn == TweetTopicsUtils.COLUMN_FOLLOWERS || typeColumn == TweetTopicsUtils.COLUMN_FOLLOWINGS
                     || typeColumn == TweetTopicsUtils.COLUMN_FAVORITES) {
-                return Utils.getBitmapAvatar(fragmentList.get(position).getEntity("user_id").getId(), Utils.AVATAR_MEDIUM);
+                return ImageUtils.getBitmapAvatar(fragmentList.get(position).getEntity("user_id").getId(), Utils.AVATAR_LARGE);
             }
             if (typeColumn == TweetTopicsUtils.COLUMN_SEARCH) {
                 Entity ent = new Entity("search", fragmentList.get(position).getLong("search_id"));
@@ -142,6 +140,10 @@ public class TweetTopicsFragmentAdapter extends FragmentPagerAdapter {
             default:
                 return new NoFoundFragment(fragmentList.get(index).getString("description"));
         }
+    }
+
+    public long getUserOwnerColumn(int position) {
+        return fragmentList.get(position).getLong("user_id");
     }
 
     @Override

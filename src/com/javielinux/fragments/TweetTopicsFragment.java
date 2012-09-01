@@ -1,6 +1,5 @@
 package com.javielinux.fragments;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -28,7 +27,6 @@ import com.javielinux.infos.InfoSaveTweets;
 import com.javielinux.infos.InfoTweet;
 import com.javielinux.tweettopics2.R;
 import com.javielinux.tweettopics2.ThemeManager;
-import com.javielinux.tweettopics2.TweetActivity;
 import com.javielinux.utils.ImageUtils;
 import com.javielinux.utils.TweetTopicsUtils;
 import com.javielinux.utils.Utils;
@@ -254,7 +252,7 @@ public class TweetTopicsFragment extends BaseListFragment implements APIDelegate
         listView.getRefreshableView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> arg0, View view, int position, long id) {
-                onListItemClick(view, position, id);
+                onClickItemList(tweetsAdapter.getItem(position - 1));
             }
         });
 
@@ -300,15 +298,6 @@ public class TweetTopicsFragment extends BaseListFragment implements APIDelegate
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-    }
-
-
-    private void onListItemClick(View v, int position, long id) {
-
-        Intent intent = new Intent(getActivity(), TweetActivity.class);
-        intent.putExtra(TweetActivity.KEY_EXTRAS_TWEET, tweetsAdapter.getItem(position - 1));
-        startActivity(intent);
-
     }
 
     @Override

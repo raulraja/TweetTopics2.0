@@ -1,12 +1,12 @@
 package com.javielinux.utils;
 
 import android.app.AlertDialog;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.CursorIndexOutOfBoundsException;
 import android.support.v4.app.FragmentActivity;
-import android.content.ClipboardManager;
 import android.view.View;
 import android.widget.CheckBox;
 import com.android.dataframework.DataFramework;
@@ -36,16 +36,16 @@ public class TweetActions {
     public static final int ACTIVITY_WALLPAPER = 4;
     public static final int ACTIVITY_COLORS_APP = 5;
 
-    public static boolean execByCode(String code, FragmentActivity activity, InfoTweet infoTweet) {
+    public static boolean execByCode(String code, FragmentActivity activity, long fromUser, InfoTweet infoTweet) {
         /*
           "reply", "retweet", "lastread", "readafter",
           "favorite", "share", "mention", "map",
           "clipboard", "send_dm", "delete_tweet"};
           */
         if (code.equals("reply")) {
-            goToReply(activity, infoTweet);
+            goToReply(activity, fromUser, infoTweet);
         } else if (code.equals("retweet")) {
-            showDialogRetweet(activity, infoTweet);
+            showDialogRetweet(activity, fromUser, infoTweet);
         } else if (code.equals("lastread")) {
             //return this.goToMarkLastReadId(mTweetTopicsCore, pos);
         } else if (code.equals("readafter")) {
@@ -55,11 +55,11 @@ public class TweetActions {
         } else if (code.equals("share")) {
             goToShare(activity, infoTweet);
         } else if (code.equals("mention")) {
-            goToMention(activity, infoTweet);
+            goToMention(activity, fromUser, infoTweet);
         } else if (code.equals("clipboard")) {
             copyToClipboard(activity, infoTweet);
         } else if (code.equals("send_dm")) {
-            directMessage(activity, infoTweet.getUsername());
+            directMessage(activity, fromUser, infoTweet.getUsername());
         } else if (code.equals("delete_tweet")) {
             //this.goToDeleteTweet(mTweetTopicsCore);
         } else if (code.equals("delete_up_tweets")) {
@@ -118,12 +118,12 @@ public class TweetActions {
         Utils.showMessage(activity, activity.getString(R.string.copied_to_clipboard));
     }
 
-    public static void goToMention(FragmentActivity activity, InfoTweet infoTweet) {
-        updateStatus(activity, NewStatusActivity.TYPE_NORMAL, "@" + infoTweet.getUsername(), infoTweet);
+    public static void goToMention(FragmentActivity activity, long fromUser, InfoTweet infoTweet) {
+        updateStatus(activity, fromUser, NewStatusActivity.TYPE_NORMAL, "@" + infoTweet.getUsername(), infoTweet);
     }
 
-    public static void goToMention(FragmentActivity activity, String username) {
-        updateStatus(activity, NewStatusActivity.TYPE_NORMAL, "@" + username, null);
+    public static void goToMention(FragmentActivity activity, long fromUser, String username) {
+        updateStatus(activity, fromUser, NewStatusActivity.TYPE_NORMAL, "@" + username, null);
     }
 
     public static void goToShare(FragmentActivity activity, InfoTweet infoTweet) {
@@ -163,9 +163,9 @@ public class TweetActions {
         }
     }
 
-    public static void goToReply(FragmentActivity activity, InfoTweet infoTweet) {
+    public static void goToReply(FragmentActivity activity, long fromUser, InfoTweet infoTweet) {
         if (infoTweet.isDm()) {
-            directMessage(activity, infoTweet.getUsername());
+            directMessage(activity, fromUser, infoTweet.getUsername());
         } else {
             ArrayList<String> users = LinksUtils.pullLinksUsers(infoTweet.getText());
             int count = users.size();
@@ -177,15 +177,15 @@ public class TweetActions {
             }
 
             if (count > 1) {
-                showDialogReply(activity, infoTweet);
+                showDialogReply(activity, fromUser, infoTweet);
             } else {
-                updateStatus(activity, NewStatusActivity.TYPE_REPLY, "", infoTweet);
+                updateStatus(activity, fromUser, NewStatusActivity.TYPE_REPLY, "", infoTweet);
             }
         }
 
     }
 
-    public static void showDialogReply(final FragmentActivity activity, final InfoTweet it) {
+    public static void showDialogReply(final FragmentActivity activity, final long fromUser, final InfoTweet it) {
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
         builder.setTitle(R.string.actions)
                 .setItems(R.array.actions_reply, new DialogInterface.OnClickListener() {
@@ -205,7 +205,7 @@ public class TweetActions {
                                         text += users.get(i) + " ";
                                     }
                                 }
-                                updateStatus(activity, NewStatusActivity.TYPE_REPLY, text, it);
+                                updateStatus(activity, fromUser, NewStatusActivity.TYPE_REPLY, text, it);
                             }
                         } else if (which == 1) {
                             if (it != null) {
@@ -222,11 +222,11 @@ public class TweetActions {
                                         text += users.get(i) + " ";
                                     }
                                 }
-                                updateStatus(activity, NewStatusActivity.TYPE_REPLY_ON_COPY, text, it);
+                                updateStatus(activity, fromUser, NewStatusActivity.TYPE_REPLY_ON_COPY, text, it);
                             }
                         } else if (which == 2) {
                             if (it != null) {
-                                updateStatus(activity, NewStatusActivity.TYPE_REPLY, "", it);
+                                updateStatus(activity, fromUser, NewStatusActivity.TYPE_REPLY, "", it);
                             }
                         }
                     }
@@ -235,8 +235,9 @@ public class TweetActions {
         builder.show();
     }
 
-    public static void directMessage(FragmentActivity activity, String username) {
+    public static void directMessage(FragmentActivity activity, long fromUser, String username) {
         Intent newstatus = new Intent(activity, NewStatusActivity.class);
+        if (fromUser>0) newstatus.putExtra("start_user_id", fromUser);
         newstatus.putExtra("type", NewStatusActivity.TYPE_DIRECT_MESSAGE);
         newstatus.putExtra("username_direct_message", username);
         activity.startActivityForResult(newstatus, ACTIVITY_NEWSTATUS);
@@ -274,12 +275,13 @@ public class TweetActions {
         }
     }
 
-    public static void updateStatus(FragmentActivity activity, int type, String text, InfoTweet tweet) {
-        updateStatus(activity, type, text, tweet, "");
+    public static void updateStatus(FragmentActivity activity, long fromUser, int type, String text, InfoTweet tweet) {
+        updateStatus(activity, fromUser, type, text, tweet, "");
     }
 
-    private static void updateStatus(FragmentActivity activity, int type, String text, InfoTweet tweet, String prev) {
+    private static void updateStatus(FragmentActivity activity, long fromUser, int type, String text, InfoTweet tweet, String prev) {
         Intent newstatus = new Intent(activity, NewStatusActivity.class);
+        if (fromUser>0) newstatus.putExtra("start_user_id", fromUser);
         newstatus.putExtra("text", text);
         newstatus.putExtra("type", type);
         newstatus.putExtra("retweet_prev", prev);
@@ -300,7 +302,7 @@ public class TweetActions {
         activity.startActivityForResult(newstatus, ACTIVITY_NEWSTATUS);
     }
 
-    public static void showDialogRetweet(final FragmentActivity activity, final InfoTweet it) {
+    public static void showDialogRetweet(final FragmentActivity activity, final long fromUser, final InfoTweet it) {
         final ArrayList<String> phrases = new ArrayList<String>();
         ArrayList<Entity> ents = DataFramework.getInstance().getEntityList("types_retweets");
 
@@ -329,17 +331,17 @@ public class TweetActions {
                     }
                 } else if (phrase.equals("_EM_")) {
                     if (it != null) {
-                        updateStatus(activity, NewStatusActivity.TYPE_RETWEET, it.getText(), it);
+                        updateStatus(activity, fromUser, NewStatusActivity.TYPE_RETWEET, it.getText(), it);
                     }
                 } else if (phrase.equals("_RU_")) {
                     if (it != null) {
-                        updateStatus(activity, NewStatusActivity.TYPE_RETWEET, it.getUrlTweet(), it);
+                        updateStatus(activity, fromUser, NewStatusActivity.TYPE_RETWEET, it.getUrlTweet(), it);
                     }
                 } else {
                     if (it != null) {
                         String text = phrase + " RT: @" + it.getUsername() + ": " + it.getText();
                         if (text.length() > 140) {
-                            updateStatus(activity, NewStatusActivity.TYPE_RETWEET, it.getText(), it, phrase);
+                            updateStatus(activity, fromUser, NewStatusActivity.TYPE_RETWEET, it.getText(), it, phrase);
                         } else {
                             updateStatus(activity, text);
                         }

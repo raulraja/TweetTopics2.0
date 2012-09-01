@@ -11,6 +11,7 @@ import com.javielinux.tweettopics2.R;
 import com.javielinux.twitter.ConnectionManager;
 import com.javielinux.twitter.NetworkConfig;
 import com.javielinux.twitter.NetworkConfigParser;
+import com.javielinux.utils.ImageUtils;
 import com.javielinux.utils.Utils;
 import twitter4j.TwitterException;
 import twitter4j.conf.Configuration;
@@ -60,7 +61,7 @@ public class ImageUploadLoader extends AsynchronousLoader<BaseResponse> {
                    }
                }
                */
-            response.setBmp(Utils.getBitmapFromFile(f, Utils.HEIGHT_THUMB_NEWSTATUS, true));
+            response.setBmp(ImageUtils.getBitmapFromFile(f, Utils.HEIGHT_THUMB_NEWSTATUS, true));
 
             File file = new File(f);
 
