@@ -89,7 +89,7 @@ public class MyActivityFragment extends Fragment {
                 break;
             case SelectImageDialogFragment.ACTIVITY_SELECTIMAGE:
                 if (resultCode == Activity.RESULT_OK) {
-                    Cursor cursor = getActivity().managedQuery(intent.getData(), null, null, null, null);
+                    Cursor cursor = getActivity().getContentResolver().query(intent.getData(), null, null, null, null);
                     if (cursor != null) {
                         if (cursor.moveToFirst()) {
                             String media_path = cursor.getString(1);

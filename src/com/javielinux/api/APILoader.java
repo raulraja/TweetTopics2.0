@@ -110,6 +110,8 @@ public class APILoader implements LoaderManager.LoaderCallbacks {
             loader = new GetGeolocationAddressLoader(context, (GetGeolocationAddressRequest)baseRequest);
         } else if (baseRequest instanceof UserMentionsRequest) {
             loader = new UserMentionsLoader(context, (UserMentionsRequest)baseRequest);
+        } else if (baseRequest instanceof SearchContentInDBRequest) {
+            loader = new SearchContentInDBLoader(context, (SearchContentInDBRequest)baseRequest);
         }
 
         return loader;

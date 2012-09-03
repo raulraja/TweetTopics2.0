@@ -22,6 +22,7 @@ import com.javielinux.facebook.FacebookHandler;
 import com.javielinux.tweettopics2.NewStatusActivity;
 import com.javielinux.tweettopics2.R;
 import com.javielinux.twitter.ConnectionManager;
+import com.javielinux.utils.ConstantUtils;
 import com.javielinux.utils.PreferenceUtils;
 import com.javielinux.utils.TweetTopicsUtils;
 import com.javielinux.utils.Utils;
@@ -39,6 +40,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.StringTokenizer;
 
 public class ServiceUpdateStatus extends Service implements UploadStatusAsyncTaskResponder, ImageUploadAsyncTaskResponder,
@@ -47,6 +49,7 @@ public class ServiceUpdateStatus extends Service implements UploadStatusAsyncTas
     private static int ID_NOTIFICATION = 151515;
 
     private ArrayList<Long> mUsersId;
+    private HashMap<Long,String> mUsersNetwork;
 
     private ArrayList<String> mPhotos;
     private ArrayList<String> mPhotosRemoved;
@@ -66,10 +69,29 @@ public class ServiceUpdateStatus extends Service implements UploadStatusAsyncTas
         return null;
     }
 
+    /**
+     * For all versión, lower 2.0
+     * @param intent
+     * @param startId
+     */
+
     @Override
     public void onStart(Intent intent, int startId) {
+        handleCommand(intent);
+    }
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        handleCommand(intent);
+        // We want this service to continue running until it is explicitly
+        // stopped, so return sticky.
+        return START_STICKY;
+    }
+
+    public void handleCommand(Intent intent) {
 
         mUsersId = new ArrayList<Long>();
+        mUsersNetwork = new HashMap<Long, String>();
         mPhotos = new ArrayList<String>();
         mPhotosRemoved = new ArrayList<String>();
 
@@ -111,9 +133,11 @@ public class ServiceUpdateStatus extends Service implements UploadStatusAsyncTas
 
             for (long user : auxUsersTwitter) {
                 mUsersId.add(user);
+                mUsersNetwork.put(user, ConstantUtils.NETWORK_TWITTER_NAME);
             }
             for (long user : auxUsersOthers) {
                 mUsersId.add(user);
+                mUsersNetwork.put(user, ConstantUtils.NETWORK_FACEBOOK_NAME);
             }
 
             mText = mEntityStatus.getString("text");
@@ -198,13 +222,11 @@ public class ServiceUpdateStatus extends Service implements UploadStatusAsyncTas
     }
 
     private void sendTweet(long id) {
-        //Log.d(Utils.TAG, "userId = " + id);
 
         mCurrentIdUser = id;
 
-        Entity ent = new Entity("users", mCurrentIdUser);
 
-        if (ent.getString("service").equals("facebook")) {
+        if (mUsersNetwork.get(id).equals("facebook")) {
             updateStatusFacebook();
         } else {
             twitter = ConnectionManager.getInstance().getTwitter(id);
@@ -234,6 +256,7 @@ public class ServiceUpdateStatus extends Service implements UploadStatusAsyncTas
                 }
             }
         }
+
     }
 
     private void deleteCurrentId() {
@@ -265,8 +288,15 @@ public class ServiceUpdateStatus extends Service implements UploadStatusAsyncTas
             if (f.exists()) f.delete();
         }
         try {
+            try {
+                DataFramework.getInstance().open(this, Utils.packageName);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             mEntityStatus.delete();
-        } catch (IllegalStateException e) {}
+            DataFramework.getInstance().close();
+        } catch (IllegalStateException e) {
+        } catch (Exception e) {}
     }
 
     /*

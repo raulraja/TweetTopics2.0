@@ -11,6 +11,7 @@
     <ImageView
         android:id="@+id/user_item_avatar"
         android:src="@drawable/avatar"
+        android:paddingBottom="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
@@ -18,5 +19,13 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_width="wrap_content"></ImageView>
+
+    <ImageView android:id="@+id/user_item_selector"
+               android:layout_height="wrap_content"
+               android:layout_marginRight="5dp"
+               android:layout_alignParentBottom="true"
+               android:layout_centerHorizontal="true"
+               android:src="@drawable/user_selector_new_tweet"
+               android:layout_width="wrap_content"></ImageView>
 
 </RelativeLayout>

@@ -3,6 +3,12 @@
 
     <!-- v 2.0  -->
 
+    <string name="shouldSelectOneUser">Deberías selecionar sólo un usuario</string>
+
+    <string name="hide">Ocultar</string>
+    <string name="view_photo_profile">Ver imagen del perfil</string>
+    <string name="included_list">Incluido en lista</string>
+
     <string name="user_no_web">Usuario no tiene web</string>
 
     <string name="highlight">Destacar</string>

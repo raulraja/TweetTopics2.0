@@ -12,7 +12,7 @@ public class AlertDialogFragment extends DialogFragment {
     public static final String KEY_ALERT_TITLE = "title";
     public static final String KEY_ALERT_MESSAGE = "message";
     public static final String KEY_ALERT_ARRAY_ITEMS = "array_items";
-    public static final String KEY_ALERT_POSITION_LABEL = "positive_label";
+    public static final String KEY_ALERT_POSITIVE_LABEL = "positive_label";
     public static final String KEY_ALERT_NEGATIVE_LABEL = "negative_label";
     public static final String KEY_ALERT_NEUTRAL_LABEL = "neutral_label";
     public static final String KEY_ALERT_HAS_POSITIVE_BUTTON = "has_positive_button";
@@ -43,7 +43,7 @@ public class AlertDialogFragment extends DialogFragment {
         if (getArguments().containsKey(KEY_ALERT_ARRAY_ITEMS)) arrayItems = getArguments().getInt(KEY_ALERT_ARRAY_ITEMS);
 
         int positiveLabel = R.string.alert_dialog_ok;
-        if (getArguments().containsKey(KEY_ALERT_POSITION_LABEL)) positiveLabel = getArguments().getInt(KEY_ALERT_POSITION_LABEL);
+        if (getArguments().containsKey(KEY_ALERT_POSITIVE_LABEL)) positiveLabel = getArguments().getInt(KEY_ALERT_POSITIVE_LABEL);
 
         int negativeLabel = R.string.alert_dialog_cancel;
         if (getArguments().containsKey(KEY_ALERT_NEGATIVE_LABEL)) negativeLabel = getArguments().getInt(KEY_ALERT_NEGATIVE_LABEL);

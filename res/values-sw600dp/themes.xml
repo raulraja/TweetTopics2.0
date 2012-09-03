@@ -8,7 +8,95 @@
         <item name="android:windowAnimationStyle">@android:style/Animation</item>
     </style>
 
-    <style name="Theme.Twitter.Dialog" parent="@style/Theme.Twitter">
+    <style name="Theme.Twitter.Dialog" parent="@android:style/Theme.Holo.Light.Dialog">
+
+        <!-- Estilos para eliminar valores por defecto en el tema Holo, como
+por ejemplo el margin mínimo de los botones -->
+        <item name="android:buttonStyle">@style/BaseButton</item>
+
+        <!-- Tabs indicator -->
+        <item name="vpiTabPageIndicatorStyle">@style/Widget.TabPageIndicator</item>
+
+        <item name="color_tweet_usename">#ff000000</item>
+        <item name="color_tweet_source">#ffaaaaaa</item>
+        <item name="color_tweet_date">#ffaaaaaa</item>
+        <item name="color_tweet_text">#ff000000</item>
+        <item name="color_tweet_retweet">#ffaaaaaa</item>
+
+        <item name="color_title_general">#ff333333</item>
+        <item name="color_desc_general">#ff666666</item>
+
+        <item name="color_link_general">#FF0000FF</item>
+
+        <item name="color_textbutton_general">#FFFFFFFF</item>
+
+        <item name="color_textbutton_sidebar">#FF000000</item>
+
+        <item name="color_bgbutton_push_sidebar">#FF33b5e5</item>
+
+        <item name="color_title_search">#FFFFFFFF</item>
+
+        <item name="color_title_search_short">#FF333333</item>
+
+        <item name="bottom_bar_background">@drawable/bottom_bar_background</item>
+
+        <item name="color_shadow_listview">#FFdddddd</item>
+
+        <item name="bg_sidebar">@drawable/bg_sidebar</item>
+
+        <item name="color_grid_search">#ff000000</item>
+
+        <item name="color_background_solid">#ffbbbbbb</item>
+
+        <item name="background_app">@drawable/background</item>
+        <item name="background_user">@drawable/background_user</item>
+
+        <item name="background_reply">@drawable/background_reply</item>
+
+        <item name="color_background_text_info_background">#ccFFFFFF</item>
+
+        <item name="color_button_press_default">#FF33b5e5</item>
+        <item name="button_transparent_background">@drawable/button_transparent_background</item>
+
+        <!-- Colors -->
+        <item name="android:windowBackground">@color/color_foreground</item>
+        <item name="android:colorForeground">@color/color_foreground</item>
+        <item name="android:colorForegroundInverse">@color/color_foreground_inverse</item>
+        <item name="android:colorBackground">@color/color_background</item>
+        <!-- Text -->
+        <item name="android:textAppearance">@style/TextAppearance</item>
+        <!-- Window -->
+        <!--<item name="android:windowTitleSize">38dip</item>-->
+        <!--<item name="android:windowTitleStyle">@style/WindowTitle</item>-->
+        <!--<item name="android:windowTitleBackgroundStyle">@style/WindowTitleBackground</item>-->
+        <!-- Components -->
+        <!--<item name="android:buttonStyle">@style/Widget.Button</item>-->
+        <!--<item name="android:editTextStyle">@style/Widget.EditText</item>-->
+        <!--<item name="android:listViewStyle">@style/Widget.ListView</item>-->
+
+        <!-- Icons -->
+
+        <item name="icon_social_add_user">@drawable/icon_social_add_user</item>
+        <item name="icon_action_search">@drawable/icon_action_search</item>
+        <item name="icon_action_settings">@drawable/icon_action_settings</item>
+        <item name="icon_content_add_trending">@drawable/icon_content_add_trending</item>
+        <item name="icon_content_edit">@drawable/icon_content_edit</item>
+        <item name="icon_content_favorite">@drawable/icon_content_favorite</item>
+        <item name="icon_action_more_options">@drawable/icon_action_more_options</item>
+        <item name="icon_content_delete">@drawable/icon_content_delete</item>
+        <item name="icon_content_timeline">@drawable/icon_content_timeline</item>
+        <item name="icon_content_mentions">@drawable/icon_content_mentions</item>
+        <item name="icon_content_direct">@drawable/icon_content_direct</item>
+        <item name="icon_content_translate">@drawable/icon_content_translate</item>
+        <item name="icon_favorite_off">@drawable/icon_favorite_off</item>
+        <item name="icon_favorite_on">@drawable/icon_favorite_on</item>
+        <item name="icon_social_reply">@drawable/icon_social_reply</item>
+        <item name="icon_social_retweet">@drawable/icon_social_retweet</item>
+        <item name="icon_action_web">@drawable/icon_action_web</item>
+        <item name="icon_action_highlight">@drawable/icon_action_highlight</item>
+        <item name="icon_action_shorter">@drawable/icon_action_shorter</item>
+        <item name="icon_action_clock">@drawable/icon_action_clock</item>
+        <item name="icon_action_place">@drawable/icon_action_place</item>
     </style>
 
 	<style name="Theme.Twitter" parent="@android:style/Theme.Holo.Light">
@@ -25,42 +113,42 @@
 		<item name="color_tweet_date">#ffaaaaaa</item>
 		<item name="color_tweet_text">#ff000000</item>
 		<item name="color_tweet_retweet">#ffaaaaaa</item>
-		
+
 		<item name="color_title_general">#ff333333</item>
 		<item name="color_desc_general">#ff666666</item>
-		
+
 		<item name="color_link_general">#FF0000FF</item>
-		
+
 		<item name="color_textbutton_general">#FFFFFFFF</item>
 
 		<item name="color_textbutton_sidebar">#FF000000</item>
 
         <item name="color_bgbutton_push_sidebar">#FF33b5e5</item>
-		
+
 		<item name="color_title_search">#FFFFFFFF</item>
-		
+
 		<item name="color_title_search_short">#FF333333</item>
-				
+
 		<item name="bottom_bar_background">@drawable/bottom_bar_background</item>
-		
+
 		<item name="color_shadow_listview">#FFdddddd</item>
-		
+
 		<item name="bg_sidebar">@drawable/bg_sidebar</item>
-		
+
 		<item name="color_grid_search">#ff000000</item>
 
 		<item name="color_background_solid">#ffbbbbbb</item>
-		
+
 		<item name="background_app">@drawable/background</item>
 		<item name="background_user">@drawable/background_user</item>
-		
+
 		<item name="background_reply">@drawable/background_reply</item>
-		
+
 		<item name="color_background_text_info_background">#ccFFFFFF</item>
 
         <item name="color_button_press_default">#FF33b5e5</item>
         <item name="button_transparent_background">@drawable/button_transparent_background</item>
-			 
+
 		<!-- Colors -->
         <item name="android:windowBackground">@color/color_foreground</item>
         <item name="android:colorForeground">@color/color_foreground</item>
@@ -110,7 +198,96 @@
         <item name="android:windowAnimationStyle">@android:style/Animation</item>
     </style>
 
-    <style name="Theme.TwitterBlack.Dialog" parent="@style/Theme.TwitterBlack">
+    <style name="Theme.TwitterBlack.Dialog" parent="@android:style/Theme.Holo.Dialog.NoActionBar.MinWidth">
+        <!-- Estilos para eliminar valores por defecto en el tema Holo, como
+por ejemplo el margin mínimo de los botones -->
+        <item name="android:buttonStyle">@style/BaseButton</item>
+        <item name="android:editTextStyle">@style/BaseEditText</item>
+
+        <!-- Tabs indicator -->
+        <item name="vpiTabPageIndicatorStyle">@style/Widget.TabPageIndicator</item>
+
+        <item name="color_tweet_usename">#ffffffff</item>
+        <item name="color_tweet_source">#ffbfbfbf</item>
+        <item name="color_tweet_date">#ffbfbfbf</item>
+        <item name="color_tweet_text">#ffffffff</item>
+        <item name="color_tweet_retweet">#ffbfbfbf</item>
+
+        <item name="color_title_general">#ffeeeeee</item>
+        <item name="color_desc_general">#ffcccccc</item>
+
+        <item name="color_link_general">#FF67c7f4</item>
+
+        <item name="color_textbutton_general">#FFFFFFFF</item>
+
+        <item name="color_textbutton_sidebar">#FFffffff</item>
+
+        <item name="color_bgbutton_push_sidebar">#FF33b5e5</item>
+
+        <item name="color_title_search">#FFFFFFFF</item>
+
+        <item name="color_title_search_short">#FFCCCCCC</item>
+
+        <item name="bottom_bar_background">@drawable/bottom_bar_background_dark</item>
+
+        <item name="color_shadow_listview">#FF222222</item>
+
+        <item name="bg_sidebar">@drawable/bg_sidebar_dark</item>
+
+        <item name="color_grid_search">#ffffffff</item>
+
+        <item name="color_background_solid">#ff777777</item>
+
+        <item name="background_app">@drawable/background_dark</item>
+        <item name="background_user">@drawable/background_user_dark</item>
+
+        <item name="background_reply">@drawable/background_reply_dark</item>
+
+        <item name="color_background_text_info_background">#99000000</item>
+
+        <item name="color_button_press_default">#FF33b5e5</item>
+        <item name="button_transparent_background">@drawable/button_transparent_background</item>
+
+        <!-- Colors -->
+        <item name="android:windowBackground">@color/color_foreground</item>
+        <item name="android:colorForeground">@color/color_foreground</item>
+        <item name="android:colorForegroundInverse">@color/color_foreground_inverse</item>
+        <item name="android:colorBackground">@color/color_background</item>
+        <!-- Text -->
+        <item name="android:textAppearance">@style/TextAppearance</item>
+        <!-- Window -->
+        <!--<item name="android:windowTitleSize">38dip</item>-->
+        <!--<item name="android:windowTitleStyle">@style/WindowTitle</item>-->
+        <!--<item name="android:windowTitleBackgroundStyle">@style/WindowTitleBackground</item>-->
+        <!-- Components -->
+        <!--<item name="android:buttonStyle">@style/Widget.Button</item>-->
+        <!--<item name="android:editTextStyle">@style/Widget.EditText</item>-->
+        <!--<item name="android:listViewStyle">@style/Widget.ListView</item>-->
+
+        <!-- Icons -->
+
+        <item name="icon_social_add_user">@drawable/icon_social_add_user_dark</item>
+        <item name="icon_action_search">@drawable/icon_action_search_dark</item>
+        <item name="icon_action_settings">@drawable/icon_action_settings_dark</item>
+        <item name="icon_content_add_trending">@drawable/icon_content_add_trending_dark</item>
+        <item name="icon_content_edit">@drawable/icon_content_edit_dark</item>
+        <item name="icon_content_favorite">@drawable/icon_content_favorite_dark</item>
+        <item name="icon_action_more_options">@drawable/icon_action_more_options_dark</item>
+        <item name="icon_content_delete">@drawable/icon_content_delete_dark</item>
+        <item name="icon_content_timeline">@drawable/icon_content_timeline_dark</item>
+        <item name="icon_content_mentions">@drawable/icon_content_mentions_dark</item>
+        <item name="icon_content_direct">@drawable/icon_content_direct_dark</item>
+        <item name="icon_content_translate">@drawable/icon_content_translate_dark</item>
+        <item name="icon_favorite_off">@drawable/icon_favorite_off_dark</item>
+        <item name="icon_favorite_on">@drawable/icon_favorite_on_dark</item>
+        <item name="icon_social_reply">@drawable/icon_social_reply_dark</item>
+        <item name="icon_social_retweet">@drawable/icon_social_retweet_dark</item>
+        <item name="icon_action_web">@drawable/icon_action_web_dark</item>
+        <item name="icon_action_highlight">@drawable/icon_action_highlight_dark</item>
+        <item name="icon_action_shorter">@drawable/icon_action_shorter_dark</item>
+        <item name="icon_action_clock">@drawable/icon_action_clock_dark</item>
+        <item name="icon_action_place">@drawable/icon_action_place_dark</item>
+
     </style>
 	
 	<style name="Theme.TwitterBlack" parent="@android:style/Theme.Holo">
@@ -122,48 +299,48 @@
 
         <!-- Tabs indicator -->
         <item name="vpiTabPageIndicatorStyle">@style/Widget.TabPageIndicator</item>
-	
+
 		<item name="color_tweet_usename">#ffffffff</item>
 		<item name="color_tweet_source">#ffbfbfbf</item>
 		<item name="color_tweet_date">#ffbfbfbf</item>
 		<item name="color_tweet_text">#ffffffff</item>
 		<item name="color_tweet_retweet">#ffbfbfbf</item>
-		
+
 		<item name="color_title_general">#ffeeeeee</item>
 		<item name="color_desc_general">#ffcccccc</item>
-		
+
 		<item name="color_link_general">#FF67c7f4</item>
-		
+
 		<item name="color_textbutton_general">#FFFFFFFF</item>
-		
+
 		<item name="color_textbutton_sidebar">#FFffffff</item>
 
         <item name="color_bgbutton_push_sidebar">#FF33b5e5</item>
-		
+
 		<item name="color_title_search">#FFFFFFFF</item>
-		
+
 		<item name="color_title_search_short">#FFCCCCCC</item>
-		
+
 		<item name="bottom_bar_background">@drawable/bottom_bar_background_dark</item>
-		
+
 		<item name="color_shadow_listview">#FF222222</item>
-		
+
 		<item name="bg_sidebar">@drawable/bg_sidebar_dark</item>
-		
+
 		<item name="color_grid_search">#ffffffff</item>
-		
+
 		<item name="color_background_solid">#ff777777</item>
-		
+
 		<item name="background_app">@drawable/background_dark</item>
 		<item name="background_user">@drawable/background_user_dark</item>
-		
+
 		<item name="background_reply">@drawable/background_reply_dark</item>
-		
+
 		<item name="color_background_text_info_background">#99000000</item>
 
         <item name="color_button_press_default">#FF33b5e5</item>
         <item name="button_transparent_background">@drawable/button_transparent_background</item>
-			 
+
 		<!-- Colors -->
         <item name="android:windowBackground">@color/color_foreground</item>
         <item name="android:colorForeground">@color/color_foreground</item>
@@ -203,7 +380,7 @@
         <item name="icon_action_shorter">@drawable/icon_action_shorter_dark</item>
         <item name="icon_action_clock">@drawable/icon_action_clock_dark</item>
         <item name="icon_action_place">@drawable/icon_action_place_dark</item>
-	
+
 	</style>
 
 

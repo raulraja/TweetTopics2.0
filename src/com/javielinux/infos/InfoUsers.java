@@ -177,6 +177,10 @@ public class InfoUsers {
         friendly.put(name, new Friend(name));
 	}
 
+    public void removeFriendly(String name) {
+        friendly.remove(name);
+    }
+
     public void replaceFriendly(String name, Friend friend) {
         friendly.remove(name);
         friendly.put(name, friend);

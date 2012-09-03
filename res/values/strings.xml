@@ -3,6 +3,8 @@
 
     <!-- v 2.0  -->
 
+    <string name="shouldSelectOneUser">You should select one user</string>
+
     <string name="hide">Hide</string>
     <string name="view_photo_profile">View photo profile</string>
     <string name="included_list">Included in list</string>

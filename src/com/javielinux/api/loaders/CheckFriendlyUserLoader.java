@@ -7,6 +7,9 @@ import com.javielinux.api.response.BaseResponse;
 import com.javielinux.api.response.CheckFriendlyUserResponse;
 import com.javielinux.api.response.ErrorResponse;
 import com.javielinux.infos.InfoUsers;
+import com.javielinux.twitter.ConnectionManager;
+import com.javielinux.utils.CacheData;
+import twitter4j.User;
 
 public class CheckFriendlyUserLoader extends AsynchronousLoader<BaseResponse> {
 
@@ -24,6 +27,11 @@ public class CheckFriendlyUserLoader extends AsynchronousLoader<BaseResponse> {
 		try {
             CheckFriendlyUserResponse response = new CheckFriendlyUserResponse();
             InfoUsers infoUsers = request.getInfoUsers();
+            if (infoUsers==null) {
+                User user_data = ConnectionManager.getInstance().getAnonymousTwitter().showUser(request.getUser());
+                infoUsers = new InfoUsers(user_data);
+                CacheData.addCacheUsers(infoUsers);
+            }
             infoUsers.checkFriend(getContext(), request.getUser());
             response.setInfoUsers(infoUsers);
             return response;

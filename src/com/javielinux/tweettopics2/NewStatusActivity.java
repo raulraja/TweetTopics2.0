@@ -30,15 +30,23 @@ import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
 import com.javielinux.adapters.TweetListDraftAdapter;
 import com.javielinux.adapters.TweetLongerAdapter;
+import com.javielinux.api.APIDelegate;
+import com.javielinux.api.APITweetTopics;
+import com.javielinux.api.request.CheckFriendlyUserRequest;
+import com.javielinux.api.request.SearchContentInDBRequest;
+import com.javielinux.api.response.CheckFriendlyUserResponse;
+import com.javielinux.api.response.ErrorResponse;
+import com.javielinux.api.response.SearchContentInDBResponse;
 import com.javielinux.components.AutoCompleteHashTagListItem;
 import com.javielinux.components.AutoCompleteListItem;
+import com.javielinux.dialogs.AlertDialogFragment;
+import com.javielinux.dialogs.SelectImageDialogFragment;
 import com.javielinux.infos.InfoUsers;
 import com.javielinux.tweetprogrammed.OnAlarmReceiverTweetProgrammed;
 import com.javielinux.utils.*;
 import preferences.NewEditTweetProgrammed;
 import preferences.Preferences;
 import preferences.TweetDraft;
-import task.LoadUserAsyncTask;
 import updatestatus.ServiceUpdateStatus;
 
 import java.io.File;
@@ -75,12 +83,8 @@ public class NewStatusActivity extends BaseActivity {
     public static String URL_BASE_TWITPIC = "http://twitpic.com/";
     public static String URL_BASE_LOCKERZ = "http://lockerz.com/p/";
 
-    private static final int DIALOG_SELECT_IMAGE = 0;
-    private static final int DIALOG_NO_GEO = 1;
 
-    private static final int ACTIVITY_SELECTIMAGE = 0;
-    private static final int ACTIVITY_CAMERA = 1;
-    public static final int ACTIVITY_USER = 2;
+    public static final int ACTIVITY_USER = 0;
 
     private int mModeTweetLonger = MODE_TL_NONE;
 
@@ -142,7 +146,7 @@ public class NewStatusActivity extends BaseActivity {
 
     private ArrayList<String> mImages = new ArrayList<String>();
 
-    private LinearLayout mLayoutBackgroundApp;
+    private RelativeLayout mLayoutBackgroundApp;
 
     private static NewStatusActivity thisInstance;
 
@@ -255,54 +259,11 @@ public class NewStatusActivity extends BaseActivity {
     }
 
     @Override
-    protected Dialog onCreateDialog(int id) {
-        switch (id) {
-            case DIALOG_SELECT_IMAGE:
-                return new AlertDialog.Builder(this)
-                        .setTitle(R.string.select_action)
-                        .setItems(R.array.select_type_image, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                if (which == 0) {
-                                    File f = new File(getURLCurrentImage());
-                                    if (f.exists()) f.delete();
-
-                                    Intent intendCapture = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                                    intendCapture.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(f));
-                                    intendCapture.putExtra("return-data", true);
-                                    startActivityForResult(intendCapture, ACTIVITY_CAMERA);
-                                } else if (which == 1) {
-                                    Intent i = new Intent(Intent.ACTION_PICK);
-                                    i.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                                            MediaStore.Images.Media.CONTENT_TYPE);
-                                    startActivityForResult(i, ACTIVITY_SELECTIMAGE);
-                                }
-                            }
-                        })
-                        .create();
-            case DIALOG_NO_GEO:
-                return new AlertDialog.Builder(this)
-                        .setTitle(R.string.title_no_geo)
-                        .setMessage(R.string.text_no_geo)
-                        .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int whichButton) {
-                                send();
-                            }
-                        })
-                        .setNegativeButton(R.string.alert_dialog_cancel, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int whichButton) {
-                            }
-                        })
-                        .create();
-        }
-        return null;
-    }
-
-    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         themeManager = new ThemeManager(this);
-        themeManager.setTranslucentTheme();
+        themeManager.setDialogTheme();
 
         thisInstance = this;
 
@@ -394,13 +355,11 @@ public class NewStatusActivity extends BaseActivity {
 
         }
 
-        themeManager = new ThemeManager(this);
-        themeManager.setTheme();
 
         setContentView(R.layout.new_status);
 
 
-        mLayoutBackgroundApp = (LinearLayout) findViewById(R.id.layout_background_app);
+        mLayoutBackgroundApp = (RelativeLayout) findViewById(R.id.layout_background_app);
 
 
         try {
@@ -526,7 +485,7 @@ public class NewStatusActivity extends BaseActivity {
                 if (PreferenceUtils.getGeo(NewStatusActivity.this)) {
                     Location loc = LocationUtils.getLastLocation(NewStatusActivity.this);
                     if (loc == null) {
-                        showDialog(DIALOG_NO_GEO);
+                        showNoFoundGeoDialog();
                     } else {
                         send();
                     }
@@ -603,6 +562,37 @@ public class NewStatusActivity extends BaseActivity {
 
     }
 
+    private void showNoFoundGeoDialog() {
+        AlertDialogFragment alertDialogFragment = new AlertDialogFragment();
+        Bundle args = new Bundle();
+        args.putInt(AlertDialogFragment.KEY_ALERT_TITLE, R.string.title_no_geo);
+        args.putInt(AlertDialogFragment.KEY_ALERT_MESSAGE, R.string.text_no_geo);
+        args.putBoolean(AlertDialogFragment.KEY_ALERT_HAS_NEGATIVE_BUTTON, true);
+        args.putInt(AlertDialogFragment.KEY_ALERT_POSITIVE_LABEL, R.string.yes);
+        args.putInt(AlertDialogFragment.KEY_ALERT_NEGATIVE_LABEL, R.string.alert_dialog_cancel);
+        alertDialogFragment.setArguments(args);
+        alertDialogFragment.setAlertButtonListener(new AlertDialogFragment.AlertButtonListener() {
+            @Override
+            public void OnAlertButtonOk() {
+                send();
+            }
+
+            @Override
+            public void OnAlertButtonCancel() {
+            }
+
+            @Override
+            public void OnAlertButtonNeutral() {
+            }
+
+            @Override
+            public void OnAlertItems(int which) {
+            }
+        });
+        alertDialogFragment.show(getSupportFragmentManager(), "dialog");
+
+    }
+
 
     private void addUserInLayout(UserStatus user) {
 
@@ -631,55 +621,9 @@ public class NewStatusActivity extends BaseActivity {
             tag_network.setImageResource(R.drawable.icon_twitter);
         }
 
+        ((ImageView) v.findViewById(R.id.user_item_selector)).setVisibility(user.checked?View.VISIBLE:View.GONE);
+
         mDataUsers.addView(v);
-
-
-
-        /*
-     ImageView on = (ImageView) v.findViewById(R.id.bg_on);
-     ImageView off = (ImageView) v.findViewById(R.id.bg_off);
-
-     if (user.checked) {
-         on.setVisibility(View.VISIBLE);
-         off.setVisibility(View.GONE);
-     } else {
-         on.setVisibility(View.GONE);
-         off.setVisibility(View.VISIBLE);
-     }
-
-     ImageView img = (ImageView) v.findViewById(R.id.icon);
-     try {
-         if (user.avatarON != null) {
-             img.setImageBitmap(user.checked ? user.avatarON : user.avatarOFF);
-         } else {
-             img.setImageResource(R.drawable.avatar);
-         }
-     } catch (Exception e) {
-         e.printStackTrace();
-         img.setImageResource(R.drawable.avatar);
-     }
-
-     ImageView tag_network = (ImageView) v.findViewById(R.id.tag_network);
-
-     if (user.service.equals("facebook")) {
-         tag_network.setImageResource(R.drawable.icon_facebook);
-     } else {
-         tag_network.setImageResource(R.drawable.icon_twitter);
-     }
-
-     TextView username = (TextView) v.findViewById(R.id.username);
-     username.setText(user.username);
-
-     v.setTag(user.id);
-
-     v.setOnClickListener(new OnClickListener() {
-         @Override
-         public void onClick(View v) {
-             setChecked(Long.parseLong(v.getTag().toString()));
-         }
-     });
-
-     mDataUsers.addView(v);   */
     }
 
     private void addInviteFacebookInLayout() {
@@ -722,8 +666,8 @@ public class NewStatusActivity extends BaseActivity {
                 user.checked = (ent.getId() == userStart);
             }
 
-            user.avatarON = ImageUtils.createBitmapSelectedAvatar(ent.getId(), Utils.dip2px(this, Utils.AVATAR_LARGE));
-            user.avatarOFF = ImageUtils.createBitmapUnselectedAvatar(ent.getId(), Utils.dip2px(this, Utils.AVATAR_LARGE));
+            user.avatarON = ImageUtils.createBitmapSelectedAvatar(ent.getId(), Utils.dip2px(this, Utils.AVATAR_XLARGE));
+            user.avatarOFF = ImageUtils.createBitmapUnselectedAvatar(ent.getId(), Utils.dip2px(this, Utils.AVATAR_XLARGE));
 
             mUsers.add(user);
         }
@@ -894,7 +838,7 @@ public class NewStatusActivity extends BaseActivity {
 
     }
 
-    private void showUsers(String user, final boolean isDM) {
+    private void showUsers(final String user, final boolean isDM) {
         List<String> names = new ArrayList<String>();
 
         try {
@@ -902,95 +846,112 @@ public class NewStatusActivity extends BaseActivity {
 
             Log.d(Utils.TAG, "Searching by " + user + " con " + ents.size() + " resultados");
 
-            int count = 0;
-
             mAutoCompleteDataFoot.removeAllViews();
             mResultInfoUsers.clear();
 
-            for (int i = 0; i < ents.size() && count < MAX_RESULTS; i++) {
-                if (!names.contains(ents.get(i).getString("username"))) {
-                    InfoUsers iu = new InfoUsers();
-                    iu.setName(ents.get(i).getString("username"));
-                    iu.setUrlAvatar(ents.get(i).getString("url_avatar"));
-                    names.add(ents.get(i).getString("username"));
-                    mResultInfoUsers.add(iu);
-                    AutoCompleteListItem v = (AutoCompleteListItem) View.inflate(this, R.layout.row_autocomplete_user, null);
-                    v.setRow(iu, user);
-                    v.setTag(count);
-                    v.setOnClickListener(new OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            if (isDM) {
-                                onItemClickDMComplete(Integer.parseInt(v.getTag().toString()));
-                            } else {
-                                onItemClickAutoComplete(Integer.parseInt(v.getTag().toString()));
-                            }
-                        }
-                    });
-                    mAutoCompleteDataFoot.addView(v);
-                    count++;
+            APITweetTopics.execute(this, getSupportLoaderManager(), new APIDelegate<SearchContentInDBResponse>() {
+                @Override
+                public void onResults(SearchContentInDBResponse result) {
+                    if (result.getObjectList().size() > 0) {
+                        loadUserInAutoComplete(result.getObjectList(), user, isDM);
+                        showFootAutoComplete();
+                    } else {
+                        showFootButtons();
+                    }
                 }
-            }
 
-            if (count > 0) {
-                showFootAutoComplete();
-            } else {
-                showFootButtons();
-            }
+                @Override
+                public void onError(ErrorResponse error) {
+
+                }
+            }, new SearchContentInDBRequest(user, SearchContentInDBRequest.TypeContent.USERS));
 
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    private void showHashTags(String ht) {
+    private void loadUserInAutoComplete(List<Object> users, String user, boolean isDM) {
+        int count = 0;
+        for (Object objUser : users) {
+            InfoUsers infoUser = (InfoUsers) objUser;
+            mResultInfoUsers.add(infoUser);
+            AutoCompleteListItem v = (AutoCompleteListItem) View.inflate(this, R.layout.row_autocomplete_user, null);
+            v.setRow(infoUser, user);
+            v.setTag(count);
+            if (isDM) {
+                v.setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        onItemClickDMComplete(Integer.parseInt(v.getTag().toString()));
+                    }
+                });
+            } else {
+                v.setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        onItemClickAutoComplete(Integer.parseInt(v.getTag().toString()));
+                    }
+                });
+            }
+            mAutoCompleteDataFoot.addView(v);
+            count++;
+        }
+    }
+
+    private void showHashTags(final String search) {
         List<String> hashtags = new ArrayList<String>();
 
         try {
             List<Entity> ents = DataFramework.getInstance().getEntityList("tweets_user", "text like '%#%'", "");
 
-            Log.d(Utils.TAG, "Searching hashtag by " + ht + " en " + ents.size() + " resultados");
-
-            int count = 0;
+            Log.d(Utils.TAG, "Searching hashtag by " + search + " en " + ents.size() + " resultados");
 
             mAutoCompleteDataFoot.removeAllViews();
             mResultInfoHashTags.clear();
 
-            for (int i = 0; i < ents.size() && count < MAX_RESULTS; i++) {
-                ArrayList<String> hashs = LinksUtils.pullLinksHashTags(ents.get(i).getString("text"));
-                for (String h : hashs) {
-                    h = h.replace("#", "");
-                    if (!hashtags.contains(h) && h.startsWith(ht)) {
-                        hashtags.add(h);
-                        mResultInfoHashTags.add(h);
-                        AutoCompleteHashTagListItem v = (AutoCompleteHashTagListItem) View.inflate(this, R.layout.row_autocomplete_hashtag, null);
-                        v.setRow(h, ht);
-                        v.setTag(count);
-                        v.setOnClickListener(new OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                onItemClickHashTagAutoComplete(Integer.parseInt(v.getTag().toString()));
-                            }
-                        });
-                        mAutoCompleteDataFoot.addView(v);
-                        count++;
+            APITweetTopics.execute(this, getSupportLoaderManager(), new APIDelegate<SearchContentInDBResponse>() {
+                @Override
+                public void onResults(SearchContentInDBResponse result) {
+                    if (result.getObjectList().size() > 0) {
+                        loadHashTagInAutoComplete(result.getObjectList(), search);
+                        showFootAutoComplete();
+                    } else {
+                        showFootButtons();
                     }
                 }
-            }
 
-            if (count > 0) {
-                showFootAutoComplete();
-            } else {
-                showFootButtons();
-            }
+                @Override
+                public void onError(ErrorResponse error) {
+
+                }
+            }, new SearchContentInDBRequest(search, SearchContentInDBRequest.TypeContent.HASHTAGS));
+
 
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
+    private void loadHashTagInAutoComplete(List<Object> hashTags, String search) {
+        int count = 0;
+        for (Object objHashTag : hashTags) {
+            String hashtag = objHashTag.toString();
+            mResultInfoHashTags.add(hashtag);
+            AutoCompleteHashTagListItem v = (AutoCompleteHashTagListItem) View.inflate(this, R.layout.row_autocomplete_hashtag, null);
+            v.setRow(hashtag, search);
+            v.setTag(count);
+            v.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onItemClickHashTagAutoComplete(Integer.parseInt(v.getTag().toString()));
+                }
+            });
+            mAutoCompleteDataFoot.addView(v);
+        }
+    }
+
     private void onItemClickDMComplete(int position) {
-        //Log.d(Utils.TAG, "Texto: " + mAuxText + " " + mStartAutoComplete + " - " + mEndAutoComplete + " tam: " + mAuxText.length());
         onItemClickDMComplete(mResultInfoUsers.get(position).getName(), true);
     }
 
@@ -1000,44 +961,66 @@ public class NewStatusActivity extends BaseActivity {
         mStartAutoComplete = -1;
         showFootButtons();
 
-        progressDialog = ProgressDialog.show(
-                this,
-                getResources().getString(R.string.verify_dm_title),
-                getResources().getString(R.string.verify_dm_msg)
-        );
+        String userDM = "";
+        int countUsers = 0;
 
-        new LoadUserAsyncTask(this, new LoadUserAsyncTask.LoadUserAsyncAsyncTaskResponder() {
+        for (UserStatus userStatus : mUsers) {
+             if (userStatus.checked && userStatus.service.equals(ConstantUtils.NETWORK_TWITTER_NAME)) {
+                 userDM = userStatus.username;
+                 countUsers++;
+             }
+        }
 
-            @Override
-            public void userLoading() {
-            }
+        if (countUsers!=1) {
+            Utils.showMessage(this, R.string.shouldSelectOneUser);
+            return;
+        }
 
-            @Override
-            public void userCancelled() {
-            }
+        InfoUsers infoUsers = CacheData.getCacheUser(user);
 
-            @Override
-            public void userLoaded(InfoUsers iu) {
-                progressDialog.dismiss();
-                if (iu != null) {
-                    // TODO Mirar esto bien
-                    if (iu.isFollower("")) {
-                        Utils.showMessage(NewStatusActivity.this, NewStatusActivity.this.getString(R.string.verify_dm_yes, iu.getName()));
-                        if (fromAutocomplete) {
-                            mDMUsername = iu.getName();
-                            mType = TYPE_DIRECT_MESSAGE;
-                            populateFields();
-                        }
-                    } else {
-                        Utils.showMessage(NewStatusActivity.this, NewStatusActivity.this.getString(R.string.no_is_follower));
-                        if (!fromAutocomplete) {
-                            finish();
-                        }
-                    }
+        if (infoUsers==null || !infoUsers.hasFriendly(userDM)) {
+            // TODO Hay un error aquí que no se que pasa, cuando entro desde el TweetActivity no comprueba bien
+            final String userDMFinal = userDM;
+
+            progressDialog = ProgressDialog.show(
+                    this,
+                    getResources().getString(R.string.verify_dm_title),
+                    getResources().getString(R.string.verify_dm_msg)
+            );
+
+            APITweetTopics.execute(this, getSupportLoaderManager(), new APIDelegate<CheckFriendlyUserResponse>() {
+                @Override
+                public void onResults(CheckFriendlyUserResponse result) {
+                    progressDialog.dismiss();
+                    checkIfIsPossibleUserDM(result.getInfoUsers(), userDMFinal, fromAutocomplete);
+                }
+
+                @Override
+                public void onError(ErrorResponse error) {
+
+                }
+            }, new CheckFriendlyUserRequest(infoUsers, userDM));
+        } else {
+            checkIfIsPossibleUserDM(infoUsers, userDM, fromAutocomplete);
+        }
+    }
+
+    public void checkIfIsPossibleUserDM(InfoUsers infoUsers, String user, boolean fromAutocomplete) {
+        if (infoUsers != null) {
+            if (infoUsers.isFollower(user)) {
+                Utils.showMessage(NewStatusActivity.this, NewStatusActivity.this.getString(R.string.verify_dm_yes, infoUsers.getName()));
+                if (fromAutocomplete) {
+                    mDMUsername = infoUsers.getName();
+                    mType = TYPE_DIRECT_MESSAGE;
+                    populateFields();
+                }
+            } else {
+                Utils.showMessage(NewStatusActivity.this, NewStatusActivity.this.getString(R.string.no_is_follower));
+                if (!fromAutocomplete) {
+                    finish();
                 }
             }
-        }).execute(user);
-
+        }
     }
 
     private void onItemClickAutoComplete(int position) {
@@ -1178,7 +1161,7 @@ public class NewStatusActivity extends BaseActivity {
     public boolean onMenuItemSelected(int featureId, MenuItem item) {
         switch (item.getItemId()) {
             case TAKEPHOTO_ID:
-                showDialogSelectImage();
+                showSelectImageDialog();
                 return true;
             case DEFAULTTEXT_ID:
                 showDialogDefaultText();
@@ -1451,8 +1434,15 @@ public class NewStatusActivity extends BaseActivity {
         alert.show();
     }
 
-    public void showDialogSelectImage() {
-        showDialog(DIALOG_SELECT_IMAGE);
+    private void showSelectImageDialog() {
+
+        SelectImageDialogFragment frag = new SelectImageDialogFragment();
+        Bundle args = new Bundle();
+        args.putInt("title", R.string.actions);
+        args.putString("file", getURLCurrentImage());
+        frag.setArguments(args);
+        frag.show(getSupportFragmentManager(), "dialog");
+
     }
 
     /*
@@ -1519,12 +1509,12 @@ public class NewStatusActivity extends BaseActivity {
                                     Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
         switch (requestCode) {
-            case ACTIVITY_CAMERA:
+            case SelectImageDialogFragment.ACTIVITY_CAMERA:
                 if (resultCode != 0) {
                     copyImage(getURLCurrentImage());
                 }
                 break;
-            case ACTIVITY_SELECTIMAGE:
+            case SelectImageDialogFragment.ACTIVITY_SELECTIMAGE:
                 if (resultCode != 0) {
                     Cursor c = getContentResolver().query(intent.getData(), null, null, null, null);
                     if (c != null) {

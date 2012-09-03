@@ -1,23 +1,20 @@
 package com.javielinux.components;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.os.AsyncTask;
 import android.util.AttributeSet;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import com.androidquery.AQuery;
 import com.javielinux.infos.InfoUsers;
 import com.javielinux.tweettopics2.R;
-import task.LoadImageAutoCompleteAsyncTask.LoadImageAutoCompleteAsyncTaskResponder;
 
-public class AutoCompleteListItem extends LinearLayout implements LoadImageAutoCompleteAsyncTaskResponder {
+public class AutoCompleteListItem extends LinearLayout {
 
-	private AsyncTask<String, Void, Bitmap> latestLoadTask;
-	private ImageView mAvatar;
+    private AQuery aQuery;
 	
 	public AutoCompleteListItem(Context context, AttributeSet attrs) {
 		super(context, attrs);
+        aQuery = new AQuery(context);
 	}
 	
 	public void setRow(InfoUsers item, String searchWord) {
@@ -31,33 +28,9 @@ public class AutoCompleteListItem extends LinearLayout implements LoadImageAutoC
 			name2.setText("");
 		}
 
-		if (latestLoadTask!=null) latestLoadTask.cancel(true);
+        aQuery.id(findViewById(R.id.ac_avatar)).image(item.getUrlAvatar(), true, true, 0, R.drawable.avatar, aQuery.getCachedImage(R.drawable.avatar), 0);
 
-        // TODO El autocompletar hay que reescribirlo
-
-		/*
-		mAvatar = (ImageView)findViewById(R.id.ac_avatar);
-		if (item.getAvatar()==null) {
-			mAvatar.setImageResource(R.drawable.avatar);
-			latestLoadTask = new LoadImageAutoCompleteAsyncTask(this).execute(item.getUrlAvatar());			
-		} else {
-			mAvatar.setImageBitmap(item.getAvatar());
-		}    */
 	}
 
-	@Override
-	public void imageAutoCompleteLoadCancelled() {
-		
-	}
-
-	@Override
-	public void imageAutoCompleteLoaded(Bitmap bmp) {
-		if (bmp!=null) mAvatar.setImageBitmap(bmp);
-	}
-
-	@Override
-	public void imageAutoCompleteLoading() {
-		
-	}
 
 }

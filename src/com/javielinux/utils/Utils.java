@@ -123,7 +123,7 @@ public class Utils {
 	static public int AVATAR_SMALL = 30;
 	static public int AVATAR_MEDIUM = 36;
 	static public int AVATAR_LARGE = 48;
-    static public int AVATAR_XLARGE = 64;
+    static public int AVATAR_XLARGE = 54;
 	
 	static public Context context = null;
 	

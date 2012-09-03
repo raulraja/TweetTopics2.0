@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout
+<RelativeLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_height="fill_parent"
+        style="@style/ContainerDialog"
         android:orientation="vertical"
         android:background="?attr/color_background_solid"
         android:id="@+id/layout_background_app"
-        android:layout_width="fill_parent">
+        >
 
     <RelativeLayout android:id="@+id/new_status_bar_action"
                     android:layout_height="@dimen/actionbar_height"
@@ -31,14 +31,19 @@
     </RelativeLayout>
 
     <ImageView android:background="@drawable/border_shadow_horizontal"
+               android:layout_below="@id/new_status_bar_action"
+               android:id="@+id/new_status_shadow"
                android:layout_height="wrap_content"
                android:layout_width="fill_parent" />
 
     <ScrollView
+            android:layout_below="@id/new_status_shadow"
+            android:id="@+id/new_status_scroll"
+            android:layout_marginBottom="@dimen/footer_buttons_height"
             android:layout_width="fill_parent" android:layout_height="fill_parent"
-            android:layout_weight="1">
+            >
 
-        <LinearLayout
+        <RelativeLayout
                 android:layout_height="fill_parent"
                 android:orientation="vertical"
                 android:layout_width="fill_parent">
@@ -46,29 +51,13 @@
             <LinearLayout
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:layout_marginLeft="@dimen/default_padding"
-                    android:layout_marginRight="@dimen/default_padding"
-                    android:layout_marginTop="@dimen/default_separation"
-                    android:layout_width="fill_parent">
-
-                <HorizontalScrollView android:id="@+id/users"
-                                      android:layout_width="0dip" android:layout_height="wrap_content"
-                                      android:layout_weight="2">
-                    <LinearLayout android:id="@+id/users_data"
-                                  android:layout_width="fill_parent"
-                                  android:layout_height="fill_parent"
-                                  android:orientation="horizontal"></LinearLayout>
-                </HorizontalScrollView>
-
-            </LinearLayout>
-
-            <LinearLayout
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginTop="@dimen/default_separation"
+                    android:id="@+id/new_status_text_container"
+                    android:layout_below="@+id/new_status_users_container"
                     android:paddingLeft="@dimen/default_padding"
                     android:paddingRight="@dimen/default_padding"
+                    android:layout_marginTop="-7dp"
                     android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
                     android:background="@drawable/bg_editext_new_status"
                     android:layout_width="fill_parent">
 
@@ -94,8 +83,30 @@
 
             </LinearLayout>
 
+            <LinearLayout
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:id="@id/new_status_users_container"
+                    android:layout_marginLeft="@dimen/default_padding"
+                    android:layout_marginRight="@dimen/default_padding"
+                    android:layout_marginTop="@dimen/default_padding"
+                    android:layout_width="fill_parent">
+
+                <HorizontalScrollView android:id="@+id/users"
+                                      android:scrollbars="none"
+                                      android:layout_width="0dip" android:layout_height="wrap_content"
+                                      android:layout_weight="2">
+                    <LinearLayout android:id="@+id/users_data"
+                                  android:layout_width="fill_parent"
+                                  android:layout_height="fill_parent"
+                                  android:orientation="horizontal"></LinearLayout>
+                </HorizontalScrollView>
+
+            </LinearLayout>
+
             <TextView android:layout_height="wrap_content" android:layout_width="wrap_content"
                       android:id="@+id/txt_type"
+                      android:layout_below="@id/new_status_text_container"
                       android:padding="3dip"
                       android:layout_marginTop="@dimen/default_separation"
                       android:layout_marginLeft="@dimen/default_padding"
@@ -106,6 +117,7 @@
             <LinearLayout
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
+                    android:layout_below="@id/txt_type"
                     android:id="@+id/reftweet_layout"
                     android:layout_marginTop="@dimen/default_separation"
                     android:layout_marginLeft="@dimen/default_padding"
@@ -140,12 +152,13 @@
 
             </LinearLayout>
 
-        </LinearLayout>
+        </RelativeLayout>
 
     </ScrollView>
 
     <LinearLayout android:orientation="horizontal"
                   android:layout_width="fill_parent"
+                  android:layout_alignParentBottom="true"
                   android:gravity="center_vertical"
                   android:layout_height="@dimen/footer_buttons_height"
                   android:background="?attr/bottom_bar_background"
@@ -214,6 +227,7 @@
             android:layout_height="45dip"
             android:background="#ffffff"
             android:visibility="gone"
+            android:layout_alignParentBottom="true"
             android:id="@+id/autocomplete_foot"
             >
 
@@ -226,4 +240,4 @@
 
     </HorizontalScrollView>
 
-</LinearLayout>
+</RelativeLayout>

@@ -8,6 +8,9 @@
         <item name="android:windowAnimationStyle">@android:style/Animation</item>
     </style>
 
+    <style name="Theme.Twitter.Dialog" parent="@style/Theme.Twitter">
+    </style>
+
 	<style name="Theme.Twitter" parent="@android:style/Theme.Light">
 
         <!-- Tabs indicator -->
@@ -101,6 +104,9 @@
         <item name="android:colorBackgroundCacheHint">@null</item>
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowAnimationStyle">@android:style/Animation</item>
+    </style>
+
+    <style name="Theme.TwitterBlack.Dialog" parent="@style/Theme.TwitterBlack">
     </style>
 	
 	<style name="Theme.TwitterBlack" parent="@android:style/Theme.Black">
