@@ -11,7 +11,7 @@
                     android:orientation="vertical">
 
         <LinearLayout android:id="@+id/tweettopics_bar_columns_container"
-                      android:layout_height="@dimen/actionbar_columns_height"
+                      android:layout_height="wrap_content"
                       android:layout_width="fill_parent"
                       android:visibility="gone"
                 >
@@ -22,6 +22,15 @@
                     >
 
             </com.javielinux.components.DraggableHorizontalView>
+            <LinearLayout
+                android:gravity="center"
+                android:layout_height="wrap_content"
+                android:layout_width="fill_parent">
+            <ImageView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:src="@drawable/arrow_up" />
+            </LinearLayout>
 
         </LinearLayout>
 

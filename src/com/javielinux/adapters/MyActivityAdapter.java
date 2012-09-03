@@ -29,8 +29,10 @@ public class MyActivityAdapter extends BaseAdapter {
     public static final int MY_ACTIVITY_NO_SEARCHES = 4;
 
     private MyActivityFragment myActivityFragment;
-
+    private Context context;
     private ThemeManager themeManager;
+
+    private ArrayList<MyActivityItem> elements = new ArrayList<MyActivityItem>();
 
     public static class MyActivityItem {
         public int type = 0;
@@ -40,15 +42,9 @@ public class MyActivityAdapter extends BaseAdapter {
         public MyActivityItem(int type) {
             this.type = type;
         }
-
     }
 
-    private ArrayList<MyActivityItem> elements = new ArrayList<MyActivityItem>();
-
-    private Context context;
-
-    public MyActivityAdapter(Context context, MyActivityFragment myActivityFragment)
-    {
+    public MyActivityAdapter(Context context, MyActivityFragment myActivityFragment) {
         this.context = context;
         this.myActivityFragment = myActivityFragment;
         themeManager = new ThemeManager(context);
@@ -102,7 +98,6 @@ public class MyActivityAdapter extends BaseAdapter {
         }
         return -1;
 	}
-	
 
 	@Override
 	public Object getItem(int position) {

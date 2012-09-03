@@ -1,93 +1,85 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_width="fill_parent"
-              android:layout_height="fill_parent"
-        >
+    android:layout_height="fill_parent"
+    android:layout_width="fill_parent"
+    android:orientation="vertical">
 
-    <TextView
-            android:id="@+id/my_activity_empty"
-            android:visibility="gone"
-            android:layout_marginTop="15dip"
-            android:layout_marginRight="8dip"
-            android:layout_marginLeft="8dip"
-            android:gravity="center_horizontal"
-            style="@style/TextTypeNewStatus"
-            android:layout_weight="1"
-            android:layout_width="fill_parent"
-            android:layout_height="0dip"
-            android:text="@string/no_users"/>
+    <TextView android:id="@+id/my_activity_empty"
+        android:layout_marginLeft="8dip"
+        android:layout_marginRight="8dip"
+        android:layout_marginTop="15dip"
+        android:gravity="center_horizontal"
+        android:layout_height="0dip"
+        android:layout_weight="1"
+        android:layout_width="fill_parent"
+        android:text="@string/no_users"
+        style="@style/TextTypeNewStatus"
+        android:visibility="gone" />
 
     <ListView android:id="@+id/my_activity_users"
-              android:layout_weight="1"
-              android:layout_width="fill_parent"
-              android:layout_height="0dip"
-              android:cacheColorHint="@android:color/transparent"
-              android:dividerHeight="0px"
-              android:divider="@null"
-            />
+        android:cacheColorHint="@android:color/transparent"
+        android:divider="@null"
+        android:dividerHeight="0px"
+        android:layout_height="0dip"
+        android:layout_weight="1"
+        android:layout_width="fill_parent" />
 
+    <LinearLayout android:id="@+id/layout_foot"
+        android:background="?attr/bottom_bar_background"
+        android:gravity="center_vertical"
+        android:layout_height="@dimen/footer_buttons_height"
+        android:layout_width="fill_parent"
+        android:orientation="horizontal">
 
-    <LinearLayout
-                  android:layout_width="fill_parent"
-                  android:layout_height="@dimen/footer_buttons_height"
-                  android:orientation="horizontal"
-                  android:gravity="center_vertical"
-                  android:id="@+id/layout_foot"
-                  android:background="?attr/bottom_bar_background"
-            >
-
-        <ImageButton
-                android:src="?icon_social_add_user"
-                style="@style/ButtonImageFootSidebar"
-                android:gravity="center"
-                android:layout_weight="1"
-                android:id="@+id/my_activity_add_user" android:layout_width="wrap_content"
-                android:layout_height="wrap_content"></ImageButton>
+        <ImageButton android:id="@+id/my_activity_add_user"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:src="?icon_social_add_user"
+            style="@style/ButtonImageFootSidebar"/>
 
         <ImageView
-                android:background="@drawable/action_bar_divider"
-                android:layout_width="wrap_content" android:layout_height="wrap_content"
-                ></ImageView>
+            android:background="@drawable/action_bar_divider"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content" />
 
-        <ImageButton
-                android:src="?icon_action_search"
-                style="@style/ButtonImageFootSidebar"
-                android:gravity="center"
-                android:layout_weight="1"
-                android:id="@+id/my_activity_add_search" android:layout_width="wrap_content"
-                android:layout_height="wrap_content"></ImageButton>
-
-        <ImageView
-                android:background="@drawable/action_bar_divider"
-                android:layout_width="wrap_content" android:layout_height="wrap_content"
-                ></ImageView>
-
-        <ImageButton
-                android:src="?icon_content_add_trending"
-                style="@style/ButtonImageFootSidebar"
-                android:gravity="center"
-                android:layout_weight="1"
-                android:id="@+id/my_activity_add_trending" android:layout_width="wrap_content"
-                android:layout_height="wrap_content"></ImageButton>
+        <ImageButton android:id="@+id/my_activity_add_search"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:src="?icon_action_search"
+            style="@style/ButtonImageFootSidebar" />
 
         <ImageView
-                android:background="@drawable/action_bar_divider"
-                android:layout_width="wrap_content" android:layout_height="wrap_content"
-                ></ImageView>
+            android:background="@drawable/action_bar_divider"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content" />
 
-        <ImageButton
-                android:src="?icon_action_more_options"
-                style="@style/ButtonImageFootSidebar"
-                android:gravity="center"
-                android:layout_weight="1"
-                android:id="@+id/my_activity_more_options" android:layout_width="wrap_content"
-                android:layout_height="wrap_content"></ImageButton>
+        <ImageButton android:id="@+id/my_activity_add_trending"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:src="?icon_content_add_trending"
+            style="@style/ButtonImageFootSidebar" />
+
+        <ImageView
+            android:background="@drawable/action_bar_divider"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content" />
+
+        <ImageButton android:id="@+id/my_activity_more_options"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:src="?icon_action_more_options"
+            style="@style/ButtonImageFootSidebar" />
 
     </LinearLayout>
-
 
 </LinearLayout>
 	

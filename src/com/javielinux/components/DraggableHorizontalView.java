@@ -5,9 +5,10 @@
 
 package com.javielinux.components;
 
+import android.R;
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Point;
+import android.graphics.*;
 import android.os.Handler;
 import android.os.SystemClock;
 import android.util.AttributeSet;
@@ -17,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.*;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Button;
 import android.widget.ImageView;
 
 import java.util.ArrayList;
@@ -406,6 +408,16 @@ public class DraggableHorizontalView extends ViewGroup implements View.OnTouchLi
     	scroll = Integer.MAX_VALUE;
     	clampScroll();
     }
+    public void scrollToView(int position) {
+
+        for (int i=0; i<this.getChildCount(); i++)
+            this.getChildAt(i).setBackgroundColor(Color.TRANSPARENT);
+
+        this.getChildAt(position).setBackgroundColor(Color.argb(50, 224, 224, 224));
+
+        scroll = childSize * position;
+        clampScroll();
+    }
     protected void clampScroll()
     {
     	int stretch = 3, overreach = getWidth() / 2;
@@ -440,7 +452,7 @@ public class DraggableHorizontalView extends ViewGroup implements View.OnTouchLi
     protected int getMaxScroll()
     {
     	//int rowCount = (int)Math.ceil((double)getChildCount()/colCount), max = rowCount * childSize + (rowCount + 1) * padding - getHeight();
-        int colCount = getChildCount();
+        int colCount = getChildCount() + (getChildCount() % 4) + 1;
         int max = colCount * childSize + (colCount + 1) * padding - getWidth();
     	return max;
     }

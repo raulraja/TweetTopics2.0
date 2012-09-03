@@ -60,6 +60,18 @@ public class TweetTopicsFragmentAdapter extends FragmentPagerAdapter {
         return fragmentList;
     }
 
+    public int getFragmentColumnType(int position) {
+        return fragmentList.get(position).getInt("type_id");
+    }
+
+    public Entity getFragmentColumnSearch(int position) {
+        return fragmentList.get(position).getEntity("search_id");
+    }
+
+    public Entity getFragmentColumnUser(int position) {
+        return fragmentList.get(position).getEntity("user_id");
+    }
+
     public Bitmap getIconItem(int position) {
         if (fragmentList.size() > 0) {
             int typeColumn = fragmentList.get(position).getInt("type_id");

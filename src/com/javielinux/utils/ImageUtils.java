@@ -215,6 +215,10 @@ public class ImageUtils {
             Paint paintFill = new Paint();
             paintFill.setAntiAlias(true);
 
+            if (color == Color.BLUE) {
+                paintFill.setShader(new LinearGradient(0, 0, 0, 22, 0xff477ec1, 0xff293d87, Shader.TileMode.CLAMP));
+            }
+
             if (color == Color.GREEN) {
                 paintFill.setShader(new LinearGradient(0, 0, 0, 22, 0xff94c147, 0xff658729, Shader.TileMode.CLAMP));
             }

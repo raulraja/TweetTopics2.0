@@ -520,6 +520,28 @@ public class TweetTopicsActivity extends BaseLayersActivity implements PopupLink
         return bmp;
     }
 
+    private int getUnreadTweetsCount(int column_type, Entity user, Entity search) {
+        int tweetsCount = 0;
+
+        switch (column_type)
+        {
+            case TweetTopicsUtils.COLUMN_TIMELINE:
+                tweetsCount = DataFramework.getInstance().getEntityListCount("tweets_user", "type_id = " + TweetTopicsUtils.TWEET_TYPE_TIMELINE + " AND user_tt_id=" + user.getId() + " AND tweet_id >'" + Utils.fillZeros("" + user.getString("last_timeline_id")) + "'");
+                break;
+            case TweetTopicsUtils.COLUMN_MENTIONS:
+                tweetsCount = DataFramework.getInstance().getEntityListCount("tweets_user", "type_id = " + TweetTopicsUtils.TWEET_TYPE_MENTIONS + " AND user_tt_id=" + user.getId() + " AND tweet_id >'" + Utils.fillZeros("" + user.getString("last_mention_id"))+"'");
+                break;
+            case TweetTopicsUtils.COLUMN_DIRECT_MESSAGES:
+                tweetsCount = DataFramework.getInstance().getEntityListCount("tweets_user", "type_id = " + TweetTopicsUtils.TWEET_TYPE_DIRECTMESSAGES + " AND user_tt_id=" + user.getId() + " AND tweet_id >'" + Utils.fillZeros("" + user.getString("last_direct_id"))+"'");
+                break;
+            case TweetTopicsUtils.COLUMN_SEARCH:
+                if (search.getLong("last_tweet_id") < search.getLong("last_tweet_id_notifications"))
+                    tweetsCount = search.getInt("new_tweets_count");
+                break;
+        }
+
+        return tweetsCount;
+    }
     public void refreshActionBarColumns() {
 
         layoutBackgroundColumnsBar.removeAllViews();
@@ -530,7 +552,34 @@ public class TweetTopicsActivity extends BaseLayersActivity implements PopupLink
             button.setTextSize(11);
             button.setCompoundDrawablePadding(2);
             button.setTextColor(themeManager.getColor("color_button_bar_title_column"));
-            Bitmap bmp = fragmentAdapter.getIconItem(i);
+
+            Bitmap bmp = null;
+
+            int column_type = fragmentAdapter.getFragmentColumnType(i);
+            int tweets_count = 0;
+
+            switch (column_type) {
+                case TweetTopicsUtils.COLUMN_TIMELINE:
+                case TweetTopicsUtils.COLUMN_MENTIONS:
+                case TweetTopicsUtils.COLUMN_DIRECT_MESSAGES:
+                    tweets_count = getUnreadTweetsCount(column_type, fragmentAdapter.getFragmentColumnUser(i), null);
+                    if (tweets_count > 0)
+                        bmp = ImageUtils.getBitmapNumber(this, tweets_count, Color.BLUE, Utils.TYPE_RECTANGLE, 18);
+                    else
+                        bmp = fragmentAdapter.getIconItem(i);
+                    break;
+                case TweetTopicsUtils.COLUMN_SEARCH:
+                    tweets_count = getUnreadTweetsCount(column_type, null, fragmentAdapter.getFragmentColumnSearch(i));
+                    if (tweets_count > 0)
+                        bmp = ImageUtils.getBitmapNumber(this, tweets_count, Color.BLUE, Utils.TYPE_RECTANGLE, 18);
+                    else
+                        bmp = fragmentAdapter.getIconItem(i);
+                    break;
+                default:
+                    bmp = fragmentAdapter.getIconItem(i);
+                    break;
+            }
+
             if (bmp==null) {
                 bmp = BitmapFactory.decodeResource(getResources(), R.drawable.icon);
             }
@@ -618,7 +667,13 @@ public class TweetTopicsActivity extends BaseLayersActivity implements PopupLink
     public void showActionBarColumns() {
         isShowColumnsItems = true;
 
+        int left = layoutBackgroundColumnsBar.getChildAt(pager.getCurrentItem()).getLeft();
+        int top = layoutBackgroundColumnsBar.getChildAt(pager.getCurrentItem()).getTop();
+
+        layoutBackgroundColumnsBar.scrollToView(pager.getCurrentItem());
+
         layoutBackgroundColumnsBarContainer.setVisibility(View.VISIBLE);
+
         /*
         ValueAnimator moveMargins = ValueAnimator.ofFloat(getResources().getDimension(R.dimen.actionbar_height), getResources().getDimension(R.dimen.actionbar_columns_height));
         moveMargins.setDuration(250);
@@ -644,8 +699,6 @@ public class TweetTopicsActivity extends BaseLayersActivity implements PopupLink
         AnimatorSet animatorSet = new AnimatorSet();
         animatorSet.playTogether(translationOut, translationPager);
         animatorSet.start();
-
-
     }
 
     public void showActionBarIndicatorAndMovePager(final int pos) {
