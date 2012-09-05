@@ -205,10 +205,18 @@ public class ImageUtils {
         if (number > 999) {
             text = "999+";
         }
-        return getBitmapInBubble(cnt, text, color, type, textSize);
+        return getBitmapInBubble(cnt, text, color, type, textSize, -1);
     }
 
-    static public Bitmap getBitmapInBubble(Context cnt, String text, int color, int type, int textSize) {
+    static public Bitmap getBitmapNumber(Context cnt, int number, int color, int type, int textSize, float height) {
+        String text = number + "";
+        if (number > 999) {
+            text = "999+";
+        }
+        return getBitmapInBubble(cnt, text, color, type, textSize, height);
+    }
+
+    static public Bitmap getBitmapInBubble(Context cnt, String text, int color, int type, int textSize, float bitmap_height) {
 
         try {
             textSize = Utils.dip2px(cnt, textSize);
@@ -243,11 +251,14 @@ public class ImageUtils {
                 float height = paintText.descent() - paintText.ascent();
 
                 int size = (int) ((width > height) ? width : height) + 7;
+                int offset = (int)((size > bitmap_height)? 0 : (bitmap_height - size));
                 int radius = (size - 2) / 2;
-                int center = size / 2;
+                //int center = size / 2;
+                int center = (int)(size + offset) / 2;
                 int ytext = center + (int) paintText.descent() + 2;
 
-                Bitmap bmp = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888);
+                //Bitmap bmp = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888);
+                Bitmap bmp = Bitmap.createBitmap(size, size + offset, Bitmap.Config.ARGB_8888);
                 Canvas c = new Canvas(bmp);
 
                 c.drawCircle(center, center, radius, paintStroke);
@@ -256,7 +267,6 @@ public class ImageUtils {
                 return bmp;
 
             } else {
-
                 float width = paintText.measureText(text);
                 float height = paintText.descent() - paintText.ascent();
 
@@ -264,31 +274,36 @@ public class ImageUtils {
                 int hBox = (int) height + 4;
                 int hBoxFinal = hBox;
 
-                int center = wBox / 2;
-                int ytext = (hBox / 2) + (int) paintText.descent() + 2;
+                int offset = (int)((hBoxFinal > bitmap_height)? 0 : (bitmap_height - hBoxFinal));
 
-                RectF boxRect = new RectF(1, 1, wBox - 1, hBox - 1);
+                int ytext = (offset / 2 ) + (hBox / 2) + (int) paintText.descent() + 2;
+                int center = wBox / 2;
+                //int ytext = (hBox / 2) + (int) paintText.descent() + 2;
+                //RectF boxRect = new RectF(1, 1, wBox - 1, hBox - 1);
+                RectF boxRect = new RectF(1, 1 + offset / 2, wBox - 1, (offset / 2) + hBox - 1);
 
                 Path pathFill = new Path();
                 pathFill.addRoundRect(boxRect, 7, 7, Path.Direction.CCW);
                 if (type == Utils.TYPE_BUBBLE) {
-                    pathFill.moveTo(7, hBox - 2);
-                    pathFill.lineTo(7, hBox + 4);
-                    pathFill.lineTo(12, hBox - 2);
+                    pathFill.moveTo(7,(offset / 2) +  hBox - 2);
+                    pathFill.lineTo(7, (offset / 2) + hBox + 4);
+                    pathFill.lineTo(12, (offset / 2) + hBox - 2);
                     hBoxFinal = hBox + 6;
                 }
 
-                RectF boxRectStroke = new RectF(0, 0, wBox, hBox);
+                //RectF boxRectStroke = new RectF(0, 0, wBox, hBox);
+                RectF boxRectStroke = new RectF(0, (offset / 2), wBox, (offset / 2) + hBox);
 
                 Path pathStroke = new Path();
                 pathStroke.addRoundRect(boxRectStroke, 7, 7, Path.Direction.CCW);
                 if (type == Utils.TYPE_BUBBLE) {
-                    pathStroke.moveTo(5, hBox - 2);
-                    pathStroke.lineTo(5, hBox + 6);
-                    pathStroke.lineTo(14, hBox);
+                    pathStroke.moveTo(5, (offset / 2) + hBox - 2);
+                    pathStroke.lineTo(5, (offset / 2) + hBox + 6);
+                    pathStroke.lineTo(14, (offset / 2) + hBox);
                 }
 
-                Bitmap bmp = Bitmap.createBitmap(wBox, hBoxFinal, Bitmap.Config.ARGB_4444);
+                //Bitmap bmp = Bitmap.createBitmap(wBox, hBoxFinal, Bitmap.Config.ARGB_4444);
+                Bitmap bmp = Bitmap.createBitmap(wBox, offset + hBoxFinal, Bitmap.Config.ARGB_4444);
                 Canvas c = new Canvas(bmp);
 
                 c.drawPath(pathStroke, paintStroke);

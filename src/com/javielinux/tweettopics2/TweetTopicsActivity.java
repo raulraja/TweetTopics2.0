@@ -564,14 +564,14 @@ public class TweetTopicsActivity extends BaseLayersActivity implements PopupLink
                 case TweetTopicsUtils.COLUMN_DIRECT_MESSAGES:
                     tweets_count = getUnreadTweetsCount(column_type, fragmentAdapter.getFragmentColumnUser(i), null);
                     if (tweets_count > 0)
-                        bmp = ImageUtils.getBitmapNumber(this, tweets_count, Color.BLUE, Utils.TYPE_RECTANGLE, 18);
+                        bmp = ImageUtils.getBitmapNumber(this, tweets_count, Color.BLUE, Utils.TYPE_RECTANGLE, 18, getResources().getDimension(R.dimen.icon_columns_height));
                     else
                         bmp = fragmentAdapter.getIconItem(i);
                     break;
                 case TweetTopicsUtils.COLUMN_SEARCH:
                     tweets_count = getUnreadTweetsCount(column_type, null, fragmentAdapter.getFragmentColumnSearch(i));
                     if (tweets_count > 0)
-                        bmp = ImageUtils.getBitmapNumber(this, tweets_count, Color.BLUE, Utils.TYPE_RECTANGLE, 18);
+                        bmp = ImageUtils.getBitmapNumber(this, tweets_count, Color.BLUE, Utils.TYPE_RECTANGLE, 18, getResources().getDimension(R.dimen.icon_columns_height));
                     else
                         bmp = fragmentAdapter.getIconItem(i);
                     break;
@@ -583,6 +583,7 @@ public class TweetTopicsActivity extends BaseLayersActivity implements PopupLink
             if (bmp==null) {
                 bmp = BitmapFactory.decodeResource(getResources(), R.drawable.icon);
             }
+
             bmp = ImageUtils.getBitmap(bmp, (int)getResources().getDimension(R.dimen.icon_columns_height));
             button.setCompoundDrawablesWithIntrinsicBounds(null, new BitmapDrawable(getResources(), bmp), null, null);
             button.setText(fragmentAdapter.getPageTitle(i));
