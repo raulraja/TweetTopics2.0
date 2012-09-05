@@ -236,7 +236,7 @@ public class UserActivity extends BaseLayersActivity implements PopupLinks.Popup
 
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    UserActions.execByCode(arCode.get(which), UserActivity.this, infoUser);
+                    UserActions.execByCode(arCode.get(which), UserActivity.this, userActive, infoUser);
                 }
 
 

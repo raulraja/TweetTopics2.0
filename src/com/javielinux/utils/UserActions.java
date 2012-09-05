@@ -36,11 +36,11 @@ public class UserActions {
     public static String USER_ACTION_CHANGE_RELATIONSHIP = "change_relationship";
     public static String USER_ACTION_VIEW_PHOTO_PROFILE = "view_photo_profile";
 
-    public static InfoUsers execByCode(String code, FragmentActivity activity, InfoUsers infoUsers) {
-         return execByCode(code, activity, infoUsers, null);
+    public static InfoUsers execByCode(String code, FragmentActivity activity, long fromUser, InfoUsers infoUsers) {
+         return execByCode(code, activity, fromUser, infoUsers, null);
     }
 
-    public static InfoUsers execByCode(String code, final FragmentActivity activity, InfoUsers infoUsers, Object extra) {
+    public static InfoUsers execByCode(String code, final FragmentActivity activity, long fromUser, InfoUsers infoUsers, Object extra) {
         if (code.equals(USER_ACTION_COLORING)) {
             goToColoringTweets(activity, infoUsers);
         } else if (code.equals(USER_ACTION_CREATE_BLOCK)) {
@@ -81,7 +81,7 @@ public class UserActions {
         } else if (code.equals(USER_ACTION_CREATE_TOPIC)) {
             goToCreateTopic(activity, infoUsers);
         } else if (code.equals(USER_ACTION_SEND_DIRECT)) {
-            goToDirect(activity, infoUsers);
+            goToDirect(activity, fromUser, infoUsers);
         } else if (code.equals(USER_ACTION_VIEW_PHOTO_PROFILE)) {
             // TODO ver foto
         } else if (code.equals(USER_ACTION_CHANGE_RELATIONSHIP)) {
@@ -90,8 +90,9 @@ public class UserActions {
         return null;
     }
 
-    public static void goToDirect(FragmentActivity activity, InfoUsers infoUsers) {
+    public static void goToDirect(FragmentActivity activity, long fromUser, InfoUsers infoUsers) {
         Intent newstatus = new Intent(activity, NewStatusActivity.class);
+        if (fromUser>0) newstatus.putExtra("start_user_id", fromUser);
         newstatus.putExtra("type", NewStatusActivity.TYPE_DIRECT_MESSAGE);
         newstatus.putExtra("username_direct_message", infoUsers.getName());
         activity.startActivity(newstatus);

@@ -677,17 +677,26 @@ public class NewStatusActivity extends BaseActivity {
 
         mDataUsers.removeAllViews();
 
-        if (Utils.isLite(this)) {
-            addUserInLayout(mUsers.get(0));
-            if (mUsers.size() > 1) {
-                addUserInLayout(mUsers.get(1));
-            } else {
-                addInviteFacebookInLayout();
+        if (mType == TYPE_DIRECT_MESSAGE) {
+            for (UserStatus user : mUsers) {
+                if (user.checked) {
+                    addUserInLayout(user);
+                }
             }
         } else {
-            for (UserStatus user : mUsers) {
-                addUserInLayout(user);
+            if (Utils.isLite(this)) {
+                addUserInLayout(mUsers.get(0));
+                if (mUsers.size() > 1) {
+                    addUserInLayout(mUsers.get(1));
+                } else {
+                    addInviteFacebookInLayout();
+                }
+            } else {
+                for (UserStatus user : mUsers) {
+                    addUserInLayout(user);
+                }
             }
+
         }
 
     }
@@ -839,7 +848,6 @@ public class NewStatusActivity extends BaseActivity {
     }
 
     private void showUsers(final String user, final boolean isDM) {
-        List<String> names = new ArrayList<String>();
 
         try {
             List<Entity> ents = DataFramework.getInstance().getEntityList("tweets_user", "username like '" + user + "%'", "username asc");
@@ -979,7 +987,6 @@ public class NewStatusActivity extends BaseActivity {
         InfoUsers infoUsers = CacheData.getCacheUser(user);
 
         if (infoUsers==null || !infoUsers.hasFriendly(userDM)) {
-            // TODO Hay un error aquí que no se que pasa, cuando entro desde el TweetActivity no comprueba bien
             final String userDMFinal = userDM;
 
             progressDialog = ProgressDialog.show(
@@ -997,9 +1004,9 @@ public class NewStatusActivity extends BaseActivity {
 
                 @Override
                 public void onError(ErrorResponse error) {
-
+                    progressDialog.dismiss();
                 }
-            }, new CheckFriendlyUserRequest(infoUsers, userDM));
+            }, new CheckFriendlyUserRequest(infoUsers, user, userDM));
         } else {
             checkIfIsPossibleUserDM(infoUsers, userDM, fromAutocomplete);
         }
@@ -1007,7 +1014,7 @@ public class NewStatusActivity extends BaseActivity {
 
     public void checkIfIsPossibleUserDM(InfoUsers infoUsers, String user, boolean fromAutocomplete) {
         if (infoUsers != null) {
-            if (infoUsers.isFollower(user)) {
+            if (infoUsers.isFriend(user)) {
                 Utils.showMessage(NewStatusActivity.this, NewStatusActivity.this.getString(R.string.verify_dm_yes, infoUsers.getName()));
                 if (fromAutocomplete) {
                     mDMUsername = infoUsers.getName();
@@ -1053,8 +1060,12 @@ public class NewStatusActivity extends BaseActivity {
     }
 
     private void showFootAutoComplete() {
-        mButtonsFoot.setVisibility(View.GONE);
-        mAutoCompleteFoot.setVisibility(View.VISIBLE);
+        if (thisInstance.mText.getText().toString().endsWith(" ")) {
+            showFootButtons();
+        } else {
+            mButtonsFoot.setVisibility(View.GONE);
+            mAutoCompleteFoot.setVisibility(View.VISIBLE);
+        }
     }
 
     private void populateFields() {
@@ -1084,6 +1095,8 @@ public class NewStatusActivity extends BaseActivity {
             mTxtType.setVisibility(View.VISIBLE);
             mTxtType.setText(getString(R.string.txt_type_dm) + " " + mDMUsername);
         }
+
+        refreshUsers();
 
         if ((mType == TYPE_REPLY) || (mType == TYPE_RETWEET) || (mType == TYPE_REPLY_ON_COPY)) {
             mReftweetLayout.setVisibility(View.VISIBLE);

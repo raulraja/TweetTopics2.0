@@ -667,8 +667,8 @@ public class TweetTopicsActivity extends BaseLayersActivity implements PopupLink
     public void showActionBarColumns() {
         isShowColumnsItems = true;
 
-        int left = layoutBackgroundColumnsBar.getChildAt(pager.getCurrentItem()).getLeft();
-        int top = layoutBackgroundColumnsBar.getChildAt(pager.getCurrentItem()).getTop();
+//        int left = layoutBackgroundColumnsBar.getChildAt(pager.getCurrentItem()).getLeft();
+//        int top = layoutBackgroundColumnsBar.getChildAt(pager.getCurrentItem()).getTop();
 
         layoutBackgroundColumnsBar.scrollToView(pager.getCurrentItem());
 

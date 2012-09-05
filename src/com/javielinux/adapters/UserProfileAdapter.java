@@ -212,7 +212,7 @@ public class UserProfileAdapter extends BaseAdapter {
                     public void onError(ErrorResponse error) {
 
                     }
-                }, new CheckFriendlyUserRequest(infoUser, item.friend.user));
+                }, new CheckFriendlyUserRequest(infoUser, infoUser.getName(), item.friend.user));
 
             }
 

@@ -32,7 +32,7 @@ public class CheckFriendlyUserLoader extends AsynchronousLoader<BaseResponse> {
                 infoUsers = new InfoUsers(user_data);
                 CacheData.addCacheUsers(infoUsers);
             }
-            infoUsers.checkFriend(getContext(), request.getUser());
+            infoUsers.checkFriend(getContext(), request.getUserCheck());
             response.setInfoUsers(infoUsers);
             return response;
 		} catch (NullPointerException e) {
