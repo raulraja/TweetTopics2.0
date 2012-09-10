@@ -546,39 +546,14 @@ public class TweetTopicsActivity extends BaseLayersActivity implements PopupLink
 
         layoutBackgroundColumnsBar.removeAllViews();
 
-        for (int i=0; i<fragmentAdapter.getFragmentList().size(); i++) {
+        for (int i=0; i < fragmentAdapter.getFragmentList().size(); i++) {
             Button button = new Button(this);
             button.setPadding(0,13,0,0);
             button.setTextSize(11);
             button.setCompoundDrawablePadding(2);
             button.setTextColor(themeManager.getColor("color_button_bar_title_column"));
 
-            Bitmap bmp = null;
-
-            int column_type = fragmentAdapter.getFragmentColumnType(i);
-            int tweets_count = 0;
-
-            switch (column_type) {
-                case TweetTopicsUtils.COLUMN_TIMELINE:
-                case TweetTopicsUtils.COLUMN_MENTIONS:
-                case TweetTopicsUtils.COLUMN_DIRECT_MESSAGES:
-                    tweets_count = getUnreadTweetsCount(column_type, fragmentAdapter.getFragmentColumnUser(i), null);
-                    if (tweets_count > 0)
-                        bmp = ImageUtils.getBitmapNumber(this, tweets_count, Color.BLUE, Utils.TYPE_RECTANGLE, 18, getResources().getDimension(R.dimen.icon_columns_height));
-                    else
-                        bmp = fragmentAdapter.getIconItem(i);
-                    break;
-                case TweetTopicsUtils.COLUMN_SEARCH:
-                    tweets_count = getUnreadTweetsCount(column_type, null, fragmentAdapter.getFragmentColumnSearch(i));
-                    if (tweets_count > 0)
-                        bmp = ImageUtils.getBitmapNumber(this, tweets_count, Color.BLUE, Utils.TYPE_RECTANGLE, 18, getResources().getDimension(R.dimen.icon_columns_height));
-                    else
-                        bmp = fragmentAdapter.getIconItem(i);
-                    break;
-                default:
-                    bmp = fragmentAdapter.getIconItem(i);
-                    break;
-            }
+            Bitmap bmp = fragmentAdapter.getIconItem(i, false);
 
             if (bmp==null) {
                 bmp = BitmapFactory.decodeResource(getResources(), R.drawable.icon);
@@ -633,7 +608,7 @@ public class TweetTopicsActivity extends BaseLayersActivity implements PopupLink
     }
 
     private void reloadBarAvatar() {
-        imgBarAvatar.setImageBitmap(fragmentAdapter.getIconItem(pager.getCurrentItem()));
+        imgBarAvatar.setImageBitmap(fragmentAdapter.getIconItem(pager.getCurrentItem(), true));
     }
 
     private void reorganizeColumns(final int starting_position, final int ending_position) {

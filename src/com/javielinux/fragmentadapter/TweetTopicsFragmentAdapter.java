@@ -2,6 +2,8 @@ package com.javielinux.fragmentadapter;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.support.v4.app.Fragment;
@@ -72,27 +74,82 @@ public class TweetTopicsFragmentAdapter extends FragmentPagerAdapter {
         return fragmentList.get(position).getEntity("user_id");
     }
 
-    public Bitmap getIconItem(int position) {
+    public Bitmap getIconItem(int position, boolean only_bitmap_number) {
         if (fragmentList.size() > 0) {
-            int typeColumn = fragmentList.get(position).getInt("type_id");
-            if (typeColumn == TweetTopicsUtils.COLUMN_TIMELINE || typeColumn == TweetTopicsUtils.COLUMN_MENTIONS
-                    || typeColumn == TweetTopicsUtils.COLUMN_DIRECT_MESSAGES || typeColumn == TweetTopicsUtils.COLUMN_SENT_DIRECT_MESSAGES
-                    || typeColumn == TweetTopicsUtils.COLUMN_RETWEETS_BY_OTHERS || typeColumn == TweetTopicsUtils.COLUMN_RETWEETS_BY_YOU
-                    || typeColumn == TweetTopicsUtils.COLUMN_FOLLOWERS || typeColumn == TweetTopicsUtils.COLUMN_FOLLOWINGS
-                    || typeColumn == TweetTopicsUtils.COLUMN_FAVORITES) {
-                return ImageUtils.getBitmapAvatar(fragmentList.get(position).getEntity("user_id").getId(), Utils.AVATAR_LARGE);
-            }
-            if (typeColumn == TweetTopicsUtils.COLUMN_SEARCH) {
-                Entity ent = new Entity("search", fragmentList.get(position).getLong("search_id"));
-                Drawable d = Utils.getDrawable(context, ent.getString("icon_big"));
-                if (d==null) {
-                    d = context.getResources().getDrawable(R.drawable.letter_az);
-                }
-                return ((BitmapDrawable)d).getBitmap();
+            int column_type = fragmentList.get(position).getInt("type_id");
+            int tweets_count = 0;
+            Bitmap bitmap = null;
+
+            switch (column_type) {
+                case TweetTopicsUtils.COLUMN_TIMELINE:
+                case TweetTopicsUtils.COLUMN_MENTIONS:
+                case TweetTopicsUtils.COLUMN_DIRECT_MESSAGES:
+
+                    tweets_count = getUnreadTweetsCount(column_type, fragmentList.get(position).getEntity("user_id"), null);
+
+                    if (tweets_count > 0 && only_bitmap_number) {
+                        bitmap = ImageUtils.getBitmapNumber(context, tweets_count, Color.BLUE, Utils.TYPE_RECTANGLE, 18, Utils.AVATAR_LARGE);
+                    } else {
+                        bitmap = ImageUtils.getBitmapAvatar(fragmentList.get(position).getEntity("user_id").getId(), Utils.AVATAR_LARGE);
+
+                        if (tweets_count > 0) {
+                            Canvas canvas = new Canvas(bitmap);
+                            ImageUtils.drawBitmapNumber(context, canvas, tweets_count, Color.BLUE, Utils.TYPE_RECTANGLE, 10);
+                        }
+                    }
+
+                    break;
+                case TweetTopicsUtils.COLUMN_SENT_DIRECT_MESSAGES:
+                case TweetTopicsUtils.COLUMN_RETWEETS_BY_OTHERS:
+                case TweetTopicsUtils.COLUMN_RETWEETS_BY_YOU:
+                case TweetTopicsUtils.COLUMN_FOLLOWERS:
+                case TweetTopicsUtils.COLUMN_FOLLOWINGS:
+                case TweetTopicsUtils.COLUMN_FAVORITES:
+                    return ImageUtils.getBitmapAvatar(fragmentList.get(position).getEntity("user_id").getId(), Utils.AVATAR_LARGE);
+                case TweetTopicsUtils.COLUMN_SEARCH:
+                    Entity search_entity = new Entity("search", fragmentList.get(position).getLong("search_id"));
+                    tweets_count = getUnreadTweetsCount(column_type, null, search_entity);
+
+                    if (tweets_count > 0 && only_bitmap_number) {
+                        bitmap = ImageUtils.getBitmapNumber(context, tweets_count, Color.BLUE, Utils.TYPE_RECTANGLE, 18, Utils.AVATAR_LARGE);
+                    } else {
+                        Drawable drawable = Utils.getDrawable(context, search_entity.getString("icon_big"));
+
+                        if (drawable == null) drawable = context.getResources().getDrawable(R.drawable.letter_az);
+
+                        bitmap = ((BitmapDrawable)drawable).getBitmap();
+                    }
+
+                    break;
             }
 
+            return bitmap;
         }
+
         return null;
+    }
+
+    private int getUnreadTweetsCount(int column_type, Entity user, Entity search) {
+        int tweetsCount = 0;
+
+        switch (column_type)
+        {
+            case TweetTopicsUtils.COLUMN_TIMELINE:
+                tweetsCount = DataFramework.getInstance().getEntityListCount("tweets_user", "type_id = " + TweetTopicsUtils.TWEET_TYPE_TIMELINE + " AND user_tt_id=" + user.getId() + " AND tweet_id >'" + Utils.fillZeros("" + user.getString("last_timeline_id")) + "'");
+                break;
+            case TweetTopicsUtils.COLUMN_MENTIONS:
+                tweetsCount = DataFramework.getInstance().getEntityListCount("tweets_user", "type_id = " + TweetTopicsUtils.TWEET_TYPE_MENTIONS + " AND user_tt_id=" + user.getId() + " AND tweet_id >'" + Utils.fillZeros("" + user.getString("last_mention_id"))+"'");
+                break;
+            case TweetTopicsUtils.COLUMN_DIRECT_MESSAGES:
+                tweetsCount = DataFramework.getInstance().getEntityListCount("tweets_user", "type_id = " + TweetTopicsUtils.TWEET_TYPE_DIRECTMESSAGES + " AND user_tt_id=" + user.getId() + " AND tweet_id >'" + Utils.fillZeros("" + user.getString("last_direct_id"))+"'");
+                break;
+            case TweetTopicsUtils.COLUMN_SEARCH:
+                if (search.getLong("last_tweet_id") < search.getLong("last_tweet_id_notifications"))
+                    tweetsCount = search.getInt("new_tweets_count");
+                break;
+        }
+
+        return tweetsCount;
     }
 
     public int getPositionColumnActive() {

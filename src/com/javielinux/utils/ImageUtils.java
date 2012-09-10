@@ -196,6 +196,103 @@ public class ImageUtils {
         return d;
     }
 
+    static public void drawBitmapNumber(Context cnt, Canvas canvas, int number, int color, int type) {
+        drawBitmapNumber(cnt, canvas, number, color, type, 13);
+    }
+
+    static public void drawBitmapNumber(Context cnt, Canvas canvas, int number, int color, int type, int textSize) {
+        String text = number + "";
+        if (number > 999) {
+            text = "999+";
+        }
+        drawBitmapInBubble(cnt, canvas, text, color, type, textSize);
+    }
+
+    static public void drawBitmapInBubble(Context cnt, Canvas canvas, String text, int color, int type, int textSize) {
+
+        try {
+            textSize = Utils.dip2px(cnt, textSize);
+            Paint paintFill = new Paint();
+            paintFill.setAntiAlias(true);
+
+            if (color == Color.BLUE) {
+                paintFill.setShader(new LinearGradient(0, 0, 0, 22, 0xff477ec1, 0xff293d87, Shader.TileMode.CLAMP));
+            }
+
+            if (color == Color.GREEN) {
+                paintFill.setShader(new LinearGradient(0, 0, 0, 22, 0xff94c147, 0xff658729, Shader.TileMode.CLAMP));
+            }
+
+            if (color == Color.RED) {
+                paintFill.setShader(new LinearGradient(0, 0, 0, 22, 0xffb72121, 0xffe82f2f, Shader.TileMode.CLAMP));
+            }
+
+            Paint paintStroke = new Paint();
+            paintStroke.setAntiAlias(true);
+            paintStroke.setColor(Color.WHITE);
+
+            Paint paintText = new Paint();
+            paintText.setAntiAlias(true);
+            paintText.setTextSize(textSize);
+            paintText.setFakeBoldText(true);
+            paintText.setTextAlign(Paint.Align.CENTER);
+            paintText.setColor(Color.WHITE);
+
+            if (type == Utils.TYPE_CIRCLE) {
+                float width = paintText.measureText(text);
+                float height = paintText.descent() - paintText.ascent();
+
+                int size = (int) ((width > height) ? width : height) + 7;
+                int radius = (size - 2) / 2;
+                int center = size / 2;
+                int ytext = center + (int) paintText.descent() + 2;
+
+                canvas.drawCircle(center, center, radius, paintStroke);
+                canvas.drawCircle(center, center, radius - 1, paintFill);
+                canvas.drawText(text, center, ytext, paintText);
+
+            } else {
+                float width = paintText.measureText(text);
+                float height = paintText.descent() - paintText.ascent();
+
+                int wBox = (int) width + 10;
+                int hBox = (int) height + 4;
+                int hBoxFinal = hBox;
+
+                int center = wBox / 2;
+                int ytext = (hBox / 2) + (int) paintText.descent() + 2;
+                RectF boxRect = new RectF(1, 1, wBox - 1, hBox - 1);
+
+                Path pathFill = new Path();
+                pathFill.addRoundRect(boxRect, 7, 7, Path.Direction.CCW);
+                if (type == Utils.TYPE_BUBBLE) {
+                    pathFill.moveTo(7, hBox - 2);
+                    pathFill.lineTo(7, hBox + 4);
+                    pathFill.lineTo(12, hBox - 2);
+                    hBoxFinal = hBox + 6;
+                }
+
+                RectF boxRectStroke = new RectF(0, 0, wBox, hBox);
+
+                Path pathStroke = new Path();
+                pathStroke.addRoundRect(boxRectStroke, 7, 7, Path.Direction.CCW);
+                if (type == Utils.TYPE_BUBBLE) {
+                    pathStroke.moveTo(5, hBox - 2);
+                    pathStroke.lineTo(5, hBox + 6);
+                    pathStroke.lineTo(14, hBox);
+                }
+
+                canvas.drawPath(pathStroke, paintStroke);
+                canvas.drawPath(pathFill, paintFill);
+                canvas.drawText(text, center, ytext, paintText);
+            }
+        } catch (OutOfMemoryError e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     static public Bitmap getBitmapNumber(Context cnt, int number, int color, int type) {
         return getBitmapNumber(cnt, number, color, type, 13);
     }
