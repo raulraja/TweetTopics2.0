@@ -68,6 +68,8 @@ public class CacheData {
     public static HashMap<String,Utils.URLContent> cacheURLsMedia = new HashMap<String,Utils.URLContent>();
 
     public static void putURLMedia(String url, Utils.URLContent content) {
+        // TODO Hack-brutal... a quitar cuando se arregle el tema en twitter4j
+        content.linkMediaLarge = content.linkMediaLarge.replace(":medium","");
         cacheURLsMedia.put(url, content);
     }
 
