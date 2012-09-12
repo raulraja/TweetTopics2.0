@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 
-<database name="tweet_db" version="26">
+<database name="tweet_db" version="27">
   
   <table name="search" to-string="%name%">
     <field name="name" obligatory="true" type="text" size="128"/>
@@ -215,6 +215,7 @@
     <field name="location_id" type="int" />  <!-- Trending topics -->
     <field name="search_id" type="foreign-key" foreign-table="search" />
     <field name="active" obligatory="true" type="int" default="0" new-in-version="26" />
+    <field name="is_temporary" obligatory="true" type="int" default="0" new-in-version="27" />
   </table>
 
   <table name="type_columns" to-string="%description%" new-in-version="24" backup="no">

@@ -46,7 +46,12 @@ public class FavoritesFragment extends BaseListFragment implements APIDelegate<B
 
     private int typeUserColumn = 0;
 
+    public FavoritesFragment() {
+        super();
+    }
+
     public FavoritesFragment(long column_id) {
+        super();
 
         column_entity = new Entity("columns", column_id);
         typeUserColumn = TweetTopicsUtils.COLUMN_FAVORITES;

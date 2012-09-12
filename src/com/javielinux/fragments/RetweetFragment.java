@@ -101,7 +101,6 @@ public class RetweetFragment extends BaseListFragment implements APIDelegate<Bas
         super.onCreate(savedInstanceState);
 
         tweetsAdapter = new TweetsAdapter(getActivity(), getLoaderManager(), infoTweets, user_entity.getString("name"), (int)column_entity.getId());
-
     }
 
     @Override

@@ -47,7 +47,8 @@ public abstract class BaseLayersActivity extends BaseActivity {
 
     public void startAnimationActivity(Class klass, Bundle bundle) {
         Intent intent = new Intent(this, klass);
-        if (bundle!=null) intent.putExtras(bundle);
+        //if (bundle!=null) intent.putExtras(bundle);
+        intent.putExtra(Utils.KEY_EXTRAS_INFO, bundle);
         intent.putExtra(Utils.KEY_ACTIVITY_ANIMATION, (activityAnimation==Utils.ACTIVITY_ANIMATION_RIGHT)?Utils.ACTIVITY_ANIMATION_LEFT:Utils.ACTIVITY_ANIMATION_RIGHT);
         if (this instanceof TweetTopicsActivity) {
             intent.putExtra(Utils.KEY_ACTIVITY_USER_ACTIVE, ((TweetTopicsActivity)this).getUserOwnerCurrentColumn());

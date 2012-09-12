@@ -58,6 +58,7 @@ public class Utils {
 
     public static final String KEY_ACTIVITY_ANIMATION = "KEY_ACTIVITY_ANIMATION";
     public static final String KEY_ACTIVITY_USER_ACTIVE = "KEY_ACTIVITY_USER_ACTIVE";
+    public static final String KEY_EXTRAS_INFO = "KEY_EXTRAS_INFO";
 
     public static final int ACTIVITY_ANIMATION_RIGHT = 0;
     public static final int ACTIVITY_ANIMATION_LEFT = 1;

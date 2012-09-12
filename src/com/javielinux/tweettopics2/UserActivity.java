@@ -63,8 +63,9 @@ public class UserActivity extends BaseLayersActivity implements PopupLinks.Popup
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            if (extras.containsKey(KEY_EXTRAS_USER)) {
-                username = extras.getString(KEY_EXTRAS_USER).replace("@", "");
+            if (extras.containsKey(Utils.KEY_EXTRAS_INFO)) {
+                //extras.getString(KEY_EXTRAS_USER).replace("@", "");
+                username = extras.getBundle(Utils.KEY_EXTRAS_INFO).getString(KEY_EXTRAS_USER).replace("@", "");
             }
         }
 

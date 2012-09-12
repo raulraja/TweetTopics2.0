@@ -68,8 +68,9 @@ public class TweetActivity extends BaseLayersActivity implements APIDelegate<Bas
 
         Bundle extras = getIntent().getExtras();
         if (extras!=null) {
-            if (extras.containsKey(KEY_EXTRAS_TWEET)) {
-                infoTweet = (InfoTweet) extras.getParcelable(KEY_EXTRAS_TWEET);
+            if (extras.containsKey(Utils.KEY_EXTRAS_INFO)) {
+                //infoTweet = (InfoTweet) extras.getParcelable(KEY_EXTRAS_TWEET);
+                infoTweet = (InfoTweet) extras.getBundle(Utils.KEY_EXTRAS_INFO).getParcelable(KEY_EXTRAS_TWEET);
             }
         }
 

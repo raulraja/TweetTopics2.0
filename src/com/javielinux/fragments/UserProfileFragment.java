@@ -19,7 +19,13 @@ public class UserProfileFragment extends Fragment {
     private UserProfileAdapter adapter;
     private ListView list;
 
+    public UserProfileFragment() {
+        super();
+    }
+
     public UserProfileFragment(InfoUsers infoUsers) {
+        super();
+
         this.infoUsers = infoUsers;
     }
 

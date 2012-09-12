@@ -11,6 +11,10 @@ abstract public class BaseListFragment extends Fragment {
 
     protected boolean flinging = false;
 
+    public BaseListFragment() {
+        super();
+    }
+
     public boolean isFlinging() {
         return flinging;
     }

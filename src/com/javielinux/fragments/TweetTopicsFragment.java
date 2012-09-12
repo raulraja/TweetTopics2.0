@@ -217,7 +217,6 @@ public class TweetTopicsFragment extends BaseListFragment implements APIDelegate
         super.onCreate(savedInstanceState);
 
         tweetsAdapter = new TweetsAdapter(getActivity(), getLoaderManager(), infoTweets, user_entity.getString("name"), (int)column_entity.getId());
-
     }
 
     @Override
