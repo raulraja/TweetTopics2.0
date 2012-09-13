@@ -27,6 +27,7 @@ import com.javielinux.infos.InfoSaveTweets;
 import com.javielinux.infos.InfoTweet;
 import com.javielinux.tweettopics2.R;
 import com.javielinux.tweettopics2.ThemeManager;
+import com.javielinux.tweettopics2.TweetTopicsActivity;
 import com.javielinux.utils.ImageUtils;
 import com.javielinux.utils.TweetTopicsUtils;
 import com.javielinux.utils.Utils;
@@ -170,6 +171,9 @@ public class TweetTopicsFragment extends BaseListFragment implements APIDelegate
 
     private void markPositionLastReadAsLastReadId() {
 
+        ((TweetTopicsActivity)getActivity()).reloadBarAvatar();
+        ((TweetTopicsActivity)getActivity()).refreshActionBarColumns();
+
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -194,6 +198,7 @@ public class TweetTopicsFragment extends BaseListFragment implements APIDelegate
                                         user_entity.save();
                                         break;
                                 }
+
                                 sendBroadcastUpdateTweets();
                             }
                         } catch (ArrayIndexOutOfBoundsException e) {

@@ -607,7 +607,7 @@ public class TweetTopicsActivity extends BaseLayersActivity implements PopupLink
         indicator.setTextSize(getResources().getDimension(R.dimen.text_size_title_page_indicator));
     }
 
-    private void reloadBarAvatar() {
+    public void reloadBarAvatar() {
         imgBarAvatar.setImageBitmap(fragmentAdapter.getIconItem(pager.getCurrentItem(), true));
     }
 

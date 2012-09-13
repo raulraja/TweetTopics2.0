@@ -74,8 +74,7 @@ public class DraggableHorizontalView extends ViewGroup implements View.OnTouchLi
         ((Activity)context).getWindowManager().getDefaultDisplay().getMetrics(metrics);
 		dpi = metrics.densityDpi;
     }
-    protected void setListeners()
-    {
+    protected void setListeners() {
     	setOnTouchListener(this);
     	super.setOnClickListener(this);
         setOnLongClickListener(this);
@@ -85,8 +84,7 @@ public class DraggableHorizontalView extends ViewGroup implements View.OnTouchLi
     	secondaryOnClickListener = l;
     }
     protected Runnable updateTask = new Runnable() {
-        public void run()
-        {
+        public void run() {
             if (dragged != -1)
             {
             	if (lastX < (zoneMoveHorizontalInDrag/2) && scroll > 0) {
@@ -152,8 +150,7 @@ public class DraggableHorizontalView extends ViewGroup implements View.OnTouchLi
     		return i + 1;
     	return i;
     }
-    public int getIndexFromCoor(int x, int y)
-    {
+    public int getIndexFromCoor(int x, int y) {
         int col = getColOrRowFromCoor(x + scroll), row = getColOrRowFromCoor(y);
         if (col == -1 || row == -1) //touch is between columns or rows
             return -1;
@@ -162,8 +159,7 @@ public class DraggableHorizontalView extends ViewGroup implements View.OnTouchLi
             return -1;
         return index;
     }
-    protected int getColOrRowFromCoor(int coor)
-    {
+    protected int getColOrRowFromCoor(int coor) {
         coor -= padding;
         for (int i = 0; coor > 0; i++)
         {
@@ -173,8 +169,7 @@ public class DraggableHorizontalView extends ViewGroup implements View.OnTouchLi
         }
         return -1;
     }
-    protected int getTargetFromCoor(int x, int y)
-    {
+    protected int getTargetFromCoor(int x, int y) {
         if (getColOrRowFromCoor(y + scroll) == -1) //touch is between rows
             return -1;
         //if (getIndexFromCoor(x, y) != -1) //touch on top of another visual
@@ -198,13 +193,10 @@ public class DraggableHorizontalView extends ViewGroup implements View.OnTouchLi
         //Toast.makeText(getContext(), "Target: " + target + ".", Toast.LENGTH_SHORT).show();
         return target;
     }
-    protected Point getCoorFromIndex(int index)
-    {
-        return new Point(padding + (childSize + padding) * index - scroll,
-                         padding);
+    protected Point getCoorFromIndex(int index) {
+        return new Point(padding + (childSize + padding) * index - scroll, padding);
     }
-    public int getIndexOf(View child)
-    {
+    public int getIndexOf(View child) {
     	for (int i = 0; i < getChildCount(); i++)
     		if (getChildAt(i) == child)
     			return i;
@@ -221,8 +213,7 @@ public class DraggableHorizontalView extends ViewGroup implements View.OnTouchLi
     			onItemClickListener.onItemClick(null, getChildAt(getLastIndex()), getLastIndex(), getLastIndex() / colCount);
     	}
     }
-    public boolean onLongClick(View view)
-    {
+    public boolean onLongClick(View view) {
     	if (!enabled)
     		return false;
         int index = getLastIndex();
@@ -234,8 +225,7 @@ public class DraggableHorizontalView extends ViewGroup implements View.OnTouchLi
         }
         return false;
     }
-    public boolean onTouch(View view, MotionEvent event)
-    {
+    public boolean onTouch(View view, MotionEvent event) {
         int action = event.getAction();
            switch (action & MotionEvent.ACTION_MASK) {
                case MotionEvent.ACTION_DOWN:
@@ -302,8 +292,7 @@ public class DraggableHorizontalView extends ViewGroup implements View.OnTouchLi
     }
     
     //EVENT HELPERS
-    protected void animateDragged()
-    {
+    protected void animateDragged() {
     	View v = getChildAt(dragged);
     	int x = getCoorFromIndex(dragged).x + childSize / 2, y = getCoorFromIndex(dragged).y + childSize / 2;
         int l = x - (3 * childSize / 4), t = y - (3 * childSize / 4);
@@ -325,8 +314,7 @@ public class DraggableHorizontalView extends ViewGroup implements View.OnTouchLi
         if (onRearrangeListener != null) onRearrangeListener.onStartDrag(x, dragged);
 
     }
-    protected void animateGap(int target)
-    {
+    protected void animateGap(int target) {
         if (onRearrangeListener != null) onRearrangeListener.onMoveDragged(dragged);
     	for (int i = 0; i < getChildCount(); i++)
     	{
@@ -364,8 +352,7 @@ public class DraggableHorizontalView extends ViewGroup implements View.OnTouchLi
 			newPositions.set(i, newPos);
     	}
     }
-    protected void reorderChildren()
-    {
+    protected void reorderChildren() {
         //FIGURE OUT HOW TO REORDER CHILDREN WITHOUT REMOVING THEM ALL AND RECONSTRUCTING THE LIST!!!
     	if (onRearrangeListener != null)
     		onRearrangeListener.onRearrange(dragged, lastTarget);
@@ -399,12 +386,10 @@ public class DraggableHorizontalView extends ViewGroup implements View.OnTouchLi
         }
         onLayout(true, getLeft(), getTop(), getRight(), getBottom());
     }
-    public void scrollToBegin()
-    {
+    public void scrollToBegin() {
     	scroll = 0;
     }
-    public void scrollToEnd()
-    {
+    public void scrollToEnd() {
     	scroll = Integer.MAX_VALUE;
     	clampScroll();
     }
@@ -418,8 +403,7 @@ public class DraggableHorizontalView extends ViewGroup implements View.OnTouchLi
         scroll = childSize * position;
         clampScroll();
     }
-    protected void clampScroll()
-    {
+    protected void clampScroll() {
     	int stretch = 3, overreach = getWidth() / 2;
     	int max = getMaxScroll();
     	max = Math.max(max, 0);
@@ -449,25 +433,21 @@ public class DraggableHorizontalView extends ViewGroup implements View.OnTouchLi
     			scroll += (max - scroll) / stretch;
     	}
     }
-    protected int getMaxScroll()
-    {
+    protected int getMaxScroll() {
     	//int rowCount = (int)Math.ceil((double)getChildCount()/colCount), max = rowCount * childSize + (rowCount + 1) * padding - getHeight();
-        int colCount = getChildCount() + (getChildCount() % 4) + 1;
+        int colCount = getChildCount();
         int max = colCount * childSize + (colCount + 1) * padding - getWidth();
     	return max;
     }
-    public int getLastIndex()
-    {
+    public int getLastIndex() {
     	return getIndexFromCoor(lastX, lastY);
     }
     
     //OTHER METHODS
-    public void setOnRearrangeListener(OnRearrangeListener l)
-    {
+    public void setOnRearrangeListener(OnRearrangeListener l) {
     	this.onRearrangeListener = l;
     }
-    public void setOnItemClickListener(OnItemClickListener l)
-    {
+    public void setOnItemClickListener(OnItemClickListener l) {
     	this.onItemClickListener = l;
     }
 }
