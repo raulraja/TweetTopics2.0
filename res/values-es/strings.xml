@@ -3,6 +3,7 @@
 
     <!-- v 2.0  -->
 
+    <string name="select_icon">Selecciona un icono</string>
     <string name="shouldSelectOneUser">Deberías selecionar sólo un usuario</string>
 
     <string name="hide">Ocultar</string>

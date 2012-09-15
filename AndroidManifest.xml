@@ -14,7 +14,6 @@
             </intent-filter>
         </activity>
     	<activity android:name="com.javielinux.twitter.AuthorizationActivity" />
-		<activity android:name="TabNewEditSearch" />
 
         <activity android:name="SearchActivity" android:screenOrientation="nosensor" />
         <activity android:name="TweetActivity" android:theme="@style/Theme.Twitter.Translucent" android:hardwareAccelerated="true" />
@@ -22,11 +21,8 @@
         <activity android:name="UserListsActivity" />
         <activity android:name="TrendsLocationActivity" />
 
-        <activity android:name="TabGeneral" />
-		<activity android:name="TabGeo" />
-		<activity android:name="MapSearch" />
-		<activity android:name="TabAvanced" />
-		<activity android:name="preferences.Preferences" android:theme="@android:style/Theme.Holo" />
+        <activity android:name="MapSearch" />
+        <activity android:name="preferences.Preferences" android:theme="@android:style/Theme.Holo" />
 		<activity android:name="preferences.IntegrationADW" android:theme="@android:style/Theme.Holo" />
 		<activity android:name="preferences.TweetQuick" android:theme="@android:style/Theme.Holo" />
 		<activity android:name="preferences.QuietWords" android:theme="@android:style/Theme.Holo" />

@@ -8,7 +8,7 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import com.android.dataframework.Entity;
 import com.javielinux.tweettopics2.R;
-import com.javielinux.tweettopics2.TabNewEditSearch;
+import com.javielinux.tweettopics2.SearchActivity;
 import com.javielinux.tweettopics2.TweetTopicsActivity;
 import com.javielinux.utils.PreferenceUtils;
 import com.javielinux.utils.TweetActions;
@@ -44,9 +44,9 @@ public class HashTagDialogFragment extends DialogFragment {
                             ent.save();
                             Utils.showMessage(getActivity(), getActivity().getString(R.string.hashtag_hidden_correct));
                         } else if (which==2) {
-                            Intent newsearch = new Intent(getActivity(), TabNewEditSearch.class);
-                            newsearch.putExtra("search", hashtag);
-                            getActivity().startActivityForResult(newsearch, TweetTopicsActivity.ACTIVITY_NEWEDITSEARCH);
+                            Intent edit_search = new Intent(getActivity(), SearchActivity.class);
+                            edit_search.putExtra("search", hashtag);
+                            startActivityForResult(edit_search, TweetTopicsActivity.ACTIVITY_NEWEDITSEARCH);
                         } else if (which==3) {
                             TweetActions.updateStatus(getActivity(), hashtag);
                         } else if (which==4) {

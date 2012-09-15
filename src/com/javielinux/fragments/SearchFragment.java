@@ -265,7 +265,7 @@ public class SearchFragment extends BaseListFragment implements APIDelegate<Base
         viewUpdate = (LinearLayout) view.findViewById(R.id.tweet_view_update);
 
         if (infoTweets.size() <= 0) {
-            if (search_entity.getInt("com/javielinux/notifications") == 1)
+            if (search_entity.getInt("notifications") == 1)
                 preLoadInfoTweetFromDB();
             else
                 reload();
@@ -291,7 +291,7 @@ public class SearchFragment extends BaseListFragment implements APIDelegate<Base
 
         showTweetsList();
 
-        if (search_entity.getInt("com/javielinux/notifications") == 0) {
+        if (search_entity.getInt("notifications") == 0) {
             ArrayList<InfoTweet> infoTweetList = result.getInfoTweets();
             int count = 0;
             int firstVisible = listView.getRefreshableView().getFirstVisiblePosition();

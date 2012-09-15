@@ -288,7 +288,6 @@ public class MyActivityFragment extends Fragment {
     public void editSearch(Entity search) {
         Intent edit_search = new Intent(getActivity(), SearchActivity.class);
         edit_search.putExtra(DataFramework.KEY_ID, search.getId());
-
         startActivityForResult(edit_search, ACTIVITY_EDIT_SEARCH);
     }
 

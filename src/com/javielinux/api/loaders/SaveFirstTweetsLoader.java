@@ -8,16 +8,15 @@ import com.javielinux.api.response.ErrorResponse;
 import com.javielinux.api.response.SaveFirstTweetsResponse;
 import com.javielinux.database.EntitySearch;
 import com.javielinux.infos.InfoSaveTweets;
-import com.javielinux.tweettopics2.TabGeneral;
-import com.javielinux.tweettopics2.TabNewEditSearch;
 
 public class SaveFirstTweetsLoader extends AsynchronousLoader<BaseResponse> {
 
     private long id = 0;
+    private Context context;
 
     public SaveFirstTweetsLoader(Context context, SaveFirstTweetsRequest request) {
         super(context);
-
+        this.context = context;
         this.id = request.getId();
     }
 
@@ -26,10 +25,9 @@ public class SaveFirstTweetsLoader extends AsynchronousLoader<BaseResponse> {
 
         try {
             SaveFirstTweetsResponse response = new SaveFirstTweetsResponse();
-            InfoSaveTweets infoSaveTweets = null;
 
 		    EntitySearch entitySearch = new EntitySearch(id);
-		    infoSaveTweets = entitySearch.saveTweets(TabNewEditSearch.StaticContext, TabGeneral.twitter, false, -1);
+            InfoSaveTweets infoSaveTweets = entitySearch.saveTweets(context, false, -1);
 
             response.setInfoSaveTweets(infoSaveTweets);
             return response;

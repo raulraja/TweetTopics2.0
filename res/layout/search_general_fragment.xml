@@ -1,144 +1,135 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_height="fill_parent"
-    android:layout_width="fill_parent">
+            android:padding="5dp"
+            android:layout_height="fill_parent"
+            android:layout_width="fill_parent">
 
     <RelativeLayout
-        android:layout_height="fill_parent"
-        android:layout_width="fill_parent">
-
-        <EditText android:id="@+id/icon_id"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:visibility="gone" />
-
-        <EditText android:id="@+id/icon_file"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:visibility="gone" />
+            android:layout_height="fill_parent"
+            android:layout_width="fill_parent">
 
         <TextView android:id="@+id/name_and_icon_title"
-            android:layout_height="wrap_content"
-            android:layout_margin="3sp"
-            android:layout_width="fill_parent"
-            android:text="@string/name_and_icon"
-            style="@style/SearchTitle" />
+                  android:layout_height="wrap_content"
+                  android:layout_margin="3sp"
+                  android:layout_width="fill_parent"
+                  android:text="@string/name_and_icon"
+                  style="@style/SearchTitle"/>
 
         <ImageButton android:id="@+id/bt_icon"
-            android:background="@drawable/bg_push_button"
-            android:layout_below="@id/name_and_icon_title"
-            android:layout_height="wrap_content"
-            android:layout_width="70dip"
-            android:src="@drawable/letter_az" />
+                     android:background="@drawable/bg_push_button"
+                     android:layout_below="@id/name_and_icon_title"
+                     android:layout_height="wrap_content"
+                     android:layout_width="70dip"
+                     android:src="@drawable/letter_az"/>
 
         <EditText android:id="@+id/et_name"
-            android:inputType="text"
-            android:layout_below="@id/name_and_icon_title"
-            android:layout_height="wrap_content"
-            android:layout_margin="3sp"
-            android:layout_toRightOf="@id/bt_icon"
-            android:layout_width="fill_parent" />
+                  android:inputType="text"
+                  android:layout_below="@id/name_and_icon_title"
+                  android:layout_height="wrap_content"
+                  android:layout_margin="3sp"
+                  android:layout_toRightOf="@id/bt_icon"
+                  android:layout_width="fill_parent"/>
 
         <TextView android:id="@+id/search_words_title"
-            android:layout_below="@id/bt_icon"
-            android:layout_height="wrap_content"
-            android:layout_margin="3sp"
-            android:layout_width="fill_parent"
-            android:text="@string/search_words"
-            style="@style/SearchTitle" />
+                  android:layout_below="@id/bt_icon"
+                  android:layout_height="wrap_content"
+                  android:layout_margin="3sp"
+                  android:layout_width="fill_parent"
+                  android:text="@string/search_words"
+                  style="@style/SearchTitle"/>
 
         <TextView android:id="@+id/et_words_and_title"
-            android:layout_below="@id/search_words_title"
-            android:layout_height="wrap_content"
-            android:layout_margin="3sp"
-            android:layout_width="70dip"
-            android:text="@string/search_words_and_short"
-            style="@style/SearchShort" />
+                  android:layout_below="@id/search_words_title"
+                  android:layout_height="wrap_content"
+                  android:layout_margin="3sp"
+                  android:layout_width="70dip"
+                  android:text="@string/search_words_and_short"
+                  style="@style/SearchShort"/>
 
         <EditText android:id="@+id/et_words_and"
-            android:layout_below="@id/search_words_title"
-            android:hint="@string/search_words_and"
-            android:inputType="text"
-            android:layout_height="wrap_content"
-            android:layout_margin="3sp"
-            android:layout_toRightOf="@id/et_words_and_title"
-            android:layout_width="fill_parent" />
+                  android:layout_below="@id/search_words_title"
+                  android:hint="@string/search_words_and"
+                  android:inputType="text"
+                  android:layout_height="wrap_content"
+                  android:layout_margin="3sp"
+                  android:layout_toRightOf="@id/et_words_and_title"
+                  android:layout_width="fill_parent"/>
 
         <TextView android:id="@+id/et_words_or_title"
-            android:layout_below="@id/et_words_and"
-            android:layout_height="wrap_content"
-            android:layout_margin="3sp"
-            android:layout_width="70dip"
-            android:text="@string/search_words_or_short"
-            style="@style/SearchShort" />
+                  android:layout_below="@id/et_words_and"
+                  android:layout_height="wrap_content"
+                  android:layout_margin="3sp"
+                  android:layout_width="70dip"
+                  android:text="@string/search_words_or_short"
+                  style="@style/SearchShort"/>
 
         <EditText android:id="@+id/et_words_or"
-            android:hint="@string/search_words_or"
-            android:inputType="text"
-            android:layout_below="@id/et_words_and"
-            android:layout_height="wrap_content"
-            android:layout_margin="3sp"
-            android:layout_toRightOf="@id/et_words_or_title"
-            android:layout_width="fill_parent" />
+                  android:hint="@string/search_words_or"
+                  android:inputType="text"
+                  android:layout_below="@id/et_words_and"
+                  android:layout_height="wrap_content"
+                  android:layout_margin="3sp"
+                  android:layout_toRightOf="@id/et_words_or_title"
+                  android:layout_width="fill_parent"/>
 
         <TextView android:id="@+id/et_words_not_title"
-            android:layout_below="@id/et_words_or"
-            android:layout_height="wrap_content"
-            android:layout_margin="3sp"
-            android:layout_width="70dip"
-            android:text="@string/search_words_not_short"
-            style="@style/SearchShort" />
+                  android:layout_below="@id/et_words_or"
+                  android:layout_height="wrap_content"
+                  android:layout_margin="3sp"
+                  android:layout_width="70dip"
+                  android:text="@string/search_words_not_short"
+                  style="@style/SearchShort"/>
 
         <EditText android:id="@+id/et_words_not"
-            android:layout_below="@id/et_words_or"
-            android:hint="@string/search_words_not"
-            android:inputType="text"
-            android:layout_height="wrap_content"
-            android:layout_margin="3sp"
-            android:layout_toRightOf="@id/et_words_not_title"
-            android:layout_width="fill_parent" />
+                  android:layout_below="@id/et_words_or"
+                  android:hint="@string/search_words_not"
+                  android:inputType="text"
+                  android:layout_height="wrap_content"
+                  android:layout_margin="3sp"
+                  android:layout_toRightOf="@id/et_words_not_title"
+                  android:layout_width="fill_parent"/>
 
         <TextView android:id="@+id/search_words_user_title"
-            android:layout_below="@id/et_words_not"
-            android:layout_height="wrap_content"
-            android:layout_margin="3sp"
-            android:layout_width="fill_parent"
-            android:text="@string/search_words_user"
-            style="@style/SearchTitle" />
+                  android:layout_below="@id/et_words_not"
+                  android:layout_height="wrap_content"
+                  android:layout_margin="3sp"
+                  android:layout_width="fill_parent"
+                  android:text="@string/search_words_user"
+                  style="@style/SearchTitle"/>
 
         <TextView android:id="@+id/et_from_user_title"
-            android:layout_below="@id/search_words_user_title"
-            android:layout_height="wrap_content"
-            android:layout_margin="3sp"
-            android:layout_width="70dip"
-            android:text="@string/search_from_user_short"
-            style="@style/SearchShort" />
+                  android:layout_below="@id/search_words_user_title"
+                  android:layout_height="wrap_content"
+                  android:layout_margin="3sp"
+                  android:layout_width="70dip"
+                  android:text="@string/search_from_user_short"
+                  style="@style/SearchShort"/>
 
         <EditText android:id="@+id/et_from_user"
-            android:layout_below="@id/search_words_user_title"
-            android:hint="@string/search_from_user"
-            android:inputType="text"
-            android:layout_height="wrap_content"
-            android:layout_margin="3sp"
-            android:layout_toRightOf="@id/et_from_user_title"
-            android:layout_width="fill_parent" />
+                  android:layout_below="@id/search_words_user_title"
+                  android:hint="@string/search_from_user"
+                  android:inputType="text"
+                  android:layout_height="wrap_content"
+                  android:layout_margin="3sp"
+                  android:layout_toRightOf="@id/et_from_user_title"
+                  android:layout_width="fill_parent"/>
 
         <TextView android:id="@+id/et_to_user_title"
-            android:layout_below="@id/et_from_user"
-            android:layout_height="wrap_content"
-            android:layout_margin="3sp"
-            android:layout_width="70dip"
-            android:text="@string/search_to_user_short"
-            style="@style/SearchShort" />
+                  android:layout_below="@id/et_from_user"
+                  android:layout_height="wrap_content"
+                  android:layout_margin="3sp"
+                  android:layout_width="70dip"
+                  android:text="@string/search_to_user_short"
+                  style="@style/SearchShort"/>
 
         <EditText android:id="@+id/et_to_user"
-            android:layout_below="@id/et_from_user"
-            android:hint="@string/search_to_user"
-            android:inputType="text"
-            android:layout_height="wrap_content"
-            android:layout_margin="3sp"
-            android:layout_toRightOf="@id/et_to_user_title"
-            android:layout_width="fill_parent" />
+                  android:layout_below="@id/et_from_user"
+                  android:hint="@string/search_to_user"
+                  android:inputType="text"
+                  android:layout_height="wrap_content"
+                  android:layout_margin="3sp"
+                  android:layout_toRightOf="@id/et_to_user_title"
+                  android:layout_width="fill_parent"/>
 
     </RelativeLayout>
 

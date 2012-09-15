@@ -1,105 +1,106 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_height="fill_parent"
-    android:layout_width="fill_parent">
+            android:padding="5dp"
+            android:layout_height="fill_parent"
+            android:layout_width="fill_parent">
 
     <RelativeLayout
-        android:layout_height="fill_parent"
-        android:layout_width="fill_parent">
+            android:layout_height="fill_parent"
+            android:layout_width="fill_parent">
 
         <TextView android:id="@+id/sp_languages_title"
-            android:layout_gravity="center"
-            android:layout_height="wrap_content"
-            android:layout_margin="3sp"
-            android:layout_width="80dip"
-            android:text="@string/languages"
-            style="@style/SearchTitle" />
+                  android:layout_gravity="center"
+                  android:layout_height="wrap_content"
+                  android:layout_margin="3sp"
+                  android:layout_width="80dip"
+                  android:text="@string/languages"
+                  style="@style/SearchTitle"/>
 
         <Spinner android:id="@+id/sp_languages"
-            android:layout_height="wrap_content"
-            android:layout_margin="3sp"
-            android:layout_toRightOf="@id/sp_languages_title"
-            android:layout_width="fill_parent" />
+                 android:layout_height="wrap_content"
+                 android:layout_margin="3sp"
+                 android:layout_toRightOf="@id/sp_languages_title"
+                 android:layout_width="fill_parent"/>
 
         <TextView android:id="@+id/sp_attitude_title"
-            android:layout_below="@id/sp_languages"
-            android:layout_gravity="center"
-            android:layout_height="wrap_content"
-            android:layout_margin="3sp"
-            android:layout_width="80dip"
-            android:text="@string/attitude"
-            style="@style/SearchTitle" />
+                  android:layout_below="@id/sp_languages"
+                  android:layout_gravity="center"
+                  android:layout_height="wrap_content"
+                  android:layout_margin="3sp"
+                  android:layout_width="80dip"
+                  android:text="@string/attitude"
+                  style="@style/SearchTitle"/>
 
         <Spinner android:id="@+id/sp_attitude"
-            android:layout_below="@id/sp_languages"
-            android:layout_height="wrap_content"
-            android:layout_margin="3sp"
-            android:layout_toRightOf="@id/sp_attitude_title"
-            android:layout_width="fill_parent" />
+                 android:layout_below="@id/sp_languages"
+                 android:layout_height="wrap_content"
+                 android:layout_margin="3sp"
+                 android:layout_toRightOf="@id/sp_attitude_title"
+                 android:layout_width="fill_parent"/>
 
         <TextView android:id="@+id/sp_filter_title"
-            android:layout_below="@id/sp_attitude"
-            android:layout_gravity="center"
-            android:layout_height="wrap_content"
-            android:layout_margin="3sp"
-            android:layout_width="80dip"
-            android:text="@string/filter"
-            style="@style/SearchTitle" />
+                  android:layout_below="@id/sp_attitude"
+                  android:layout_gravity="center"
+                  android:layout_height="wrap_content"
+                  android:layout_margin="3sp"
+                  android:layout_width="80dip"
+                  android:text="@string/filter"
+                  style="@style/SearchTitle"/>
 
         <Spinner android:id="@+id/sp_filter"
-            android:layout_below="@id/sp_attitude"
-            android:layout_height="wrap_content"
-            android:layout_margin="3sp"
-            android:layout_toRightOf="@id/sp_filter_title"
-            android:layout_width="fill_parent" />
+                 android:layout_below="@id/sp_attitude"
+                 android:layout_height="wrap_content"
+                 android:layout_margin="3sp"
+                 android:layout_toRightOf="@id/sp_filter_title"
+                 android:layout_width="fill_parent"/>
 
         <TextView android:id="@+id/et_source_title"
-            android:layout_below="@id/sp_filter"
-            android:layout_height="wrap_content"
-            android:layout_margin="3sp"
-            android:layout_width="80dip"
-            android:text="@string/search_source_short"
-            style="@style/SearchTitle" />
+                  android:layout_below="@id/sp_filter"
+                  android:layout_height="wrap_content"
+                  android:layout_margin="3sp"
+                  android:layout_width="80dip"
+                  android:text="@string/search_source_short"
+                  style="@style/SearchTitle"/>
 
         <EditText android:id="@+id/et_source"
-            android:layout_below="@id/sp_filter"
-            android:hint="@string/search_source"
-            android:layout_height="wrap_content"
-            android:layout_margin="3sp"
-            android:layout_toRightOf="@id/et_source_title"
-            android:layout_width="fill_parent" />
+                  android:layout_below="@id/sp_filter"
+                  android:hint="@string/search_source"
+                  android:layout_height="wrap_content"
+                  android:layout_margin="3sp"
+                  android:layout_toRightOf="@id/et_source_title"
+                  android:layout_width="fill_parent"/>
 
         <CheckBox android:id="@+id/cb_no_retweet"
-            android:layout_below="@id/et_source"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:text="@string/no_retweet"
-            style="@style/SearchText" />
+                  android:layout_below="@id/et_source"
+                  android:layout_height="wrap_content"
+                  android:layout_width="wrap_content"
+                  android:text="@string/no_retweet"
+                  style="@style/SearchText"/>
 
         <CheckBox android:id="@+id/cb_notifications"
-            android:layout_below="@id/cb_no_retweet"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:text="@string/notifications"
-            style="@style/SearchText" />
+                  android:layout_below="@id/cb_no_retweet"
+                  android:layout_height="wrap_content"
+                  android:layout_width="wrap_content"
+                  android:text="@string/notifications"
+                  style="@style/SearchText"/>
 
         <Button android:id="@+id/bt_info_notifications"
-            android:layout_below="@id/cb_no_retweet"
-            android:gravity="right"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10sp"
-            android:layout_toRightOf="@id/cb_notifications"
-            android:layout_width="wrap_content"
-            android:text="@string/how_notifications" />
+                android:layout_below="@id/cb_no_retweet"
+                android:gravity="right"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10sp"
+                android:layout_toRightOf="@id/cb_notifications"
+                android:layout_width="wrap_content"
+                android:text="@string/how_notifications"/>
 
         <CheckBox android:id="@+id/cb_notifications_bar"
-            android:layout_below="@id/cb_notifications"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10sp"
-            android:layout_width="wrap_content"
-            android:text="@string/notifications_bar"
-            android:visibility="gone"
-            style="@style/SearchText" />
+                  android:layout_below="@id/cb_notifications"
+                  android:layout_height="wrap_content"
+                  android:layout_marginLeft="10sp"
+                  android:layout_width="wrap_content"
+                  android:text="@string/notifications_bar"
+                  android:visibility="gone"
+                  style="@style/SearchText"/>
 
     </RelativeLayout>
 

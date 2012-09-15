@@ -2,12 +2,26 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_height="fill_parent"
     android:layout_width="fill_parent"
+    android:id="@+id/search_root"
     android:orientation="vertical">
 
-    <com.viewpagerindicator.TabPageIndicator
-        android:id="@+id/search_indicator"
-        android:layout_height="wrap_content"
-        android:layout_width="fill_parent" />
+    <RelativeLayout android:id="@+id/search_bar_background"
+                    android:layout_height="wrap_content"
+                    android:layout_width="fill_parent"
+            >
+
+        <com.viewpagerindicator.TabPageIndicator
+                android:id="@+id/search_indicator"
+                android:layout_height="wrap_content"
+                android:layout_width="fill_parent" />
+
+        <ImageView
+                android:layout_height="@dimen/actionbar_height"
+                android:layout_width="fill_parent"
+                android:background="@drawable/title_border"/>
+
+    </RelativeLayout>
+
 
     <android.support.v4.view.ViewPager
         android:id="@+id/search_pager"

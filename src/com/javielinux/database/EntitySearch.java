@@ -11,6 +11,7 @@ import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
 import com.javielinux.infos.InfoSaveTweets;
 import com.javielinux.tweettopics2.R;
+import com.javielinux.twitter.ConnectionManager;
 import com.javielinux.utils.LocationUtils;
 import com.javielinux.utils.Utils;
 import twitter4j.*;
@@ -82,7 +83,7 @@ public class EntitySearch extends Entity {
 	}
 	
 	public int getValueNewCount() {
-		if (getInt("com/javielinux/notifications")==1) {
+		if (getInt("notifications")==1) {
 			return DataFramework.getInstance().getEntityListCount("tweets", "search_id = " + this.getId() 
    				+ " AND favorite = 0 AND tweet_id >'" + Utils.fillZeros(""+getString("last_tweet_id"))+"'");
 		} else {
@@ -106,7 +107,9 @@ public class EntitySearch extends Entity {
 		return getLong("last_tweet_id_notifications");
 	}
 	
-	public InfoSaveTweets saveTweets(Context cnt, Twitter twitter, boolean saveNotifications, long since_id) {
+	public InfoSaveTweets saveTweets(Context cnt, boolean saveNotifications, long since_id) {
+        ConnectionManager.getInstance().open(cnt);
+        Twitter twitter = ConnectionManager.getInstance().getAnonymousTwitter();
 		InfoSaveTweets out = new InfoSaveTweets();
 		try {
 			int nResult = DataFramework.getInstance().getEntityListCount("tweets", "favorite=0 and search_id="+getId());
@@ -290,7 +293,7 @@ public class EntitySearch extends Entity {
 
 		// obtener desde donde quiero hacer la consulta
 		
-		if (getInt("com/javielinux/notifications")==1) {
+		if (getInt("notifications")==1) {
 			String where = "search_id = " + this.getId() + " AND favorite = 0";
 			int nResult = DataFramework.getInstance().getEntityListCount("tweets", where);			
 			if (nResult>0) {

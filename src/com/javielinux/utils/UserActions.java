@@ -16,7 +16,7 @@ import com.javielinux.api.response.ErrorResponse;
 import com.javielinux.infos.InfoUsers;
 import com.javielinux.tweettopics2.NewStatusActivity;
 import com.javielinux.tweettopics2.R;
-import com.javielinux.tweettopics2.TabNewEditSearch;
+import com.javielinux.tweettopics2.SearchActivity;
 import com.javielinux.twitter.ConnectionManager;
 import preferences.Colors;
 import twitter4j.Twitter;
@@ -99,9 +99,9 @@ public class UserActions {
     }
 
     public static void goToCreateTopic(FragmentActivity activity, InfoUsers infoUsers) {
-        Intent newsearch = new Intent(activity, TabNewEditSearch.class);
-        newsearch.putExtra("user", infoUsers.getName());
-        activity.startActivity(newsearch);
+        Intent edit_search = new Intent(activity, SearchActivity.class);
+        edit_search.putExtra("user", infoUsers.getName());
+        activity.startActivity(edit_search);
     }
 
     public static void goToHide(FragmentActivity activity, InfoUsers infoUsers) {

@@ -2,6 +2,8 @@ package com.javielinux.tweettopics2;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Shader;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
@@ -17,6 +19,7 @@ import com.javielinux.api.response.ErrorResponse;
 import com.javielinux.api.response.SaveFirstTweetsResponse;
 import com.javielinux.database.EntitySearch;
 import com.javielinux.fragmentadapter.SearchFragmentAdapter;
+import com.javielinux.utils.ImageUtils;
 import com.javielinux.utils.Utils;
 import com.viewpagerindicator.TabPageIndicator;
 
@@ -33,6 +36,8 @@ public class SearchActivity extends BaseActivity implements APIDelegate<BaseResp
 
     private ThemeManager themeManager;
     private EntitySearch search_entity = null;
+    private LinearLayout searchRoot;
+    private RelativeLayout searchBar;
 
     private boolean view;
 
@@ -50,6 +55,8 @@ public class SearchActivity extends BaseActivity implements APIDelegate<BaseResp
             }
         }
 
+        overridePendingTransition(R.anim.pull_in_to_up, R.anim.hold);
+
         if (search_entity == null) search_entity = new EntitySearch();
 
         setContentView(R.layout.search_activity);
@@ -59,8 +66,13 @@ public class SearchActivity extends BaseActivity implements APIDelegate<BaseResp
         pager = (ViewPager)findViewById(R.id.search_pager);
         pager.setAdapter(fragmentAdapter);
 
+        searchRoot = (LinearLayout)findViewById(R.id.search_root);
+        searchBar = (RelativeLayout)findViewById(R.id.search_bar_background);
+
         indicator = (TabPageIndicator)findViewById(R.id.search_indicator);
         indicator.setViewPager(pager);
+
+        refreshTheme();
     }
 
     @Override
@@ -71,6 +83,19 @@ public class SearchActivity extends BaseActivity implements APIDelegate<BaseResp
         menu.add(0, SAVE_LAUNCH_ID, 0,  R.string.save_and_view)
                 .setIcon(android.R.drawable.ic_menu_directions);
         return true;
+    }
+
+    public void refreshTheme() {
+
+        BitmapDrawable bmp = (BitmapDrawable) getResources().getDrawable(themeManager.getResource("search_tile"));
+        if (bmp != null) {
+            bmp.setTileModeXY(Shader.TileMode.REPEAT, Shader.TileMode.REPEAT);
+            searchRoot.setBackgroundDrawable(bmp);
+        }
+
+        searchBar.setBackgroundDrawable(ImageUtils.createBackgroundDrawable(this, themeManager.getColor("color_top_bar"), false, 0));
+
+        themeManager.setColors();
     }
 
     @Override
@@ -87,6 +112,12 @@ public class SearchActivity extends BaseActivity implements APIDelegate<BaseResp
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        overridePendingTransition(R.anim.hold, R.anim.push_out_from_up);
     }
 
     private void save() {
@@ -135,11 +166,8 @@ public class SearchActivity extends BaseActivity implements APIDelegate<BaseResp
             search_entity.setValue("name", name.getText().toString());
         }
 
-        EditText mEdIcon = fragmentAdapter.getSearchGeneralFragment().iconId;
-        long icon_id = Long.parseLong(mEdIcon.getText().toString());
-
-        EditText mEdFile = fragmentAdapter.getSearchGeneralFragment().iconFile;
-        String token_file = mEdFile.getText().toString();
+        long icon_id = fragmentAdapter.getSearchGeneralFragment().iconId;
+        String token_file = fragmentAdapter.getSearchGeneralFragment().iconFile;
 
         search_entity.setValue("icon_id", icon_id);
         search_entity.setValue("icon_token_file", token_file);
@@ -192,7 +220,7 @@ public class SearchActivity extends BaseActivity implements APIDelegate<BaseResp
         CheckBox notifications = fragmentAdapter.getSearchAdvancedFragment().notifications;
 
         // Borrar todos los tweets en el caso que deje de notificarse la búsqueda
-        if (!notifications.isChecked() && search_entity.getInt("com/javielinux/notifications") == 1) {
+        if (!notifications.isChecked() && search_entity.getInt("notifications") == 1) {
             DataFramework.getInstance().getDB().execSQL("DELETE FROM tweets WHERE search_id = " + search_entity.getId() + " AND favorite = 0");
             search_entity.setValue("last_tweet_id", "0");
             search_entity.setValue("last_tweet_id_notifications", "0");
@@ -200,14 +228,14 @@ public class SearchActivity extends BaseActivity implements APIDelegate<BaseResp
         }
 
         // Guarda los primeros tweets en el caso de empezar a notificar
-        if (notifications.isChecked() && search_entity.getInt("com/javielinux/notifications")==0) {
+        if (notifications.isChecked() && search_entity.getInt("notifications")==0) {
             save_tweets = true;
         }
 
         if (notifications.isChecked())
-            search_entity.setValue("com/javielinux/notifications", 1);
+            search_entity.setValue("notifications", 1);
         else
-            search_entity.setValue("com/javielinux/notifications", 0);
+            search_entity.setValue("notifications", 0);
 
 
         CheckBox notificationsBar = fragmentAdapter.getSearchAdvancedFragment().notificationsBar;

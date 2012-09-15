@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.support.v4.app.Fragment;
@@ -89,13 +90,17 @@ public class TweetTopicsFragmentAdapter extends FragmentPagerAdapter {
 
                     if (tweets_count > 0 && only_bitmap_number) {
                         bitmap = ImageUtils.getBitmapNumber(context, tweets_count, Color.BLUE, Utils.TYPE_RECTANGLE, 18, Utils.AVATAR_LARGE);
-                    } else {
+                    } else if (tweets_count <= 0) {
                         bitmap = ImageUtils.getBitmapAvatar(fragmentList.get(position).getEntity("user_id").getId(), Utils.AVATAR_LARGE);
-
-                        if (tweets_count > 0) {
-                            Canvas canvas = new Canvas(bitmap);
-                            ImageUtils.drawBitmapNumber(context, canvas, tweets_count, Color.BLUE, Utils.TYPE_RECTANGLE, 10);
-                        }
+                    } else {
+                        Paint paint = new Paint();
+                        paint.setAntiAlias(true);
+                        Bitmap avatar = ImageUtils.getBitmapAvatar(fragmentList.get(position).getEntity("user_id").getId(), Utils.AVATAR_LARGE);
+                        Bitmap number = ImageUtils.getBitmapNumber(context, tweets_count, Color.RED, Utils.TYPE_RECTANGLE, 14, Utils.AVATAR_LARGE/2);
+                        bitmap = Bitmap.createBitmap(avatar.getWidth(), avatar.getHeight(), Bitmap.Config.RGB_565);
+                        Canvas canvas = new Canvas(bitmap);
+                        canvas.drawBitmap(avatar, 0,0,paint);
+                        canvas.drawBitmap(number, avatar.getWidth()-number.getWidth(),0,paint);
                     }
 
                     break;
@@ -111,14 +116,26 @@ public class TweetTopicsFragmentAdapter extends FragmentPagerAdapter {
                     tweets_count = getUnreadTweetsCount(column_type, null, search_entity);
 
                     if (tweets_count > 0 && only_bitmap_number) {
-                        bitmap = ImageUtils.getBitmapNumber(context, tweets_count, Color.BLUE, Utils.TYPE_RECTANGLE, 18, Utils.AVATAR_LARGE);
+                        bitmap = ImageUtils.getBitmapNumber(context, tweets_count, Color.RED, Utils.TYPE_RECTANGLE, 18, Utils.AVATAR_LARGE);
+                    } else if (tweets_count <= 0) {
+                        bitmap = ImageUtils.getBitmapAvatar(fragmentList.get(position).getEntity("user_id").getId(), Utils.AVATAR_LARGE);
                     } else {
+
+                        Paint paint = new Paint();
+                        paint.setAntiAlias(true);
+
                         Drawable drawable = Utils.getDrawable(context, search_entity.getString("icon_big"));
-
                         if (drawable == null) drawable = context.getResources().getDrawable(R.drawable.letter_az);
+                        Bitmap avatar = ((BitmapDrawable)drawable).getBitmap();
+                        avatar = Bitmap.createScaledBitmap(avatar, Utils.AVATAR_LARGE, Utils.AVATAR_LARGE, true);
 
-                        bitmap = ((BitmapDrawable)drawable).getBitmap();
+                        Bitmap number = ImageUtils.getBitmapNumber(context, tweets_count, Color.RED, Utils.TYPE_RECTANGLE, 14, Utils.AVATAR_LARGE/2);
+                        bitmap = Bitmap.createBitmap(avatar.getWidth(), avatar.getHeight(), Bitmap.Config.RGB_565);
+                        Canvas canvas = new Canvas(bitmap);
+                        canvas.drawBitmap(avatar, 0,0,paint);
+                        canvas.drawBitmap(number, avatar.getWidth()-number.getWidth(),0,paint);
                     }
+
 
                     break;
             }

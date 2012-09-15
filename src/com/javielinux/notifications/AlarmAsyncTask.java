@@ -241,11 +241,11 @@ public class AlarmAsyncTask extends AsyncTask<Void, Void, Void> {
 		List<Entity> searchs = DataFramework.getInstance().getEntityList("search");
 		
 		for (int i=0; i<searchs.size(); i++) {
-			if (searchs.get(i).getInt("com/javielinux/notifications")==1 && !PreferenceUtils.getStatusWorkApp(mContext)) {
+			if (searchs.get(i).getInt("notifications")==1 && !PreferenceUtils.getStatusWorkApp(mContext)) {
 				EntitySearch es = new EntitySearch(searchs.get(i).getId());
 				
 				if (mType!=OnAlarmReceiver.ALARM_ONLY_OTHERS) {
-					InfoSaveTweets info = es.saveTweets(mContext, twitter, true, -1);
+					InfoSaveTweets info = es.saveTweets(mContext, true, -1);
 					if (info.getNewMessages()>0 && searchs.get(i).getInt("notifications_bar")==1) {
 						showSearchNotifications = true;
 					}
