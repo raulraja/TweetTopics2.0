@@ -20,6 +20,9 @@ import android.preference.PreferenceManager;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.*;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.AnimationSet;
+import android.view.animation.ScaleAnimation;
 import android.widget.*;
 import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
@@ -234,7 +237,7 @@ public class TweetTopicsActivity extends BaseLayersActivity implements PopupLink
             }
             @Override
             public void onStartDrag(int x, int index) {
-                showOptionsColumns(x, index);
+                showOptionsColumns(x, index, true);
             }
 
             @Override
@@ -256,6 +259,14 @@ public class TweetTopicsActivity extends BaseLayersActivity implements PopupLink
             @Override
             public void onClick(View view) {
                 newStatus();
+            }
+        });
+
+        imgBarAvatar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (pager.getCurrentItem() > 0)
+                    animateDragged();
             }
         });
 
@@ -293,7 +304,25 @@ public class TweetTopicsActivity extends BaseLayersActivity implements PopupLink
 
             PreferenceUtils.setApplicationAccessCount(this, access_count + 1);
         }
+    }
 
+    protected void animateDragged() {
+        View view = imgBarAvatar;
+        float x = imgBarAvatar.getX();
+        float y = imgBarAvatar.getY();
+        view.layout(imgBarAvatar.getLeft(), imgBarAvatar.getTop(), imgBarAvatar.getRight(), imgBarAvatar.getBottom());
+        AnimationSet animSet = new AnimationSet(true);
+        ScaleAnimation scale = new ScaleAnimation(.667f, 1, .667f, 1, imgBarAvatar.getHeight() * 3 / 4, imgBarAvatar.getWidth() * 3 / 4);
+        scale.setDuration(150);
+
+        animSet.addAnimation(scale);
+        animSet.setFillEnabled(true);
+        animSet.setFillAfter(true);
+
+        view.clearAnimation();
+        view.startAnimation(animSet);
+
+        showOptionsColumns((int)x, pager.getCurrentItem(), false);
     }
 
     @Override
@@ -589,7 +618,6 @@ public class TweetTopicsActivity extends BaseLayersActivity implements PopupLink
         imgBarAvatar.setBackgroundDrawable(statesButton);
         imgNewStatus.setBackgroundDrawable(statesButton);
 
-
         //(findViewById(R.id.tweettopics_bar_divider1)).setBackgroundDrawable(ImageUtils.createBackgroundDrawable(this, themeManager.getColor("color_top_bar"), false, 0));
         //(findViewById(R.id.tweettopics_bar_divider2)).setBackgroundDrawable(ImageUtils.createBackgroundDrawable(this, themeManager.getColor("color_top_bar"), false, 0));
 
@@ -732,13 +760,18 @@ public class TweetTopicsActivity extends BaseLayersActivity implements PopupLink
        SHOW OPTIONS COMLUMNS
     */
 
-    public void showOptionsColumns(int positionX, int index) {
+    public void showOptionsColumns(int positionX, int index, boolean action_bar_opened) {
 
 
         int x = positionX - (layoutOptionsColumns.getWidth()/2);
         if (x<0) x = 0;
         if (x>widthScreen-layoutOptionsColumns.getWidth()) x = widthScreen-layoutOptionsColumns.getWidth();
-        int y = (int)getResources().getDimension(R.dimen.actionbar_columns_height) - Utils.dip2px(this, 20);
+        int y = -1;
+
+        if (action_bar_opened)
+            y = (int)getResources().getDimension(R.dimen.actionbar_columns_height) - Utils.dip2px(this, 20);
+        else
+            y = (int)getResources().getDimension(R.dimen.actionbar_height) - Utils.dip2px(this, 20);
 
         int xCenterView = x;
 
@@ -933,5 +966,4 @@ public class TweetTopicsActivity extends BaseLayersActivity implements PopupLink
         builder.create();
         builder.show();
     }
-
 }
