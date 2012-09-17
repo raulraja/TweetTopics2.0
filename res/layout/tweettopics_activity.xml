@@ -44,11 +44,26 @@
                                                        android:layout_width="fill_parent"
                     />
 
+            <ImageView android:id="@+id/tweettopics_bar_avatar_bg"
+                       android:layout_height="@dimen/actionbar_height"
+                       android:layout_width="@dimen/actionbar_height"
+                       />
+
             <ImageView android:id="@+id/tweettopics_bar_avatar"
                        android:layout_height="@dimen/actionbar_height"
                        android:layout_width="@dimen/actionbar_height"
                        android:padding="6dp"
                        android:src="@drawable/icon"/>
+
+            <TextView android:id="@+id/tweettopics_bar_counter"
+                       android:layout_height="wrap_content"
+                       android:layout_width="wrap_content"
+                       style="@style/CounterActionBar"
+                       android:layout_marginLeft="6dp"
+                       android:layout_centerVertical="true"
+                       android:gravity="center"
+                       android:text="0"
+                       />
 
             <ImageView android:id="@+id/tweettopics_bar_new_status"
                        android:layout_height="@dimen/actionbar_height"

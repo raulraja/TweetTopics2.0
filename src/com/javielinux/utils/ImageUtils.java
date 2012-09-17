@@ -320,6 +320,59 @@ public class ImageUtils {
         return null;
     }
 
+
+    static public Bitmap getBackgroundBitmapInBubble(Context cnt, int color, int type, float width, float height) {
+
+        try {
+
+            Paint paintFill = new Paint();
+            paintFill.setAntiAlias(true);
+
+            if (color == Color.BLUE) {
+                paintFill.setShader(new LinearGradient(0, 0, 0, 22, 0xff477ec1, 0xff293d87, Shader.TileMode.CLAMP));
+            }
+
+            if (color == Color.GREEN) {
+                paintFill.setShader(new LinearGradient(0, 0, 0, 22, 0xff94c147, 0xff658729, Shader.TileMode.CLAMP));
+            }
+
+            if (color == Color.RED) {
+                paintFill.setShader(new LinearGradient(0, 0, 0, 22, 0xffb72121, 0xffe82f2f, Shader.TileMode.CLAMP));
+            }
+
+            Paint paintStroke = new Paint();
+            paintStroke.setAntiAlias(true);
+            paintStroke.setColor(Color.WHITE);
+
+
+            if (type == Utils.TYPE_CIRCLE) {
+                int size = (int) ((width > height) ? width : height) + 7;
+                int radius = (size - 2) / 2;
+                int center = size / 2;
+                Bitmap bmp = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888);
+                Canvas c = new Canvas(bmp);
+                c.drawCircle(center, center, radius, paintStroke);
+                c.drawCircle(center, center, radius - 1, paintFill);
+                return bmp;
+            } else {
+                int size = (int) ((width > height) ? width : height) + 7;
+                Bitmap bmp = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888);
+                Canvas c = new Canvas(bmp);
+                RectF boxRect = new RectF(0,0,size,size);
+                c.drawRoundRect(boxRect, 5, 5, paintStroke);
+                boxRect = new RectF(1,1,size-1,size-1);
+                c.drawRoundRect(boxRect, 5, 5, paintFill);
+                return bmp;
+            }
+        } catch (OutOfMemoryError e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
     static public Bitmap getBitmap(Bitmap bitmapOrg, int newHeight) {
         try {
 

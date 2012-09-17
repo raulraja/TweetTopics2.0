@@ -48,8 +48,7 @@ public class TweetTopicsFragmentAdapter extends FragmentPagerAdapter {
             fragmentList.addAll(DataFramework.getInstance().getEntityList("columns", "", "position asc"));
 
             notifyDataSetChanged();
-        }
-        catch (Exception exception) {
+        } catch (Exception exception) {
             exception.printStackTrace();
         }
     }
@@ -75,7 +74,7 @@ public class TweetTopicsFragmentAdapter extends FragmentPagerAdapter {
         return fragmentList.get(position).getEntity("user_id");
     }
 
-    public Bitmap getIconItem(int position, boolean only_bitmap_number) {
+    public Bitmap getButtonBigActionBar(int position) {
         if (fragmentList.size() > 0) {
             int column_type = fragmentList.get(position).getInt("type_id");
             int tweets_count = 0;
@@ -88,19 +87,13 @@ public class TweetTopicsFragmentAdapter extends FragmentPagerAdapter {
 
                     tweets_count = getUnreadTweetsCount(column_type, fragmentList.get(position).getEntity("user_id"), null);
 
-                    if (tweets_count > 0 && only_bitmap_number) {
-                        bitmap = ImageUtils.getBitmapNumber(context, tweets_count, Color.BLUE, Utils.TYPE_RECTANGLE, 18, Utils.AVATAR_LARGE);
-                    } else if (tweets_count <= 0) {
-                        bitmap = ImageUtils.getBitmapAvatar(fragmentList.get(position).getEntity("user_id").getId(), Utils.AVATAR_LARGE);
-                    } else {
+                    bitmap = ImageUtils.getBitmapAvatar(fragmentList.get(position).getEntity("user_id").getId(), Utils.AVATAR_LARGE);
+                    if (tweets_count > 0) {
                         Paint paint = new Paint();
                         paint.setAntiAlias(true);
-                        Bitmap avatar = ImageUtils.getBitmapAvatar(fragmentList.get(position).getEntity("user_id").getId(), Utils.AVATAR_LARGE);
-                        Bitmap number = ImageUtils.getBitmapNumber(context, tweets_count, Color.RED, Utils.TYPE_RECTANGLE, 14, Utils.AVATAR_LARGE/2);
-                        bitmap = Bitmap.createBitmap(avatar.getWidth(), avatar.getHeight(), Bitmap.Config.RGB_565);
+                        Bitmap number = ImageUtils.getBitmapNumber(context, tweets_count, Color.RED, Utils.TYPE_RECTANGLE, 14, Utils.AVATAR_LARGE / 2);
                         Canvas canvas = new Canvas(bitmap);
-                        canvas.drawBitmap(avatar, 0,0,paint);
-                        canvas.drawBitmap(number, avatar.getWidth()-number.getWidth(),0,paint);
+                        canvas.drawBitmap(number, bitmap.getWidth() - number.getWidth(), 0, paint);
                     }
 
                     break;
@@ -115,25 +108,16 @@ public class TweetTopicsFragmentAdapter extends FragmentPagerAdapter {
                     Entity search_entity = new Entity("search", fragmentList.get(position).getLong("search_id"));
                     tweets_count = getUnreadTweetsCount(column_type, null, search_entity);
 
-                    if (tweets_count > 0 && only_bitmap_number) {
-                        bitmap = ImageUtils.getBitmapNumber(context, tweets_count, Color.RED, Utils.TYPE_RECTANGLE, 18, Utils.AVATAR_LARGE);
-                    } else if (tweets_count <= 0) {
-                        bitmap = ImageUtils.getBitmapAvatar(fragmentList.get(position).getEntity("user_id").getId(), Utils.AVATAR_LARGE);
-                    } else {
-
+                    Drawable drawable = Utils.getDrawable(context, search_entity.getString("icon_big"));
+                    if (drawable == null) drawable = context.getResources().getDrawable(R.drawable.letter_az);
+                    bitmap = ((BitmapDrawable) drawable).getBitmap();
+                    bitmap = Bitmap.createScaledBitmap(bitmap, Utils.AVATAR_LARGE, Utils.AVATAR_LARGE, true);
+                    if (tweets_count > 0) {
                         Paint paint = new Paint();
                         paint.setAntiAlias(true);
-
-                        Drawable drawable = Utils.getDrawable(context, search_entity.getString("icon_big"));
-                        if (drawable == null) drawable = context.getResources().getDrawable(R.drawable.letter_az);
-                        Bitmap avatar = ((BitmapDrawable)drawable).getBitmap();
-                        avatar = Bitmap.createScaledBitmap(avatar, Utils.AVATAR_LARGE, Utils.AVATAR_LARGE, true);
-
-                        Bitmap number = ImageUtils.getBitmapNumber(context, tweets_count, Color.RED, Utils.TYPE_RECTANGLE, 14, Utils.AVATAR_LARGE/2);
-                        bitmap = Bitmap.createBitmap(avatar.getWidth(), avatar.getHeight(), Bitmap.Config.RGB_565);
+                        Bitmap number = ImageUtils.getBitmapNumber(context, tweets_count, Color.RED, Utils.TYPE_RECTANGLE, 14, Utils.AVATAR_LARGE / 2);
                         Canvas canvas = new Canvas(bitmap);
-                        canvas.drawBitmap(avatar, 0,0,paint);
-                        canvas.drawBitmap(number, avatar.getWidth()-number.getWidth(),0,paint);
+                        canvas.drawBitmap(number, bitmap.getWidth() - number.getWidth(), 0, paint);
                     }
 
 
@@ -146,19 +130,50 @@ public class TweetTopicsFragmentAdapter extends FragmentPagerAdapter {
         return null;
     }
 
+
+    public Bitmap getIconItem(int position) {
+        if (fragmentList.size() > 0) {
+            int column_type = fragmentList.get(position).getInt("type_id");
+            Bitmap bitmap = null;
+            switch (column_type) {
+                case TweetTopicsUtils.COLUMN_TIMELINE:
+                case TweetTopicsUtils.COLUMN_MENTIONS:
+                case TweetTopicsUtils.COLUMN_DIRECT_MESSAGES:
+                case TweetTopicsUtils.COLUMN_SENT_DIRECT_MESSAGES:
+                case TweetTopicsUtils.COLUMN_RETWEETS_BY_OTHERS:
+                case TweetTopicsUtils.COLUMN_RETWEETS_BY_YOU:
+                case TweetTopicsUtils.COLUMN_FOLLOWERS:
+                case TweetTopicsUtils.COLUMN_FOLLOWINGS:
+                case TweetTopicsUtils.COLUMN_FAVORITES:
+                    bitmap = ImageUtils.getBitmapAvatar(fragmentList.get(position).getEntity("user_id").getId(), Utils.AVATAR_LARGE);
+                    break;
+                case TweetTopicsUtils.COLUMN_SEARCH:
+                    Entity search_entity = new Entity("search", fragmentList.get(position).getLong("search_id"));
+                    Drawable drawable = Utils.getDrawable(context, search_entity.getString("icon_big"));
+                    if (drawable == null) drawable = context.getResources().getDrawable(R.drawable.letter_az);
+                    bitmap = ((BitmapDrawable) drawable).getBitmap();
+                    bitmap = Bitmap.createScaledBitmap(bitmap, Utils.AVATAR_LARGE, Utils.AVATAR_LARGE, true);
+                    break;
+            }
+
+            return bitmap;
+        }
+
+        return null;
+    }
+
     private int getUnreadTweetsCount(int column_type, Entity user, Entity search) {
         int tweetsCount = 0;
 
-        switch (column_type)
-        {
+        switch (column_type) {
             case TweetTopicsUtils.COLUMN_TIMELINE:
                 tweetsCount = DataFramework.getInstance().getEntityListCount("tweets_user", "type_id = " + TweetTopicsUtils.TWEET_TYPE_TIMELINE + " AND user_tt_id=" + user.getId() + " AND tweet_id >'" + Utils.fillZeros("" + user.getString("last_timeline_id")) + "'");
                 break;
             case TweetTopicsUtils.COLUMN_MENTIONS:
-                tweetsCount = DataFramework.getInstance().getEntityListCount("tweets_user", "type_id = " + TweetTopicsUtils.TWEET_TYPE_MENTIONS + " AND user_tt_id=" + user.getId() + " AND tweet_id >'" + Utils.fillZeros("" + user.getString("last_mention_id"))+"'");
+                tweetsCount = DataFramework.getInstance().getEntityListCount("tweets_user", "type_id = " + TweetTopicsUtils.TWEET_TYPE_MENTIONS + " AND user_tt_id=" + user.getId() + " AND tweet_id >'" + Utils.fillZeros("" + user.getString("last_mention_id")) + "'");
                 break;
             case TweetTopicsUtils.COLUMN_DIRECT_MESSAGES:
-                tweetsCount = DataFramework.getInstance().getEntityListCount("tweets_user", "type_id = " + TweetTopicsUtils.TWEET_TYPE_DIRECTMESSAGES + " AND user_tt_id=" + user.getId() + " AND tweet_id >'" + Utils.fillZeros("" + user.getString("last_direct_id"))+"'");
+                tweetsCount = DataFramework.getInstance().getEntityListCount("tweets_user", "type_id = " + TweetTopicsUtils.TWEET_TYPE_DIRECTMESSAGES + " AND user_tt_id=" + user.getId() + " AND tweet_id >'" + Utils.fillZeros("" + user.getString("last_direct_id")) + "'");
                 break;
             case TweetTopicsUtils.COLUMN_SEARCH:
                 if (search.getLong("last_tweet_id") < search.getLong("last_tweet_id_notifications"))
@@ -172,7 +187,7 @@ public class TweetTopicsFragmentAdapter extends FragmentPagerAdapter {
     public int getPositionColumnActive() {
         int count = 0;
         for (Entity column : fragmentList) {
-            if (column.getInt("active")==1) {
+            if (column.getInt("active") == 1) {
                 return count;
             }
             count++;
@@ -234,15 +249,15 @@ public class TweetTopicsFragmentAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getItemPosition(Object item) {
-        BaseListFragment fragment = (BaseListFragment)item;
+        BaseListFragment fragment = (BaseListFragment) item;
         Entity column_entity = fragment.getColumnEntity();
 
         int position = fragmentList.indexOf(column_entity);
         if (position < 0) {
-            Log.d("TweetTopics2.0","Fragment doesn't exist");
+            Log.d("TweetTopics2.0", "Fragment doesn't exist");
             return POSITION_NONE;
         } else {
-            Log.d("TweetTopics2.0","Fragment exists: " + column_entity.getString("title") + " - " + position);
+            Log.d("TweetTopics2.0", "Fragment exists: " + column_entity.getString("title") + " - " + position);
             return position;
         }
     }
@@ -279,8 +294,7 @@ public class TweetTopicsFragmentAdapter extends FragmentPagerAdapter {
             fragmentList.add(myActivity);
 
             notifyDataSetChanged();
-        }
-        catch (Exception exception) {
+        } catch (Exception exception) {
             exception.printStackTrace();
         }
     }
@@ -294,11 +308,10 @@ public class TweetTopicsFragmentAdapter extends FragmentPagerAdapter {
             myActivity.setValue("type_id", TweetTopicsUtils.COLUMN_MY_ACTIVITY);
             fragmentList.add(myActivity);
 
-            fragmentList.addAll(DataFramework.getInstance().getEntityList("columns","","position asc"));
+            fragmentList.addAll(DataFramework.getInstance().getEntityList("columns", "", "position asc"));
 
             notifyDataSetChanged();
-        }
-        catch (Exception exception) {
+        } catch (Exception exception) {
             exception.printStackTrace();
         }
     }

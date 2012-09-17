@@ -27,6 +27,7 @@ import com.javielinux.infos.InfoSaveTweets;
 import com.javielinux.infos.InfoTweet;
 import com.javielinux.tweettopics2.R;
 import com.javielinux.tweettopics2.ThemeManager;
+import com.javielinux.tweettopics2.TweetTopicsActivity;
 import com.javielinux.utils.ImageUtils;
 import com.javielinux.utils.TweetTopicsUtils;
 import com.javielinux.utils.Utils;
@@ -176,6 +177,12 @@ public class SearchFragment extends BaseListFragment implements APIDelegate<Base
                                 search_entity.save();
                             }
                             sendBroadcastUpdateTweets();
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    ((TweetTopicsActivity) getActivity()).reloadBarAvatar();
+                                }
+                            });
                         } catch (ArrayIndexOutOfBoundsException e) {
                             e.printStackTrace();
                         }
@@ -356,6 +363,7 @@ public class SearchFragment extends BaseListFragment implements APIDelegate<Base
             tweetsAdapter.notifyDataSetChanged();
             tweetsAdapter.launchVisibleTask();
             listView.getRefreshableView().setSelection(firstVisible + count);
+            ((TweetTopicsActivity) getActivity()).reloadBarAvatar();
         }
     }
 

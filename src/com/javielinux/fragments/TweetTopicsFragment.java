@@ -57,11 +57,11 @@ public class TweetTopicsFragment extends BaseListFragment implements APIDelegate
     public TweetTopicsFragment(long column_id) {
 
         column_entity = new Entity("columns", column_id);
-        if (column_entity.getInt("type_id")== TweetTopicsUtils.COLUMN_TIMELINE) {
+        if (column_entity.getInt("type_id") == TweetTopicsUtils.COLUMN_TIMELINE) {
             typeUserColumn = TweetTopicsUtils.TWEET_TYPE_TIMELINE;
-        } else if (column_entity.getInt("type_id")== TweetTopicsUtils.COLUMN_MENTIONS) {
+        } else if (column_entity.getInt("type_id") == TweetTopicsUtils.COLUMN_MENTIONS) {
             typeUserColumn = TweetTopicsUtils.TWEET_TYPE_MENTIONS;
-        } else if (column_entity.getInt("type_id")== TweetTopicsUtils.COLUMN_DIRECT_MESSAGES) {
+        } else if (column_entity.getInt("type_id") == TweetTopicsUtils.COLUMN_DIRECT_MESSAGES) {
             typeUserColumn = TweetTopicsUtils.TWEET_TYPE_DIRECTMESSAGES;
         }
         user_entity = new Entity("users", column_entity.getLong("user_id"));
@@ -85,14 +85,14 @@ public class TweetTopicsFragment extends BaseListFragment implements APIDelegate
                 tweetsAdapter.setHideMessages(result.getCountHide());
                 tweetsAdapter.setLastReadPosition(result.getPosition());
 
-                listView.getRefreshableView().setSelection(result.getPosition()+1);
+                listView.getRefreshableView().setSelection(result.getPosition() + 1);
 
                 positionLastRead = result.getPosition();
                 tweetsAdapter.notifyDataSetChanged();
 
                 boolean getTweetsFromInternet = false;
 
-                if (infoTweets.size()<=0) {
+                if (infoTweets.size() <= 0) {
                     getTweetsFromInternet = true;
                 } else {
                     if (column_entity.getInt("type_id") == TweetTopicsUtils.COLUMN_TIMELINE) {
@@ -171,44 +171,42 @@ public class TweetTopicsFragment extends BaseListFragment implements APIDelegate
 
     private void markPositionLastReadAsLastReadId() {
 
-        ((TweetTopicsActivity)getActivity()).reloadBarAvatar();
-        ((TweetTopicsActivity)getActivity()).refreshActionBarColumns();
-
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-
-                if (tweetsAdapter != null) {
-
-                    if (tweetsAdapter.getCount() > positionLastRead) {
-                        try {
-                            long id = tweetsAdapter.getItem(positionLastRead).getId();
-                            if (user_entity != null) {
-                                switch (column_entity.getInt("type_id")) {
-                                    case TweetTopicsUtils.COLUMN_TIMELINE:
-                                        user_entity.setValue("last_timeline_id", id + "");
-                                        user_entity.save();
-                                        break;
-                                    case TweetTopicsUtils.COLUMN_MENTIONS:
-                                        user_entity.setValue("last_mention_id", id + "");
-                                        user_entity.save();
-                                        break;
-                                    case TweetTopicsUtils.COLUMN_DIRECT_MESSAGES:
-                                        user_entity.setValue("last_direct_id", id + "");
-                                        user_entity.save();
-                                        break;
-                                }
-
-                                sendBroadcastUpdateTweets();
+        if (tweetsAdapter != null && tweetsAdapter.getCount() > positionLastRead) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        long id = tweetsAdapter.getItem(positionLastRead).getId();
+                        if (user_entity != null) {
+                            switch (column_entity.getInt("type_id")) {
+                                case TweetTopicsUtils.COLUMN_TIMELINE:
+                                    user_entity.setValue("last_timeline_id", id + "");
+                                    user_entity.save();
+                                    break;
+                                case TweetTopicsUtils.COLUMN_MENTIONS:
+                                    user_entity.setValue("last_mention_id", id + "");
+                                    user_entity.save();
+                                    break;
+                                case TweetTopicsUtils.COLUMN_DIRECT_MESSAGES:
+                                    user_entity.setValue("last_direct_id", id + "");
+                                    user_entity.save();
+                                    break;
                             }
-                        } catch (ArrayIndexOutOfBoundsException e) {
-                            e.printStackTrace();
-                        }
-                    }
 
+                            sendBroadcastUpdateTweets();
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    ((TweetTopicsActivity) getActivity()).reloadBarAvatar();
+                                }
+                            });
+                        }
+                    } catch (ArrayIndexOutOfBoundsException e) {
+                        e.printStackTrace();
+                    }
                 }
-            }
-        }).start();
+            }).start();
+        }
 
     }
 
@@ -221,7 +219,7 @@ public class TweetTopicsFragment extends BaseListFragment implements APIDelegate
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        tweetsAdapter = new TweetsAdapter(getActivity(), getLoaderManager(), infoTweets, user_entity.getString("name"), (int)column_entity.getId());
+        tweetsAdapter = new TweetsAdapter(getActivity(), getLoaderManager(), infoTweets, user_entity.getString("name"), (int) column_entity.getId());
     }
 
     @Override
@@ -292,7 +290,7 @@ public class TweetTopicsFragment extends BaseListFragment implements APIDelegate
         viewNoInternet = (LinearLayout) view.findViewById(R.id.tweet_view_no_internet);
         viewUpdate = (LinearLayout) view.findViewById(R.id.tweet_view_update);
 
-        if (infoTweets.size()<=0) {
+        if (infoTweets.size() <= 0) {
             preLoadInfoTweetFromDB();
         }
 
@@ -346,10 +344,10 @@ public class TweetTopicsFragment extends BaseListFragment implements APIDelegate
             int count = 0;
             boolean found = false;
             int countHide = 0;
-            boolean is_timeline = column_entity.getInt("type_id") ==  TweetTopicsUtils.COLUMN_TIMELINE;
+            boolean is_timeline = column_entity.getInt("type_id") == TweetTopicsUtils.COLUMN_TIMELINE;
             EntityTweetUser entityTweetUser = new EntityTweetUser(user_entity.getId(), column_entity.getInt("type_id"));
 
-            for (int i = tweets.size()-1; i >=0; i--) {
+            for (int i = tweets.size() - 1; i >= 0; i--) {
                 if (is_timeline && Utils.hideUser.contains(tweets.get(i).getString("username").toLowerCase())) { // usuario
                     countHide++;
                 } else if (is_timeline && Utils.isHideWordInText(tweets.get(i).getString("text").toLowerCase())) { // palabra
@@ -384,7 +382,7 @@ public class TweetTopicsFragment extends BaseListFragment implements APIDelegate
             }
 
             tweetsAdapter.addHideMessages(countHide);
-            infoTweets.get(tweetsAdapter.getLastReadPosition()+1).setLastRead(false);
+            infoTweets.get(tweetsAdapter.getLastReadPosition() + 1).setLastRead(false);
             tweetsAdapter.setLastReadPosition(tweetsAdapter.getLastReadPosition() + count);
             positionLastRead = tweetsAdapter.getLastReadPosition() + count;
 
@@ -393,6 +391,7 @@ public class TweetTopicsFragment extends BaseListFragment implements APIDelegate
 
             listView.getRefreshableView().setSelection(firstVisible + count + 1);
 
+            ((TweetTopicsActivity) getActivity()).reloadBarAvatar();
             sendBroadcastUpdateTweets();
 
         }
