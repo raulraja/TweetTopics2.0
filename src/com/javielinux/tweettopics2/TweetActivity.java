@@ -1,39 +1,32 @@
 package com.javielinux.tweettopics2;
 
-
+import com.androidquery.AQuery;
+import com.javielinux.api.response.*;
+import com.javielinux.infos.InfoLink;
+import com.javielinux.utils.*;
+import com.nineoldandroids.animation.Animator;
+import com.nineoldandroids.animation.AnimatorSet;
+import com.nineoldandroids.animation.ObjectAnimator;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
+import android.graphics.Point;
+import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.text.Html;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
+import android.widget.*;
 import com.javielinux.api.APIDelegate;
 import com.javielinux.api.APITweetTopics;
 import com.javielinux.api.request.LoadImageWidgetRequest;
 import com.javielinux.api.request.LoadTranslateTweetRequest;
-import com.javielinux.api.response.BaseResponse;
-import com.javielinux.api.response.ErrorResponse;
-import com.javielinux.api.response.LoadImageWidgetResponse;
-import com.javielinux.api.response.LoadTranslateTweetResponse;
 import com.javielinux.dialogs.HashTagDialogFragment;
 import com.javielinux.fragmentadapter.TweetFragmentAdapter;
 import com.javielinux.infos.InfoTweet;
-import com.javielinux.utils.PopupLinks;
-import com.javielinux.utils.PreferenceUtils;
-import com.javielinux.utils.TweetActions;
-import com.javielinux.utils.Utils;
-import com.nineoldandroids.animation.Animator;
-import com.nineoldandroids.animation.AnimatorSet;
-import com.nineoldandroids.animation.ObjectAnimator;
 import com.viewpagerindicator.TabPageIndicator;
 
 import java.io.File;
@@ -54,10 +47,15 @@ public class TweetActivity extends BaseLayersActivity implements APIDelegate<Bas
     private TextView txtDate;
     private TextView txtText;
 
-    private LinearLayout llRoot;
+    private RelativeLayout llRoot;
+    private LinearLayout tweetInfoLayout;
+    private ImageView zoom_image;
+    private RelativeLayout tweetContent;
     private LinearLayout viewLoading;
+    private LinearLayout tweetActionsContainer;
     private PopupLinks popupLinks;
     private boolean is_translating;
+    private boolean image_preview_displayed;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -69,7 +67,6 @@ public class TweetActivity extends BaseLayersActivity implements APIDelegate<Bas
         Bundle extras = getIntent().getExtras();
         if (extras!=null) {
             if (extras.containsKey(Utils.KEY_EXTRAS_INFO)) {
-                //infoTweet = (InfoTweet) extras.getParcelable(KEY_EXTRAS_TWEET);
                 infoTweet = (InfoTweet) extras.getBundle(Utils.KEY_EXTRAS_INFO).getParcelable(KEY_EXTRAS_TWEET);
             }
         }
@@ -148,14 +145,110 @@ public class TweetActivity extends BaseLayersActivity implements APIDelegate<Bas
         (findViewById(R.id.tweet_btn_original_tweet)).setOnClickListener(clickOriginalTweet);
         (findViewById(R.id.tweet_btn_more)).setOnClickListener(clickMore);
 
-        llRoot = (LinearLayout)findViewById(R.id.tweet_ll);
+        llRoot = (RelativeLayout)findViewById(R.id.tweet_ll);
+        tweetInfoLayout = (LinearLayout)findViewById(R.id.tweet_info_ll);
+        zoom_image = (ImageView)findViewById(R.id.zoom_image);
+        tweetContent = (RelativeLayout)findViewById(R.id.tweet_content);
+        tweetActionsContainer = (LinearLayout)findViewById(R.id.tweet_actions_container);
         viewLoading = (LinearLayout)findViewById(R.id.tweet_text_loading);
 
+        tweetContent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (image_preview_displayed)
+                    zoomOutImage();
+            }
+        });
         popupLinks = new PopupLinks(this);
-        popupLinks.loadPopup((ViewGroup)findViewById(R.id.tweet_root));
+        popupLinks.loadPopup(llRoot);
+        //popupLinks.loadPopup((ViewGroup)findViewById(R.id.tweet_root));
 
         refreshTheme();
+    }
 
+    public void zoomInImage() {
+
+        Point size = new Point();
+        getWindowManager().getDefaultDisplay().getSize(size);
+        int screenHeight = size.y;
+
+        Rect rect = new Rect();
+        getWindow().getDecorView().getWindowVisibleDisplayFrame(rect);
+        int statusBarHeight= rect.top;
+
+        final float translation_offset = (float) screenHeight - statusBarHeight - tweetActionsContainer.getTop();
+
+        ObjectAnimator tweetInfoLayoutAnimator = ObjectAnimator.ofFloat(tweetInfoLayout,"translationY",0.0f,translation_offset);
+        tweetInfoLayoutAnimator.setDuration(250);
+
+        AnimatorSet animatorSet = new AnimatorSet();
+        animatorSet.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animator) {
+                RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams)zoom_image.getLayoutParams();
+                layoutParams.setMargins(0,0,0,tweetActionsContainer.getTop());
+                zoom_image.setLayoutParams(layoutParams);
+                zoom_image.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animator) {
+                image_preview_displayed = true;
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animator) {}
+
+            @Override
+            public void onAnimationRepeat(Animator animator) {}
+        });
+
+        animatorSet.playTogether(tweetInfoLayoutAnimator);
+        animatorSet.start();
+    }
+
+    public void zoomOutImage() {
+
+        Point size = new Point();
+        getWindowManager().getDefaultDisplay().getSize(size);
+        int screenHeight = size.y;
+
+        Rect rect = new Rect();
+        getWindow().getDecorView().getWindowVisibleDisplayFrame(rect);
+        int statusBarHeight= rect.top;
+
+        float translation_offset = (float) screenHeight - statusBarHeight - tweetActionsContainer.getTop();
+
+        ObjectAnimator tweetInfoLayoutAnimator = ObjectAnimator.ofFloat(tweetInfoLayout,"translationY",translation_offset,0.0f);
+        tweetInfoLayoutAnimator.setDuration(250);
+
+        AnimatorSet animatorSet = new AnimatorSet();
+        animatorSet.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animator) {}
+
+            @Override
+            public void onAnimationEnd(Animator animator) {
+                image_preview_displayed = false;
+                zoom_image.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animator) {}
+
+            @Override
+            public void onAnimationRepeat(Animator animator) {}
+        });
+        animatorSet.playTogether(tweetInfoLayoutAnimator);
+        animatorSet.start();
+    }
+
+    public void getImage(InfoLink infoLink) {
+
+        AQuery aQuery = new AQuery(this).recycle(zoom_image);
+        aQuery.id(zoom_image).image(infoLink.getLinkImageLarge(), true, true, 0, R.drawable.icon_tweet_image_large, aQuery.getCachedImage(R.drawable.icon_tweet_image_large), 0);
+
+        zoomInImage();
     }
 
     public void goToLink(String link) {
@@ -170,12 +263,18 @@ public class TweetActivity extends BaseLayersActivity implements APIDelegate<Bas
             frag.setArguments(args);
             frag.show(getSupportFragmentManager(), "dialog");
         } else {
-            if (link.startsWith("www")) {
-                link = "http://"+link;
+            InfoLink infoLink = CacheData.getCacheInfoLink(link);
+
+            if (infoLink != null && infoLink.isExtensiveInfo() && infoLink.getType() == InfoLink.IMAGE) {
+                getImage(infoLink);
+            } else {
+                if (link.startsWith("www")) {
+                    link = "http://"+link;
+                }
+                Uri uri = Uri.parse(link);
+                Intent intent = new Intent(android.content.Intent.ACTION_VIEW, uri);
+                startActivity(intent);
             }
-            Uri uri = Uri.parse(link);
-            Intent intent = new Intent(android.content.Intent.ACTION_VIEW, uri);
-            startActivity(intent);
         }
     }
 
@@ -183,9 +282,11 @@ public class TweetActivity extends BaseLayersActivity implements APIDelegate<Bas
         if (activityAnimation == Utils.ACTIVITY_ANIMATION_RIGHT) {
             llRoot.setPadding(29,0,0,0);
             llRoot.setBackgroundResource((themeManager.getTheme() == 1) ? R.drawable.bg_sidebar : R.drawable.bg_sidebar_dark);
+            tweetInfoLayout.setBackgroundResource((themeManager.getTheme() == 1) ? R.drawable.bg_sidebar_no_border : R.drawable.bg_sidebar_no_border_dark);
         } else {
             llRoot.setPadding(0,29,0,0);
             llRoot.setBackgroundResource((themeManager.getTheme() == 1) ? R.drawable.bg_sidebar_left : R.drawable.bg_sidebar_left_dark);
+            tweetInfoLayout.setBackgroundResource((themeManager.getTheme() == 1) ? R.drawable.bg_sidebar_no_border : R.drawable.bg_sidebar_no_border_dark);
         }
     }
 

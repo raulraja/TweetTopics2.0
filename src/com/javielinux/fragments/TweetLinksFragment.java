@@ -15,6 +15,7 @@ import com.javielinux.tweettopics2.ThemeManager;
 import com.javielinux.tweettopics2.TweetActivity;
 import com.javielinux.utils.ImageUtils;
 import com.javielinux.utils.LinksUtils;
+import com.javielinux.utils.Utils;
 
 public class TweetLinksFragment extends Fragment {
 

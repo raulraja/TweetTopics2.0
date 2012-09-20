@@ -1,6 +1,7 @@
 package com.javielinux.adapters;
 
 
+import android.content.Context;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.LoaderManager;
 import android.view.View;
@@ -20,6 +21,7 @@ import com.javielinux.api.response.LoadUserResponse;
 import com.javielinux.infos.InfoLink;
 import com.javielinux.infos.InfoUsers;
 import com.javielinux.tweettopics2.R;
+import com.javielinux.tweettopics2.TweetActivity;
 import com.javielinux.utils.CacheData;
 import com.javielinux.utils.Utils;
 
@@ -61,14 +63,16 @@ public class TweetsLinkAdapter extends ArrayAdapter<String> {
 
     private LoaderManager loaderManager;
     private AQuery listAQuery;
+    private FragmentActivity activity;
 
     public TweetsLinkAdapter(FragmentActivity activity, LoaderManager loaderManager, ArrayList<String> statii) {
         super(activity, android.R.layout.simple_list_item_1, statii);
         this.loaderManager = loaderManager;
         listAQuery = new AQuery(activity);
+        this.activity = activity;
     }
 
-    public static ViewHolder generateViewHolder(View v) {
+    public static ViewHolder generateViewHolder(final FragmentActivity activity, View v) {
 
         ViewHolder viewHolder = new ViewHolder();
 
@@ -110,8 +114,8 @@ public class TweetsLinkAdapter extends ArrayAdapter<String> {
 
         if (null == convertView) {
             v = View.inflate(getContext(), R.layout.tweet_links_row, null);
-            viewHolder = generateViewHolder(v);
-            v.setTag(generateViewHolder(v));
+            viewHolder = generateViewHolder(activity, v);
+            v.setTag(generateViewHolder(activity, v));
         } else {
             v = convertView;
             viewHolder = (ViewHolder) v.getTag();
