@@ -2,6 +2,7 @@ package com.javielinux.tweettopics2;
 
 import com.androidquery.AQuery;
 import com.javielinux.api.response.*;
+import com.javielinux.components.ImageViewZoomTouch;
 import com.javielinux.infos.InfoLink;
 import com.javielinux.utils.*;
 import com.nineoldandroids.animation.Animator;
@@ -35,6 +36,7 @@ import java.util.ArrayList;
 public class TweetActivity extends BaseLayersActivity implements APIDelegate<BaseResponse>, PopupLinks.PopupLinksListener {
 
     public static final String KEY_EXTRAS_TWEET = "tweet";
+    public static final String KEY_EXTRAS_LINK = "link";
 
     private ViewPager pager;
     private TweetFragmentAdapter fragmentAdapter;
@@ -49,13 +51,21 @@ public class TweetActivity extends BaseLayersActivity implements APIDelegate<Bas
 
     private RelativeLayout llRoot;
     private LinearLayout tweetInfoLayout;
-    private ImageView zoom_image;
+    private ImageViewZoomTouch zoom_image;
     private RelativeLayout tweetContent;
     private LinearLayout viewLoading;
     private LinearLayout tweetActionsContainer;
     private PopupLinks popupLinks;
     private boolean is_translating;
     private boolean image_preview_displayed;
+
+    @Override
+    public void onBackPressed() {
+        if (image_preview_displayed)
+            zoomOutImage();
+        else
+            super.onBackPressed();
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -147,7 +157,7 @@ public class TweetActivity extends BaseLayersActivity implements APIDelegate<Bas
 
         llRoot = (RelativeLayout)findViewById(R.id.tweet_ll);
         tweetInfoLayout = (LinearLayout)findViewById(R.id.tweet_info_ll);
-        zoom_image = (ImageView)findViewById(R.id.zoom_image);
+        zoom_image = (ImageViewZoomTouch )findViewById(R.id.zoom_image);
         tweetContent = (RelativeLayout)findViewById(R.id.tweet_content);
         tweetActionsContainer = (LinearLayout)findViewById(R.id.tweet_actions_container);
         viewLoading = (LinearLayout)findViewById(R.id.tweet_text_loading);
@@ -164,6 +174,24 @@ public class TweetActivity extends BaseLayersActivity implements APIDelegate<Bas
         //popupLinks.loadPopup((ViewGroup)findViewById(R.id.tweet_root));
 
         refreshTheme();
+    }
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+
+        if (hasFocus) {
+            Bundle extras = getIntent().getExtras();
+            if (extras!=null) {
+                if (extras.containsKey(Utils.KEY_EXTRAS_INFO) && extras.getBundle(Utils.KEY_EXTRAS_INFO).containsKey(KEY_EXTRAS_LINK)) {
+                    InfoLink infoLink = CacheData.getCacheInfoLink(extras.getBundle(Utils.KEY_EXTRAS_INFO).getString(KEY_EXTRAS_LINK));
+
+                    if (infoLink != null && infoLink.isExtensiveInfo() && infoLink.getType() == InfoLink.IMAGE) {
+                        getImage(infoLink);
+                    }
+                }
+            }
+        }
     }
 
     public void zoomInImage() {

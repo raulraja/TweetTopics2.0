@@ -26,6 +26,7 @@ abstract public class BaseListFragment extends Fragment {
     protected void onClickItemList(InfoTweet infoTweet) {
         if (getActivity() instanceof BaseLayersActivity) {
             Bundle bundle = new Bundle();
+
             bundle.putParcelable(TweetActivity.KEY_EXTRAS_TWEET, infoTweet);
             ((BaseLayersActivity)getActivity()).startAnimationActivity(TweetActivity.class, bundle);
         }

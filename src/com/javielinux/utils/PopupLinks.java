@@ -13,9 +13,11 @@ import android.widget.GridView;
 import android.widget.LinearLayout;
 import com.javielinux.adapters.LinksAdapter;
 import com.javielinux.dialogs.HashTagDialogFragment;
+import com.javielinux.infos.InfoLink;
 import com.javielinux.infos.InfoTweet;
 import com.javielinux.tweettopics2.BaseLayersActivity;
 import com.javielinux.tweettopics2.R;
+import com.javielinux.tweettopics2.TweetActivity;
 import com.javielinux.tweettopics2.UserActivity;
 import com.nineoldandroids.animation.Animator;
 import com.nineoldandroids.animation.AnimatorSet;
@@ -38,6 +40,7 @@ public class PopupLinks {
     private int widthScreen;
     private int heightScreen;
     private int statusBarHeight;
+    private InfoTweet selectedInfoTweet;
 
     public PopupLinks(FragmentActivity activity) {
         init(activity);
@@ -86,6 +89,7 @@ public class PopupLinks {
     public void showLinks(View view, InfoTweet infoTweet) {
 
         ArrayList<String> linksInText = LinksUtils.pullLinks(infoTweet.getText(), infoTweet.getContentURLs());
+        selectedInfoTweet = infoTweet;
 
         if (linksInText.size()==1) {
             goToLink(linksInText.get(0));
@@ -183,12 +187,23 @@ public class PopupLinks {
             frag.setArguments(args);
             frag.show(activity.getSupportFragmentManager(), "dialog");
         } else {
-            if (link.startsWith("www")) {
-                link = "http://"+link;
+            InfoLink infoLink = CacheData.getCacheInfoLink(link);
+
+            if (infoLink != null && infoLink.isExtensiveInfo() && infoLink.getType() == InfoLink.IMAGE) {
+                if (activity instanceof BaseLayersActivity) {
+                    Bundle bundle = new Bundle();
+                    bundle.putParcelable(TweetActivity.KEY_EXTRAS_TWEET, selectedInfoTweet);
+                    bundle.putString(TweetActivity.KEY_EXTRAS_LINK, link);
+                    ((BaseLayersActivity)activity).startAnimationActivity(TweetActivity.class, bundle);
+                }
+            } else {
+                if (link.startsWith("www")) {
+                    link = "http://"+link;
+                }
+                Uri uri = Uri.parse(link);
+                Intent intent = new Intent(android.content.Intent.ACTION_VIEW, uri);
+                activity.startActivity(intent);
             }
-            Uri uri = Uri.parse(link);
-            Intent intent = new Intent(android.content.Intent.ACTION_VIEW, uri);
-            activity.startActivity(intent);
         }
     }
 
