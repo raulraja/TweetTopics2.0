@@ -1562,7 +1562,6 @@ public class NewStatusActivity extends BaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode,
                                     Intent intent) {
-        super.onActivityResult(requestCode, resultCode, intent);
         switch (requestCode) {
             case SelectImageDialogFragment.ACTIVITY_CAMERA:
                 if (resultCode != 0) {

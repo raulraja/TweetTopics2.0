@@ -37,12 +37,12 @@ public class SelectImageDialogFragment extends DialogFragment {
                             Intent intendCapture = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                             intendCapture.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(f));
                             intendCapture.putExtra("return-data", true);
-                            startActivityForResult(intendCapture, ACTIVITY_CAMERA);
+                            getActivity().startActivityForResult(intendCapture, ACTIVITY_CAMERA);
                         } else if (which == 1) {
                             Intent i = new Intent(Intent.ACTION_PICK);
                             i.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
                                     MediaStore.Images.Media.CONTENT_TYPE);
-                            startActivityForResult(i, ACTIVITY_SELECTIMAGE);
+                            getActivity().startActivityForResult(i, ACTIVITY_SELECTIMAGE);
                         }
                     }
                 })
