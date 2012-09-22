@@ -420,12 +420,16 @@ public class TweetTopicsActivity extends BaseLayersActivity implements PopupLink
             @Override
             public void run() {
                 if (refreshBarColumn) {
-                    fragmentAdapter.refreshColumnList();
-                    refreshActionBarColumns();
+                    refreshColumns();
                 }
                 pager.setCurrentItem(position, false);
             }
         }, 100);
+    }
+
+    public void refreshColumns() {
+        fragmentAdapter.refreshColumnList();
+        refreshActionBarColumns();
     }
 
     public void createUserColumn(long userId, int typeId) {

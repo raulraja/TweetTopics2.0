@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
 import com.javielinux.tweettopics2.R;
+import com.javielinux.tweettopics2.TweetTopicsActivity;
 import com.javielinux.twitter.ConnectionManager;
 import com.javielinux.utils.TweetTopicsUtils;
 import com.javielinux.utils.Utils;
@@ -90,6 +91,8 @@ public class CreateDefaultColumnsUserDialogFragment extends DialogFragment {
                     dms.setValue("user_id", userEntity.getId());
                     dms.save();
                 }
+
+                ((TweetTopicsActivity)getActivity()).refreshColumns();
 
                 // create friend
                 if (boxInvite.isChecked()) {

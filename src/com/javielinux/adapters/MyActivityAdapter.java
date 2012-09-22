@@ -144,7 +144,21 @@ public class MyActivityAdapter extends BaseAdapter {
 
         // crear vista
 
-        if (element.type==MY_ACTIVITY_USER) {
+        if (element.type==MY_ACTIVITY_NO_USERS) {
+            v.findViewById(R.id.my_activity_add_user).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    myActivityFragment.showDialogSocialNetworks();
+                }
+            });
+        } else if (element.type==MY_ACTIVITY_NO_SEARCHES) {
+            v.findViewById(R.id.my_activity_samples_search).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    myActivityFragment.showDialogSamples();
+                }
+            });
+        } else if (element.type==MY_ACTIVITY_USER) {
 
             Entity item = element.entityUser;
 

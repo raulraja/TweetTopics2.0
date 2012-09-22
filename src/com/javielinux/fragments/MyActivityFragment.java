@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.Shader;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
@@ -43,6 +44,7 @@ import preferences.Preferences;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class MyActivityFragment extends Fragment {
 
@@ -776,6 +778,132 @@ public class MyActivityFragment extends Fragment {
         } else {
             getActivity().finish();
         }
+    }
+
+    public void showDialogSamples() {
+        final boolean[] samplesChecked = new boolean[]{false, false, false, false, false, false, false, false, false, false, false, false};
+
+        final CheckBox cb = new CheckBox(getActivity());
+        cb.setText(R.string.samples_search_lang);
+        cb.setTextColor(Color.GRAY);
+
+        AlertDialog builder = new AlertDialog.Builder(getActivity())
+                .setTitle(R.string.samples_search)
+                .setView(cb)
+                .setMultiChoiceItems(R.array.actions_samples_search,
+                        new boolean[]{false, false, false, false, false, false, false, false, false, false, false, false},
+                        new DialogInterface.OnMultiChoiceClickListener() {
+                            public void onClick(DialogInterface dialog, int whichButton, boolean isChecked) {
+                                samplesChecked[whichButton] = isChecked;
+                            }
+                        })
+                .setPositiveButton(R.string.alert_dialog_ok, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        String[] names = getResources().getStringArray(R.array.actions_samples_search);
+                        String lang = "";
+                        if (cb.isChecked()) {
+                            String[] langs = getResources().getStringArray(R.array.languages_values);
+                            for (int l=0; l<langs.length; l++) {
+                                if (langs[l].equals(Locale.getDefault().getLanguage())) {
+                                    lang = Locale.getDefault().getLanguage();
+                                }
+                            }
+                        }
+                        for (int i=0; i<samplesChecked.length; i++) {
+                            if (samplesChecked[i]) {
+                                Entity ent = new Entity("search");
+                                ent.setValue("name", names[i]);
+                                ent.setValue("date_create", Utils.now());
+                                ent.setValue("last_modified", Utils.now());
+                                ent.setValue("use_count", 0);
+                                if (i==0) {
+                                    ent.setValue("lang", lang);
+                                    ent.setValue("words_and", "android");
+                                    ent.setValue("icon_id", 2);
+                                    ent.setValue("icon_big", "drawable/icon_android");
+                                    ent.setValue("icon_small", "drawable/icon_android_small");
+                                } else if (i==1) {
+                                    ent.setValue("lang", lang);
+                                    ent.setValue("words_and", "android");
+                                    ent.setValue("words_or", "juego juegos videojuegos videjuego game games");
+                                    ent.setValue("icon_id", 2);
+                                    ent.setValue("icon_big", "drawable/icon_android");
+                                    ent.setValue("icon_small", "drawable/icon_android_small");
+                                } else if (i==2) {
+                                    ent.setValue("lang", lang);
+                                    ent.setValue("words_and", "android");
+                                    ent.setValue("words_or", "app aplicacion aplication");
+                                    ent.setValue("icon_id", 2);
+                                    ent.setValue("icon_big", "drawable/icon_android");
+                                    ent.setValue("icon_small", "drawable/icon_android_small");
+                                } else if (i==3) {
+                                    ent.setValue("words_and", "tilt shift");
+                                    ent.setValue("filter", 2);
+                                    ent.setValue("icon_id", 17);
+                                    ent.setValue("icon_big", "drawable/icon_photo");
+                                    ent.setValue("icon_small", "drawable/icon_photo_small");
+                                } else if (i==4) {
+                                    ent.setValue("words_and", "hdr");
+                                    ent.setValue("filter", 2);
+                                    ent.setValue("icon_id", 18);
+                                    ent.setValue("icon_big", "drawable/icon_photo2");
+                                    ent.setValue("icon_small", "drawable/icon_photo2_small");
+                                } else if (i==5) {
+                                    ent.setValue("lang", lang);
+                                    ent.setValue("words_and", "true blood");
+                                    ent.setValue("icon_id", 1);
+                                    ent.setValue("icon_big", "drawable/letter_t");
+                                    ent.setValue("icon_small", "drawable/letter_t_small");
+                                } else if (i==6) {
+                                    ent.setValue("lang", lang);
+                                    ent.setValue("words_and", "walking dead");
+                                    ent.setValue("icon_id", 1);
+                                    ent.setValue("icon_big", "drawable/letter_w");
+                                    ent.setValue("icon_small", "drawable/letter_w_small");
+                                } else if (i==7) {
+                                    ent.setValue("words_and", "4 8 15 16 23 42");
+                                    ent.setValue("icon_id", 1);
+                                    ent.setValue("icon_big", "drawable/letter_n");
+                                    ent.setValue("icon_small", "drawable/letter_n_small");
+                                } else if (i==8) {
+                                    ent.setValue("lang", lang);
+                                    ent.setValue("words_or", "geek \"humor geek\"");
+                                    ent.setValue("filter", 5);
+                                    ent.setValue("icon_id", 14);
+                                    ent.setValue("icon_big", "drawable/icon_news");
+                                    ent.setValue("icon_small", "drawable/icon_news_small");
+                                } else if (i==9) {
+                                    ent.setValue("lang", lang);
+                                    ent.setValue("words_or", "receta recipe");
+                                    ent.setValue("filter", 5);
+                                    ent.setValue("icon_id", 14);
+                                    ent.setValue("icon_big", "drawable/icon_news");
+                                    ent.setValue("icon_small", "drawable/icon_news_small");
+                                } else if (i==10) {
+                                    ent.setValue("words_and", "slow motion");
+                                    ent.setValue("filter", 3);
+                                    ent.setValue("icon_id", 3);
+                                    ent.setValue("icon_big", "drawable/icon_cinema");
+                                    ent.setValue("icon_small", "drawable/icon_cinema_small");
+                                } else if (i==11) {
+                                    ent.setValue("words_and", "stop motion");
+                                    ent.setValue("filter", 3);
+                                    ent.setValue("icon_id", 4);
+                                    ent.setValue("icon_big", "drawable/icon_cinema2");
+                                    ent.setValue("icon_small", "drawable/icon_cinema2_small");
+                                }
+                                ent.save();
+                            }
+                        }
+                        fillData();
+                    }
+                })
+                .setNegativeButton(R.string.alert_dialog_cancel, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                    }
+                })
+                .create();
+        builder.show();
     }
 
     /*public void showOptionsColumns(int positionX, int index) {
