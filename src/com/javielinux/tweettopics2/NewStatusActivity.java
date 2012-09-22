@@ -15,6 +15,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.StateListDrawable;
 import android.location.Location;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
@@ -153,6 +154,8 @@ public class NewStatusActivity extends BaseActivity {
     private int mShortURLLength = 19;
     private int mShortURLLengthHttps = 20;
 
+    private ImageView ivMoreOptions;
+
 
     public void refreshTheme() {
         boolean hasWallpaper = false;
@@ -171,6 +174,12 @@ public class NewStatusActivity extends BaseActivity {
         if (!hasWallpaper) {
             mLayoutBackgroundApp.setBackgroundColor(Color.parseColor("#" + themeManager.getStringColor("color_background_new_status")));
         }
+
+        StateListDrawable statesButtonMoreOptions = new StateListDrawable();
+        statesButtonMoreOptions.addState(new int[]{android.R.attr.state_pressed}, ImageUtils.createBackgroundDrawable(this, themeManager.getColor("color_button_press_default"), false, 0));
+        statesButtonMoreOptions.addState(new int[]{-android.R.attr.state_pressed}, ImageUtils.createBackgroundDrawable(this, themeManager.getColor("color_top_bar"), false, 0));
+
+        ivMoreOptions.setBackgroundDrawable(statesButtonMoreOptions);
 
         StateListDrawable statesButton = new StateListDrawable();
         statesButton.addState(new int[]{android.R.attr.state_pressed}, ImageUtils.createBackgroundDrawable(this, themeManager.getColor("color_button_press_default"), false, 0));
@@ -546,7 +555,16 @@ public class NewStatusActivity extends BaseActivity {
 
         });
 
-        mCounter = (TextView) this.findViewById(R.id.bt_counter);
+        mCounter = (TextView) findViewById(R.id.bt_counter);
+
+        ivMoreOptions = (ImageView) findViewById(R.id.new_status_more_options);
+
+        ivMoreOptions.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showMenuOptions(view);
+            }
+        });
 
         refreshTheme();
 
@@ -560,6 +578,69 @@ public class NewStatusActivity extends BaseActivity {
 
         if (mType == TYPE_DIRECT_MESSAGE) onItemClickDMComplete(mDMUsername, false);
 
+    }
+
+    private void showMenuOptions(View view) {
+        if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.HONEYCOMB) {
+            PopupMenu popupMenu = new PopupMenu(this, view);
+            popupMenu.getMenuInflater().inflate(R.menu.new_status_more_options, popupMenu.getMenu());
+            popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+
+                @Override
+                public boolean onMenuItemClick(MenuItem item) {
+                    if (item.getItemId() == R.id.popupmenu_status_more_options_photo) {
+                        showSelectImageDialog();
+                    } else if (item.getItemId() == R.id.popupmenu_status_more_options_new_draft) {
+                        saveDrafts();
+                    } else if (item.getItemId() == R.id.popupmenu_status_more_options_view_draft) {
+                        showDialogDrafts();
+                    } else if (item.getItemId() == R.id.popupmenu_status_more_options_default_text) {
+                        showDialogDefaultText();
+                    } else if (item.getItemId() == R.id.popupmenu_status_more_options_size) {
+                        showSizeText();
+                    }
+                    return true;
+                }
+            });
+            popupMenu.show();
+        } else {
+            AlertDialogFragment frag = new AlertDialogFragment();
+            Bundle args = new Bundle();
+            args.putInt(AlertDialogFragment.KEY_ALERT_TITLE, R.string.actions);
+            args.putBoolean(AlertDialogFragment.KEY_ALERT_HAS_POSITIVE_BUTTON, false);
+            args.putBoolean(AlertDialogFragment.KEY_ALERT_CANCELABLE, false);
+            args.putInt(AlertDialogFragment.KEY_ALERT_ARRAY_ITEMS, R.array.popupmenu_my_activity_more_options);
+            frag.setArguments(args);
+            frag.setAlertButtonListener(new AlertDialogFragment.AlertButtonListener() {
+                @Override
+                public void OnAlertButtonOk() {
+                }
+
+                @Override
+                public void OnAlertButtonCancel() {
+                }
+
+                @Override
+                public void OnAlertButtonNeutral() {
+                }
+
+                @Override
+                public void OnAlertItems(int which) {
+                    if (which == 0) {
+                        showSelectImageDialog();
+                    } else if (which == 1) {
+                        saveDrafts();
+                    } else if (which == 2) {
+                        showDialogDrafts();
+                    } else if (which == 3) {
+                        showDialogDefaultText();
+                    } else if (which == 4) {
+                        showSizeText();
+                    }
+                }
+            });
+            frag.show(getSupportFragmentManager(), "dialog");
+        }
     }
 
     private void showNoFoundGeoDialog() {
@@ -1152,45 +1233,6 @@ public class NewStatusActivity extends BaseActivity {
         } else {
             mCounter.setTextColor(Color.WHITE);
         }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        super.onCreateOptionsMenu(menu);
-        menu.add(0, TAKEPHOTO_ID, 0, R.string.take_photo)
-                .setIcon(android.R.drawable.ic_menu_camera);
-        menu.add(0, NEW_DRAFT_ID, 0, R.string.new_draft)
-                .setIcon(android.R.drawable.ic_menu_add);
-        menu.add(0, VIEW_DRAFT_ID, 0, R.string.view_draft)
-                .setIcon(android.R.drawable.ic_menu_edit);
-        menu.add(0, DEFAULTTEXT_ID, 0, R.string.default_text)
-                .setIcon(android.R.drawable.ic_menu_agenda);
-        menu.add(0, SIZE_TEXT_ID, 0, R.string.size)
-                .setIcon(R.drawable.ic_menu_font_size);
-        return true;
-    }
-
-    @Override
-    public boolean onMenuItemSelected(int featureId, MenuItem item) {
-        switch (item.getItemId()) {
-            case TAKEPHOTO_ID:
-                showSelectImageDialog();
-                return true;
-            case DEFAULTTEXT_ID:
-                showDialogDefaultText();
-                return true;
-            case NEW_DRAFT_ID:
-                saveDrafts();
-                return true;
-            case VIEW_DRAFT_ID:
-                showDialogDrafts();
-                return true;
-            case SIZE_TEXT_ID:
-                showSizeText();
-                return true;
-        }
-
-        return super.onMenuItemSelected(featureId, item);
     }
 
     public void showSizeText() {

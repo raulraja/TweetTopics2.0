@@ -28,6 +28,13 @@
                   android:text="@string/new_status"
                 />
 
+        <ImageView android:id="@+id/new_status_more_options"
+                   android:layout_height="@dimen/actionbar_height"
+                   android:layout_width="@dimen/actionbar_height"
+                   android:padding="6dp"
+                   android:layout_alignParentRight="true"
+                   android:src="?icon_action_more_options"/>
+
     </RelativeLayout>
 
     <ImageView android:background="@drawable/border_shadow_horizontal"

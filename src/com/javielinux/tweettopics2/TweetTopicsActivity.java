@@ -19,7 +19,10 @@ import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
-import android.view.*;
+import android.view.Display;
+import android.view.KeyEvent;
+import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.AnimationSet;
 import android.view.animation.ScaleAnimation;
 import android.widget.*;
@@ -36,7 +39,6 @@ import com.nineoldandroids.animation.Animator;
 import com.nineoldandroids.animation.AnimatorSet;
 import com.nineoldandroids.animation.ObjectAnimator;
 import com.viewpagerindicator.TitlePageIndicator;
-import preferences.Preferences;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -46,14 +48,9 @@ public class TweetTopicsActivity extends BaseLayersActivity implements PopupLink
     public static final String KEY_EXTRAS_GOTO_COLUMN_USER = "KEY_EXTRAS_GOTO_COLUMN_USER";
     public static final String KEY_EXTRAS_GOTO_COLUMN_TYPE = "KEY_EXTRAS_GOTO_COLUMN_TYPE";
 
-    protected static final int PREFERENCES_ID = Menu.FIRST;
-    protected static final int EXIT_ID = Menu.FIRST + 1;
-    protected static final int SIZE_TEXT_ID = Menu.FIRST + 2;
-
     public static final int ACTIVITY_NEWEDITSEARCH = 0;
-    public static final int ACTIVITY_PREFERENCES = 1;
-    public static final int ACTIVITY_NEWSTATUS = 2;
-    public static final int ACTIVITY_TRENDS_LOCATION = 3;
+    public static final int ACTIVITY_NEWSTATUS = 1;
+    public static final int ACTIVITY_TRENDS_LOCATION = 2;
 
     private ViewPager pager;
     private TweetTopicsFragmentAdapter fragmentAdapter;
@@ -368,17 +365,6 @@ public class TweetTopicsActivity extends BaseLayersActivity implements PopupLink
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        menu.add(0, SIZE_TEXT_ID, 0, R.string.size)
-                .setIcon(R.drawable.ic_menu_font_size);
-        menu.add(0, PREFERENCES_ID, 0, R.string.preferences)
-                .setIcon(android.R.drawable.ic_menu_preferences);
-        menu.add(0, EXIT_ID, 0, R.string.exit)
-                .setIcon(android.R.drawable.ic_menu_revert);
-        return true;
-    }
-
-    @Override
     public void onDestroy() {
         super.onDestroy();
         DataFramework.getInstance().close();
@@ -400,28 +386,15 @@ public class TweetTopicsActivity extends BaseLayersActivity implements PopupLink
                 return false;
             }
         }
+        if (keyCode == KeyEvent.KEYCODE_MENU) {
+            goToColumn(0, false);
+        }
         return super.onKeyDown(keyCode, event);
     }
 
     @Override
     public void onShowLinks(View view, InfoTweet infoTweet) {
         popupLinks.showLinks(view, infoTweet);
-    }
-
-    public boolean onMenuItemSelected(int featureId, MenuItem item) {
-        switch (item.getItemId()) {
-            case SIZE_TEXT_ID:
-                showSizeText();
-                return true;
-            case PREFERENCES_ID:
-                Intent i = new Intent(this, Preferences.class);
-                startActivityForResult(i, ACTIVITY_PREFERENCES);
-                return true;
-            case EXIT_ID:
-                showDialogExit();
-                return true;
-        }
-        return false;
     }
 
     @Override
@@ -901,102 +874,5 @@ public class TweetTopicsActivity extends BaseLayersActivity implements PopupLink
         frag.show(getSupportFragmentManager(), "dialog");
     }
 
-    private void showDialogExit() {
 
-        int minutes = Integer.parseInt(Utils.getPreference(this).getString("prf_time_notifications", "15"));
-
-        if (minutes > 0) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle(R.string.dialog_exit);
-            builder.setMessage(R.string.dialog_exit_msg);
-            builder.setPositiveButton(R.string.alert_dialog_ok, new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int whichButton) {
-                    PreferenceUtils.saveNotificationsApp(TweetTopicsActivity.this, false);
-                    TweetTopicsActivity.this.finish();
-                }
-            });
-            builder.setNegativeButton(R.string.alert_dialog_cancel, new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int whichButton) {
-                }
-            });
-            builder.create();
-            builder.show();
-        } else {
-            TweetTopicsActivity.this.finish();
-        }
-    }
-
-    public void showSizeText() {
-
-        final int minValue = 6;
-
-        LayoutInflater factory = LayoutInflater.from(this);
-        final View sizesFontView = factory.inflate(R.layout.alert_dialog_sizes_font, null);
-
-        ((TextView) sizesFontView.findViewById(R.id.txt_size_titles)).setText(getString(R.string.size_title) + " (" + PreferenceUtils.getSizeTitles(this) + ")");
-        ((TextView) sizesFontView.findViewById(R.id.txt_size_text)).setText(getString(R.string.size_text) + " (" + PreferenceUtils.getSizeText(this) + ")");
-
-        SeekBar sbSizeTitles = (SeekBar) sizesFontView.findViewById(R.id.sb_size_titles);
-
-        sbSizeTitles.setMax(18);
-        sbSizeTitles.setProgress(PreferenceUtils.getSizeTitles(this) - minValue);
-
-        sbSizeTitles.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                progress += minValue;
-                PreferenceUtils.setSizeTitles(TweetTopicsActivity.this, progress);
-                //seekBar.setProgress(progress);
-                ((TextView) sizesFontView.findViewById(R.id.txt_size_titles)).setText(TweetTopicsActivity.this.getString(R.string.size_title) + " (" + PreferenceUtils.getSizeTitles(TweetTopicsActivity.this) + ")");
-                // TODO notificar al adapter el cambio de texto
-                //mAdapterResponseList.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-            }
-
-        });
-
-        SeekBar sbSizeText = (SeekBar) sizesFontView.findViewById(R.id.sb_size_text);
-        sbSizeText.setMax(18);
-        sbSizeText.setProgress(PreferenceUtils.getSizeText(this) - minValue);
-
-        sbSizeText.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                progress += minValue;
-                PreferenceUtils.setSizeText(TweetTopicsActivity.this, progress);
-                //seekBar.setProgress(progress);
-                ((TextView) sizesFontView.findViewById(R.id.txt_size_text)).setText(TweetTopicsActivity.this.getString(R.string.size_text) + " (" + PreferenceUtils.getSizeText(TweetTopicsActivity.this) + ")");
-                // TODO notificar al adapter el cambio de texto
-                //mAdapterResponseList.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-            }
-
-        });
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(R.string.font_size);
-        builder.setView(sizesFontView);
-        builder.setPositiveButton(R.string.alert_dialog_ok, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-            }
-        });
-        builder.create();
-        builder.show();
-    }
 }

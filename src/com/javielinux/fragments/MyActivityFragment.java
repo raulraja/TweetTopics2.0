@@ -1,6 +1,7 @@
 package com.javielinux.fragments;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -9,15 +10,15 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Shader;
 import android.graphics.drawable.BitmapDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.*;
 import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
 import com.javielinux.adapters.MyActivityAdapter;
@@ -34,8 +35,10 @@ import com.javielinux.dialogs.TypeSocialNetworksDialogFragment;
 import com.javielinux.facebook.FacebookHandler;
 import com.javielinux.tweettopics2.*;
 import com.javielinux.twitter.AuthorizationActivity;
+import com.javielinux.utils.PreferenceUtils;
 import com.javielinux.utils.TweetTopicsUtils;
 import com.javielinux.utils.Utils;
+import preferences.Preferences;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -190,6 +193,15 @@ public class MyActivityFragment extends Fragment {
 
         });
 
+        view.findViewById(R.id.my_activity_more_options).setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                showMenuOptions(v);
+            }
+
+        });
+
         listUsers = (ListView) view.findViewById(R.id.my_activity_users);
 
         listUsers.setAdapter(adapter);
@@ -197,6 +209,63 @@ public class MyActivityFragment extends Fragment {
         lblEmpty = (TextView) view.findViewById(R.id.my_activity_empty);
 
         return view;
+    }
+
+    private void showMenuOptions(View v) {
+        if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.HONEYCOMB) {
+            PopupMenu popupMenu = new PopupMenu(getActivity(), v);
+            popupMenu.getMenuInflater().inflate(R.menu.my_activity_more_options, popupMenu.getMenu());
+            popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+
+                @Override
+                public boolean onMenuItemClick(MenuItem item) {
+                    if (item.getItemId() == R.id.popupmenu_more_options_size) {
+                        showSizeText();
+                    } else if (item.getItemId() == R.id.popupmenu_more_options_preferences) {
+                        Intent i = new Intent(getActivity(), Preferences.class);
+                        startActivity(i);
+                    } else if (item.getItemId() == R.id.popupmenu_more_options_exit) {
+                        showDialogExit();
+                    }
+                    return true;
+                }
+            });
+            popupMenu.show();
+        } else {
+            AlertDialogFragment frag = new AlertDialogFragment();
+            Bundle args = new Bundle();
+            args.putInt(AlertDialogFragment.KEY_ALERT_TITLE, R.string.actions);
+            args.putBoolean(AlertDialogFragment.KEY_ALERT_HAS_POSITIVE_BUTTON, false);
+            args.putBoolean(AlertDialogFragment.KEY_ALERT_CANCELABLE, false);
+            args.putInt(AlertDialogFragment.KEY_ALERT_ARRAY_ITEMS, R.array.popupmenu_my_activity_more_options);
+            frag.setArguments(args);
+            frag.setAlertButtonListener(new AlertDialogFragment.AlertButtonListener() {
+                @Override
+                public void OnAlertButtonOk() {
+                }
+
+                @Override
+                public void OnAlertButtonCancel() {
+                }
+
+                @Override
+                public void OnAlertButtonNeutral() {
+                }
+
+                @Override
+                public void OnAlertItems(int which) {
+                    if (which == 0) {
+                        showSizeText();
+                    } else if (which == 1) {
+                        Intent i = new Intent(getActivity(), Preferences.class);
+                        startActivity(i);
+                    } else if (which == 2) {
+                        showDialogExit();
+                    }
+                }
+            });
+            frag.show(getFragmentManager(), "dialog");
+        }
     }
 
     @Override
@@ -606,6 +675,106 @@ public class MyActivityFragment extends Fragment {
             FacebookHandler fbh = new FacebookHandler(getActivity());
             fbh.setMyActivityFragment(this);
             fbh.newUser();
+        }
+    }
+
+
+    public void showSizeText() {
+
+        final int minValue = 6;
+
+        LayoutInflater factory = LayoutInflater.from(getActivity());
+        final View sizesFontView = factory.inflate(R.layout.alert_dialog_sizes_font, null);
+
+        ((TextView) sizesFontView.findViewById(R.id.txt_size_titles)).setText(getString(R.string.size_title) + " (" + PreferenceUtils.getSizeTitles(getActivity()) + ")");
+        ((TextView) sizesFontView.findViewById(R.id.txt_size_text)).setText(getString(R.string.size_text) + " (" + PreferenceUtils.getSizeText(getActivity()) + ")");
+
+        SeekBar sbSizeTitles = (SeekBar) sizesFontView.findViewById(R.id.sb_size_titles);
+
+        sbSizeTitles.setMax(18);
+        sbSizeTitles.setProgress(PreferenceUtils.getSizeTitles(getActivity()) - minValue);
+
+        sbSizeTitles.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                progress += minValue;
+                PreferenceUtils.setSizeTitles(getActivity(), progress);
+                //seekBar.setProgress(progress);
+                ((TextView) sizesFontView.findViewById(R.id.txt_size_titles)).setText(getString(R.string.size_title) + " (" + PreferenceUtils.getSizeTitles(getActivity()) + ")");
+                // TODO notificar al adapter el cambio de texto
+                //mAdapterResponseList.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+            }
+
+        });
+
+        SeekBar sbSizeText = (SeekBar) sizesFontView.findViewById(R.id.sb_size_text);
+        sbSizeText.setMax(18);
+        sbSizeText.setProgress(PreferenceUtils.getSizeText(getActivity()) - minValue);
+
+        sbSizeText.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                progress += minValue;
+                PreferenceUtils.setSizeText(getActivity(), progress);
+                //seekBar.setProgress(progress);
+                ((TextView) sizesFontView.findViewById(R.id.txt_size_text)).setText(getString(R.string.size_text) + " (" + PreferenceUtils.getSizeText(getActivity()) + ")");
+                // TODO notificar al adapter el cambio de texto
+                //mAdapterResponseList.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+            }
+
+        });
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle(R.string.font_size);
+        builder.setView(sizesFontView);
+        builder.setPositiveButton(R.string.alert_dialog_ok, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+            }
+        });
+        builder.create();
+        builder.show();
+    }
+
+    private void showDialogExit() {
+
+        int minutes = Integer.parseInt(Utils.getPreference(getActivity()).getString("prf_time_notifications", "15"));
+
+        if (minutes > 0) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setTitle(R.string.dialog_exit);
+            builder.setMessage(R.string.dialog_exit_msg);
+            builder.setPositiveButton(R.string.alert_dialog_ok, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int whichButton) {
+                    PreferenceUtils.saveNotificationsApp(getActivity(), false);
+                    getActivity().finish();
+                }
+            });
+            builder.setNegativeButton(R.string.alert_dialog_cancel, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int whichButton) {
+                }
+            });
+            builder.create();
+            builder.show();
+        } else {
+            getActivity().finish();
         }
     }
 

@@ -84,18 +84,18 @@ public class TweetTopicsFragmentAdapter extends FragmentPagerAdapter {
                 case TweetTopicsUtils.COLUMN_TIMELINE:
                 case TweetTopicsUtils.COLUMN_MENTIONS:
                 case TweetTopicsUtils.COLUMN_DIRECT_MESSAGES:
-
                     tweets_count = getUnreadTweetsCount(column_type, fragmentList.get(position).getEntity("user_id"), null);
-
                     bitmap = ImageUtils.getBitmapAvatar(fragmentList.get(position).getEntity("user_id").getId(), Utils.AVATAR_LARGE);
                     if (tweets_count > 0) {
                         Paint paint = new Paint();
                         paint.setAntiAlias(true);
                         Bitmap number = ImageUtils.getBitmapNumber(context, tweets_count, Color.RED, Utils.TYPE_RECTANGLE, 14, Utils.AVATAR_LARGE / 2);
-                        Canvas canvas = new Canvas(bitmap);
+                        Bitmap newBitmap = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), Bitmap.Config.ARGB_8888);
+                        Canvas canvas = new Canvas(newBitmap);
+                        canvas.drawBitmap(bitmap, 0, 0, paint);
                         canvas.drawBitmap(number, bitmap.getWidth() - number.getWidth(), 0, paint);
+                        bitmap = newBitmap;
                     }
-
                     break;
                 case TweetTopicsUtils.COLUMN_SENT_DIRECT_MESSAGES:
                 case TweetTopicsUtils.COLUMN_RETWEETS_BY_OTHERS:
@@ -116,8 +116,11 @@ public class TweetTopicsFragmentAdapter extends FragmentPagerAdapter {
                         Paint paint = new Paint();
                         paint.setAntiAlias(true);
                         Bitmap number = ImageUtils.getBitmapNumber(context, tweets_count, Color.RED, Utils.TYPE_RECTANGLE, 14, Utils.AVATAR_LARGE / 2);
-                        Canvas canvas = new Canvas(bitmap);
+                        Bitmap newBitmap = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), Bitmap.Config.ARGB_8888);
+                        Canvas canvas = new Canvas(newBitmap);
+                        canvas.drawBitmap(bitmap, 0, 0, paint);
                         canvas.drawBitmap(number, bitmap.getWidth() - number.getWidth(), 0, paint);
+                        bitmap = newBitmap;
                     }
 
 

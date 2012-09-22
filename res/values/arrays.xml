@@ -1,6 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string-array name="popupmenu_new_status_more_options"><!-- 2.0 -->
+        <item>@string/take_photo</item>
+        <item>@string/new_draft</item>
+        <item>@string/view_draft</item>
+        <item>@string/default_text</item>
+        <item>@string/size</item>
+    </string-array>
+
+    <string-array name="popupmenu_my_activity_more_options"><!-- 2.0 -->
+        <item>@string/size</item>
+        <item>@string/preferences</item>
+        <item>@string/exit</item>
+    </string-array>
+
     <string-array name="entries_prf_max_download"><!-- 1.71 -->
         <item>60</item>
         <item>80</item>
