@@ -197,7 +197,7 @@ public class ListUserFragment extends BaseListFragment implements APIDelegate<Ba
             }
         }
 
-        tweetsAdapter.setLastReadPosition(tweetsAdapter.getLastReadPosition() + count);
+        //tweetsAdapter.setLastReadPosition(tweetsAdapter.getLastReadPosition() + count);
         tweetsAdapter.notifyDataSetChanged();
         tweetsAdapter.launchVisibleTask();
         listView.getRefreshableView().setSelection(firstVisible + count);

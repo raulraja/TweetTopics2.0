@@ -204,7 +204,7 @@ public class FavoritesFragment extends BaseListFragment implements APIDelegate<B
             }
         }
 
-        tweetsAdapter.setLastReadPosition(tweetsAdapter.getLastReadPosition() + count);
+        //tweetsAdapter.setLastReadPosition(tweetsAdapter.getLastReadPosition() + count);
         tweetsAdapter.notifyDataSetChanged();
         tweetsAdapter.launchVisibleTask();
         listView.getRefreshableView().setSelection(firstVisible + count);

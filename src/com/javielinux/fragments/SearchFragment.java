@@ -163,33 +163,31 @@ public class SearchFragment extends BaseListFragment implements APIDelegate<Base
 
     private void markPositionLastReadAsLastReadId() {
 
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
+        if (tweetsAdapter != null && tweetsAdapter.getLastReadPosition() > positionLastRead) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
 
-                if (tweetsAdapter != null) {
-
-                    if (tweetsAdapter.getCount() > positionLastRead) {
-                        try {
-                            long id = tweetsAdapter.getItem(positionLastRead).getId();
-                            if (search_entity != null) {
-                                search_entity.setValue("last_tweet_id", id + "");
-                                search_entity.save();
-                            }
-                            sendBroadcastUpdateTweets();
-                            getActivity().runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    ((TweetTopicsActivity) getActivity()).reloadBarAvatar();
-                                }
-                            });
-                        } catch (ArrayIndexOutOfBoundsException e) {
-                            e.printStackTrace();
+                    try {
+                        long id = tweetsAdapter.getItem(positionLastRead).getId();
+                        if (search_entity != null) {
+                            search_entity.setValue("last_tweet_id", id + "");
+                            search_entity.save();
                         }
+                        sendBroadcastUpdateTweets();
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                ((TweetTopicsActivity) getActivity()).reloadBarAvatar();
+                            }
+                        });
+                    } catch (ArrayIndexOutOfBoundsException e) {
+                        e.printStackTrace();
                     }
+
                 }
-            }
-        }).start();
+            }).start();
+        }
 
     }
 
@@ -314,7 +312,7 @@ public class SearchFragment extends BaseListFragment implements APIDelegate<Base
                 }
             }
 
-            tweetsAdapter.setLastReadPosition(tweetsAdapter.getLastReadPosition() + count);
+            //tweetsAdapter.setLastReadPosition(tweetsAdapter.getLastReadPosition() + count);
             tweetsAdapter.notifyDataSetChanged();
             listView.getRefreshableView().setSelection(firstVisible + count);
         } else {
@@ -359,7 +357,12 @@ public class SearchFragment extends BaseListFragment implements APIDelegate<Base
                 }
             }
 
-            tweetsAdapter.setLastReadPosition(tweetsAdapter.getLastReadPosition() + count);
+            try {
+                infoTweets.get(tweetsAdapter.getLastReadPosition() + 1).setLastRead(false);
+                tweetsAdapter.setLastReadPosition(tweetsAdapter.getLastReadPosition() + count);
+                positionLastRead = tweetsAdapter.getLastReadPosition() + count;
+            } catch (IndexOutOfBoundsException e) {}
+
             tweetsAdapter.notifyDataSetChanged();
             tweetsAdapter.launchVisibleTask();
             listView.getRefreshableView().setSelection(firstVisible + count);

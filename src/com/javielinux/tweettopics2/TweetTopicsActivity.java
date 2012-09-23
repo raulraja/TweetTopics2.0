@@ -51,6 +51,7 @@ public class TweetTopicsActivity extends BaseLayersActivity implements PopupLink
     public static final int ACTIVITY_NEWEDITSEARCH = 0;
     public static final int ACTIVITY_NEWSTATUS = 1;
     public static final int ACTIVITY_TRENDS_LOCATION = 2;
+    public static final int ACTIVITY_EDIT_SEARCH = 3;
 
     private ViewPager pager;
     private TweetTopicsFragmentAdapter fragmentAdapter;
@@ -310,8 +311,10 @@ public class TweetTopicsActivity extends BaseLayersActivity implements PopupLink
 
     protected void animateDragged() {
         View view = imgBarAvatar;
-        float x = imgBarAvatar.getX();
-        float y = imgBarAvatar.getY();
+        float x = 0;
+        try {
+            imgBarAvatar.getX();
+        } catch (NoSuchMethodError e) {}
         view.layout(imgBarAvatar.getLeft(), imgBarAvatar.getTop(), imgBarAvatar.getRight(), imgBarAvatar.getBottom());
         AnimationSet animSet = new AnimationSet(true);
         ScaleAnimation scale = new ScaleAnimation(.667f, 1, .667f, 1, imgBarAvatar.getHeight() * 3 / 4, imgBarAvatar.getWidth() * 3 / 4);
@@ -351,6 +354,8 @@ public class TweetTopicsActivity extends BaseLayersActivity implements PopupLink
 
                         goToColumn(count, true);
 
+                    } else {
+                        getFragmentPagerAdapter().getMyActivityFragment().fillData();
                     }
                 }
 
@@ -359,6 +364,18 @@ public class TweetTopicsActivity extends BaseLayersActivity implements PopupLink
                 if (resultCode == Activity.RESULT_OK) {
                     goToColumn(data.getIntExtra("position", 0), true);
                 }
+                break;
+            case ACTIVITY_EDIT_SEARCH:
+
+                if (data != null && data.getExtras() != null && data.getExtras().containsKey("view")) {
+                    boolean view_column = data.getExtras().getBoolean("view", false);
+
+                    if (view_column) {
+                        Entity search_entity = new Entity("search", data.getLongExtra(DataFramework.KEY_ID, -1));
+                        clickSearch(search_entity);
+                    }
+                }
+
                 break;
         }
 
@@ -432,6 +449,41 @@ public class TweetTopicsActivity extends BaseLayersActivity implements PopupLink
         refreshActionBarColumns();
     }
 
+
+    public void clickSearch(Entity clickSearch) {
+        final ArrayList<Entity> created_column_list = DataFramework.getInstance().getEntityList("columns", "search_id=" + clickSearch.getId());
+
+        if (created_column_list.size() == 0) {
+            final int position = DataFramework.getInstance().getEntityListCount("columns", "") + 1;
+
+            Entity type = new Entity("type_columns", (long) TweetTopicsUtils.COLUMN_SEARCH);
+            Entity search = new Entity("columns");
+            search.setValue("description", type.getString("description"));
+            search.setValue("type_id", type);
+            search.setValue("position", position);
+            search.setValue("search_id", clickSearch.getId());
+            search.save();
+            Toast.makeText(this, getString(R.string.column_created, clickSearch.getString("name")), Toast.LENGTH_LONG).show();
+
+            Handler myHandler = new Handler();
+            myHandler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    getFragmentPagerAdapter().refreshColumnList();
+                    getViewPager().setCurrentItem(position, false);
+                }
+            }, 100);
+        } else {
+            Handler myHandler = new Handler();
+            myHandler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    getViewPager().setCurrentItem(created_column_list.get(0).getInt("position"), false);
+                }
+            }, 100);
+        }
+    }
+
     public void createUserColumn(long userId, int typeId) {
 
         ArrayList<Entity> created_column_list = DataFramework.getInstance().getEntityList("columns", "user_id=" + userId + " AND type_id = " + typeId);
@@ -454,6 +506,14 @@ public class TweetTopicsActivity extends BaseLayersActivity implements PopupLink
             goToColumn(position, false);
         }
 
+    }
+
+    public void deleteSearchInColumn(long id) {
+        for (Entity entity : fragmentAdapter.getFragmentList()) {
+            if (entity.getInt("search_id") == id) {
+                entity.delete();
+            }
+        }
     }
 
     private boolean deleteColumn(final int position) {
@@ -491,10 +551,15 @@ public class TweetTopicsActivity extends BaseLayersActivity implements PopupLink
         return result;
     }
 
+    public void editSearch(Entity search) {
+        Intent edit_search = new Intent(this, SearchActivity.class);
+        edit_search.putExtra(DataFramework.KEY_ID, search.getId());
+        startActivityForResult(edit_search, ACTIVITY_EDIT_SEARCH);
+    }
 
     public void newSearch() {
         Intent newsearch = new Intent(this, SearchActivity.class);
-        startActivity(newsearch);
+        startActivityForResult(newsearch, ACTIVITY_NEWEDITSEARCH);
     }
 
     public void newTrending() {
@@ -555,6 +620,7 @@ public class TweetTopicsActivity extends BaseLayersActivity implements PopupLink
         layoutBackgroundColumnsBar.removeAllViews();
 
         for (int i = 0; i < fragmentAdapter.getFragmentList().size(); i++) {
+
             Button button = new Button(this);
             button.setPadding(0, 13, 0, 0);
             button.setTextSize(11);
@@ -574,6 +640,7 @@ public class TweetTopicsActivity extends BaseLayersActivity implements PopupLink
             button.setClickable(false);
 
             layoutBackgroundColumnsBar.addView(button);
+
         }
     }
 

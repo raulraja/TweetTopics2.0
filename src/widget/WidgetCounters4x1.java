@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.database.CursorIndexOutOfBoundsException;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -239,20 +240,24 @@ public class WidgetCounters4x1 extends AppWidgetProvider {
 		    	int totalTimeline = 0;
 		    	int totalMentions = 0;
 		    	int totalDirectMessages = 0;
-		    	
-		    	Entity e = new Entity("users", userId);
-		    	if (e!=null) {
+
+                Entity user = null;
+                try {
+		    	    user = new Entity("users", userId);
+                } catch (CursorIndexOutOfBoundsException e) {}
+
+		    	if (user!=null) {
 	
-		    		if (e.getInt("no_save_timeline")!=1) {
+		    		if (user.getInt("no_save_timeline")!=1) {
 		    			totalTimeline = DataFramework.getInstance().getEntityListCount("tweets_user", "type_id = " + TweetTopicsUtils.TWEET_TYPE_TIMELINE
-		       				+ " AND user_tt_id="+e.getId() + " AND tweet_id >'" + Utils.fillZeros(""+e.getString("last_timeline_id"))+"'");
+		       				+ " AND user_tt_id="+user.getId() + " AND tweet_id >'" + Utils.fillZeros(""+user.getString("last_timeline_id"))+"'");
 		    		}
 	
 		    		totalMentions = DataFramework.getInstance().getEntityListCount("tweets_user", "type_id = " + TweetTopicsUtils.TWEET_TYPE_MENTIONS
-		       				+ " AND user_tt_id="+e.getId() + " AND tweet_id >'" + Utils.fillZeros(""+e.getString("last_mention_id"))+"'");
+		       				+ " AND user_tt_id="+user.getId() + " AND tweet_id >'" + Utils.fillZeros(""+user.getString("last_mention_id"))+"'");
 	
 		    		totalDirectMessages = DataFramework.getInstance().getEntityListCount("tweets_user", "type_id = " + TweetTopicsUtils.TWEET_TYPE_DIRECTMESSAGES
-		       				+ " AND user_tt_id="+e.getId() + " AND tweet_id >'" + Utils.fillZeros(""+e.getString("last_direct_id"))+"'");
+		       				+ " AND user_tt_id="+user.getId() + " AND tweet_id >'" + Utils.fillZeros(""+user.getString("last_direct_id"))+"'");
 	
 		    	}
 				

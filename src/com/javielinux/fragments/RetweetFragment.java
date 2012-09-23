@@ -198,7 +198,7 @@ public class RetweetFragment extends BaseListFragment implements APIDelegate<Bas
             }
         }
 
-        tweetsAdapter.setLastReadPosition(tweetsAdapter.getLastReadPosition() + count);
+        //tweetsAdapter.setLastReadPosition(tweetsAdapter.getLastReadPosition() + count);
         tweetsAdapter.notifyDataSetChanged();
         tweetsAdapter.launchVisibleTask();
         listView.getRefreshableView().setSelection(firstVisible + count);

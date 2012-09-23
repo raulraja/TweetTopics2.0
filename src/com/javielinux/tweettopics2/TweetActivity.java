@@ -1,13 +1,5 @@
 package com.javielinux.tweettopics2;
 
-import com.androidquery.AQuery;
-import com.javielinux.api.response.*;
-import com.javielinux.components.ImageViewZoomTouch;
-import com.javielinux.infos.InfoLink;
-import com.javielinux.utils.*;
-import com.nineoldandroids.animation.Animator;
-import com.nineoldandroids.animation.AnimatorSet;
-import com.nineoldandroids.animation.ObjectAnimator;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -21,13 +13,24 @@ import android.text.Html;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.*;
+import com.androidquery.AQuery;
 import com.javielinux.api.APIDelegate;
 import com.javielinux.api.APITweetTopics;
 import com.javielinux.api.request.LoadImageWidgetRequest;
 import com.javielinux.api.request.LoadTranslateTweetRequest;
+import com.javielinux.api.response.BaseResponse;
+import com.javielinux.api.response.ErrorResponse;
+import com.javielinux.api.response.LoadImageWidgetResponse;
+import com.javielinux.api.response.LoadTranslateTweetResponse;
+import com.javielinux.components.ImageViewZoomTouch;
 import com.javielinux.dialogs.HashTagDialogFragment;
 import com.javielinux.fragmentadapter.TweetFragmentAdapter;
+import com.javielinux.infos.InfoLink;
 import com.javielinux.infos.InfoTweet;
+import com.javielinux.utils.*;
+import com.nineoldandroids.animation.Animator;
+import com.nineoldandroids.animation.AnimatorSet;
+import com.nineoldandroids.animation.ObjectAnimator;
 import com.viewpagerindicator.TabPageIndicator;
 
 import java.io.File;
@@ -197,8 +200,13 @@ public class TweetActivity extends BaseLayersActivity implements APIDelegate<Bas
     public void zoomInImage() {
 
         Point size = new Point();
-        getWindowManager().getDefaultDisplay().getSize(size);
-        int screenHeight = size.y;
+        int screenHeight = 0;
+        try {
+            getWindowManager().getDefaultDisplay().getSize(size);
+            screenHeight = size.y;
+        } catch (NoSuchMethodError e) {
+            screenHeight = getWindowManager().getDefaultDisplay().getHeight();
+        }
 
         Rect rect = new Rect();
         getWindow().getDecorView().getWindowVisibleDisplayFrame(rect);

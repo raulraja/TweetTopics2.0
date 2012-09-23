@@ -37,13 +37,13 @@ import com.javielinux.facebook.FacebookHandler;
 import com.javielinux.tweettopics2.*;
 import com.javielinux.twitter.AuthorizationActivity;
 import com.javielinux.utils.PreferenceUtils;
+import com.javielinux.utils.TweetActions;
 import com.javielinux.utils.TweetTopicsUtils;
 import com.javielinux.utils.Utils;
 import preferences.Preferences;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.util.ArrayList;
 import java.util.Locale;
 
 public class MyActivityFragment extends Fragment {
@@ -51,7 +51,6 @@ public class MyActivityFragment extends Fragment {
     public static final int ACTIVITY_NEW_TWITTER_USER = 0;
     public static final int ACTIVITY_EDIT_TWITTER_USER = 1;
     public static final int ACTIVITY_SHOW_USER_LISTS = 2;
-    public static final int ACTIVITY_EDIT_SEARCH = 3;
 
     private MyActivityAdapter adapter;
 
@@ -134,18 +133,6 @@ public class MyActivityFragment extends Fragment {
                     }, 100);
                 }
                 break;
-            case ACTIVITY_EDIT_SEARCH:
-
-                if (intent != null && intent.getExtras()!=null && intent.getExtras().containsKey("view")) {
-                    boolean view_column = intent.getExtras().getBoolean("view", false);
-
-                    if (view_column) {
-                        Entity search_entity = new Entity("search", intent.getLongExtra(DataFramework.KEY_ID, -1));
-                        clickSearch(search_entity);
-                    }
-                }
-
-                break;
         }
     }
 
@@ -181,7 +168,7 @@ public class MyActivityFragment extends Fragment {
 
             @Override
             public void onClick(View v) {
-                newSearch();
+                ((TweetTopicsActivity)getActivity()).newSearch();
             }
 
         });
@@ -322,45 +309,6 @@ public class MyActivityFragment extends Fragment {
         }, new ProfileImageRequest(ProfileImageLoader.CHANGE_AVATAR, idUser));
     }
 
-    public void clickSearch(Entity clickSearch) {
-        final ArrayList<Entity> created_column_list = DataFramework.getInstance().getEntityList("columns", "search_id=" + clickSearch.getId());
-
-        if (created_column_list.size() == 0) {
-            final int position = DataFramework.getInstance().getEntityListCount("columns", "") + 1;
-
-            Entity type = new Entity("type_columns", (long) TweetTopicsUtils.COLUMN_SEARCH);
-            Entity search = new Entity("columns");
-            search.setValue("description", type.getString("description"));
-            search.setValue("type_id", type);
-            search.setValue("position", position);
-            search.setValue("search_id", clickSearch.getId());
-            search.save();
-            Toast.makeText(getActivity(), getString(R.string.column_created, clickSearch.getString("name")), Toast.LENGTH_LONG).show();
-
-            Handler myHandler = new Handler();
-            myHandler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    ((TweetTopicsActivity)getActivity()).getFragmentPagerAdapter().refreshColumnList();
-                    ((TweetTopicsActivity)getActivity()).getViewPager().setCurrentItem(position, false);
-                }
-            }, 100);
-        } else {
-            Handler myHandler = new Handler();
-            myHandler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    ((TweetTopicsActivity)getActivity()).getViewPager().setCurrentItem(created_column_list.get(0).getInt("position"), false);
-                }
-            }, 100);
-        }
-    }
-
-    public void editSearch(Entity search) {
-        Intent edit_search = new Intent(getActivity(), SearchActivity.class);
-        edit_search.putExtra(DataFramework.KEY_ID, search.getId());
-        startActivityForResult(edit_search, ACTIVITY_EDIT_SEARCH);
-    }
 
     public void clickUser(Entity user) {
         idUser = user.getId();
@@ -451,9 +399,6 @@ public class MyActivityFragment extends Fragment {
         }
     }
 
-    public void newSearch() {
-        ((TweetTopicsActivity)getActivity()).newSearch();
-    }
 
     public void newTrending() {
         ((TweetTopicsActivity)getActivity()).newTrending();
@@ -969,4 +914,95 @@ public class MyActivityFragment extends Fragment {
         animatorSet.start();
 
     }*/
+
+    public void editSearch(Entity search) {
+        ((TweetTopicsActivity)getActivity()).editSearch(search);
+    }
+
+    public void clickSearch(Entity search) {
+        ((TweetTopicsActivity)getActivity()).clickSearch(search);
+    }
+
+    public void longClickSearch(final Entity search) {
+        AlertDialogFragment frag = new AlertDialogFragment();
+        Bundle args = new Bundle();
+        args.putInt(AlertDialogFragment.KEY_ALERT_TITLE, R.string.actions);
+        args.putBoolean(AlertDialogFragment.KEY_ALERT_HAS_POSITIVE_BUTTON, false);
+        args.putBoolean(AlertDialogFragment.KEY_ALERT_CANCELABLE, false);
+        args.putInt(AlertDialogFragment.KEY_ALERT_ARRAY_ITEMS, R.array.actions_search);
+        frag.setArguments(args);
+        frag.setAlertButtonListener(new AlertDialogFragment.AlertButtonListener() {
+            @Override
+            public void OnAlertButtonOk() {
+            }
+
+            @Override
+            public void OnAlertButtonCancel() {
+            }
+
+            @Override
+            public void OnAlertButtonNeutral() {
+            }
+
+            @Override
+            public void OnAlertItems(int which) {
+                if (which == 0) {
+                    clickSearch(search);
+                } else if (which == 1) {
+                    editSearch(search);
+                } else if (which == 2) {
+                    shareSearch(search);
+                } else if (which == 3) {
+                    showDialogDeleteSearch(search);
+                }
+            }
+        });
+        frag.show(getFragmentManager(), "dialog");
+
+    }
+
+    private void deleteSearch(Entity search) {
+        search.delete();
+        (((TweetTopicsActivity)getActivity())).deleteSearchInColumn(search.getId());
+        (((TweetTopicsActivity)getActivity())).refreshActionBarColumns();
+        fillData();
+        Utils.showMessage(getActivity(), getString(R.string.delete_correct));
+    }
+
+    private void showDialogDeleteSearch(final Entity search) {
+        AlertDialogFragment alertDialogFragment = new AlertDialogFragment();
+        Bundle args = new Bundle();
+        args.putInt(AlertDialogFragment.KEY_ALERT_TITLE, R.string.title_question_delete);
+        args.putInt(AlertDialogFragment.KEY_ALERT_MESSAGE, R.string.question_delete);
+        args.putBoolean(AlertDialogFragment.KEY_ALERT_HAS_NEGATIVE_BUTTON, true);
+        args.putInt(AlertDialogFragment.KEY_ALERT_POSITIVE_LABEL, R.string.alert_dialog_ok);
+        args.putInt(AlertDialogFragment.KEY_ALERT_NEGATIVE_LABEL, R.string.alert_dialog_cancel);
+        alertDialogFragment.setArguments(args);
+        alertDialogFragment.setAlertButtonListener(new AlertDialogFragment.AlertButtonListener() {
+            @Override
+            public void OnAlertButtonOk() {
+                deleteSearch(search);
+            }
+
+            @Override
+            public void OnAlertButtonCancel() {
+            }
+
+            @Override
+            public void OnAlertButtonNeutral() {
+            }
+
+            @Override
+            public void OnAlertItems(int which) {
+            }
+        });
+        alertDialogFragment.show(getFragmentManager(), "dialog");
+
+    }
+
+    private void shareSearch(Entity search) {
+        String name = search.getString("name");
+        String text = Utils.HASHTAG_SHARE + " " + Utils.exportSearch(search.getId()) + " " + name;
+        TweetActions.updateStatus(getActivity(), text);
+    }
 }

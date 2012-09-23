@@ -295,7 +295,7 @@ public class MyActivityAdapter extends BaseAdapter {
         v.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-                myActivityFragment.editSearch((Entity) view.getTag());
+                myActivityFragment.longClickSearch((Entity)view.getTag());
                 return true;
             }
         });

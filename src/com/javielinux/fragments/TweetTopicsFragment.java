@@ -171,7 +171,7 @@ public class TweetTopicsFragment extends BaseListFragment implements APIDelegate
 
     private void markPositionLastReadAsLastReadId() {
 
-        if (tweetsAdapter != null && tweetsAdapter.getCount() > positionLastRead) {
+        if (tweetsAdapter != null && tweetsAdapter.getLastReadPosition() > positionLastRead) {
             new Thread(new Runnable() {
                 @Override
                 public void run() {
@@ -382,9 +382,11 @@ public class TweetTopicsFragment extends BaseListFragment implements APIDelegate
             }
 
             tweetsAdapter.addHideMessages(countHide);
-            infoTweets.get(tweetsAdapter.getLastReadPosition() + 1).setLastRead(false);
-            tweetsAdapter.setLastReadPosition(tweetsAdapter.getLastReadPosition() + count);
-            positionLastRead = tweetsAdapter.getLastReadPosition() + count;
+            try {
+                infoTweets.get(tweetsAdapter.getLastReadPosition() + 1).setLastRead(false);
+                tweetsAdapter.setLastReadPosition(tweetsAdapter.getLastReadPosition() + count);
+                positionLastRead = tweetsAdapter.getLastReadPosition() + count;
+            } catch (IndexOutOfBoundsException e) {}
 
             tweetsAdapter.notifyDataSetChanged();
             tweetsAdapter.launchVisibleTask();

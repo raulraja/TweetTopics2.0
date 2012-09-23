@@ -1,6 +1,7 @@
 package com.javielinux.fragmentadapter;
 
 import android.content.Context;
+import android.database.CursorIndexOutOfBoundsException;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -43,9 +44,22 @@ public class TweetTopicsFragmentAdapter extends FragmentPagerAdapter {
             myActivity.setValue("type_id", TweetTopicsUtils.COLUMN_MY_ACTIVITY);
             fragmentList.add(myActivity);
 
-            // incluyo las columnas de la base de datos
-
-            fragmentList.addAll(DataFramework.getInstance().getEntityList("columns", "", "position asc"));
+            // incluyo las columnas de la base de datos, sólo si son válidas
+            for (Entity entity : DataFramework.getInstance().getEntityList("columns", "", "position asc")) {
+                boolean addColumn = true;
+                if (entity.getInt("type_id") == TweetTopicsUtils.COLUMN_SEARCH) {
+                    try {
+                        Entity ent = new Entity("search", entity.getLong("search_id"));
+                    } catch (CursorIndexOutOfBoundsException e) {
+                        addColumn = false;
+                    }
+                }
+                if (addColumn) {
+                    fragmentList.add(entity);
+                } else {
+                    entity.delete();
+                }
+            }
 
             notifyDataSetChanged();
         } catch (Exception exception) {
@@ -106,6 +120,7 @@ public class TweetTopicsFragmentAdapter extends FragmentPagerAdapter {
                     return ImageUtils.getBitmapAvatar(fragmentList.get(position).getEntity("user_id").getId(), Utils.AVATAR_LARGE);
                 case TweetTopicsUtils.COLUMN_SEARCH:
                     Entity search_entity = new Entity("search", fragmentList.get(position).getLong("search_id"));
+
                     tweets_count = getUnreadTweetsCount(column_type, null, search_entity);
 
                     Drawable drawable = Utils.getDrawable(context, search_entity.getString("icon_big"));
@@ -122,7 +137,6 @@ public class TweetTopicsFragmentAdapter extends FragmentPagerAdapter {
                         canvas.drawBitmap(number, bitmap.getWidth() - number.getWidth(), 0, paint);
                         bitmap = newBitmap;
                     }
-
 
                     break;
             }

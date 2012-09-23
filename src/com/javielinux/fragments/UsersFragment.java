@@ -199,7 +199,7 @@ public class UsersFragment extends BaseListFragment implements APIDelegate<BaseR
             }
         }
 
-        tweetsAdapter.setLastReadPosition(tweetsAdapter.getLastReadPosition() + count);
+        //tweetsAdapter.setLastReadPosition(tweetsAdapter.getLastReadPosition() + count);
         tweetsAdapter.notifyDataSetChanged();
         tweetsAdapter.launchVisibleTask();
         listView.getRefreshableView().setSelection(firstVisible + count);

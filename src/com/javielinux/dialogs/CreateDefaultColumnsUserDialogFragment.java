@@ -100,6 +100,8 @@ public class CreateDefaultColumnsUserDialogFragment extends DialogFragment {
                         ConnectionManager.getInstance().getTwitter(userEntity.getId()).createFriendship("tweettopics_app");
                     } catch (TwitterException e1) {
                         e1.printStackTrace();
+                    } catch (IllegalArgumentException e) {
+                        e.printStackTrace();
                     }
                     Utils.showMessage(getActivity(), getActivity().getString(R.string.thanks));
                 }
