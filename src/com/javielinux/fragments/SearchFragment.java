@@ -29,13 +29,11 @@ import com.javielinux.tweettopics2.R;
 import com.javielinux.tweettopics2.ThemeManager;
 import com.javielinux.tweettopics2.TweetTopicsActivity;
 import com.javielinux.utils.ImageUtils;
-import com.javielinux.utils.TweetTopicsUtils;
 import com.javielinux.utils.Utils;
 import widget.WidgetCounters2x1;
 import widget.WidgetCounters4x1;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 public class SearchFragment extends BaseListFragment implements APIDelegate<BaseResponse> {
 
@@ -84,21 +82,6 @@ public class SearchFragment extends BaseListFragment implements APIDelegate<Base
 
                 if (infoTweets.size() <= 0) {
                     getTweetsFromInternet = true;
-                } else {
-                    if (column_entity.getInt("type_id") == TweetTopicsUtils.COLUMN_TIMELINE) {
-
-                        int minutes = Integer.parseInt(Utils.getPreference(getActivity()).getString("prf_time_refresh", "10"));
-
-                        if (minutes > 0) {
-                            int miliseconds = minutes * 60 * 1000;
-                            Date date = new Date(tweetsAdapter.getItem(0).getDate().getTime() + miliseconds);
-
-                            if (new Date().after(date)) {
-                                showUpdating();
-                                getTweetsFromInternet = true;
-                            }
-                        }
-                    }
                 }
 
                 if (getTweetsFromInternet) {

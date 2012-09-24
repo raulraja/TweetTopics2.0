@@ -80,21 +80,25 @@ public class TweetTopicsActivity extends BaseLayersActivity implements PopupLink
 
     private PopupLinks popupLinks;
 
-    public TweetTopicsActivity() {
-        super();
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         OnAlarmReceiver.callAlarm(this);
+/*
+    }
+
+    @Override
+    public View onCreateView(String name, Context context, AttributeSet attrs) {
+        View v = super.onCreateView(name, context, attrs);
+        */
 
         try {
             DataFramework.getInstance().open(this, Utils.packageName);
         } catch (Exception e) {
             e.printStackTrace();
         }
+
 
         if (PreferenceUtils.getFinishForceClose(this)) {
             PreferenceUtils.setFinishForceClose(this, false);
@@ -307,6 +311,7 @@ public class TweetTopicsActivity extends BaseLayersActivity implements PopupLink
 
             PreferenceUtils.setApplicationAccessCount(this, access_count + 1);
         }
+
     }
 
     protected void animateDragged() {
@@ -514,6 +519,7 @@ public class TweetTopicsActivity extends BaseLayersActivity implements PopupLink
                 entity.delete();
             }
         }
+        fragmentAdapter.fillColumnList();
     }
 
     private boolean deleteColumn(final int position) {

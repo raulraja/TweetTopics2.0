@@ -1167,11 +1167,7 @@ public class NewStatusActivity extends BaseActivity {
             mText.setSelection(mReplyScreenName.length() + 2);
         } else if (mType == TYPE_RETWEET) {
             mTxtType.setText(getString(R.string.txt_type_retweet));
-            if (Utils.preference.getBoolean("prf_retweet_via", false)) {
-                mText.setText(retweetPrev + mTextStatus + " (via @" + mReplyScreenName + ")");
-            } else {
-                mText.setText(retweetPrev + "RT: @" + mReplyScreenName + ": " + mTextStatus);
-            }
+            mText.setText(retweetPrev + "RT: @" + mReplyScreenName + ": " + mTextStatus);
         } else if (mType == TYPE_DIRECT_MESSAGE) {
             mTxtType.setVisibility(View.VISIBLE);
             mTxtType.setText(getString(R.string.txt_type_dm) + " " + mDMUsername);

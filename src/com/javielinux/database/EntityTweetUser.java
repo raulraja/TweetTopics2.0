@@ -51,6 +51,14 @@ public class EntityTweetUser extends Entity {
         return "";
 
 	}
+
+    public void saveLastId(long id) {
+        if (tweet_type!=TweetTopicsUtils.TWEET_TYPE_SENT_DIRECTMESSAGES) {
+            ContentValues args = new ContentValues();
+            args.put(getFieldLastId(), id + "");
+            DataFramework.getInstance().getDB().update(getTable(), args, DataFramework.KEY_ID + "=" + getId(), null);
+        }
+    }
 	
 	
 	public int getValueNewCount() {

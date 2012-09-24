@@ -199,9 +199,9 @@ public class TweetActivity extends BaseLayersActivity implements APIDelegate<Bas
 
     public void zoomInImage() {
 
-        Point size = new Point();
         int screenHeight = 0;
         try {
+            Point size = new Point();
             getWindowManager().getDefaultDisplay().getSize(size);
             screenHeight = size.y;
         } catch (NoSuchMethodError e) {
@@ -245,9 +245,14 @@ public class TweetActivity extends BaseLayersActivity implements APIDelegate<Bas
 
     public void zoomOutImage() {
 
-        Point size = new Point();
-        getWindowManager().getDefaultDisplay().getSize(size);
-        int screenHeight = size.y;
+        int screenHeight = 0;
+        try {
+            Point size = new Point();
+            getWindowManager().getDefaultDisplay().getSize(size);
+            screenHeight = size.y;
+        } catch (NoSuchMethodError e) {
+            screenHeight = getWindowManager().getDefaultDisplay().getHeight();
+        }
 
         Rect rect = new Rect();
         getWindow().getDecorView().getWindowVisibleDisplayFrame(rect);
@@ -461,16 +466,10 @@ public class TweetActivity extends BaseLayersActivity implements APIDelegate<Bas
                     ar.add(getString(R.string.delete_read_after));
                 else
                     ar.add(getString(R.string.create_read_after));
-                arCode.add("read_after");
+                arCode.add(TweetActions.TWEET_ACTION_READ_AFTER);
 
                 ar.add(getString(R.string.send_direct_message));
-                arCode.add("send_dm");
-
-                ar.add(getString(R.string.view_map));
-                arCode.add("view_map");
-
-                ar.add(getString(R.string.show_retweeters));
-                arCode.add("show_retweeters");
+                arCode.add(TweetActions.TWEET_ACTION_SEND_DM);
             }
 
             // TODO Borrar tweet de un usuario
@@ -483,10 +482,10 @@ public class TweetActivity extends BaseLayersActivity implements APIDelegate<Bas
             }
                  */
             ar.add(getString(R.string.copy_to_clipboard));
-            arCode.add("copy_to_clipboard");
+            arCode.add(TweetActions.TWEET_ACTION_CLIPBOARD);
 
             ar.add(getString(R.string.share));
-            arCode.add("share");
+            arCode.add(TweetActions.TWEET_ACTION_SHARE);
 
             CharSequence[] c = new CharSequence[ar.size()];
             for (int i=0; i<ar.size(); i++) {

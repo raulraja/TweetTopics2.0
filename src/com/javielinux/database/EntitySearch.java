@@ -285,7 +285,7 @@ public class EntitySearch extends Entity {
 		PreferenceManager.setDefaultValues(cnt, R.xml.preferences, false);
 		SharedPreferences preference = PreferenceManager.getDefaultSharedPreferences(cnt);
 		
-		query.setRpp(Integer.parseInt(preference.getString("prf_n_result", "40")));
+		query.setRpp(Integer.parseInt(preference.getString("prf_n_max_download", "60")));
 
         String lang = "";
         if (!this.getString("lang").equals("")) lang = this.getString("lang");

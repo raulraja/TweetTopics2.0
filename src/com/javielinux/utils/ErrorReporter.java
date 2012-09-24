@@ -30,6 +30,11 @@ public class ErrorReporter implements Thread.UncaughtExceptionHandler
         PreferenceUtils.setFinishForceClose(app.getApplicationContext(), true);
         StringBuilder sb = new StringBuilder();
         sb.append("Package App: " + Utils.packageName);
+        try {
+            sb.append("\rVersion manifest: " + app.getPackageManager().getPackageInfo(app.getPackageName(), 0).versionName);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
         sb.append("\rVersion App: " + Utils.VERSION);
         sb.append("\rAndroid version: " + Build.VERSION.RELEASE);
         sb.append("\rPhone: " + Build.MODEL);

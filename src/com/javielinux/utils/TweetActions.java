@@ -29,40 +29,40 @@ import java.util.Collections;
 
 public class TweetActions {
 
-    public static final int ACTIVITY_NEWEDITSEARCH = 0;
-    public static final int ACTIVITY_PREFERENCES = 1;
-    public static final int ACTIVITY_NEWSTATUS = 2;
-    public static final int ACTIVITY_USER = 3;
-    public static final int ACTIVITY_WALLPAPER = 4;
-    public static final int ACTIVITY_COLORS_APP = 5;
+    public static String TWEET_ACTION_REPLY = "reply";
+    public static String TWEET_ACTION_RETWEET = "retweet";
+    public static String TWEET_ACTION_LAST_READ = "lastread";
+    public static String TWEET_ACTION_READ_AFTER = "readafter";
+    public static String TWEET_ACTION_FAVORITE = "favorite";
+    public static String TWEET_ACTION_SHARE = "share";
+    public static String TWEET_ACTION_MENTION = "mention";
+    public static String TWEET_ACTION_CLIPBOARD = "clipboard";
+    public static String TWEET_ACTION_SEND_DM = "send_dm";
+    public static String TWEET_ACTION_DELETE_TWEET = "delete_tweet";
+    public static String TWEET_ACTION_DELETE_UP_TWEET = "delete_up_tweets";
 
     public static boolean execByCode(String code, FragmentActivity activity, long fromUser, InfoTweet infoTweet) {
-        /*
-          "reply", "retweet", "lastread", "readafter",
-          "favorite", "share", "mention", "map",
-          "clipboard", "send_dm", "delete_tweet"};
-          */
-        if (code.equals("reply")) {
+        if (code.equals(TWEET_ACTION_REPLY)) {
             goToReply(activity, fromUser, infoTweet);
-        } else if (code.equals("retweet")) {
+        } else if (code.equals(TWEET_ACTION_RETWEET)) {
             showDialogRetweet(activity, fromUser, infoTweet);
-        } else if (code.equals("lastread")) {
+        } else if (code.equals(TWEET_ACTION_LAST_READ)) {
             //return this.goToMarkLastReadId(mTweetTopicsCore, pos);
-        } else if (code.equals("readafter")) {
+        } else if (code.equals(TWEET_ACTION_READ_AFTER)) {
             saveTweet(activity, infoTweet);
-        } else if (code.equals("favorite")) {
+        } else if (code.equals(TWEET_ACTION_FAVORITE)) {
             goToFavorite(activity, infoTweet);
-        } else if (code.equals("share")) {
+        } else if (code.equals(TWEET_ACTION_SHARE)) {
             goToShare(activity, infoTweet);
-        } else if (code.equals("mention")) {
+        } else if (code.equals(TWEET_ACTION_MENTION)) {
             goToMention(activity, fromUser, infoTweet);
-        } else if (code.equals("clipboard")) {
+        } else if (code.equals(TWEET_ACTION_CLIPBOARD)) {
             copyToClipboard(activity, infoTweet);
-        } else if (code.equals("send_dm")) {
+        } else if (code.equals(TWEET_ACTION_SEND_DM)) {
             directMessage(activity, fromUser, infoTweet.getUsername());
-        } else if (code.equals("delete_tweet")) {
+        } else if (code.equals(TWEET_ACTION_DELETE_TWEET)) {
             //this.goToDeleteTweet(mTweetTopicsCore);
-        } else if (code.equals("delete_up_tweets")) {
+        } else if (code.equals(TWEET_ACTION_DELETE_UP_TWEET)) {
             //this.goToDeleteTop(mTweetTopicsCore);
         }
         return false;
@@ -240,7 +240,7 @@ public class TweetActions {
         if (fromUser>0) newstatus.putExtra("start_user_id", fromUser);
         newstatus.putExtra("type", NewStatusActivity.TYPE_DIRECT_MESSAGE);
         newstatus.putExtra("username_direct_message", username);
-        activity.startActivityForResult(newstatus, ACTIVITY_NEWSTATUS);
+        activity.startActivity(newstatus);
 
     }
 
@@ -299,7 +299,7 @@ public class TweetActions {
                 newstatus.putExtra("reply_text", tweet.getText());
             }
         }
-        activity.startActivityForResult(newstatus, ACTIVITY_NEWSTATUS);
+        activity.startActivity(newstatus);
     }
 
     public static void showDialogRetweet(final FragmentActivity activity, final long fromUser, final InfoTweet it) {

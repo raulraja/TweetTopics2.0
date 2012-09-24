@@ -34,10 +34,11 @@ public class TweetTopicsFragmentAdapter extends FragmentPagerAdapter {
         fillColumnList();
     }
 
-    private void fillColumnList() {
+    public void fillColumnList() {
 
         try {
 
+            fragmentList.clear();
             //  creo MyActivity y la añado primero a la lista
 
             Entity myActivity = new Entity("columns");

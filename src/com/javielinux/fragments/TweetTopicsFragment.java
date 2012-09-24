@@ -35,14 +35,13 @@ import widget.WidgetCounters2x1;
 import widget.WidgetCounters4x1;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 public class TweetTopicsFragment extends BaseListFragment implements APIDelegate<BaseResponse> {
 
     private TweetsAdapter tweetsAdapter;
     private ArrayList<InfoTweet> infoTweets = new ArrayList<InfoTweet>();
     private Entity column_entity;
-    private Entity user_entity;
+    private EntityTweetUser user_entity;
     private View view;
     private PullToRefreshListView listView;
 
@@ -54,6 +53,10 @@ public class TweetTopicsFragment extends BaseListFragment implements APIDelegate
 
     private int typeUserColumn = 0;
 
+    public TweetTopicsFragment() {
+        super();
+    }
+
     public TweetTopicsFragment(long column_id) {
 
         column_entity = new Entity("columns", column_id);
@@ -64,7 +67,7 @@ public class TweetTopicsFragment extends BaseListFragment implements APIDelegate
         } else if (column_entity.getInt("type_id") == TweetTopicsUtils.COLUMN_DIRECT_MESSAGES) {
             typeUserColumn = TweetTopicsUtils.TWEET_TYPE_DIRECTMESSAGES;
         }
-        user_entity = new Entity("users", column_entity.getLong("user_id"));
+        user_entity = new EntityTweetUser(column_entity.getLong("user_id"), typeUserColumn);
 
     }
 
@@ -94,22 +97,6 @@ public class TweetTopicsFragment extends BaseListFragment implements APIDelegate
 
                 if (infoTweets.size() <= 0) {
                     getTweetsFromInternet = true;
-                } else {
-                    if (column_entity.getInt("type_id") == TweetTopicsUtils.COLUMN_TIMELINE) {
-
-                        int minutes = Integer.parseInt(Utils.getPreference(getActivity()).getString("prf_time_refresh", "10"));
-
-                        if (minutes > 0) {
-                            int miliseconds = minutes * 60 * 1000;
-                            Date date = new Date(tweetsAdapter.getItem(0).getDate().getTime() + miliseconds);
-
-                            if (new Date().after(date)) {
-                                showUpdating();
-                                getTweetsFromInternet = true;
-                            }
-                        }
-
-                    }
                 }
 
                 if (getTweetsFromInternet) {
@@ -178,21 +165,7 @@ public class TweetTopicsFragment extends BaseListFragment implements APIDelegate
                     try {
                         long id = tweetsAdapter.getItem(positionLastRead).getId();
                         if (user_entity != null) {
-                            switch (column_entity.getInt("type_id")) {
-                                case TweetTopicsUtils.COLUMN_TIMELINE:
-                                    user_entity.setValue("last_timeline_id", id + "");
-                                    user_entity.save();
-                                    break;
-                                case TweetTopicsUtils.COLUMN_MENTIONS:
-                                    user_entity.setValue("last_mention_id", id + "");
-                                    user_entity.save();
-                                    break;
-                                case TweetTopicsUtils.COLUMN_DIRECT_MESSAGES:
-                                    user_entity.setValue("last_direct_id", id + "");
-                                    user_entity.save();
-                                    break;
-                            }
-
+                            user_entity.saveLastId(id);
                             sendBroadcastUpdateTweets();
                             getActivity().runOnUiThread(new Runnable() {
                                 @Override

@@ -1,5 +1,6 @@
 package preferences;
 
+import android.database.CursorIndexOutOfBoundsException;
 import android.graphics.Color;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,9 +40,12 @@ public class TweetProgrammedAdapter extends ArrayAdapter<Entity> {
 		String users = "";
 		for (String user : txt_users.split(",")) {
 			usersId.add(Long.parseLong(user));
-			Entity ent = new Entity("users", Long.parseLong(user));
-			if (!users.equals("")) users += ", ";
-			users += ent.getString("name");
+            // TODO guardar los nombres de usuario en lugar de los IDs. Los nombres de usuario son únicos
+            try {
+                Entity ent = new Entity("users", Long.parseLong(user));
+                if (!users.equals("")) users += ", ";
+                users += ent.getString("name");
+            } catch (CursorIndexOutOfBoundsException e){}
 		}
 		
 		ImageView tag_more = (ImageView)v.findViewById(R.id.tag_more);
