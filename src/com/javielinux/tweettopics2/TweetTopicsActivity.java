@@ -43,7 +43,7 @@ import com.viewpagerindicator.TitlePageIndicator;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class TweetTopicsActivity extends BaseLayersActivity implements PopupLinks.PopupLinksListener {
+public class TweetTopicsActivity extends BaseLayersActivity implements PopupLinks.PopupLinksListener, SplitActionBarMenu.SplitActionBarMenuListener {
 
     public static final String KEY_EXTRAS_GOTO_COLUMN_USER = "KEY_EXTRAS_GOTO_COLUMN_USER";
     public static final String KEY_EXTRAS_GOTO_COLUMN_TYPE = "KEY_EXTRAS_GOTO_COLUMN_TYPE";
@@ -79,6 +79,7 @@ public class TweetTopicsActivity extends BaseLayersActivity implements PopupLink
     private int heightScreen;
 
     private PopupLinks popupLinks;
+    private SplitActionBarMenu splitActionBarMenu;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -224,6 +225,9 @@ public class TweetTopicsActivity extends BaseLayersActivity implements PopupLink
         FrameLayout root = ((FrameLayout) findViewById(R.id.tweettopics_root));
         popupLinks = new PopupLinks(this);
         popupLinks.loadPopup(root);
+
+        splitActionBarMenu = new SplitActionBarMenu(this);
+        splitActionBarMenu.loadSplitActionBarMenu(root);
 
         layoutBackgroundApp = (RelativeLayout) findViewById(R.id.tweettopics_layout_background_app);
 
@@ -403,6 +407,10 @@ public class TweetTopicsActivity extends BaseLayersActivity implements PopupLink
                 popupLinks.hideLinks();
                 return false;
             }
+            if (splitActionBarMenu.isShowing()) {
+                splitActionBarMenu.hideSplitActionBarMenu();
+                return false;
+            }
             if (isShowColumnsItems) {
                 showActionBarIndicatorAndMovePager(-1);
                 return false;
@@ -417,6 +425,11 @@ public class TweetTopicsActivity extends BaseLayersActivity implements PopupLink
     @Override
     public void onShowLinks(View view, InfoTweet infoTweet) {
         popupLinks.showLinks(view, infoTweet);
+    }
+
+    @Override
+    public void onShowSplitActionBarMenu(View view, InfoTweet infoTweet) {
+        splitActionBarMenu.showSplitActionBarMenu(view, infoTweet);
     }
 
     @Override
@@ -950,6 +963,4 @@ public class TweetTopicsActivity extends BaseLayersActivity implements PopupLink
         });
         frag.show(getSupportFragmentManager(), "dialog");
     }
-
-
 }

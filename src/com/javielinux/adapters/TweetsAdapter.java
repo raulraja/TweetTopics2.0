@@ -93,6 +93,14 @@ public class TweetsAdapter extends ArrayAdapter<InfoTweet> {
 
     }
 
+    private void callSplitActionBarMenuIfIsPossible(View view) {
+
+        if (getActivity() instanceof SplitActionBarMenu.SplitActionBarMenuListener) {
+            ((SplitActionBarMenu.SplitActionBarMenuListener)getActivity()).onShowSplitActionBarMenu(view, null);
+        }
+
+    }
+
     public void setParentListView(PullToRefreshListView parentListView) {
         this.parentListView = parentListView;
     }
@@ -412,6 +420,13 @@ public class TweetsAdapter extends ArrayAdapter<InfoTweet> {
 
         });
 
+        viewHolder.statusText.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                callSplitActionBarMenuIfIsPossible(view);
+                return true;
+            }
+        });
         // buscar imagenes de los tweets
 
         //ArrayList<String> links = LinksUtils.pullLinks(infoTweet.getText(), infoTweet.getContentURLs());
