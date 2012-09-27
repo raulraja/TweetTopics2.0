@@ -30,6 +30,7 @@
     <dimen name="default_padding">8dp</dimen>
     <dimen name="default_separation">5dp</dimen>
     <dimen name="footer_buttons_height">45dp</dimen>
+    <dimen name="footer_buttons_width">45dp</dimen>
 
     <dimen name="text_size_title_page_indicator">16sp</dimen>
     <dimen name="text_size_title_page">10sp</dimen>

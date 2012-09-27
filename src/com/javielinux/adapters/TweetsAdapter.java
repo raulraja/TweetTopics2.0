@@ -96,7 +96,7 @@ public class TweetsAdapter extends ArrayAdapter<InfoTweet> {
     private void callSplitActionBarMenuIfIsPossible(View view) {
 
         if (getActivity() instanceof SplitActionBarMenu.SplitActionBarMenuListener) {
-            ((SplitActionBarMenu.SplitActionBarMenuListener)getActivity()).onShowSplitActionBarMenu(view, null);
+            ((SplitActionBarMenu.SplitActionBarMenuListener)getActivity()).onShowSplitActionBarMenu(view, (InfoTweet)view.getTag());
         }
 
     }
@@ -420,6 +420,7 @@ public class TweetsAdapter extends ArrayAdapter<InfoTweet> {
 
         });
 
+        viewHolder.statusText.setTag(infoTweet);
         viewHolder.statusText.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {

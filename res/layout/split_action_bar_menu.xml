@@ -7,19 +7,19 @@
     android:orientation="vertical"
     android:visibility="invisible">
 
-    <LinearLayout android:id="@+id/split_action_bar_menu_container"
+    <HorizontalScrollView android:id="@+id/split_action_bar_menu_scroll_view"
         android:background="?attr/bottom_bar_background"
-        android:gravity="center_vertical"
         android:layout_height="@dimen/footer_buttons_height"
-        android:layout_width="fill_parent"
-        android:orientation="horizontal">
+        android:layout_width="fill_parent">
 
-        <TextView
-            android:gravity="center"
+        <LinearLayout android:id="@+id/split_action_bar_menu_container"
+            android:gravity="center_vertical"
             android:layout_height="fill_parent"
             android:layout_width="fill_parent"
-            android:text="@string/actions" />
+            android:orientation="horizontal">
 
-    </LinearLayout>
+        </LinearLayout>
+
+    </HorizontalScrollView>
 
 </LinearLayout>
