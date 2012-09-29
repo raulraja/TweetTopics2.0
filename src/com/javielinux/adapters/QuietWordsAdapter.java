@@ -6,8 +6,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import com.android.dataframework.Entity;
+import com.javielinux.preferences.QuietWords;
 import com.javielinux.tweettopics2.R;
-import preferences.QuietWords;
 
 import java.util.ArrayList;
 

@@ -14,11 +14,11 @@ import com.javielinux.api.request.ExecuteActionUserRequest;
 import com.javielinux.api.response.BaseResponse;
 import com.javielinux.api.response.ErrorResponse;
 import com.javielinux.infos.InfoUsers;
+import com.javielinux.preferences.Colors;
 import com.javielinux.tweettopics2.NewStatusActivity;
 import com.javielinux.tweettopics2.R;
 import com.javielinux.tweettopics2.SearchActivity;
 import com.javielinux.twitter.ConnectionManager;
-import preferences.Colors;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 

@@ -16,13 +16,13 @@ import com.javielinux.adapters.UsersAdapter;
 import com.javielinux.dialogs.OnSelectedIconAndText;
 import com.javielinux.dialogs.TwitterUsersConnectedDialogFragment;
 import com.javielinux.infos.InfoTweet;
+import com.javielinux.preferences.RetweetsTypes;
 import com.javielinux.tweettopics2.NewStatusActivity;
 import com.javielinux.tweettopics2.R;
 import com.javielinux.tweettopics2.TweetActivity;
 import com.javielinux.twitter.ConnectionManager;
-import preferences.RetweetsTypes;
+import com.javielinux.updatestatus.ServiceUpdateStatus;
 import twitter4j.TwitterException;
-import updatestatus.ServiceUpdateStatus;
 
 import java.util.ArrayList;
 import java.util.Collections;

@@ -8,7 +8,7 @@ import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
 import com.javielinux.infos.InfoSubMenuTweet;
 import com.javielinux.tweettopics2.R;
-import widget.ServiceWidgetTweets4x2;
+import com.javielinux.widget.ServiceWidgetTweets4x2;
 
 import java.util.ArrayList;
 import java.util.Locale;

@@ -18,17 +18,17 @@ import com.javielinux.database.EntitySearch;
 import com.javielinux.database.EntityTweetUser;
 import com.javielinux.infos.InfoSaveTweets;
 import com.javielinux.notifications.AlarmAsyncTask.AlarmAsyncTaskResponder;
+import com.javielinux.preferences.IntegrationADW;
+import com.javielinux.preferences.IntegrationADWAdapter;
 import com.javielinux.tweettopics2.R;
 import com.javielinux.tweettopics2.TweetTopicsActivity;
 import com.javielinux.twitter.ConnectionManager;
 import com.javielinux.utils.PreferenceUtils;
 import com.javielinux.utils.TweetTopicsUtils;
 import com.javielinux.utils.Utils;
-import preferences.IntegrationADW;
-import preferences.IntegrationADWAdapter;
+import com.javielinux.widget.WidgetCounters2x1;
+import com.javielinux.widget.WidgetCounters4x1;
 import twitter4j.Twitter;
-import widget.WidgetCounters2x1;
-import widget.WidgetCounters4x1;
 
 import java.util.List;
 

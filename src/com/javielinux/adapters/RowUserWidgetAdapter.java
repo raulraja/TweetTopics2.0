@@ -7,7 +7,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.javielinux.tweettopics2.R;
-import widget.ServiceWidgetTweets4x2;
+import com.javielinux.widget.ServiceWidgetTweets4x2;
 
 import java.util.List;
 

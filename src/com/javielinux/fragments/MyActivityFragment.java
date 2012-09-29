@@ -34,13 +34,13 @@ import com.javielinux.dialogs.CreateDefaultColumnsUserDialogFragment;
 import com.javielinux.dialogs.SelectImageDialogFragment;
 import com.javielinux.dialogs.TypeSocialNetworksDialogFragment;
 import com.javielinux.facebook.FacebookHandler;
+import com.javielinux.preferences.Preferences;
 import com.javielinux.tweettopics2.*;
 import com.javielinux.twitter.AuthorizationActivity;
 import com.javielinux.utils.PreferenceUtils;
 import com.javielinux.utils.TweetActions;
 import com.javielinux.utils.TweetTopicsUtils;
 import com.javielinux.utils.Utils;
-import preferences.Preferences;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;

@@ -22,22 +22,22 @@
         <activity android:name="TrendsLocationActivity" />
 
         <activity android:name="MapSearch" />
-        <activity android:name="preferences.Preferences" android:theme="@android:style/Theme.Holo" />
-		<activity android:name="preferences.IntegrationADW" android:theme="@android:style/Theme.Holo" />
-		<activity android:name="preferences.TweetQuick" android:theme="@android:style/Theme.Holo" />
-		<activity android:name="preferences.QuietWords" android:theme="@android:style/Theme.Holo" />
-		<activity android:name="preferences.NewEditTweetQuick" android:theme="@android:style/Theme.Holo" />
-		<activity android:name="preferences.RetweetsTypes" android:theme="@android:style/Theme.Holo" />
-		<activity android:name="preferences.Colors" android:theme="@android:style/Theme.Holo" />
-		<activity android:name="preferences.TweetDraft" android:theme="@android:style/Theme.Holo" />
-		<activity android:name="preferences.TweetProgrammed" android:theme="@android:style/Theme.Holo" />
-		<activity android:name="preferences.NewEditTweetProgrammed" android:theme="@android:style/Theme.Holo" />
-		<activity android:name="preferences.ColorsApp" android:theme="@android:style/Theme.Holo" />
+        <activity android:name="com.javielinux.preferences.Preferences" android:theme="@android:style/Theme.Holo" />
+		<activity android:name="com.javielinux.preferences.IntegrationADW" android:theme="@android:style/Theme.Holo" />
+		<activity android:name="com.javielinux.preferences.TweetQuick" android:theme="@android:style/Theme.Holo" />
+		<activity android:name="com.javielinux.preferences.QuietWords" android:theme="@android:style/Theme.Holo" />
+		<activity android:name="com.javielinux.preferences.NewEditTweetQuick" android:theme="@android:style/Theme.Holo" />
+		<activity android:name="com.javielinux.preferences.RetweetsTypes" android:theme="@android:style/Theme.Holo" />
+		<activity android:name="com.javielinux.preferences.Colors" android:theme="@android:style/Theme.Holo" />
+		<activity android:name="com.javielinux.preferences.TweetDraft" android:theme="@android:style/Theme.Holo" />
+		<activity android:name="com.javielinux.preferences.TweetProgrammed" android:theme="@android:style/Theme.Holo" />
+		<activity android:name="com.javielinux.preferences.NewEditTweetProgrammed" android:theme="@android:style/Theme.Holo" />
+		<activity android:name="com.javielinux.preferences.ColorsApp" android:theme="@android:style/Theme.Holo" />
 		<activity android:name="ShowImage" android:theme="@style/Theme.TwitterBlack.Translucent" />
 		<activity android:name="QRCode" />
 		<activity android:name="AdjustImage" />
-		<activity android:name="preferences.SubMenuTweet" android:theme="@android:style/Theme.Holo" />
-		<activity android:name="updatestatus.LaunchServiceUpdateStatus" android:theme="@style/Theme.TwitterBlack.Translucent" />
+		<activity android:name="com.javielinux.preferences.SubMenuTweet" android:theme="@android:style/Theme.Holo" />
+		<activity android:name="com.javielinux.updatestatus.LaunchServiceUpdateStatus" android:theme="@style/Theme.TwitterBlack.Translucent" />
 		<activity android:name="EditUserTwitter" />
 		
 		<receiver android:name="com.javielinux.tweetprogrammed.OnAlarmReceiverTweetProgrammed" android:process=":remote" ></receiver>
@@ -73,7 +73,7 @@
 			</intent-filter>
 		</activity>
 
-        <receiver android:name="widget.WidgetCounters2x1" android:label="@string/name_widget_counter_2x1">
+        <receiver android:name="com.javielinux.widget.WidgetCounters2x1" android:label="@string/name_widget_counter_2x1">
             <intent-filter>
 	        	<action android:name="com.javielinux.tweettopics.WIDGET_CONTROL" />
 	        	<data android:scheme="tweettopics_widget_tweets" />
@@ -89,10 +89,10 @@
 			<meta-data android:name="android.appwidget.provider" android:resource="@xml/widget_data_counter_2x1" />
 		</receiver>
 
-		<activity android:name="widget.WidgetCountersConf2x1" android:theme="@style/Theme.TwitterBlack.Translucent">
+		<activity android:name="com.javielinux.widget.WidgetCountersConf2x1" android:theme="@style/Theme.TwitterBlack.Translucent">
 		</activity>
 
-        <receiver android:name="widget.WidgetCounters4x1" android:label="@string/name_widget_counter_4x1">
+        <receiver android:name="com.javielinux.widget.WidgetCounters4x1" android:label="@string/name_widget_counter_4x1">
             <intent-filter>
 	        	<action android:name="com.javielinux.tweettopics.WIDGET_CONTROL" />
 	        	<data android:scheme="tweettopics_widget_tweets" />
@@ -108,11 +108,11 @@
 			<meta-data android:name="android.appwidget.provider" android:resource="@xml/widget_data_counter_4x1" />
 		</receiver>
 		
-		<activity android:name="widget.WidgetCountersConf4x1" android:theme="@style/Theme.TwitterBlack.Translucent">
+		<activity android:name="com.javielinux.widget.WidgetCountersConf4x1" android:theme="@style/Theme.TwitterBlack.Translucent">
 		</activity>
 		
 		
-        <receiver android:name="widget.WidgetTweets4x2" android:label="@string/name_widget_tweets_4x2">
+        <receiver android:name="com.javielinux.widget.WidgetTweets4x2" android:label="@string/name_widget_tweets_4x2">
             <intent-filter>
 	        	<action android:name="com.javielinux.tweettopics.WIDGET_CONTROL" />
 	        	<data android:scheme="tweettopics_widget_tweets" />
@@ -123,13 +123,13 @@
 			<meta-data android:name="android.appwidget.provider" android:resource="@xml/widget_data" />
 		</receiver>
 		
-		<service android:name="widget.ServiceWidgetTweets4x2" />
+		<service android:name="com.javielinux.widget.ServiceWidgetTweets4x2" />
 
-		<activity android:name="widget.WidgetTweetsConf4x2" android:theme="@style/Theme.TwitterBlack.Translucent">
+		<activity android:name="com.javielinux.widget.WidgetTweetsConf4x2" android:theme="@style/Theme.TwitterBlack.Translucent">
 		</activity>
 		
-		<service android:name="preferences.ServiceTweetQuick"/>
-		<service android:name="updatestatus.ServiceUpdateStatus"/>
+		<service android:name="com.javielinux.preferences.ServiceTweetQuick"/>
+		<service android:name="com.javielinux.updatestatus.ServiceUpdateStatus"/>
 		
 		<!-- AdMob -->
 		<activity android:name="com.google.ads.AdActivity"

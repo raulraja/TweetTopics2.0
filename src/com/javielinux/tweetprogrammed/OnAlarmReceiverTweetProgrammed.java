@@ -9,8 +9,8 @@ import android.content.Intent;
 import android.util.Log;
 import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
+import com.javielinux.updatestatus.ServiceUpdateStatus;
 import com.javielinux.utils.Utils;
-import updatestatus.ServiceUpdateStatus;
 
 import java.util.ArrayList;
 import java.util.Calendar;

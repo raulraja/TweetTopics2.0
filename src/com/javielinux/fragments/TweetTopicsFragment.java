@@ -32,8 +32,8 @@ import com.javielinux.utils.ImageUtils;
 import com.javielinux.utils.ListFragmentListener;
 import com.javielinux.utils.TweetTopicsUtils;
 import com.javielinux.utils.Utils;
-import widget.WidgetCounters2x1;
-import widget.WidgetCounters4x1;
+import com.javielinux.widget.WidgetCounters2x1;
+import com.javielinux.widget.WidgetCounters4x1;
 
 import java.util.ArrayList;
 

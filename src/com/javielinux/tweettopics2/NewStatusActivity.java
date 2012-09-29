@@ -43,12 +43,12 @@ import com.javielinux.components.AutoCompleteListItem;
 import com.javielinux.dialogs.AlertDialogFragment;
 import com.javielinux.dialogs.SelectImageDialogFragment;
 import com.javielinux.infos.InfoUsers;
+import com.javielinux.preferences.NewEditTweetProgrammed;
+import com.javielinux.preferences.Preferences;
+import com.javielinux.preferences.TweetDraft;
 import com.javielinux.tweetprogrammed.OnAlarmReceiverTweetProgrammed;
+import com.javielinux.updatestatus.ServiceUpdateStatus;
 import com.javielinux.utils.*;
-import preferences.NewEditTweetProgrammed;
-import preferences.Preferences;
-import preferences.TweetDraft;
-import updatestatus.ServiceUpdateStatus;
 
 import java.io.File;
 import java.io.IOException;

@@ -15,11 +15,11 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 import com.android.dataframework.DataFramework;
+import com.javielinux.preferences.Preferences;
 import com.javielinux.utils.ImageUtils;
 import com.javielinux.utils.Utils;
+import com.javielinux.zoom.WrapMotionEvent;
 import org.xmlpull.v1.XmlPullParserException;
-import preferences.Preferences;
-import zoom.WrapMotionEvent;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;

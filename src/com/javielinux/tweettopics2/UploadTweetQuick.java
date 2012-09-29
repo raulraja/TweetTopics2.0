@@ -13,8 +13,8 @@ import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
 import com.javielinux.adapters.TweetQuickAlertAdapter;
 import com.javielinux.adapters.TweetQuickUserAdapter;
+import com.javielinux.preferences.ServiceTweetQuick;
 import com.javielinux.utils.Utils;
-import preferences.ServiceTweetQuick;
 
 import java.util.ArrayList;
 import java.util.List;
