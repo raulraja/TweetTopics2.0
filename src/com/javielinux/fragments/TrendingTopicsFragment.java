@@ -37,6 +37,8 @@ import java.util.ArrayList;
 
 public class TrendingTopicsFragment extends BaseListFragment implements APIDelegate<BaseResponse> {
 
+    private static String KEY_SAVE_STATE_COLUMN_ID = "KEY_SAVE_STATE_COLUMN_ID";
+
     private Entity column_entity;
 
     private TrendingTopicsAdapter trendingTopicsAdapter;
@@ -55,9 +57,16 @@ public class TrendingTopicsFragment extends BaseListFragment implements APIDeleg
 
     private Trend selected_trend_location;
 
-    public TrendingTopicsFragment(long column_id) {
+    public TrendingTopicsFragment() {
+        super();
+    }
 
-        column_entity = new Entity("columns", column_id);
+    public TrendingTopicsFragment(long columnId) {
+        init(columnId);
+    }
+
+    public void init(long columnId) {
+        column_entity = new Entity("columns", columnId);
     }
 
     public Entity getColumnEntity() {
@@ -95,15 +104,19 @@ public class TrendingTopicsFragment extends BaseListFragment implements APIDeleg
         trendsAdapter.setFlinging(flinging);
     }
 
+
     @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putLong(KEY_SAVE_STATE_COLUMN_ID, column_entity.getId());
+        super.onSaveInstanceState(outState);
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        if (savedInstanceState!=null && savedInstanceState.containsKey(KEY_SAVE_STATE_COLUMN_ID)) {
+            init(savedInstanceState.getLong(KEY_SAVE_STATE_COLUMN_ID));
+        }
         trendingTopicsAdapter = new TrendingTopicsAdapter(getActivity(), trends_location_list);
         trendsAdapter = new TweetsAdapter(getActivity(), getLoaderManager(), trends_list, "", (int) column_entity.getId());
     }
@@ -242,11 +255,6 @@ public class TrendingTopicsFragment extends BaseListFragment implements APIDeleg
         loadTrendsLocation();
 
         return view;
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
     }
 
     private void onListItemClick(View v, final int position, long id) {

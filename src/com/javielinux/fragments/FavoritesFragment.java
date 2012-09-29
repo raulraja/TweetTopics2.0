@@ -31,6 +31,8 @@ import java.util.ArrayList;
 
 public class FavoritesFragment extends BaseListFragment implements APIDelegate<BaseResponse> {
 
+    private static String KEY_SAVE_STATE_COLUMN_ID = "KEY_SAVE_STATE_COLUMN_ID";
+
     private TweetsAdapter tweetsAdapter;
     private ArrayList<InfoTweet> infoTweets = new ArrayList<InfoTweet>();
     private Entity column_entity;
@@ -50,10 +52,13 @@ public class FavoritesFragment extends BaseListFragment implements APIDelegate<B
         super();
     }
 
-    public FavoritesFragment(long column_id) {
+    public FavoritesFragment(long columnId) {
         super();
+        init(columnId);
+    }
 
-        column_entity = new Entity("columns", column_id);
+    public void init(long columnId) {
+        column_entity = new Entity("columns", columnId);
         typeUserColumn = TweetTopicsUtils.COLUMN_FAVORITES;
         user_entity = new Entity("users", column_entity.getLong("user_id"));
     }
@@ -93,16 +98,18 @@ public class FavoritesFragment extends BaseListFragment implements APIDelegate<B
     }
 
     @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putLong(KEY_SAVE_STATE_COLUMN_ID, column_entity.getId());
+        super.onSaveInstanceState(outState);
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        if (savedInstanceState!=null && savedInstanceState.containsKey(KEY_SAVE_STATE_COLUMN_ID)) {
+            init(savedInstanceState.getLong(KEY_SAVE_STATE_COLUMN_ID));
+        }
         tweetsAdapter = new TweetsAdapter(getActivity(), getLoaderManager(), infoTweets, user_entity.getString("name"), (int)column_entity.getId());
-
     }
 
     @Override
@@ -179,12 +186,6 @@ public class FavoritesFragment extends BaseListFragment implements APIDelegate<B
 
         return view;
     }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-    }
-
 
     @Override
     public void onResults(BaseResponse r) {

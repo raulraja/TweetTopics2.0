@@ -46,6 +46,8 @@ import java.util.Random;
 
 public class TweetTopicsActivity extends BaseLayersActivity implements PopupLinks.PopupLinksListener, SplitActionBarMenu.SplitActionBarMenuListener {
 
+    private static String KEY_SAVE_STATE_COLUMN_POS = "KEY_SAVE_STATE_COLUMN_POS";
+
     public static final String KEY_EXTRAS_GOTO_COLUMN_USER = "KEY_EXTRAS_GOTO_COLUMN_USER";
     public static final String KEY_EXTRAS_GOTO_COLUMN_TYPE = "KEY_EXTRAS_GOTO_COLUMN_TYPE";
 
@@ -83,24 +85,21 @@ public class TweetTopicsActivity extends BaseLayersActivity implements PopupLink
     private SplitActionBarMenu splitActionBarMenu;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        OnAlarmReceiver.callAlarm(this);
-/*
+    protected void onStart() {
+        super.onStart();
     }
 
     @Override
-    public View onCreateView(String name, Context context, AttributeSet attrs) {
-        View v = super.onCreateView(name, context, attrs);
-        */
-
+    public void onCreate(Bundle savedInstanceState) {
         try {
             DataFramework.getInstance().open(this, Utils.packageName);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
+        super.onCreate(savedInstanceState);
+
+        OnAlarmReceiver.callAlarm(this);
 
         if (PreferenceUtils.getFinishForceClose(this)) {
             PreferenceUtils.setFinishForceClose(this, false);
@@ -136,7 +135,6 @@ public class TweetTopicsActivity extends BaseLayersActivity implements PopupLink
 
         int goToColumnType = -1;
         long goToColumnUser = -1;
-
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             if (extras.containsKey(KEY_EXTRAS_GOTO_COLUMN_TYPE)) {
@@ -145,6 +143,11 @@ public class TweetTopicsActivity extends BaseLayersActivity implements PopupLink
             if (extras.containsKey(KEY_EXTRAS_GOTO_COLUMN_USER)) {
                 goToColumnUser = extras.getLong(KEY_EXTRAS_GOTO_COLUMN_USER);
             }
+        }
+
+        int positionFromSensor = -1;
+        if (savedInstanceState!=null && savedInstanceState.containsKey(KEY_SAVE_STATE_COLUMN_POS)) {
+            positionFromSensor = savedInstanceState.getInt(KEY_SAVE_STATE_COLUMN_POS);
         }
 
         Utils.setActivity(this);
@@ -294,6 +297,8 @@ public class TweetTopicsActivity extends BaseLayersActivity implements PopupLink
                     || goToColumnType == TweetTopicsUtils.COLUMN_DIRECT_MESSAGES) {
                 createUserColumn(goToColumnUser, goToColumnType);
             }
+        } else if (positionFromSensor>=0) {
+            goToColumn(positionFromSensor, false);
         } else {
             int col = fragmentAdapter.getPositionColumnActive();
             if (col > 0) goToColumn(col, false);
@@ -436,6 +441,12 @@ public class TweetTopicsActivity extends BaseLayersActivity implements PopupLink
     @Override
     protected void onResume() {
         super.onResume();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putInt(KEY_SAVE_STATE_COLUMN_POS, pager.getCurrentItem());
+        super.onSaveInstanceState(outState);
     }
 
     public ViewPager getViewPager() {

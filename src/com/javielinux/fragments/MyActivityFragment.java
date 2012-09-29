@@ -64,6 +64,10 @@ public class MyActivityFragment extends Fragment {
 
     private Handler handler = new Handler();
 
+    public MyActivityFragment() {
+        super();
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);

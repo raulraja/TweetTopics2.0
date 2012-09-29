@@ -38,6 +38,8 @@ import java.util.ArrayList;
 
 public class SearchFragment extends BaseListFragment implements APIDelegate<BaseResponse>, ListFragmentListener {
 
+    private static String KEY_SAVE_STATE_COLUMN_ID = "KEY_SAVE_STATE_COLUMN_ID";
+
     private TweetsAdapter tweetsAdapter;
     private ArrayList<InfoTweet> infoTweets = new ArrayList<InfoTweet>();
     private Entity column_entity;
@@ -51,9 +53,16 @@ public class SearchFragment extends BaseListFragment implements APIDelegate<Base
 
     private int positionLastRead = 0;
 
-    public SearchFragment(long column_id) {
+    public SearchFragment() {
+        super();
+    }
 
-        column_entity = new Entity("columns", column_id);
+    public SearchFragment(long columnId) {
+        init(columnId);
+    }
+
+    public void init(long columnId) {
+        column_entity = new Entity("columns", columnId);
         search_entity = new EntitySearch(Long.parseLong(column_entity.getValue("search_id").toString()));
     }
 
@@ -146,14 +155,17 @@ public class SearchFragment extends BaseListFragment implements APIDelegate<Base
     }
 
     @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putLong(KEY_SAVE_STATE_COLUMN_ID, column_entity.getId());
+        super.onSaveInstanceState(outState);
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        if (savedInstanceState!=null && savedInstanceState.containsKey(KEY_SAVE_STATE_COLUMN_ID)) {
+            init(savedInstanceState.getLong(KEY_SAVE_STATE_COLUMN_ID));
+        }
         tweetsAdapter = new TweetsAdapter(getActivity(), getLoaderManager(), infoTweets, "", (int) column_entity.getId());
     }
 
@@ -239,11 +251,6 @@ public class SearchFragment extends BaseListFragment implements APIDelegate<Base
         }
 
         return view;
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
     }
 
     @Override

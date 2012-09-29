@@ -31,6 +31,8 @@ import java.util.ArrayList;
 
 public class ListUserFragment extends BaseListFragment implements APIDelegate<BaseResponse> {
 
+    private static String KEY_SAVE_STATE_COLUMN_ID = "KEY_SAVE_STATE_COLUMN_ID";
+
     private Entity column_entity;
     private Entity list_user_entity;
 
@@ -44,9 +46,16 @@ public class ListUserFragment extends BaseListFragment implements APIDelegate<Ba
     private LinearLayout viewNoInternet;
     private LinearLayout viewUpdate;
 
-    public ListUserFragment(long column_id) {
+    public ListUserFragment() {
+        super();
+    }
 
-        column_entity = new Entity("columns", column_id);
+    public ListUserFragment(long columnId) {
+        init(columnId);
+    }
+
+    public void init(long columnId) {
+        column_entity = new Entity("columns", columnId);
         list_user_entity = new Entity("user_lists", Long.parseLong(column_entity.getValue("userlist_id").toString()));
     }
 
@@ -95,14 +104,17 @@ public class ListUserFragment extends BaseListFragment implements APIDelegate<Ba
     }
 
     @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putLong(KEY_SAVE_STATE_COLUMN_ID, column_entity.getId());
+        super.onSaveInstanceState(outState);
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        if (savedInstanceState!=null && savedInstanceState.containsKey(KEY_SAVE_STATE_COLUMN_ID)) {
+            init(savedInstanceState.getLong(KEY_SAVE_STATE_COLUMN_ID));
+        }
         tweetsAdapter = new TweetsAdapter(getActivity(), getLoaderManager(), infoTweets, "", (int)column_entity.getId());
     }
 
@@ -155,11 +167,6 @@ public class ListUserFragment extends BaseListFragment implements APIDelegate<Ba
         reload();
 
         return view;
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
     }
 
     private void onListItemClick(View v, int position, long id) {

@@ -12,6 +12,10 @@ public class NoFoundFragment extends Fragment {
 
     private String text;
 
+    public NoFoundFragment() {
+        super();
+    }
+
     public NoFoundFragment(String text) {
         this.text = text;
     }

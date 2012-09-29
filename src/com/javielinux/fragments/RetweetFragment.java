@@ -31,6 +31,8 @@ import java.util.ArrayList;
 
 public class RetweetFragment extends BaseListFragment implements APIDelegate<BaseResponse> {
 
+    private static String KEY_SAVE_STATE_COLUMN_ID = "KEY_SAVE_STATE_COLUMN_ID";
+
     private TweetsAdapter tweetsAdapter;
     private ArrayList<InfoTweet> infoTweets = new ArrayList<InfoTweet>();
     private Entity column_entity;
@@ -44,16 +46,21 @@ public class RetweetFragment extends BaseListFragment implements APIDelegate<Bas
 
     private int typeUserColumn = 0;
 
-    public RetweetFragment(long column_id) {
+    public RetweetFragment() {
+        super();
+    }
 
-        column_entity = new Entity("columns", column_id);
+    public RetweetFragment(long columnId) {
+        init(columnId);
+    }
 
+    public void init(long columnId) {
+        column_entity = new Entity("columns", columnId);
         if (column_entity.getInt("type_id") == TweetTopicsUtils.COLUMN_RETWEETS_BY_OTHERS) {
             typeUserColumn = LoadTypeStatusLoader.RETWEETED_OFME;
         } else if (column_entity.getInt("type_id")== TweetTopicsUtils.COLUMN_RETWEETS_BY_YOU) {
             typeUserColumn = LoadTypeStatusLoader.RETWEETED_BYME;
         }
-
         user_entity = new Entity("users", column_entity.getLong("user_id"));
     }
 
@@ -92,14 +99,17 @@ public class RetweetFragment extends BaseListFragment implements APIDelegate<Bas
     }
 
     @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putLong(KEY_SAVE_STATE_COLUMN_ID, column_entity.getId());
+        super.onSaveInstanceState(outState);
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        if (savedInstanceState!=null && savedInstanceState.containsKey(KEY_SAVE_STATE_COLUMN_ID)) {
+            init(savedInstanceState.getLong(KEY_SAVE_STATE_COLUMN_ID));
+        }
         tweetsAdapter = new TweetsAdapter(getActivity(), getLoaderManager(), infoTweets, user_entity.getString("name"), (int)column_entity.getId());
     }
 
@@ -173,11 +183,6 @@ public class RetweetFragment extends BaseListFragment implements APIDelegate<Bas
         }
 
         return view;
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
     }
 
     @Override

@@ -39,6 +39,8 @@ import java.util.ArrayList;
 
 public class TweetTopicsFragment extends BaseListFragment implements APIDelegate<BaseResponse>, ListFragmentListener {
 
+    private static String KEY_SAVE_STATE_COLUMN_ID = "KEY_SAVE_STATE_COLUMN_ID";
+
     private TweetsAdapter tweetsAdapter;
     private ArrayList<InfoTweet> infoTweets = new ArrayList<InfoTweet>();
     private Entity column_entity;
@@ -58,9 +60,12 @@ public class TweetTopicsFragment extends BaseListFragment implements APIDelegate
         super();
     }
 
-    public TweetTopicsFragment(long column_id) {
+    public TweetTopicsFragment(long columnId) {
+        init(columnId);
+    }
 
-        column_entity = new Entity("columns", column_id);
+    public void init(long columnId) {
+        column_entity = new Entity("columns", columnId);
         if (column_entity.getInt("type_id") == TweetTopicsUtils.COLUMN_TIMELINE) {
             typeUserColumn = TweetTopicsUtils.TWEET_TYPE_TIMELINE;
         } else if (column_entity.getInt("type_id") == TweetTopicsUtils.COLUMN_MENTIONS) {
@@ -69,7 +74,6 @@ public class TweetTopicsFragment extends BaseListFragment implements APIDelegate
             typeUserColumn = TweetTopicsUtils.TWEET_TYPE_DIRECTMESSAGES;
         }
         user_entity = new EntityTweetUser(column_entity.getLong("user_id"), typeUserColumn);
-
     }
 
     public Entity getColumnEntity() {
@@ -158,14 +162,17 @@ public class TweetTopicsFragment extends BaseListFragment implements APIDelegate
     }
 
     @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putLong(KEY_SAVE_STATE_COLUMN_ID, column_entity.getId());
+        super.onSaveInstanceState(outState);
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        if (savedInstanceState!=null && savedInstanceState.containsKey(KEY_SAVE_STATE_COLUMN_ID)) {
+            init(savedInstanceState.getLong(KEY_SAVE_STATE_COLUMN_ID));
+        }
         tweetsAdapter = new TweetsAdapter(getActivity(), getLoaderManager(), infoTweets, user_entity.getString("name"), (int) column_entity.getId());
     }
 
@@ -251,11 +258,6 @@ public class TweetTopicsFragment extends BaseListFragment implements APIDelegate
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-    }
-
-    @Override
     public void onResults(BaseResponse r) {
         Log.d(Utils.TAG, "TweetTopicsFragment:onResults:" + column_entity.getInt("type_id"));
         TwitterUserResponse result = (TwitterUserResponse) r;
@@ -267,7 +269,7 @@ public class TweetTopicsFragment extends BaseListFragment implements APIDelegate
 
         InfoSaveTweets infoSaveTweets = result.getInfo();
 
-        if (infoSaveTweets.getNewMessages() > 0) {
+        if (infoSaveTweets!=null && infoSaveTweets.getNewMessages() > 0) {
             String whereType = "";
 
             switch (column_entity.getInt("type_id")) {
