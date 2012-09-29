@@ -70,6 +70,12 @@ public class UserTimelineFragment extends BaseListFragment implements APIDelegat
                 onClickItemList(adapter.getItem(position));
             }
         });
+        list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long l) {
+                return onLongClickItemList(adapter.getItem(position));
+            }
+        });
 
         viewLoading = (LinearLayout) view.findViewById(R.id.user_timeline_loading);
 

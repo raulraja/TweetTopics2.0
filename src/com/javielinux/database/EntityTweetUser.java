@@ -65,6 +65,32 @@ public class EntityTweetUser extends Entity {
 		return DataFramework.getInstance().getEntityListCount("tweets_user", "type_id=" + tweet_type 
    				+ " AND user_tt_id=" + getId() + " AND tweet_id >'" + Utils.fillZeros(""+getString(getFieldLastId()))+"'");
 	}
+
+
+    private int getUnreadTweetsCount(int column_type, Entity user, Entity search) {
+        int tweetsCount = 0;
+
+        switch (column_type) {
+            case TweetTopicsUtils.COLUMN_TIMELINE:
+                tweetsCount = DataFramework.getInstance().getEntityListCount("tweets_user", "type_id = " + TweetTopicsUtils.TWEET_TYPE_TIMELINE + " AND user_tt_id=" + user.getId() + " AND tweet_id >'" + Utils.fillZeros("" + user.getString("last_timeline_id")) + "'");
+                break;
+            case TweetTopicsUtils.COLUMN_MENTIONS:
+                tweetsCount = DataFramework.getInstance().getEntityListCount("tweets_user", "type_id = " + TweetTopicsUtils.TWEET_TYPE_MENTIONS + " AND user_tt_id=" + user.getId() + " AND tweet_id >'" + Utils.fillZeros("" + user.getString("last_mention_id")) + "'");
+                break;
+            case TweetTopicsUtils.COLUMN_DIRECT_MESSAGES:
+                tweetsCount = DataFramework.getInstance().getEntityListCount("tweets_user", "type_id = " + TweetTopicsUtils.TWEET_TYPE_DIRECTMESSAGES + " AND user_tt_id=" + user.getId() + " AND tweet_id >'" + Utils.fillZeros("" + user.getString("last_direct_id")) + "'");
+                break;
+            case TweetTopicsUtils.COLUMN_SEARCH:
+                EntitySearch ent = new EntitySearch(search.getId());
+                tweetsCount = ent.getValueNewCount();
+                //tweetsCount = DataFramework.getInstance().getEntityListCount("search", "tweet_id >'" + Utils.fillZeros("" + user.getString("last_direct_id")) + "'");
+                //if (search.getLong("last_tweet_id") < search.getLong("last_tweet_id_notifications"))
+                //    tweetsCount = search.getInt("new_tweets_count");
+                break;
+        }
+
+        return tweetsCount;
+    }
 	
 	public int getValueCountFromId(long id) {
 		return DataFramework.getInstance().getEntityListCount("tweets_user", "type_id=" + tweet_type 

@@ -65,7 +65,10 @@ public class PreferenceUtils {
             return prefs.getBoolean(name, false);
         } else {
             boolean def = false;
-            if (submenu.equals("reply") || submenu.equals("lastread") || submenu.equals("readafter")) def = true;
+            if (submenu.equals(TweetActions.TWEET_ACTION_REPLY) || submenu.equals(TweetActions.TWEET_ACTION_LAST_READ)
+                    || submenu.equals(TweetActions.TWEET_ACTION_READ_AFTER)) {
+                def = true;
+            }
 
             SharedPreferences.Editor editor = prefs.edit();
             editor.putBoolean(name, def);

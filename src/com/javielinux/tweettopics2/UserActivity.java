@@ -23,6 +23,7 @@ import com.javielinux.api.response.ErrorResponse;
 import com.javielinux.api.response.LoadImageWidgetResponse;
 import com.javielinux.api.response.LoadUserResponse;
 import com.javielinux.fragmentadapter.UserFragmentAdapter;
+import com.javielinux.fragments.BaseListFragment;
 import com.javielinux.infos.InfoTweet;
 import com.javielinux.infos.InfoUsers;
 import com.javielinux.utils.*;
@@ -31,7 +32,7 @@ import com.viewpagerindicator.TabPageIndicator;
 import java.io.File;
 import java.util.ArrayList;
 
-public class UserActivity extends BaseLayersActivity implements PopupLinks.PopupLinksListener {
+public class UserActivity extends BaseLayersActivity implements PopupLinks.PopupLinksListener, SplitActionBarMenu.SplitActionBarMenuListener {
 
     public static final String KEY_EXTRAS_USER = "user";
 
@@ -53,6 +54,7 @@ public class UserActivity extends BaseLayersActivity implements PopupLinks.Popup
     private LinearLayout viewLoading;
     private RelativeLayout viewInfo;
     private PopupLinks popupLinks;
+    private SplitActionBarMenu splitActionBarMenu;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -126,8 +128,13 @@ public class UserActivity extends BaseLayersActivity implements PopupLinks.Popup
             }, new LoadUserRequest(username));
         }
 
+        ViewGroup root = (ViewGroup)findViewById(R.id.user_root);
+
         popupLinks = new PopupLinks(this);
-        popupLinks.loadPopup((ViewGroup)findViewById(R.id.user_root));
+        popupLinks.loadPopup(root);
+
+        splitActionBarMenu = new SplitActionBarMenu(this);
+        splitActionBarMenu.loadSplitActionBarMenu(root);
 
         refreshTheme();
 
@@ -291,10 +298,19 @@ public class UserActivity extends BaseLayersActivity implements PopupLinks.Popup
     }
 
     @Override
+    public void onShowSplitActionBarMenu(BaseListFragment fragment, InfoTweet infoTweet) {
+        splitActionBarMenu.showSplitActionBarMenu(fragment, infoTweet);
+    }
+
+    @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             if (popupLinks.isShowLinks()) {
                 popupLinks.hideLinks();
+                return false;
+            }
+            if (splitActionBarMenu.isShowing()) {
+                splitActionBarMenu.hideSplitActionBarMenu();
                 return false;
             }
         }

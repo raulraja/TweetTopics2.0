@@ -3,12 +3,14 @@ package com.javielinux.utils;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.support.v4.app.FragmentActivity;
-import android.view.Display;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.*;
-import com.javielinux.adapters.LinksAdapter;
+import android.widget.HorizontalScrollView;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import com.javielinux.fragments.BaseListFragment;
 import com.javielinux.infos.InfoSubMenuTweet;
 import com.javielinux.infos.InfoTweet;
 import com.javielinux.tweettopics2.R;
@@ -21,41 +23,47 @@ import java.util.ArrayList;
 public class SplitActionBarMenu {
 
     public interface SplitActionBarMenuListener {
-        void onShowSplitActionBarMenu(View view, InfoTweet infoTweet);
+        void onShowSplitActionBarMenu(BaseListFragment fromFragment, InfoTweet infoTweet);
     }
 
     private FragmentActivity activity;
     private int screenHeight;
-    private int screenWidth;
-    private int statusBarHeight;
     private float splitActionBarMenuHeight;
-    private float actionbar_columns_height;
 
     private LinearLayout root_layout;
     private HorizontalScrollView scroll_view_layout;
     private LinearLayout main_layout;
 
+    /**
+     * Fragment desde el que se llama al SplitActionBar
+     */
+    private BaseListFragment fromFragment;
+
     public SplitActionBarMenu(FragmentActivity activity) {
         init(activity);
+    }
+
+    public BaseListFragment getFromFragment() {
+        return fromFragment;
+    }
+
+    public void setFromFragment(BaseListFragment fromFragment) {
+        this.fromFragment = fromFragment;
     }
 
     private void init(FragmentActivity activity) {
         this.activity = activity;
         splitActionBarMenuHeight = activity.getResources().getDimension(R.dimen.footer_buttons_height);
-        actionbar_columns_height = activity.getResources().getDimension(R.dimen.actionbar_columns_height);
 
         Rect rect = new Rect();
         activity.getWindow().getDecorView().getWindowVisibleDisplayFrame(rect);
-        statusBarHeight = rect.bottom;
 
         try {
             Point size = new Point();
             activity.getWindowManager().getDefaultDisplay().getSize(size);
             screenHeight = size.y;
-            screenWidth = size.x;
         } catch (NoSuchMethodError e) {
             screenHeight = activity.getWindowManager().getDefaultDisplay().getHeight();
-            screenWidth = activity.getWindowManager().getDefaultDisplay().getWidth();
         }
     }
 
@@ -77,7 +85,7 @@ public class SplitActionBarMenu {
 
     public void hideSplitActionBarMenu() {
 
-        ObjectAnimator translationY = ObjectAnimator.ofFloat(scroll_view_layout, "translationY", screenHeight - Utils.dip2px(activity,splitActionBarMenuHeight), screenHeight);
+        ObjectAnimator translationY = ObjectAnimator.ofFloat(scroll_view_layout, "translationY", screenHeight - Utils.dip2px(activity, splitActionBarMenuHeight), screenHeight);
         translationY.setDuration(250);
 
         AnimatorSet animatorSet = new AnimatorSet();
@@ -119,7 +127,7 @@ public class SplitActionBarMenu {
             if (is_first) {
                 is_first = false;
             } else {
-                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT,0.0f);
+                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, 0.0f);
                 layoutParams.height = LinearLayout.LayoutParams.WRAP_CONTENT;
                 layoutParams.width = LinearLayout.LayoutParams.WRAP_CONTENT;
 
@@ -132,11 +140,11 @@ public class SplitActionBarMenu {
 
             InfoSubMenuTweet infoSubMenuTweet = new InfoSubMenuTweet(activity, code);
             ImageButton imageButton = new ImageButton(activity);
-            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT,1.0f);
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f);
             layoutParams.gravity = Gravity.CENTER;
             layoutParams.height = LinearLayout.LayoutParams.WRAP_CONTENT;
             layoutParams.weight = 1;
-            layoutParams.setMargins(20,0,20,0);
+            layoutParams.setMargins(20, 0, 20, 0);
             layoutParams.width = LinearLayout.LayoutParams.WRAP_CONTENT;
 
             imageButton.setLayoutParams(layoutParams);
@@ -145,14 +153,17 @@ public class SplitActionBarMenu {
                 @Override
                 public void onClick(View view) {
                     hideSplitActionBarMenu();
-                    TweetActions.execByCode(code, activity, infoTweet.getUserId(), infoTweet);
+                    TweetActions.execByCode(code, activity, infoTweet.getUserId(), infoTweet, getFromFragment());
                 }
             });
 
             main_layout.addView(imageButton);
         }
     }
-    public void showSplitActionBarMenu(View view, InfoTweet infoTweet) {
+
+    public void showSplitActionBarMenu(BaseListFragment fragment, InfoTweet infoTweet) {
+
+        setFromFragment(fragment);
 
         ArrayList<String> codes = PreferenceUtils.getArraySubMenuTweet(activity);
 
@@ -161,7 +172,7 @@ public class SplitActionBarMenu {
         } else {
             loadActionButtons(codes, infoTweet);
 
-            ObjectAnimator translationY = ObjectAnimator.ofFloat(scroll_view_layout, "translationY", screenHeight, screenHeight - Utils.dip2px(activity,splitActionBarMenuHeight));
+            ObjectAnimator translationY = ObjectAnimator.ofFloat(scroll_view_layout, "translationY", screenHeight, screenHeight - Utils.dip2px(activity, splitActionBarMenuHeight));
             translationY.setDuration(250);
 
             AnimatorSet animatorSet = new AnimatorSet();

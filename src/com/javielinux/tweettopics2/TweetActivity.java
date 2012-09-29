@@ -25,6 +25,7 @@ import com.javielinux.api.response.LoadTranslateTweetResponse;
 import com.javielinux.components.ImageViewZoomTouch;
 import com.javielinux.dialogs.HashTagDialogFragment;
 import com.javielinux.fragmentadapter.TweetFragmentAdapter;
+import com.javielinux.fragments.BaseListFragment;
 import com.javielinux.infos.InfoLink;
 import com.javielinux.infos.InfoTweet;
 import com.javielinux.utils.*;
@@ -36,7 +37,7 @@ import com.viewpagerindicator.TabPageIndicator;
 import java.io.File;
 import java.util.ArrayList;
 
-public class TweetActivity extends BaseLayersActivity implements APIDelegate<BaseResponse>, PopupLinks.PopupLinksListener {
+public class TweetActivity extends BaseLayersActivity implements APIDelegate<BaseResponse>, PopupLinks.PopupLinksListener, SplitActionBarMenu.SplitActionBarMenuListener {
 
     public static final String KEY_EXTRAS_TWEET = "tweet";
     public static final String KEY_EXTRAS_LINK = "link";
@@ -52,13 +53,14 @@ public class TweetActivity extends BaseLayersActivity implements APIDelegate<Bas
     private TextView txtDate;
     private TextView txtText;
 
-    private RelativeLayout llRoot;
+    private FrameLayout llRoot;
     private LinearLayout tweetInfoLayout;
     private ImageViewZoomTouch zoom_image;
     private RelativeLayout tweetContent;
     private LinearLayout viewLoading;
     private LinearLayout tweetActionsContainer;
     private PopupLinks popupLinks;
+    private SplitActionBarMenu splitActionBarMenu;
     private boolean is_translating;
     private boolean image_preview_displayed;
 
@@ -158,7 +160,7 @@ public class TweetActivity extends BaseLayersActivity implements APIDelegate<Bas
         (findViewById(R.id.tweet_btn_original_tweet)).setOnClickListener(clickOriginalTweet);
         (findViewById(R.id.tweet_btn_more)).setOnClickListener(clickMore);
 
-        llRoot = (RelativeLayout)findViewById(R.id.tweet_ll);
+        llRoot = (FrameLayout)findViewById(R.id.tweet_ll);
         tweetInfoLayout = (LinearLayout)findViewById(R.id.tweet_info_ll);
         zoom_image = (ImageViewZoomTouch )findViewById(R.id.zoom_image);
         tweetContent = (RelativeLayout)findViewById(R.id.tweet_content);
@@ -174,7 +176,9 @@ public class TweetActivity extends BaseLayersActivity implements APIDelegate<Bas
         });
         popupLinks = new PopupLinks(this);
         popupLinks.loadPopup(llRoot);
-        //popupLinks.loadPopup((ViewGroup)findViewById(R.id.tweet_root));
+
+        splitActionBarMenu = new SplitActionBarMenu(this);
+        splitActionBarMenu.loadSplitActionBarMenu(llRoot);
 
         refreshTheme();
     }
@@ -221,7 +225,7 @@ public class TweetActivity extends BaseLayersActivity implements APIDelegate<Bas
         animatorSet.addListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animator) {
-                RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams)zoom_image.getLayoutParams();
+                FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams)zoom_image.getLayoutParams();
                 layoutParams.setMargins(0,0,0,tweetActionsContainer.getTop());
                 zoom_image.setLayoutParams(layoutParams);
                 zoom_image.setVisibility(View.VISIBLE);
@@ -583,10 +587,19 @@ public class TweetActivity extends BaseLayersActivity implements APIDelegate<Bas
     }
 
     @Override
+    public void onShowSplitActionBarMenu(BaseListFragment baseListFragment, InfoTweet infoTweet) {
+        splitActionBarMenu.showSplitActionBarMenu(baseListFragment, infoTweet);
+    }
+
+    @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             if (popupLinks.isShowLinks()) {
                 popupLinks.hideLinks();
+                return false;
+            }
+            if (splitActionBarMenu.isShowing()) {
+                splitActionBarMenu.hideSplitActionBarMenu();
                 return false;
             }
         }

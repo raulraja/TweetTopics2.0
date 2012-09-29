@@ -135,6 +135,12 @@ public class UsersFragment extends BaseListFragment implements APIDelegate<BaseR
                 onClickItemList(tweetsAdapter.getItem(position - 1));
             }
         });
+        listView.getRefreshableView().setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long l) {
+                return onLongClickItemList(tweetsAdapter.getItem(position - 1));
+            }
+        });
 
         tweetsAdapter.setParentListView(listView);
 

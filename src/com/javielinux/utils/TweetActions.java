@@ -41,13 +41,19 @@ public class TweetActions {
     public static String TWEET_ACTION_DELETE_TWEET = "delete_tweet";
     public static String TWEET_ACTION_DELETE_UP_TWEET = "delete_up_tweets";
 
-    public static boolean execByCode(String code, FragmentActivity activity, long fromUser, InfoTweet infoTweet) {
+    public static void execByCode(String code, FragmentActivity activity, long fromUser, InfoTweet infoTweet) {
+        execByCode(code, activity, fromUser, infoTweet, null);
+    }
+
+    public static void execByCode(String code, FragmentActivity activity, long fromUser, InfoTweet infoTweet, Object extra) {
         if (code.equals(TWEET_ACTION_REPLY)) {
             goToReply(activity, fromUser, infoTweet);
         } else if (code.equals(TWEET_ACTION_RETWEET)) {
             showDialogRetweet(activity, fromUser, infoTweet);
         } else if (code.equals(TWEET_ACTION_LAST_READ)) {
-            //return this.goToMarkLastReadId(mTweetTopicsCore, pos);
+            if (extra instanceof ListFragmentListener) {
+                ((ListFragmentListener)extra).onMarkPositionLastReadAsLastReadId(true);
+            }
         } else if (code.equals(TWEET_ACTION_READ_AFTER)) {
             saveTweet(activity, infoTweet);
         } else if (code.equals(TWEET_ACTION_FAVORITE)) {
@@ -62,10 +68,9 @@ public class TweetActions {
             directMessage(activity, fromUser, infoTweet.getUsername());
         } else if (code.equals(TWEET_ACTION_DELETE_TWEET)) {
             //this.goToDeleteTweet(mTweetTopicsCore);
-        } else if (code.equals(TWEET_ACTION_DELETE_UP_TWEET)) {
+        } else if (code.equals(TWEET_ACTION_DELETE_UP_TWEET)) { // opción sólo para desarrollo
             //this.goToDeleteTop(mTweetTopicsCore);
         }
-        return false;
     }
 
     public static void goToFavorite(final FragmentActivity activity, final InfoTweet infoTweet) {

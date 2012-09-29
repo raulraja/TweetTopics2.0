@@ -16,6 +16,7 @@ import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
 import com.javielinux.fragments.*;
 import com.javielinux.tweettopics2.R;
+import com.javielinux.utils.DBUtils;
 import com.javielinux.utils.ImageUtils;
 import com.javielinux.utils.TweetTopicsUtils;
 import com.javielinux.utils.Utils;
@@ -99,7 +100,7 @@ public class TweetTopicsFragmentAdapter extends FragmentPagerAdapter {
                 case TweetTopicsUtils.COLUMN_TIMELINE:
                 case TweetTopicsUtils.COLUMN_MENTIONS:
                 case TweetTopicsUtils.COLUMN_DIRECT_MESSAGES:
-                    tweets_count = getUnreadTweetsCount(column_type, fragmentList.get(position).getEntity("user_id"), null);
+                    tweets_count = DBUtils.getUnreadTweetsUser(column_type, fragmentList.get(position).getEntity("user_id").getId());
                     bitmap = ImageUtils.getBitmapAvatar(fragmentList.get(position).getEntity("user_id").getId(), Utils.AVATAR_LARGE);
                     if (tweets_count > 0) {
                         Paint paint = new Paint();
@@ -120,11 +121,11 @@ public class TweetTopicsFragmentAdapter extends FragmentPagerAdapter {
                 case TweetTopicsUtils.COLUMN_FAVORITES:
                     return ImageUtils.getBitmapAvatar(fragmentList.get(position).getEntity("user_id").getId(), Utils.AVATAR_LARGE);
                 case TweetTopicsUtils.COLUMN_SEARCH:
-                    Entity search_entity = new Entity("search", fragmentList.get(position).getLong("search_id"));
+                    Entity searchEntity = new Entity("search", fragmentList.get(position).getLong("search_id"));
 
-                    tweets_count = getUnreadTweetsCount(column_type, null, search_entity);
+                    tweets_count = DBUtils.getUnreadTweetsSearch(searchEntity.getId());
 
-                    Drawable drawable = Utils.getDrawable(context, search_entity.getString("icon_big"));
+                    Drawable drawable = Utils.getDrawable(context, searchEntity.getString("icon_big"));
                     if (drawable == null) drawable = context.getResources().getDrawable(R.drawable.letter_az);
                     bitmap = ((BitmapDrawable) drawable).getBitmap();
                     bitmap = Bitmap.createScaledBitmap(bitmap, Utils.AVATAR_LARGE, Utils.AVATAR_LARGE, true);
@@ -178,28 +179,6 @@ public class TweetTopicsFragmentAdapter extends FragmentPagerAdapter {
         }
 
         return null;
-    }
-
-    private int getUnreadTweetsCount(int column_type, Entity user, Entity search) {
-        int tweetsCount = 0;
-
-        switch (column_type) {
-            case TweetTopicsUtils.COLUMN_TIMELINE:
-                tweetsCount = DataFramework.getInstance().getEntityListCount("tweets_user", "type_id = " + TweetTopicsUtils.TWEET_TYPE_TIMELINE + " AND user_tt_id=" + user.getId() + " AND tweet_id >'" + Utils.fillZeros("" + user.getString("last_timeline_id")) + "'");
-                break;
-            case TweetTopicsUtils.COLUMN_MENTIONS:
-                tweetsCount = DataFramework.getInstance().getEntityListCount("tweets_user", "type_id = " + TweetTopicsUtils.TWEET_TYPE_MENTIONS + " AND user_tt_id=" + user.getId() + " AND tweet_id >'" + Utils.fillZeros("" + user.getString("last_mention_id")) + "'");
-                break;
-            case TweetTopicsUtils.COLUMN_DIRECT_MESSAGES:
-                tweetsCount = DataFramework.getInstance().getEntityListCount("tweets_user", "type_id = " + TweetTopicsUtils.TWEET_TYPE_DIRECTMESSAGES + " AND user_tt_id=" + user.getId() + " AND tweet_id >'" + Utils.fillZeros("" + user.getString("last_direct_id")) + "'");
-                break;
-            case TweetTopicsUtils.COLUMN_SEARCH:
-                if (search.getLong("last_tweet_id") < search.getLong("last_tweet_id_notifications"))
-                    tweetsCount = search.getInt("new_tweets_count");
-                break;
-        }
-
-        return tweetsCount;
     }
 
     public int getPositionColumnActive() {

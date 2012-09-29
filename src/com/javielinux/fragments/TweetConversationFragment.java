@@ -72,6 +72,12 @@ public class TweetConversationFragment extends BaseListFragment implements APIDe
                 onClickItemList(adapter.getItem(position));
             }
         });
+        list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long l) {
+                return onLongClickItemList(adapter.getItem(position));
+            }
+        });
 
         getConversationTweets();
 

@@ -32,6 +32,7 @@ import com.javielinux.components.DraggableHorizontalView;
 import com.javielinux.components.OnRearrangeListener;
 import com.javielinux.dialogs.AlertDialogFragment;
 import com.javielinux.fragmentadapter.TweetTopicsFragmentAdapter;
+import com.javielinux.fragments.BaseListFragment;
 import com.javielinux.infos.InfoTweet;
 import com.javielinux.notifications.OnAlarmReceiver;
 import com.javielinux.utils.*;
@@ -428,8 +429,8 @@ public class TweetTopicsActivity extends BaseLayersActivity implements PopupLink
     }
 
     @Override
-    public void onShowSplitActionBarMenu(View view, InfoTweet infoTweet) {
-        splitActionBarMenu.showSplitActionBarMenu(view, infoTweet);
+    public void onShowSplitActionBarMenu(BaseListFragment fragment, InfoTweet infoTweet) {
+        splitActionBarMenu.showSplitActionBarMenu(fragment, infoTweet);
     }
 
     @Override
@@ -612,27 +613,6 @@ public class TweetTopicsActivity extends BaseLayersActivity implements PopupLink
         return bmp;
     }
 
-    private int getUnreadTweetsCount(int column_type, Entity user, Entity search) {
-        int tweetsCount = 0;
-
-        switch (column_type) {
-            case TweetTopicsUtils.COLUMN_TIMELINE:
-                tweetsCount = DataFramework.getInstance().getEntityListCount("tweets_user", "type_id = " + TweetTopicsUtils.TWEET_TYPE_TIMELINE + " AND user_tt_id=" + user.getId() + " AND tweet_id >'" + Utils.fillZeros("" + user.getString("last_timeline_id")) + "'");
-                break;
-            case TweetTopicsUtils.COLUMN_MENTIONS:
-                tweetsCount = DataFramework.getInstance().getEntityListCount("tweets_user", "type_id = " + TweetTopicsUtils.TWEET_TYPE_MENTIONS + " AND user_tt_id=" + user.getId() + " AND tweet_id >'" + Utils.fillZeros("" + user.getString("last_mention_id")) + "'");
-                break;
-            case TweetTopicsUtils.COLUMN_DIRECT_MESSAGES:
-                tweetsCount = DataFramework.getInstance().getEntityListCount("tweets_user", "type_id = " + TweetTopicsUtils.TWEET_TYPE_DIRECTMESSAGES + " AND user_tt_id=" + user.getId() + " AND tweet_id >'" + Utils.fillZeros("" + user.getString("last_direct_id")) + "'");
-                break;
-            case TweetTopicsUtils.COLUMN_SEARCH:
-                if (search.getLong("last_tweet_id") < search.getLong("last_tweet_id_notifications"))
-                    tweetsCount = search.getInt("new_tweets_count");
-                break;
-        }
-
-        return tweetsCount;
-    }
 
     public void refreshActionBarColumns() {
 
@@ -715,11 +695,13 @@ public class TweetTopicsActivity extends BaseLayersActivity implements PopupLink
         int tweets_count = 0;
         if (column_type == TweetTopicsUtils.COLUMN_TIMELINE ||
                 column_type == TweetTopicsUtils.COLUMN_MENTIONS ||
-                column_type == TweetTopicsUtils.COLUMN_DIRECT_MESSAGES ||
-                column_type == TweetTopicsUtils.COLUMN_SEARCH) {
-            tweets_count = getUnreadTweetsCount(column_type,
-                    fragmentAdapter.getFragmentList().get(position).getEntity("user_id"),
-                    fragmentAdapter.getFragmentList().get(position).getEntity("search_id"));
+                column_type == TweetTopicsUtils.COLUMN_DIRECT_MESSAGES) {
+            tweets_count = DBUtils.getUnreadTweetsUser(column_type,
+                    fragmentAdapter.getFragmentList().get(position).getEntity("user_id").getId());
+        }
+        if (column_type == TweetTopicsUtils.COLUMN_SEARCH) {
+            tweets_count = DBUtils.getUnreadTweetsSearch(
+                    fragmentAdapter.getFragmentList().get(position).getEntity("search_id").getId());
         }
         if (tweets_count > 0) {
             imgBarAvatar.setVisibility(View.GONE);

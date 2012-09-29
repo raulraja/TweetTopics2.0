@@ -135,6 +135,12 @@ public class RetweetFragment extends BaseListFragment implements APIDelegate<Bas
                 onClickItemList(tweetsAdapter.getItem(position - 1));
             }
         });
+        listView.getRefreshableView().setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long l) {
+                return onLongClickItemList(tweetsAdapter.getItem(position - 1));
+            }
+        });
 
         tweetsAdapter.setParentListView(listView);
 

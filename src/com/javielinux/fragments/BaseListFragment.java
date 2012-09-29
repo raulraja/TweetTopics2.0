@@ -6,6 +6,7 @@ import com.android.dataframework.Entity;
 import com.javielinux.infos.InfoTweet;
 import com.javielinux.tweettopics2.BaseLayersActivity;
 import com.javielinux.tweettopics2.TweetActivity;
+import com.javielinux.utils.SplitActionBarMenu;
 
 abstract public class BaseListFragment extends Fragment {
 
@@ -26,10 +27,16 @@ abstract public class BaseListFragment extends Fragment {
     protected void onClickItemList(InfoTweet infoTweet) {
         if (getActivity() instanceof BaseLayersActivity) {
             Bundle bundle = new Bundle();
-
             bundle.putParcelable(TweetActivity.KEY_EXTRAS_TWEET, infoTweet);
-            ((BaseLayersActivity)getActivity()).startAnimationActivity(TweetActivity.class, bundle);
+            ((BaseLayersActivity) getActivity()).startAnimationActivity(TweetActivity.class, bundle);
         }
+    }
+
+    protected boolean onLongClickItemList(InfoTweet infoTweet) {
+        if (getActivity() instanceof SplitActionBarMenu.SplitActionBarMenuListener) {
+            ((SplitActionBarMenu.SplitActionBarMenuListener) getActivity()).onShowSplitActionBarMenu(this, infoTweet);
+        }
+        return true;
     }
 
 }

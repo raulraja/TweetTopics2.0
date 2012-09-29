@@ -174,6 +174,12 @@ public class TrendingTopicsFragment extends BaseListFragment implements APIDeleg
                 onClickItemList(trendsAdapter.getItem(position - 1));
             }
         });
+        trendslistView.getRefreshableView().setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long l) {
+                return onLongClickItemList(trendsAdapter.getItem(position - 1));
+            }
+        });
 
         viewLoading = (LinearLayout) view.findViewById(R.id.trend_view_loading);
         viewNoInternet = (LinearLayout) view.findViewById(R.id.trend_view_no_internet);

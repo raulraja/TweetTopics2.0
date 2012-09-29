@@ -29,6 +29,7 @@ import com.javielinux.tweettopics2.R;
 import com.javielinux.tweettopics2.ThemeManager;
 import com.javielinux.tweettopics2.TweetTopicsActivity;
 import com.javielinux.utils.ImageUtils;
+import com.javielinux.utils.ListFragmentListener;
 import com.javielinux.utils.TweetTopicsUtils;
 import com.javielinux.utils.Utils;
 import widget.WidgetCounters2x1;
@@ -36,7 +37,7 @@ import widget.WidgetCounters4x1;
 
 import java.util.ArrayList;
 
-public class TweetTopicsFragment extends BaseListFragment implements APIDelegate<BaseResponse> {
+public class TweetTopicsFragment extends BaseListFragment implements APIDelegate<BaseResponse>, ListFragmentListener {
 
     private TweetsAdapter tweetsAdapter;
     private ArrayList<InfoTweet> infoTweets = new ArrayList<InfoTweet>();
@@ -120,7 +121,7 @@ public class TweetTopicsFragment extends BaseListFragment implements APIDelegate
         this.flinging = flinging;
         tweetsAdapter.setFlinging(flinging);
         if (!flinging) {
-            markPositionLastReadAsLastReadId();
+            onMarkPositionLastReadAsLastReadId(false);
         }
     }
 
@@ -154,33 +155,6 @@ public class TweetTopicsFragment extends BaseListFragment implements APIDelegate
         Log.d(Utils.TAG, "reloadColumnUser : " + column_entity.getInt("type_id"));
 
         APITweetTopics.execute(getActivity(), getLoaderManager(), this, new TwitterUserRequest(column_entity.getInt("type_id"), user_entity.getId()));
-    }
-
-    private void markPositionLastReadAsLastReadId() {
-
-        if (tweetsAdapter != null && tweetsAdapter.getLastReadPosition() > positionLastRead) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        long id = tweetsAdapter.getItem(positionLastRead).getId();
-                        if (user_entity != null) {
-                            user_entity.saveLastId(id);
-                            sendBroadcastUpdateTweets();
-                            getActivity().runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    ((TweetTopicsActivity) getActivity()).reloadBarAvatar();
-                                }
-                            });
-                        }
-                    } catch (ArrayIndexOutOfBoundsException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }).start();
-        }
-
     }
 
     @Override
@@ -230,6 +204,12 @@ public class TweetTopicsFragment extends BaseListFragment implements APIDelegate
                 onClickItemList(tweetsAdapter.getItem(position - 1));
             }
         });
+        listView.getRefreshableView().setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long l) {
+                return onLongClickItemList(tweetsAdapter.getItem(position - 1));
+            }
+        });
 
         tweetsAdapter.setParentListView(listView);
 
@@ -239,7 +219,7 @@ public class TweetTopicsFragment extends BaseListFragment implements APIDelegate
             public void onScroll(AbsListView arg0, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
                 if (positionLastRead > firstVisibleItem) {
                     positionLastRead = firstVisibleItem;
-                    if (firstVisibleItem == 0) markPositionLastReadAsLastReadId();
+                    if (firstVisibleItem == 0) onMarkPositionLastReadAsLastReadId(false);
                 }
             }
 
@@ -359,7 +339,8 @@ public class TweetTopicsFragment extends BaseListFragment implements APIDelegate
                 infoTweets.get(tweetsAdapter.getLastReadPosition() + 1).setLastRead(false);
                 tweetsAdapter.setLastReadPosition(tweetsAdapter.getLastReadPosition() + count);
                 positionLastRead = tweetsAdapter.getLastReadPosition() + count;
-            } catch (IndexOutOfBoundsException e) {}
+            } catch (IndexOutOfBoundsException e) {
+            }
 
             tweetsAdapter.notifyDataSetChanged();
             tweetsAdapter.launchVisibleTask();
@@ -382,5 +363,34 @@ public class TweetTopicsFragment extends BaseListFragment implements APIDelegate
     private void sendBroadcastUpdateTweets() {
         WidgetCounters4x1.updateAll(getActivity());
         WidgetCounters2x1.updateAll(getActivity());
+    }
+
+    @Override
+    public void onMarkPositionLastReadAsLastReadId(boolean force) {
+        if ( (tweetsAdapter != null && force) || (tweetsAdapter != null && tweetsAdapter.getLastReadPosition() > positionLastRead)) {
+            if (force) {
+                positionLastRead = listView.getRefreshableView().getFirstVisiblePosition()+1;
+            }
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        long id = tweetsAdapter.getItem(positionLastRead).getId();
+                        if (user_entity != null) {
+                            user_entity.saveLastId(id);
+                            sendBroadcastUpdateTweets();
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    ((TweetTopicsActivity) getActivity()).reloadBarAvatar();
+                                }
+                            });
+                        }
+                    } catch (ArrayIndexOutOfBoundsException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }).start();
+        }
     }
 }
