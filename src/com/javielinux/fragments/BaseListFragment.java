@@ -24,6 +24,8 @@ abstract public class BaseListFragment extends Fragment {
 
     abstract public Entity getColumnEntity();
 
+    abstract public void goToTop();
+
     protected void onClickItemList(InfoTweet infoTweet) {
         if (getActivity() instanceof BaseLayersActivity) {
             Bundle bundle = new Bundle();

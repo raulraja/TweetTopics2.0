@@ -19,15 +19,13 @@ import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
-import android.view.Display;
-import android.view.KeyEvent;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.*;
 import android.view.animation.AnimationSet;
 import android.view.animation.ScaleAnimation;
 import android.widget.*;
 import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
+import com.google.android.maps.GeoPoint;
 import com.javielinux.components.DraggableHorizontalView;
 import com.javielinux.components.OnRearrangeListener;
 import com.javielinux.dialogs.AlertDialogFragment;
@@ -83,6 +81,8 @@ public class TweetTopicsActivity extends BaseLayersActivity implements PopupLink
 
     private PopupLinks popupLinks;
     private SplitActionBarMenu splitActionBarMenu;
+
+    private long lastTouchTime = -1;
 
     @Override
     protected void onStart() {
@@ -285,6 +285,44 @@ public class TweetTopicsActivity extends BaseLayersActivity implements PopupLink
             }
         });
 
+        imgBarAvatarBg.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                ((BaseListFragment)fragmentAdapter.instantiateItem(pager,pager.getCurrentItem())).goToTop();
+                return true;
+            }
+        });
+
+        /*imgBarAvatarBg.setOnTouchListener(new View.OnTouchListener() {
+
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                boolean double_click = false;
+
+                if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+
+                    long currentTouchTime = System.currentTimeMillis();
+                    if (currentTouchTime - lastTouchTime < 250) {
+
+                        // Double click
+                        double_click = true;
+                        lastTouchTime = -1;
+
+                    } else {
+                        // too slow
+                        double_click = false;
+                        lastTouchTime = currentTouchTime;
+                    }
+                }
+                if (double_click) {
+                    Utils.showMessage(TweetTopicsActivity.this, "Double click pressed");
+                    return true;
+                }
+
+                return false;
+            }
+        });*/
+
         refreshTheme();
 
         reloadBarAvatar();
@@ -321,7 +359,6 @@ public class TweetTopicsActivity extends BaseLayersActivity implements PopupLink
 
             PreferenceUtils.setApplicationAccessCount(this, access_count + 1);
         }
-
     }
 
     protected void animateDragged() {

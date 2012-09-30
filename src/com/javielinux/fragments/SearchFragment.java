@@ -70,6 +70,11 @@ public class SearchFragment extends BaseListFragment implements APIDelegate<Base
         return column_entity;
     }
 
+    @Override
+    public void goToTop() {
+        listView.getRefreshableView().setSelection(0);
+    }
+
     private void preLoadInfoTweetFromDB() {
 
         showLoading();

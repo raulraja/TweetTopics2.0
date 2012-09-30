@@ -69,6 +69,11 @@ public class RetweetFragment extends BaseListFragment implements APIDelegate<Bas
     }
 
     @Override
+    public void goToTop() {
+        listView.getRefreshableView().setSelection(0);
+    }
+
+    @Override
     public void setFlinging(boolean flinging) {
         this.flinging = flinging;
         tweetsAdapter.setFlinging(flinging);

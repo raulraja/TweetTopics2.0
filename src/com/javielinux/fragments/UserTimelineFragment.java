@@ -147,4 +147,7 @@ public class UserTimelineFragment extends BaseListFragment implements APIDelegat
     public Entity getColumnEntity() {
         return null;
     }
+
+    @Override
+    public void goToTop() {}
 }

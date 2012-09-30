@@ -80,6 +80,11 @@ public class TweetTopicsFragment extends BaseListFragment implements APIDelegate
         return column_entity;
     }
 
+    @Override
+    public void goToTop() {
+        listView.getRefreshableView().setSelection(0);
+    }
+
     private void preLoadInfoTweetFromDB() {
 
         showLoading();

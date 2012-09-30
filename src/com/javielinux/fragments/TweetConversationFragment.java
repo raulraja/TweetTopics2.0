@@ -174,4 +174,7 @@ public class TweetConversationFragment extends BaseListFragment implements APIDe
     public Entity getColumnEntity() {
         return null;
     }
+
+    @Override
+    public void goToTop() {}
 }

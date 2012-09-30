@@ -63,6 +63,11 @@ public class ListUserFragment extends BaseListFragment implements APIDelegate<Ba
         return column_entity;
     }
 
+    @Override
+    public void goToTop() {
+        listView.getRefreshableView().setSelection(0);
+    }
+
     public void showUpdating() {
         viewUpdate.setVisibility(View.VISIBLE);
     }

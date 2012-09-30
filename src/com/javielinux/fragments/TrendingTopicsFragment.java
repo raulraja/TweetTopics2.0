@@ -73,6 +73,9 @@ public class TrendingTopicsFragment extends BaseListFragment implements APIDeleg
         return column_entity;
     }
 
+    @Override
+    public void goToTop() {}
+
     public void loadTrendsLocation() {
         Log.d(Utils.TAG, "reloadColumnUser : " + column_entity.getInt("type_id"));
 
