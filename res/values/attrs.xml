@@ -73,6 +73,10 @@
     <attr name="icon_action_web" format="string"/>
     <attr name="icon_action_highlight" format="string"/>
 
+    <attr name="icon_content_copy" format="string"/>
+    <attr name="icon_content_save" format="string"/>
+    <attr name="icon_social_share" format="string"/>
+
     <attr name="icon_action_shorter" format="string"/>
     <attr name="icon_action_clock" format="string"/>
     <attr name="icon_action_place" format="string"/>

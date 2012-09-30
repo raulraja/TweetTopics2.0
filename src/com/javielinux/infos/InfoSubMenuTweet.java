@@ -15,9 +15,9 @@ public class InfoSubMenuTweet {
             R.string.favorite, R.string.share, R.string.mention,
             R.string.copy, R.string.dm, R.string.delete_tweet, R.string.delete_up_tweets};
     public static final Integer[] drawablesSubMenuTweets = {R.drawable.icon_social_reply_dark, R.drawable.icon_social_retweet_dark,
-            R.drawable.gd_action_bar_last_read, R.drawable.gd_action_bar_read_after,
-            R.drawable.icon_content_favorite_dark, R.drawable.gd_action_bar_share, R.drawable.icon_content_timeline_dark,
-            R.drawable.gd_action_bar_clipboard, R.drawable.icon_content_direct_dark, R.drawable.icon_content_delete_dark,
+            R.drawable.gd_action_bar_last_read, R.drawable.icon_content_save_dark,
+            R.drawable.icon_content_favorite_dark, R.drawable.icon_social_share_dark, R.drawable.icon_content_timeline_dark,
+            R.drawable.icon_content_copy_dark, R.drawable.icon_content_direct_dark, R.drawable.icon_content_delete_dark,
             R.drawable.icon_content_delete_dark};
 
     private String code = "";
