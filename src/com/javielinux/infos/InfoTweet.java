@@ -438,6 +438,31 @@ public class InfoTweet implements Parcelable {
         return read;
     }
 
+    public boolean isDm() {
+        return (typeTweet ==3 || typeTweet ==4);
+    }
+
+    public boolean isTimeline() {
+        return (typeTweet ==1);
+    }
+
+    public boolean isSavedTweet() {
+        return (mTypeFrom == FROM_SAVED_TWEET);
+    }
+
+    public String getBestLink() {
+        return bestLink;
+    }
+
+    public int getLinksCount() {
+        return linksCount;
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        return  (id == ((InfoTweet)other).getId());
+    }
+
     /*
     Parcelable implement
      */
@@ -544,28 +569,4 @@ public class InfoTweet implements Parcelable {
 
     }
 
-    public boolean isDm() {
-        return (typeTweet ==3 || typeTweet ==4);
-    }
-
-    public boolean isTimeline() {
-        return (typeTweet ==1);
-    }
-
-    public boolean isSavedTweet() {
-        return (mTypeFrom == FROM_SAVED_TWEET);
-    }
-
-    public String getBestLink() {
-        return bestLink;
-    }
-
-    public int getLinksCount() {
-        return linksCount;
-    }
-
-    @Override
-    public boolean equals(Object other) {
-        return  (id == ((InfoTweet)other).getId());
-    }
 }

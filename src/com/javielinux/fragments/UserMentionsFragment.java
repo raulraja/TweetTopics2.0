@@ -20,11 +20,14 @@ import com.javielinux.infos.InfoTweet;
 import com.javielinux.infos.InfoUsers;
 import com.javielinux.tweettopics2.R;
 import com.javielinux.tweettopics2.ThemeManager;
+import com.javielinux.utils.CacheData;
 import com.javielinux.utils.ImageUtils;
 
 import java.util.ArrayList;
 
 public class UserMentionsFragment extends BaseListFragment implements APIDelegate<BaseResponse> {
+
+    private static String KEY_SAVE_STATE_USER = "KEY_SAVE_STATE_USER";
 
     private ArrayList<InfoTweet> tweet_list;
     private LinearLayout viewLoading;
@@ -33,15 +36,30 @@ public class UserMentionsFragment extends BaseListFragment implements APIDelegat
     private TweetsAdapter adapter;
     private InfoUsers infoUsers;
 
-    public UserMentionsFragment(InfoUsers infoUsers) {
+    public UserMentionsFragment() {
+        super();
+    }
 
+    public UserMentionsFragment(InfoUsers infoUsers) {
+        init(infoUsers);
+    }
+
+    public void init(InfoUsers infoUsers) {
         this.infoUsers = infoUsers;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putString(KEY_SAVE_STATE_USER, infoUsers.getName());
+        super.onSaveInstanceState(outState);
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        if (savedInstanceState!=null && savedInstanceState.containsKey(KEY_SAVE_STATE_USER)) {
+            init(CacheData.getCacheUser(savedInstanceState.getString(KEY_SAVE_STATE_USER)));
+        }
         tweet_list = new ArrayList<InfoTweet>();
         adapter = new TweetsAdapter(getActivity(), getLoaderManager(), tweet_list);
     }
@@ -81,11 +99,6 @@ public class UserMentionsFragment extends BaseListFragment implements APIDelegat
         getUserMentionsTweets();
 
         return view;
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
     }
 
     private void getUserMentionsTweets() {

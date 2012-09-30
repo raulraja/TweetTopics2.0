@@ -11,9 +11,12 @@ import com.javielinux.adapters.UserProfileAdapter;
 import com.javielinux.infos.InfoUsers;
 import com.javielinux.tweettopics2.R;
 import com.javielinux.tweettopics2.ThemeManager;
+import com.javielinux.utils.CacheData;
 import com.javielinux.utils.ImageUtils;
 
 public class UserProfileFragment extends Fragment {
+
+    private static String KEY_SAVE_STATE_USER = "KEY_SAVE_STATE_USER";
 
     private InfoUsers infoUsers;
     private UserProfileAdapter adapter;
@@ -24,14 +27,25 @@ public class UserProfileFragment extends Fragment {
     }
 
     public UserProfileFragment(InfoUsers infoUsers) {
-        super();
+        init(infoUsers);
+    }
 
+    public void init(InfoUsers infoUsers) {
         this.infoUsers = infoUsers;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putString(KEY_SAVE_STATE_USER, infoUsers.getName());
+        super.onSaveInstanceState(outState);
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (savedInstanceState!=null && savedInstanceState.containsKey(KEY_SAVE_STATE_USER)) {
+            init(CacheData.getCacheUser(savedInstanceState.getString(KEY_SAVE_STATE_USER)));
+        }
         adapter = new UserProfileAdapter(getActivity(), infoUsers);
     }
 
@@ -53,11 +67,6 @@ public class UserProfileFragment extends Fragment {
         list.setAdapter(adapter);
 
         return view;
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
     }
 
 }

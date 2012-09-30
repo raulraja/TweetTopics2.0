@@ -15,23 +15,40 @@ import com.javielinux.tweettopics2.ThemeManager;
 import com.javielinux.tweettopics2.TweetActivity;
 import com.javielinux.utils.ImageUtils;
 import com.javielinux.utils.LinksUtils;
-import com.javielinux.utils.Utils;
 
 public class TweetLinksFragment extends Fragment {
+
+    private static String KEY_SAVE_STATE_TWEET = "KEY_SAVE_STATE_TWEET";
 
     private InfoTweet infoTweet;
     private ListView list;
 
     private TweetsLinkAdapter adapter;
 
+    public TweetLinksFragment() {
+        super();
+    }
+
     public TweetLinksFragment(InfoTweet infoTweet) {
+        init(infoTweet);
+    }
+
+    public void init(InfoTweet infoTweet) {
         this.infoTweet = infoTweet;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putParcelable(KEY_SAVE_STATE_TWEET, infoTweet);
+        super.onSaveInstanceState(outState);
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        if (savedInstanceState!=null && savedInstanceState.containsKey(KEY_SAVE_STATE_TWEET)) {
+            init((InfoTweet) savedInstanceState.getParcelable(KEY_SAVE_STATE_TWEET));
+        }
         adapter = new TweetsLinkAdapter(getActivity(), getLoaderManager(),
                 LinksUtils.pullLinks(infoTweet.getText(), infoTweet.getContentURLs()));
 
@@ -63,11 +80,6 @@ public class TweetLinksFragment extends Fragment {
         });
 
         return view;
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
     }
 
 }

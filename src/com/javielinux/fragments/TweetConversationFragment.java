@@ -27,6 +27,8 @@ import java.util.ArrayList;
 
 public class TweetConversationFragment extends BaseListFragment implements APIDelegate<BaseResponse> {
 
+    private static String KEY_SAVE_STATE_TWEET = "KEY_SAVE_STATE_TWEET";
+
     private InfoTweet infoTweet;
     private ArrayList<InfoTweet> tweet_list;
     private View footer_view;
@@ -34,14 +36,30 @@ public class TweetConversationFragment extends BaseListFragment implements APIDe
 
     private TweetsAdapter adapter;
 
+    public TweetConversationFragment() {
+        super();
+    }
+
     public TweetConversationFragment(InfoTweet infoTweet) {
+        init(infoTweet);
+    }
+
+    public void init(InfoTweet infoTweet) {
         this.infoTweet = infoTweet;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putParcelable(KEY_SAVE_STATE_TWEET, infoTweet);
+        super.onSaveInstanceState(outState);
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        if (savedInstanceState!=null && savedInstanceState.containsKey(KEY_SAVE_STATE_TWEET)) {
+            init((InfoTweet) savedInstanceState.getParcelable(KEY_SAVE_STATE_TWEET));
+        }
         tweet_list = new ArrayList<InfoTweet>();
         adapter = new TweetsAdapter(getActivity(), getLoaderManager(), tweet_list);
     }
@@ -82,11 +100,6 @@ public class TweetConversationFragment extends BaseListFragment implements APIDe
         getConversationTweets();
 
         return view;
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
     }
 
     @Override

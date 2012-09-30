@@ -20,12 +20,15 @@ import com.javielinux.api.response.UserListsResponse;
 import com.javielinux.infos.InfoUsers;
 import com.javielinux.tweettopics2.R;
 import com.javielinux.tweettopics2.ThemeManager;
+import com.javielinux.utils.CacheData;
 import com.javielinux.utils.ImageUtils;
 import twitter4j.UserList;
 
 import java.util.ArrayList;
 
 public class UserListIncludedFragment extends Fragment implements APIDelegate<BaseResponse> {
+
+    private static String KEY_SAVE_STATE_USER = "KEY_SAVE_STATE_USER";
 
     private ArrayList<UserList> user_list;
     private LinearLayout viewLoading;
@@ -34,15 +37,30 @@ public class UserListIncludedFragment extends Fragment implements APIDelegate<Ba
     private UserListsAdapter adapter;
     private InfoUsers infoUsers;
 
-    public UserListIncludedFragment(InfoUsers infoUsers) {
+    public UserListIncludedFragment() {
+        super();
+    }
 
+    public UserListIncludedFragment(InfoUsers infoUsers) {
+        init(infoUsers);
+    }
+
+    public void init(InfoUsers infoUsers) {
         this.infoUsers = infoUsers;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putString(KEY_SAVE_STATE_USER, infoUsers.getName());
+        super.onSaveInstanceState(outState);
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        if (savedInstanceState!=null && savedInstanceState.containsKey(KEY_SAVE_STATE_USER)) {
+            init(CacheData.getCacheUser(savedInstanceState.getString(KEY_SAVE_STATE_USER)));
+        }
         user_list = new ArrayList<UserList>();
         adapter = new UserListsAdapter(getActivity(), user_list);
     }
@@ -74,11 +92,6 @@ public class UserListIncludedFragment extends Fragment implements APIDelegate<Ba
         getUserLists();
 
         return view;
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
     }
 
     private void getUserLists() {
