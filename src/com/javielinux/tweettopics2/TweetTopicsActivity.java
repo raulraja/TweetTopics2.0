@@ -82,7 +82,7 @@ public class TweetTopicsActivity extends BaseLayersActivity implements PopupLink
     private PopupLinks popupLinks;
     private SplitActionBarMenu splitActionBarMenu;
 
-    private long lastTouchTime = -1;
+    private GestureDetector imgBarAvatarGestureDetector;
 
     @Override
     protected void onStart() {
@@ -276,52 +276,39 @@ public class TweetTopicsActivity extends BaseLayersActivity implements PopupLink
             }
         });
 
-        imgBarAvatarBg.setOnClickListener(new View.OnClickListener() {
+        imgBarAvatarGestureDetector = new GestureDetector(new GestureDetector.SimpleOnGestureListener() {
             @Override
-            public void onClick(View view) {
+            public void onLongPress(MotionEvent e) {
+                ((BaseListFragment)fragmentAdapter.instantiateItem(pager,pager.getCurrentItem())).goToTop();
+            }
+
+            @Override
+            public boolean onDoubleTap(MotionEvent e) {
+                ((BaseListFragment)fragmentAdapter.instantiateItem(pager,pager.getCurrentItem())).goToTop();
+                return true;
+            }
+
+            @Override
+            public boolean onSingleTapConfirmed (MotionEvent e) {
                 if (pager.getCurrentItem() > 0) {
                     animateDragged();
                 }
-            }
-        });
 
-        imgBarAvatarBg.setOnLongClickListener(new View.OnLongClickListener() {
+                return true;
+            }
+
             @Override
-            public boolean onLongClick(View view) {
-                ((BaseListFragment)fragmentAdapter.instantiateItem(pager,pager.getCurrentItem())).goToTop();
+            public boolean onDown(MotionEvent e) {
                 return true;
             }
         });
 
-        /*imgBarAvatarBg.setOnTouchListener(new View.OnTouchListener() {
-
+        imgBarAvatarBg.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
-                boolean double_click = false;
-
-                if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
-
-                    long currentTouchTime = System.currentTimeMillis();
-                    if (currentTouchTime - lastTouchTime < 250) {
-
-                        // Double click
-                        double_click = true;
-                        lastTouchTime = -1;
-
-                    } else {
-                        // too slow
-                        double_click = false;
-                        lastTouchTime = currentTouchTime;
-                    }
-                }
-                if (double_click) {
-                    Utils.showMessage(TweetTopicsActivity.this, "Double click pressed");
-                    return true;
-                }
-
-                return false;
+                return imgBarAvatarGestureDetector.onTouchEvent(motionEvent);
             }
-        });*/
+        });
 
         refreshTheme();
 
