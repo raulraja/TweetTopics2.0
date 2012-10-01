@@ -12,6 +12,7 @@ import com.javielinux.components.AlphaTextView;
 import com.javielinux.fragments.MyActivityFragment;
 import com.javielinux.tweettopics2.R;
 import com.javielinux.tweettopics2.ThemeManager;
+import com.javielinux.utils.DBUtils;
 import com.javielinux.utils.ImageUtils;
 import com.javielinux.utils.TweetTopicsUtils;
 import com.javielinux.utils.Utils;
@@ -333,8 +334,10 @@ public class MyActivityAdapter extends BaseAdapter {
             tagNew.setVisibility(View.VISIBLE);
 
             try {
-                if (item.getLong("last_tweet_id")<item.getLong("last_tweet_id_notifications")) {
-                    tagNew.setImageBitmap(ImageUtils.getBitmapNumber(context, item.getInt("new_tweets_count"), Color.GREEN, Utils.TYPE_CIRCLE));
+                int count = DBUtils.getUnreadTweetsSearch(item.getId());
+
+                if (count>0) {
+                    tagNew.setImageBitmap(ImageUtils.getBitmapNumber(context, count, Color.RED, Utils.TYPE_RECTANGLE));
                 } else {
                     tagNew.setImageResource(R.drawable.tag_notification);
                 }

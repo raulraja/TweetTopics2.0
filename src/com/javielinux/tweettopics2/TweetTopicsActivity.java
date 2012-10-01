@@ -25,7 +25,6 @@ import android.view.animation.ScaleAnimation;
 import android.widget.*;
 import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
-import com.google.android.maps.GeoPoint;
 import com.javielinux.components.DraggableHorizontalView;
 import com.javielinux.components.OnRearrangeListener;
 import com.javielinux.dialogs.AlertDialogFragment;
@@ -322,6 +321,7 @@ public class TweetTopicsActivity extends BaseLayersActivity implements PopupLink
                     || goToColumnType == TweetTopicsUtils.COLUMN_DIRECT_MESSAGES) {
                 createUserColumn(goToColumnUser, goToColumnType);
             }
+        } else if (goToColumnType == TweetTopicsUtils.COLUMN_MY_ACTIVITY) {
         } else if (positionFromSensor>=0) {
             goToColumn(positionFromSensor, false);
         } else {

@@ -247,11 +247,8 @@ public class WidgetCounters4x1 extends AppWidgetProvider {
                 } catch (CursorIndexOutOfBoundsException e) {}
 
 		    	if (user!=null) {
-	
-		    		if (user.getInt("no_save_timeline")!=1) {
-		    			totalTimeline = DataFramework.getInstance().getEntityListCount("tweets_user", "type_id = " + TweetTopicsUtils.TWEET_TYPE_TIMELINE
-		       				+ " AND user_tt_id="+user.getId() + " AND tweet_id >'" + Utils.fillZeros(""+user.getString("last_timeline_id"))+"'");
-		    		}
+                    totalTimeline = DataFramework.getInstance().getEntityListCount("tweets_user", "type_id = " + TweetTopicsUtils.TWEET_TYPE_TIMELINE
+                        + " AND user_tt_id="+user.getId() + " AND tweet_id >'" + Utils.fillZeros(""+user.getString("last_timeline_id"))+"'");
 	
 		    		totalMentions = DataFramework.getInstance().getEntityListCount("tweets_user", "type_id = " + TweetTopicsUtils.TWEET_TYPE_MENTIONS
 		       				+ " AND user_tt_id="+user.getId() + " AND tweet_id >'" + Utils.fillZeros(""+user.getString("last_mention_id"))+"'");
@@ -287,7 +284,7 @@ public class WidgetCounters4x1 extends AppWidgetProvider {
 				for (int i=0; i<searchs.size(); i++) {
 					if (searchs.get(i).getInt("notifications")==1) {
 						EntitySearch es = new EntitySearch(searchs.get(i).getId());
-						totalNotification += es.getInt("new_tweets_count");
+						totalNotification += es.getValueNewCount();
 					}
 				}
 				if (totalNotification>0) {

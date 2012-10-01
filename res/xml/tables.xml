@@ -31,7 +31,7 @@
 	<field name="last_tweet_id" type="text" size="128" default="0" />
 	<field name="last_tweet_id_notifications" type="text" size="128" default="0" />
 	
-	<field name="new_tweets_count" type="int" default="0" />
+	<field name="new_tweets_count" type="int" default="0" deprecated="true" />
 	
 	<field name="icon_id" type="int" default="1" />
 	<field name="icon_token_file" type="text" size="64"/>
