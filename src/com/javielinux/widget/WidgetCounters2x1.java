@@ -125,7 +125,7 @@ public class WidgetCounters2x1 extends AppWidgetProvider {
         Entity user_entity = null;
 
         if (id<0) {
-            user_entity = DataFramework.getInstance().getTopEntity("users", "active=1", "");
+            user_entity = DataFramework.getInstance().getTopEntity("users", "", "");
         } else {
             user_entity = DataFramework.getInstance().getTopEntity("users", DataFramework.KEY_ID + "=" + id, "");
         }

@@ -39,7 +39,6 @@ import org.xmlpull.v1.XmlPullParserException;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
 
 public class Preferences extends PreferenceActivity {
@@ -677,13 +676,11 @@ public class Preferences extends PreferenceActivity {
 
         DataFramework.getInstance().emptyTable("tweets_user");
 
-        List<Entity> e = DataFramework.getInstance().getEntityList("users", "active=1");
-
-        for (int i = 0; i < e.size(); i++) {
-            e.get(i).setValue("last_timeline_id", 0);
-            e.get(i).setValue("last_mention_id", 0);
-            e.get(i).setValue("last_direct_id", 0);
-            e.get(i).save();
+        for (Entity ent : DataFramework.getInstance().getEntityList("users")) {
+            ent.setValue("last_timeline_id", 0);
+            ent.setValue("last_mention_id", 0);
+            ent.setValue("last_direct_id", 0);
+            ent.save();
         }
 
         DataFramework.getInstance().close();

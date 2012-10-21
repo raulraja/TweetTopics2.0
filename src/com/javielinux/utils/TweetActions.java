@@ -176,7 +176,7 @@ public class TweetActions {
             int count = users.size();
             if (!users.contains("@" + infoTweet.getUsername())) count++;
 
-            Entity e = DataFramework.getInstance().getTopEntity("users", "active=1", "");
+            Entity e = new Entity("users", fromUser);
             if (e != null) {
                 if (users.contains("@" + e.getString("name"))) count--;
             }
@@ -200,7 +200,7 @@ public class TweetActions {
                                 ArrayList<String> users = LinksUtils.pullLinksUsers(it.getText());
                                 String text = "";
                                 String user = "";
-                                Entity e = DataFramework.getInstance().getTopEntity("users", "active=1", "");
+                                Entity e = new Entity("users", fromUser);
                                 if (e != null) {
                                     user = e.getString("name");
                                 }
@@ -217,7 +217,7 @@ public class TweetActions {
                                 ArrayList<String> users = LinksUtils.pullLinksUsers(it.getText());
                                 String text = " //cc ";
                                 String user = "";
-                                Entity e = DataFramework.getInstance().getTopEntity("users", "active=1", "");
+                                Entity e = new Entity("users", fromUser);
                                 if (e != null) {
                                     user = e.getString("name");
                                 }

@@ -288,13 +288,13 @@ public class ServiceUpdateStatus extends Service implements UploadStatusAsyncTas
             if (f.exists()) f.delete();
         }
         try {
-            try {
-                DataFramework.getInstance().open(this, Utils.packageName);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+//            try {
+//                DataFramework.getInstance().open(this, Utils.packageName);
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
             mEntityStatus.delete();
-            DataFramework.getInstance().close();
+//            DataFramework.getInstance().close();
         } catch (IllegalStateException e) {
         } catch (Exception e) {}
     }
