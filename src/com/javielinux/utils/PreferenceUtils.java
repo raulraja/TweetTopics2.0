@@ -403,6 +403,25 @@ public class PreferenceUtils {
         editor.commit();
     }
 
+    public static long getWidgetColumn(Context cnt) {
+        SharedPreferences prefs = cnt.getSharedPreferences(Utils.APPLICATION_PREFERENCES, Context.MODE_PRIVATE);
+        if (prefs.contains("widget_column")) {
+            return prefs.getLong("widget_column", 1);
+        } else {
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putLong("widget_column", 1);
+            editor.commit();
+            return 1;
+        }
+    }
+
+    public static void setWidgetColumn(Context cnt, long column) {
+        SharedPreferences prefs = cnt.getSharedPreferences(Utils.APPLICATION_PREFERENCES, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putLong("widget_column", column);
+        editor.commit();
+    }
+
     public static int getTypeWidget(Context cnt) {
         SharedPreferences prefs = cnt.getSharedPreferences(Utils.APPLICATION_PREFERENCES, Context.MODE_PRIVATE);
         if (prefs.contains("type_widget")) {

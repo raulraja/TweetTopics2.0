@@ -24,6 +24,7 @@ public class GlobalsWidget {
 	public static final int WIDGET_4X2 = 2;
 	*/
 	public static final String WIDGETS_COUNT = "widgets_count";
+    public static final String WIDGET_LINKS = "widget_links";
 	
 	public static final int BUTTON_WIDGET_AVATAR = 0;
 	public static final int BUTTON_WIDGET_TIMELINE = 1;

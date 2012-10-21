@@ -21,7 +21,7 @@
             <ImageView android:id="@+id/tag_avatar"
                        android:layout_height="wrap_content"
                        android:layout_gravity="right"
-                       android:layout_width="wrap_content"></ImageView>
+                       android:layout_width="wrap_content" />
         </FrameLayout>
 
 
@@ -54,14 +54,14 @@
                        android:src="@drawable/tag_conversation"
                        android:layout_height="wrap_content"
                        android:visibility="gone"
-                       android:layout_width="wrap_content"></ImageView>
+                       android:layout_width="wrap_content" />
             <ImageView android:id="@+id/tag_map"
                        android:paddingTop="5dip"
                        android:paddingRight="5dip"
                        android:src="@drawable/tag_map"
                        android:layout_height="wrap_content"
                        android:visibility="gone"
-                       android:layout_width="wrap_content"></ImageView>
+                       android:layout_width="wrap_content" />
         </LinearLayout>
 
         <LinearLayout android:layout_width="fill_parent"

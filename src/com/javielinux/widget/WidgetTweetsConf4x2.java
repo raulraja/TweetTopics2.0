@@ -9,6 +9,8 @@ import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.os.Bundle;
 import com.android.dataframework.DataFramework;
+import com.android.dataframework.Entity;
+import com.javielinux.adapters.RowColumnWidgetAdapter;
 import com.javielinux.adapters.RowSearchWidgetAdapter;
 import com.javielinux.tweettopics2.R;
 import com.javielinux.utils.Utils;
@@ -27,9 +29,9 @@ public class WidgetTweetsConf4x2 extends Activity {
         
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
+
         if (extras != null) {
-            mAppWidgetId = extras.getInt(
-                    AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
+            mAppWidgetId = extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
         }
                 
     	try {
@@ -39,53 +41,6 @@ public class WidgetTweetsConf4x2 extends Activity {
 		}
 		
 		showDialogType();
-		
-		/*
-		this.setTitle(R.string.configure_widget);
-		
-		setContentView(R.layout.widget_configure);
-		
-		GridView mGridUser = (GridView) findViewById(R.id.w_grid_user);
-		
-		ArrayList<Integer> ar = new ArrayList<Integer>();
-		ar.add(ServiceWidgetTweets4x2.TIMELINE);
-		ar.add(ServiceWidgetTweets4x2.MENTIONS);
-		
-		mAdapterUser = new RowUserWidgetAdapter(this, ar);
-		
-		mGridUser.setAdapter(mAdapterUser);
-		mGridUser.setOnItemClickListener(new OnItemClickListener() {
-			@Override
-			public void onItemClick(AdapterView<?> av, View v, int pos, long id) {
-				
-				Intent i = new Intent(Intent.ACTION_VIEW);
-				i.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
-				i.putExtra("id_user", mAdapterUser.getItem(pos));
-				WidgetTweetsConf4x2.this.sendOrderedBroadcast(i, null);
-				finish();
-				
-			}
-        });
-		
-		GridView mGridSearch = (GridView) findViewById(R.id.w_grid_search);
-		
-		mAdapterSearch = new RowSearchWidgetAdapter(this, DataFramework.getInstance().getEntityList("search", "is_temp=0"));
-		
-    	mGridSearch.setAdapter(mAdapterSearch);
-    	mGridSearch.setOnItemClickListener(new OnItemClickListener() {
-			@Override
-			public void onItemClick(AdapterView<?> av, View v, int pos, long id) {
-				
-				Intent i = new Intent(Intent.ACTION_VIEW);
-				i.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
-				i.putExtra("id_search", mAdapterSearch.getItem(pos).getId());
-				WidgetTweetsConf4x2.this.sendOrderedBroadcast(i, null);
-				finish();
-			
-				
-			}
-        });
-		*/
     }
     
     public void showDialogType() {
@@ -99,8 +54,33 @@ public class WidgetTweetsConf4x2 extends Activity {
 		arType.add(ServiceWidgetTweets4x2.TIMELINE);
 		arType.add(ServiceWidgetTweets4x2.MENTIONS);    	
 		arType.add(ServiceWidgetTweets4x2.SEARCH);
-    	
-    	AlertDialog builder = new AlertDialog.Builder(this)
+
+        final RowColumnWidgetAdapter adapter = new RowColumnWidgetAdapter(this, DataFramework.getInstance().getEntityList("columns", "is_temporary=0"));
+
+        AlertDialog builder = new AlertDialog.Builder(this)
+                .setCancelable(true)
+                .setTitle(Utils.toCapitalize(this.getText(R.string.options).toString()))
+                .setAdapter(adapter, new OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent i = new Intent(Intent.ACTION_VIEW);
+                        i.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
+                        i.putExtra("column_position",Integer.parseInt(((Entity)adapter.getItem(which)).getValue("position").toString()));
+                        WidgetTweetsConf4x2.this.sendOrderedBroadcast(i, null);
+                        finish();
+                    }
+                })
+                .setOnCancelListener(new OnCancelListener() {
+                    @Override
+                    public void onCancel(DialogInterface arg0) {
+                        finish();
+                    }
+                })
+                .create();
+        builder.show();
+
+    	/*AlertDialog builder = new AlertDialog.Builder(this)
     		.setCancelable(true)
             .setTitle(R.string.options)
             .setItems(cs, new OnClickListener() {
@@ -133,7 +113,7 @@ public class WidgetTweetsConf4x2 extends Activity {
 				}
             })
            .create();  
-    	builder.show();
+    	builder.show();*/
         
     }
     

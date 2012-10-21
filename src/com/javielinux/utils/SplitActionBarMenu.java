@@ -138,13 +138,12 @@ public class SplitActionBarMenu {
                 main_layout.addView(imageView);
             }
 
-            InfoSubMenuTweet infoSubMenuTweet = new InfoSubMenuTweet(activity, code);
+            final InfoSubMenuTweet infoSubMenuTweet = new InfoSubMenuTweet(activity, code);
             ImageButton imageButton = new ImageButton(activity);
-            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f);
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, 0.0f);
             layoutParams.gravity = Gravity.CENTER;
             layoutParams.height = LinearLayout.LayoutParams.WRAP_CONTENT;
-            layoutParams.weight = 1;
-            layoutParams.setMargins(20, 0, 20, 0);
+            layoutParams.setMargins(25, 0, 25, 0);
             layoutParams.width = LinearLayout.LayoutParams.WRAP_CONTENT;
 
             imageButton.setLayoutParams(layoutParams);
@@ -154,6 +153,14 @@ public class SplitActionBarMenu {
                 public void onClick(View view) {
                     hideSplitActionBarMenu();
                     TweetActions.execByCode(code, activity, infoTweet.getUserId(), infoTweet, getFromFragment());
+                }
+            });
+
+            imageButton.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    Utils.showMessage(activity, activity.getResources().getString(infoSubMenuTweet.getResName()));
+                    return true;
                 }
             });
 

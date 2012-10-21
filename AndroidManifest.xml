@@ -125,8 +125,8 @@
 		
 		<service android:name="com.javielinux.widget.ServiceWidgetTweets4x2" />
 
-		<activity android:name="com.javielinux.widget.WidgetTweetsConf4x2" android:theme="@style/Theme.TwitterBlack.Translucent">
-		</activity>
+		<activity android:name="com.javielinux.widget.WidgetTweetsConf4x2" android:theme="@style/Theme.TwitterBlack.Translucent"></activity>
+        <activity android:name="com.javielinux.widget.WidgetTweetsLinks4x2" android:theme="@style/Theme.TwitterBlack.Translucent"></activity>
 		
 		<service android:name="com.javielinux.preferences.ServiceTweetQuick"/>
 		<service android:name="com.javielinux.updatestatus.ServiceUpdateStatus"/>

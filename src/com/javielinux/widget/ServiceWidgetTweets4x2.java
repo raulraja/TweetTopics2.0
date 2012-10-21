@@ -7,6 +7,7 @@ import android.content.*;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Handler;
@@ -17,18 +18,17 @@ import android.view.View;
 import android.widget.RemoteViews;
 import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
+import com.androidquery.AQuery;
 import com.javielinux.database.EntitySearch;
 import com.javielinux.infos.InfoImagesTweet;
+import com.javielinux.infos.InfoLink;
 import com.javielinux.infos.InfoTweet;
 import com.javielinux.task.LoadImageWidgetAsyncTask;
 import com.javielinux.task.LoadImageWidgetAsyncTask.LoadImageWidgetAsyncTaskResponder;
 import com.javielinux.tweettopics2.R;
 import com.javielinux.tweettopics2.TweetTopicsActivity;
 import com.javielinux.twitter.ConnectionManager;
-import com.javielinux.utils.ImageUtils;
-import com.javielinux.utils.LinksUtils;
-import com.javielinux.utils.PreferenceUtils;
-import com.javielinux.utils.Utils;
+import com.javielinux.utils.*;
 import twitter4j.QueryResult;
 import twitter4j.Tweet;
 import twitter4j.Twitter;
@@ -42,30 +42,47 @@ import java.util.List;
 public class ServiceWidgetTweets4x2 extends Service {
 	
 	public  Twitter twitter;
-	
+
+    private int MAX_TWEET = 10;
+    public long UPDATE_WIDGET = 15000;
+
 	public static int TIMELINE = 0;
 	public static int MENTIONS = 1;
 	public static int SEARCH = 2;
 
-	private  int mType = TIMELINE;
+	private int mType = TIMELINE;
 	private int appWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
-	
-	public  long UPDATE_WIDGET = 15000;
+
+    private long column_position = 1;
+    private int mCurrentTweet = 0;
+    private long mCurrentSearch = 1;
 	
 	public boolean blocked = false;
 	
 	public Context lastContext;
+    private AppWidgetManager manager;
+    private ComponentName thisWidget;
+
+    private List<InfoTweet> mTweets = new ArrayList<InfoTweet>();
+    private  ArrayList<InfoImagesTweet> imagesTweet = new ArrayList<InfoImagesTweet>();
+    private AsyncTask<String, Void,LoadImageWidgetAsyncTask.ImageData> latestLoadTask;
 	
 	private BroadcastReceiver receiver = new BroadcastReceiver() {
         
         @Override
-        public void onReceive(Context context, Intent intent) {  
+        public void onReceive(Context context, Intent intent) {
         	if (!Utils.isLite(context) ) {
 	        	try {
 	        		if (intent.getExtras().containsKey("button")) {
 	        			onHandleAction(context, (Uri)intent.getExtras().get("button"));
 	        			return;
 	        		}
+
+                    if (intent.getExtras().containsKey("column_position")) {
+                        column_position = intent.getExtras().getInt("column_position");
+                        PreferenceUtils.setWidgetColumn(context, column_position);
+                    }
+
 	        		if (intent.getExtras().containsKey("id_search")) {
 	        			mCurrentSearch = intent.getExtras().getLong("id_search");
 	        			mType = SEARCH;
@@ -76,6 +93,7 @@ public class ServiceWidgetTweets4x2 extends Service {
 	        			mType = intent.getExtras().getInt("id_user");
                         PreferenceUtils.setTypeWidget(context, mType);
 	        		}
+
 	        	} catch (Exception e) {
 	        		e.printStackTrace();
 	        		Log.d(Utils.TAG_WIDGET, "Error al recibir el parametro");
@@ -85,43 +103,103 @@ public class ServiceWidgetTweets4x2 extends Service {
         	}
         }
     };
-	
-    private int MAX_TWEET = 10;
-    
-	private AppWidgetManager manager;
-	private ComponentName thisWidget;
-	
-	private List<InfoTweet> mTweets = new ArrayList<InfoTweet>();
-	
-	private int mCurrentTweet = 0;
-	private long mCurrentSearch = 1;
-		
-	private AsyncTask<String, Void,LoadImageWidgetAsyncTask.ImageData> latestLoadTask;
-	
-	private  ArrayList<InfoImagesTweet> imagesTweet = new ArrayList<InfoImagesTweet>();
 
-	private  InfoImagesTweet getImagesTweets(int pos) {
+    public  void clearImagesTweets() {
+        imagesTweet.clear();
+    }
+
+    private Bitmap getIconItem(Context context, Entity column) {
+        int column_type = column.getInt("type_id");
+        Bitmap bitmap = null;
+        switch (column_type) {
+            case TweetTopicsUtils.COLUMN_TIMELINE:
+            case TweetTopicsUtils.COLUMN_MENTIONS:
+            case TweetTopicsUtils.COLUMN_DIRECT_MESSAGES:
+            case TweetTopicsUtils.COLUMN_SENT_DIRECT_MESSAGES:
+            case TweetTopicsUtils.COLUMN_RETWEETS_BY_OTHERS:
+            case TweetTopicsUtils.COLUMN_RETWEETS_BY_YOU:
+            case TweetTopicsUtils.COLUMN_FOLLOWERS:
+            case TweetTopicsUtils.COLUMN_FOLLOWINGS:
+            case TweetTopicsUtils.COLUMN_FAVORITES:
+                bitmap = ImageUtils.getBitmapAvatar(column.getEntity("user_id").getId(), Utils.AVATAR_LARGE);
+                break;
+            case TweetTopicsUtils.COLUMN_SEARCH:
+                Entity search_entity = new Entity("search", column.getLong("search_id"));
+                Drawable drawable = Utils.getDrawable(context, search_entity.getString("icon_big"));
+                if (drawable == null) drawable = context.getResources().getDrawable(R.drawable.letter_az);
+                bitmap = ((BitmapDrawable) drawable).getBitmap();
+                bitmap = Bitmap.createScaledBitmap(bitmap, Utils.AVATAR_LARGE, Utils.AVATAR_LARGE, true);
+                break;
+        }
+
+        return bitmap;
+    }
+
+	private  InfoImagesTweet getImagesTweets(int position) {
 		for (int i=0; i<imagesTweet.size(); i++) {
-			if (imagesTweet.get(i).getPosition()==pos)
+			if (imagesTweet.get(i).getPosition() == position)
 				return imagesTweet.get(i);
 		}
+
 		return null;
-	}
-	
-	public  void clearImagesTweets() {
-		imagesTweet.clear();
 	}
 	
 	public AppWidgetManager getManager() {
 		if (manager==null) manager = AppWidgetManager.getInstance(this);
 		return manager;
 	}
-	
+
+    private int getTypeResource(String linkForImage) {
+        int res = 0;
+        if (LinksUtils.isLinkImage(linkForImage)) {
+            if (LinksUtils.isLinkVideo(linkForImage)) {
+                res = R.drawable.icon_tweet_video;
+            } else {
+                res = R.drawable.icon_tweet_image;
+            }
+        } else {
+            if (linkForImage.startsWith("@")) {
+                res = R.drawable.icon_tweet_user;
+            } else if (linkForImage.startsWith("#")) {
+                res = R.drawable.icon_tweet_hashtag ;
+            } else {
+                res = R.drawable.icon_tweet_link;
+            }
+        }
+        return res;
+    }
+
+    public String getTitleItem(Entity column) {
+        int type_column = column.getInt("type_id");
+        switch (type_column) {
+            case TweetTopicsUtils.COLUMN_SEARCH:
+                Entity ent = new Entity("search", column.getLong("search_id"));
+                return ent.getString("name");
+            case TweetTopicsUtils.COLUMN_LIST_USER:
+                Entity list_user_entity = new Entity("user_lists", column.getLong("userlist_id"));
+                return list_user_entity.getString("name");
+            case TweetTopicsUtils.COLUMN_TRENDING_TOPIC:
+                return column.getEntity("type_id").getString("title") + " " + column.getString("description");
+            default:
+                return column.getEntity("type_id").getString("title");
+        }
+
+    }
+
 	public ComponentName getWidget() {
 		if (thisWidget==null) thisWidget = new ComponentName(this, WidgetTweets4x2.class);
 		return thisWidget;
 	}
-	
+
+    private PendingIntent makeControlPendingIntent(Context context, String command) {
+        Intent active = new Intent();
+        active.setAction(Utils.ACTION_WIDGET_CONTROL);
+        active.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
+        Uri data = Uri.parse(Utils.URI_SCHEME + "://command/"+command);
+        active.setData(data);
+        return(PendingIntent.getBroadcast(context, 0, active, PendingIntent.FLAG_UPDATE_CURRENT));
+    }
+
     @Override
     public void onStart(Intent intent, int startId) {
     	
@@ -158,7 +236,18 @@ public class ServiceWidgetTweets4x2 extends Service {
     		
             getManager().updateAppWidget(getWidget(), mRemoteLoading);
     	} else {
-    		
+
+            /*List<Entity> columns = DataFramework.getInstance().getEntityList("columns", "id=" + column);
+
+            if (columns.size() == 1) {
+                update(this);
+                handler.postDelayed(runnable, UPDATE_WIDGET);
+                getManager().updateAppWidget(getWidget(), getRemoteView(this));
+            } else {
+                RemoteViews mRemoteLoading = new RemoteViews(this.getPackageName(), R.layout.widget_no_user);
+                getManager().updateAppWidget(getWidget(), mRemoteLoading);
+            }*/
+
     		List<Entity> e = DataFramework.getInstance().getEntityList("users", "active=1");
 	    	if (e.size()==1) {
 	    		
@@ -182,60 +271,118 @@ public class ServiceWidgetTweets4x2 extends Service {
 
     }
     
-     public RemoteViews getRemoteView(Context context) {
-    	
-    	 if ( Utils.isLite(context) ) {
-    		RemoteViews mRemoteLoading = new RemoteViews(this.getPackageName(), R.layout.widget_lite);
-    		
-    		Uri uri = Uri.parse("market://search?q=pname:com.javielinux.tweettopics.pro");
+    public RemoteViews getRemoteView(Context context) {
+
+        if ( Utils.isLite(context) ) {
+            RemoteViews mRemoteLoading = new RemoteViews(this.getPackageName(), R.layout.widget_lite);
+
+            Uri uri = Uri.parse("market://search?q=pname:com.javielinux.tweettopics.pro");
             Intent buyProIntent = new Intent(Intent.ACTION_VIEW, uri);
             PendingIntent configurePendingIntent = PendingIntent.getActivity(this, 0, buyProIntent, 0);
             mRemoteLoading.setOnClickPendingIntent(R.id.btn_w_lite, configurePendingIntent);
-    		
+
             return mRemoteLoading;
-    	 } else {
-    	 
-	    	lastContext = context;
-	    	
-	    	RemoteViews mRemoteView = new RemoteViews(context.getPackageName(), R.layout.widget_main);
-	    	try {
-	    		
-	    		if (mType==TIMELINE || mType==MENTIONS) {
-	    			List<Entity> e = DataFramework.getInstance().getEntityList("users", "active=1");
-	    	    	if (e.size()==1) {
-	    	    		String title = "";
-	    	    		if (mType==TIMELINE) {
-	    	    			title = context.getString(R.string.timeline) + ": " + e.get(0).getString("name");
-	    	    		}
-	    	    		if (mType==MENTIONS) {
-	    	    			title = context.getString(R.string.mentions) + ": " + e.get(0).getString("name");
-	    	    		}
-	    	    		mRemoteView.setTextViewText(R.id.w_title, title);
-	    	    		Bitmap bmp = ImageUtils.getBitmapAvatar(e.get(0).getId(), Utils.AVATAR_LARGE);
-	    	    		if (bmp==null) {
-	    	    			mRemoteView.setImageViewResource(R.id.w_icon, R.drawable.avatar);
-	    	    		} else {
-	    	    			mRemoteView.setImageViewBitmap(R.id.w_icon, bmp);
-	    	    		}
-	    	    			
-	    	    	}
-	    		} else {
-		    		if (mCurrentSearch>0) {
-			    		Entity ent = new Entity ("search", mCurrentSearch);
-			    		
-			    		Bitmap icon = ((BitmapDrawable)Utils.getDrawable(context, ent.getString("icon_small"))).getBitmap();
-			    		mRemoteView.setImageViewBitmap(R.id.w_icon, icon);
-			    		
-			    		mRemoteView.setTextViewText(R.id.w_title, ent.getString("name"));
-		    		}
-	    		}
-	    		
-	    		mRemoteView.setTextViewText(R.id.w_tweet_user_name_text, mTweets.get(mCurrentTweet).getUsername());
-	    		mRemoteView.setTextViewText(R.id.w_tweet_text, Html.fromHtml(Utils.toHTML(context, mTweets.get(mCurrentTweet).getText())));
-				mRemoteView.setTextViewText(R.id.w_tweet_date,  Utils.timeFromTweet(this, mTweets.get(mCurrentTweet).getDate()) );
-				
+        } else {
+            lastContext = context;
+
+            RemoteViews mRemoteView = new RemoteViews(context.getPackageName(), R.layout.widget_main);
+
+            try {
+                List<Entity> columns = DataFramework.getInstance().getEntityList("columns", "position=" + column_position);
+
+                if (columns.size() > 0) {
+                    Bitmap avatar = getIconItem(context, columns.get(0));
+                    String title = getTitleItem(columns.get(0));
+
+                    mRemoteView.setTextViewText(R.id.w_title, title);
+
+                    if (avatar == null) {
+                        mRemoteView.setImageViewResource(R.id.w_icon, R.drawable.avatar);
+                    } else {
+                        mRemoteView.setImageViewBitmap(R.id.w_icon, avatar);
+                    }
+                }
+
+                mRemoteView.setTextViewText(R.id.w_tweet_user_name_text, mTweets.get(mCurrentTweet).getUsername());
+                mRemoteView.setTextViewText(R.id.w_tweet_source, Html.fromHtml(mTweets.get(mCurrentTweet).getSource()).toString());
+                mRemoteView.setTextViewText(R.id.w_tweet_text, Html.fromHtml(Utils.toHTML(context, mTweets.get(mCurrentTweet).getText())));
+                mRemoteView.setTextViewText(R.id.w_tweet_date,  Utils.timeFromTweet(this, mTweets.get(mCurrentTweet).getDate()) );
+
+                if (mTweets.get(mCurrentTweet).hasGeoLocation()) {
+                    mRemoteView.setViewVisibility(R.id.tag_map, View.VISIBLE);
+                } else {
+                    mRemoteView.setViewVisibility(R.id.tag_map, View.GONE);
+                }
+
+                if (mTweets.get(mCurrentTweet).hasConversation()) {
+                    mRemoteView.setViewVisibility(R.id.tag_conversation, View.VISIBLE);
+                } else {
+                    mRemoteView.setViewVisibility(R.id.tag_conversation, View.GONE);
+                }
+
 				ArrayList<String> links = LinksUtils.pullLinksHTTP(mTweets.get(mCurrentTweet).getText());
-							
+
+                String linkForImage = mTweets.get(mCurrentTweet).getBestLink();
+
+                if (links.size() == 0) {
+                    mRemoteView.setViewVisibility(R.id.tweet_photo_img_container, View.GONE);
+                    mRemoteView.setViewVisibility(R.id.tweet_photo_multi_img_container, View.GONE);
+                } else {
+                    int tweet_photo_id = -1;
+                    if (links.size() == 1) {
+                        tweet_photo_id = R.id.tweet_photo_img;
+                        mRemoteView.setViewVisibility(R.id.tweet_photo_img, View.VISIBLE);
+                        mRemoteView.setViewVisibility(R.id.tweet_photo_img_container, View.VISIBLE);
+                        mRemoteView.setViewVisibility(R.id.tweet_photo_multi_img, View.GONE);
+                        mRemoteView.setViewVisibility(R.id.tweet_photo_multi_img_container, View.GONE);
+
+                        Intent defineIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(links.get(0)));
+                        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, defineIntent, 0);
+                        mRemoteView.setOnClickPendingIntent(R.id.tweet_photo_img, pendingIntent);
+                    } else {
+                        tweet_photo_id = R.id.tweet_photo_multi_img;
+                        mRemoteView.setViewVisibility(R.id.tweet_photo_img, View.GONE);
+                        mRemoteView.setViewVisibility(R.id.tweet_photo_img_container, View.GONE);
+                        mRemoteView.setViewVisibility(R.id.tweet_photo_multi_img, View.VISIBLE);
+                        mRemoteView.setViewVisibility(R.id.tweet_photo_multi_img_container, View.VISIBLE);
+
+                        Intent configureIntent = new Intent(context, WidgetTweetsLinks4x2.class);
+                        configureIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
+                        configureIntent.putExtra(GlobalsWidget.WIDGET_LINKS, links);
+                        PendingIntent configurePendingIntent = PendingIntent.getActivity(context, 0, configureIntent, 0);
+                        mRemoteView.setOnClickPendingIntent(R.id.tweet_photo_multi_img, configurePendingIntent);
+                    }
+
+                    InfoLink infoLink = null;
+
+                    if (CacheData.existCacheInfoLink(linkForImage)) {
+                        infoLink = CacheData.getCacheInfoLink(linkForImage);
+                    }
+
+                    int typeResource = getTypeResource(linkForImage);
+                    AQuery aQuery = new AQuery(context);
+
+                    if (infoLink!=null) {
+
+                        String thumb = infoLink.getLinkImageThumb();
+
+                        if (thumb.equals("")) {
+                            mRemoteView.setImageViewResource(tweet_photo_id,typeResource);
+                        } else {
+                            Bitmap image = aQuery.getCachedImage(infoLink.getLinkImageThumb());
+
+                            if (image!=null) {
+                                mRemoteView.setImageViewBitmap(tweet_photo_id,image);
+                            } else {
+                                aQuery.id(tweet_photo_id).image(infoLink.getLinkImageThumb(), true, true, 0, typeResource, aQuery.getCachedImage(typeResource), 0);
+                            }
+                        }
+
+                    } else { // si no tenemos InfoLink en cache
+                        mRemoteView.setImageViewResource(tweet_photo_id,typeResource);
+                    }
+                }
+
 				for (int i=0; i<5; i++) {
 					int id = 0;
 					if (i==0) id = R.id.widget_link_1;
@@ -334,19 +481,10 @@ public class ServiceWidgetTweets4x2 extends Service {
     	 }
 
     }
-    
-     private PendingIntent makeControlPendingIntent(Context context, String command) {
-    	Intent active = new Intent();
-    	active.setAction(Utils.ACTION_WIDGET_CONTROL);
-    	active.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);    	
-    	Uri data = Uri.parse(Utils.URI_SCHEME + "://command/"+command);
-    	active.setData(data);
-    	return(PendingIntent.getBroadcast(context, 0, active, PendingIntent.FLAG_UPDATE_CURRENT));
-    }
-    
-     public void update(Context cnt) {
+
+    public void update(Context cnt) {
     	   	
-    	blocked = true;
+        blocked = true;
     	
     	mCurrentTweet = 0;
     	
@@ -358,8 +496,51 @@ public class ServiceWidgetTweets4x2 extends Service {
     	
     	mType = PreferenceUtils.getTypeWidget(cnt);
     	mCurrentSearch = PreferenceUtils.getIdSearchWidget(cnt);
-    	
-    	if (mType==TIMELINE || mType==MENTIONS) {
+    	column_position = PreferenceUtils.getWidgetColumn(cnt);
+
+        List<Entity> columns = DataFramework.getInstance().getEntityList("columns", "position=" + column_position);
+
+        if (columns.size() > 0) {
+            Entity column_item = columns.get(0);
+
+            ArrayList<Entity> tweetList = new ArrayList<Entity>();
+
+            switch (column_item.getInt("type_id")) {
+                case TweetTopicsUtils.COLUMN_TIMELINE:
+                    //loadUser(columns.get(0).getEntity("user_id").getId());
+                    tweetList.addAll(DataFramework.getInstance().getEntityList("tweets_user", "type_id=" + TweetTopicsUtils.TWEET_TYPE_TIMELINE + " and user_tt_id=" + column_item.getEntity("user_id").getId(), "date desc"));
+                    break;
+                case TweetTopicsUtils.COLUMN_MENTIONS:
+                    //loadUser(columns.get(0).getEntity("user_id").getId());
+                    tweetList.addAll(DataFramework.getInstance().getEntityList("tweets_user", "type_id=" + TweetTopicsUtils.TWEET_TYPE_MENTIONS + " and user_tt_id=" + column_item.getEntity("user_id").getId(), "date desc"));
+                    break;
+                case TweetTopicsUtils.COLUMN_DIRECT_MESSAGES:
+                    //loadUser(columns.get(0).getEntity("user_id").getId());
+                    tweetList.addAll(DataFramework.getInstance().getEntityList("tweets_user", "type_id=" + TweetTopicsUtils.TWEET_TYPE_DIRECTMESSAGES + " and user_tt_id=" + column_item.getEntity("user_id").getId(), "date desc"));
+                    break;
+                case TweetTopicsUtils.COLUMN_SEARCH:
+                    try {
+                        EntitySearch entitySearch = new EntitySearch(column_item.getLong("search_id"));
+                        QueryResult result = twitter.search(entitySearch.getQuery(cnt));
+                        ArrayList<Tweet> tweets = (ArrayList<Tweet>)result.getTweets();
+
+                        for (int i=0; i<tweets.size(); i++) {
+                            mTweets.add(new InfoTweet(tweets.get(i)));
+                        }
+                    } catch (TwitterException e) {
+                        e.printStackTrace();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    break;
+            }
+
+            for (int i=0; i<tweetList.size();i++) {
+                mTweets.add(new InfoTweet(tweetList.get(i)));
+            }
+        }
+
+    	/*if (mType==TIMELINE || mType==MENTIONS) {
     		List<Entity> e = DataFramework.getInstance().getEntityList("users", "active=1");
 	    	if (e.size()==1) {
 	    		loadUser(e.get(0).getId());
@@ -397,7 +578,7 @@ public class ServiceWidgetTweets4x2 extends Service {
 		    	
     		}
 	    	
-    	}
+    	}*/
     	
     	blocked = false;
 
@@ -440,13 +621,13 @@ public class ServiceWidgetTweets4x2 extends Service {
     	handler.removeCallbacks(runnable);
     	handler.postDelayed(runnable, UPDATE_WIDGET);
     }
-    
+
 	public void loadUser(long id) {
 		twitter = ConnectionManager.getInstance().getTwitter(id);
 	}
     
     private void prev() {
-    	if (mCurrentTweet>0) {
+    	if (mCurrentTweet > 0) {
 			mCurrentTweet--;
 		} else {
 			mCurrentTweet = MAX_TWEET-1;
@@ -454,7 +635,7 @@ public class ServiceWidgetTweets4x2 extends Service {
     }
     
     private void next() {
-    	if (mCurrentTweet<MAX_TWEET-1) {
+    	if (mCurrentTweet < MAX_TWEET-1) {
 			mCurrentTweet++;
 		} else {
 			mCurrentTweet = 0;
@@ -474,8 +655,6 @@ public class ServiceWidgetTweets4x2 extends Service {
     		} catch (Exception e) {
     			e.printStackTrace();
     		}
-
-    		//handler.postDelayed(this, UPDATE_WIDGET);
     	}
 
     };
