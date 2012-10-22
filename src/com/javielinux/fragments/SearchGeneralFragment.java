@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,10 +30,12 @@ public class SearchGeneralFragment extends Fragment {
     public ImageButton btIcons;
     public long iconId;
     public String iconFile;
+    private String defaultSearch = "";
 
 
-    public SearchGeneralFragment(EntitySearch search_entity) {
+    public SearchGeneralFragment(EntitySearch search_entity, String defaultSearch) {
         this.search_entity = search_entity;
+        this.defaultSearch = defaultSearch;
     }
 
     @Override
@@ -86,6 +89,9 @@ public class SearchGeneralFragment extends Fragment {
             iconId = search_entity.getLong("icon_id");
             iconFile = search_entity.getString("icon_token_file");
         } else {
+            if (!TextUtils.isEmpty(defaultSearch)) {
+                searchAnd.setText(defaultSearch);
+            }
             selectIcon(1);
         }
     }

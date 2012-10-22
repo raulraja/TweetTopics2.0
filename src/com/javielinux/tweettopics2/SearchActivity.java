@@ -25,6 +25,8 @@ import com.viewpagerindicator.TabPageIndicator;
 
 public class SearchActivity extends BaseActivity implements APIDelegate<BaseResponse> {
 
+    public static String KEY_SEARCH = "search";
+
     private static final int SAVE_ID = Menu.FIRST;
     private static final int SAVE_LAUNCH_ID = Menu.FIRST + 1;
 
@@ -48,10 +50,15 @@ public class SearchActivity extends BaseActivity implements APIDelegate<BaseResp
         themeManager = new ThemeManager(this);
         themeManager.setTranslucentTheme();
 
+        String defaultSearch = "";
+
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             if (extras.containsKey(DataFramework.KEY_ID)) {
                 search_entity = new EntitySearch(extras.getLong(DataFramework.KEY_ID));
+            }
+            if (extras.containsKey(KEY_SEARCH)) {
+                defaultSearch = extras.getString(KEY_SEARCH);
             }
         }
 
@@ -61,7 +68,7 @@ public class SearchActivity extends BaseActivity implements APIDelegate<BaseResp
 
         setContentView(R.layout.search_activity);
 
-        fragmentAdapter = new SearchFragmentAdapter(this, getSupportFragmentManager(), search_entity);
+        fragmentAdapter = new SearchFragmentAdapter(this, getSupportFragmentManager(), search_entity, defaultSearch);
 
         pager = (ViewPager)findViewById(R.id.search_pager);
         pager.setAdapter(fragmentAdapter);

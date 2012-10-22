@@ -7,11 +7,6 @@ import android.view.Window;
 public abstract class BaseActivity extends FragmentActivity {
 
     @Override
-    protected void onStart() {
-        super.onStart();
-    }
-
-    @Override
     protected void onStop() {
         super.onStop();
     }

@@ -84,11 +84,6 @@ public class TweetTopicsActivity extends BaseLayersActivity implements PopupLink
     private GestureDetector imgBarAvatarGestureDetector;
 
     @Override
-    protected void onStart() {
-        super.onStart();
-    }
-
-    @Override
     public void onCreate(Bundle savedInstanceState) {
         try {
             DataFramework.getInstance().open(this, Utils.packageName);
@@ -459,7 +454,7 @@ public class TweetTopicsActivity extends BaseLayersActivity implements PopupLink
 
     @Override
     public void onShowSplitActionBarMenu(BaseListFragment fragment, InfoTweet infoTweet) {
-        splitActionBarMenu.showSplitActionBarMenu(fragment, infoTweet);
+        splitActionBarMenu.showSplitActionBarMenu(fragment, infoTweet, getUserOwnerCurrentColumn());
     }
 
     @Override

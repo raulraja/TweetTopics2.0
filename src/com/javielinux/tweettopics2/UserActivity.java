@@ -299,7 +299,7 @@ public class UserActivity extends BaseLayersActivity implements PopupLinks.Popup
 
     @Override
     public void onShowSplitActionBarMenu(BaseListFragment fragment, InfoTweet infoTweet) {
-        splitActionBarMenu.showSplitActionBarMenu(fragment, infoTweet);
+        splitActionBarMenu.showSplitActionBarMenu(fragment, infoTweet, userActive);
     }
 
     @Override

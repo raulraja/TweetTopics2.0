@@ -45,8 +45,8 @@ public class HashTagDialogFragment extends DialogFragment {
                             Utils.showMessage(getActivity(), getActivity().getString(R.string.hashtag_hidden_correct));
                         } else if (which==2) {
                             Intent edit_search = new Intent(getActivity(), SearchActivity.class);
-                            edit_search.putExtra("search", hashtag);
-                            startActivityForResult(edit_search, TweetTopicsActivity.ACTIVITY_NEWEDITSEARCH);
+                            edit_search.putExtra(SearchActivity.KEY_SEARCH, hashtag);
+                            getActivity().startActivityForResult(edit_search, TweetTopicsActivity.ACTIVITY_NEWEDITSEARCH);
                         } else if (which==3) {
                             TweetActions.updateStatus(getActivity(), hashtag);
                         } else if (which==4) {

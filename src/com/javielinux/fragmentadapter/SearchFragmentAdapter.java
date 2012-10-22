@@ -5,7 +5,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import com.javielinux.database.EntitySearch;
-import com.javielinux.fragments.*;
+import com.javielinux.fragments.SearchAdvancedFragment;
+import com.javielinux.fragments.SearchGeneralFragment;
+import com.javielinux.fragments.SearchGeoFragment;
 import com.javielinux.tweettopics2.R;
 
 import java.util.ArrayList;
@@ -26,12 +28,14 @@ public class SearchFragmentAdapter extends FragmentPagerAdapter  {
     private SearchGeoFragment search_geo_fragment;
 
     private Context context;
+    private String defaultSearch = "";
 
-    public SearchFragmentAdapter(Context context, FragmentManager fragmentManager, EntitySearch search_entity) {
+    public SearchFragmentAdapter(Context context, FragmentManager fragmentManager, EntitySearch search_entity, String defaultSearch) {
         super(fragmentManager);
         this.search_entity = search_entity;
 
         this.context = context;
+        this.defaultSearch = defaultSearch;
 
         loadColumns();
     }
@@ -51,7 +55,7 @@ public class SearchFragmentAdapter extends FragmentPagerAdapter  {
     public Fragment getItem(int index) {
 
         if (tweet_fragment_code.get(index) == TAB_GENERAL) {
-            search_general_fragment = new SearchGeneralFragment(search_entity);
+            search_general_fragment = new SearchGeneralFragment(search_entity, defaultSearch);
             return search_general_fragment;
         } else if (tweet_fragment_code.get(index) == TAB_ADVANCED) {
             search_advanced_fragment = new SearchAdvancedFragment(search_entity);

@@ -588,7 +588,7 @@ public class TweetActivity extends BaseLayersActivity implements APIDelegate<Bas
 
     @Override
     public void onShowSplitActionBarMenu(BaseListFragment baseListFragment, InfoTweet infoTweet) {
-        splitActionBarMenu.showSplitActionBarMenu(baseListFragment, infoTweet);
+        splitActionBarMenu.showSplitActionBarMenu(baseListFragment, infoTweet, userActive);
     }
 
     @Override

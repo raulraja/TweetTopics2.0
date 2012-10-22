@@ -116,7 +116,7 @@ public class SplitActionBarMenu {
         return root_layout.getVisibility() == View.VISIBLE;
     }
 
-    private void loadActionButtons(ArrayList<String> codes, final InfoTweet infoTweet) {
+    private void loadActionButtons(ArrayList<String> codes, final InfoTweet infoTweet, final long ownerColumn) {
 
         main_layout.removeAllViews();
 
@@ -152,7 +152,7 @@ public class SplitActionBarMenu {
                 @Override
                 public void onClick(View view) {
                     hideSplitActionBarMenu();
-                    TweetActions.execByCode(code, activity, infoTweet.getUserId(), infoTweet, getFromFragment());
+                    TweetActions.execByCode(code, activity, ownerColumn, infoTweet, getFromFragment());
                 }
             });
 
@@ -168,16 +168,16 @@ public class SplitActionBarMenu {
         }
     }
 
-    public void showSplitActionBarMenu(BaseListFragment fragment, InfoTweet infoTweet) {
+    public void showSplitActionBarMenu(BaseListFragment fragment, InfoTweet infoTweet, long ownerColumn) {
 
         setFromFragment(fragment);
 
         ArrayList<String> codes = PreferenceUtils.getArraySubMenuTweet(activity);
 
         if (codes.size() == 1) {
-            TweetActions.execByCode(codes.get(0), activity, infoTweet.getUserId(), infoTweet);
+            TweetActions.execByCode(codes.get(0), activity, ownerColumn, infoTweet);
         } else {
-            loadActionButtons(codes, infoTweet);
+            loadActionButtons(codes, infoTweet, ownerColumn);
 
             ObjectAnimator translationY = ObjectAnimator.ofFloat(scroll_view_layout, "translationY", screenHeight, screenHeight - Utils.dip2px(activity, splitActionBarMenuHeight));
             translationY.setDuration(250);

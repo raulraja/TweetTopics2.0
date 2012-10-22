@@ -248,8 +248,8 @@ public class ServiceWidgetTweets4x2 extends Service {
                 getManager().updateAppWidget(getWidget(), mRemoteLoading);
             }*/
 
-    		List<Entity> e = DataFramework.getInstance().getEntityList("users", "active=1");
-	    	if (e.size()==1) {
+    		List<Entity> e = DataFramework.getInstance().getEntityList("users", "service is null or service = \"twitter.com\"");
+	    	if (e.size()>0) {
 	    		
 	    		if (DataFramework.getInstance().getEntityList("search").size()>0) {
 	    			mCurrentSearch = DataFramework.getInstance().getEntityList("search").get(0).getId();

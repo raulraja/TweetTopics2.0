@@ -176,9 +176,15 @@ public class TweetActions {
             int count = users.size();
             if (!users.contains("@" + infoTweet.getUsername())) count++;
 
-            Entity e = new Entity("users", fromUser);
-            if (e != null) {
-                if (users.contains("@" + e.getString("name"))) count--;
+            if (fromUser>0) {
+                try {
+                    Entity e = new Entity("users", fromUser);
+                    if (e != null) {
+                        if (users.contains("@" + e.getString("name"))) count--;
+                    }
+                } catch (CursorIndexOutOfBoundsException e) {
+                    e.printStackTrace();
+                }
             }
 
             if (count > 1) {
