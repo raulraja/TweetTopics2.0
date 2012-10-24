@@ -19,6 +19,7 @@ import android.widget.RemoteViews;
 import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
 import com.androidquery.AQuery;
+import com.javielinux.api.response.TrendsResponse;
 import com.javielinux.database.EntitySearch;
 import com.javielinux.infos.InfoImagesTweet;
 import com.javielinux.infos.InfoLink;
@@ -29,13 +30,11 @@ import com.javielinux.tweettopics2.R;
 import com.javielinux.tweettopics2.TweetTopicsActivity;
 import com.javielinux.twitter.ConnectionManager;
 import com.javielinux.utils.*;
-import twitter4j.QueryResult;
-import twitter4j.Tweet;
-import twitter4j.Twitter;
-import twitter4j.TwitterException;
+import twitter4j.*;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -129,6 +128,9 @@ public class ServiceWidgetTweets4x2 extends Service {
                 if (drawable == null) drawable = context.getResources().getDrawable(R.drawable.letter_az);
                 bitmap = ((BitmapDrawable) drawable).getBitmap();
                 bitmap = Bitmap.createScaledBitmap(bitmap, Utils.AVATAR_LARGE, Utils.AVATAR_LARGE, true);
+                break;
+            case TweetTopicsUtils.COLUMN_LIST_USER:
+                bitmap = ImageUtils.getBitmapAvatar(column.getEntity("userlist_id").getEntity("user_id").getId(), Utils.AVATAR_LARGE);
                 break;
         }
 
@@ -461,7 +463,6 @@ public class ServiceWidgetTweets4x2 extends Service {
 				}
 				
 				mRemoteView.setOnClickPendingIntent(R.id.w_tweet_layout, makeControlPendingIntent(context, "app"));
-				
 				mRemoteView.setOnClickPendingIntent(R.id.btn_w_refresh, makeControlPendingIntent(context, "refresh"));
 				mRemoteView.setOnClickPendingIntent(R.id.btn_w_next, makeControlPendingIntent(context, "next"));
 				mRemoteView.setOnClickPendingIntent(R.id.btn_w_prev, makeControlPendingIntent(context, "prev"));
@@ -482,21 +483,21 @@ public class ServiceWidgetTweets4x2 extends Service {
 
     }
 
-    public void update(Context cnt) {
+    public void update(Context context) {
     	   	
         blocked = true;
     	
     	mCurrentTweet = 0;
     	
-    	RemoteViews mRemoteLoading = new RemoteViews(cnt.getPackageName(), R.layout.widget_loading);
+    	RemoteViews mRemoteLoading = new RemoteViews(context.getPackageName(), R.layout.widget_loading);
     	getManager().updateAppWidget(getWidget(), mRemoteLoading);
     	
     	mTweets.clear();
     	clearImagesTweets();
     	
-    	mType = PreferenceUtils.getTypeWidget(cnt);
-    	mCurrentSearch = PreferenceUtils.getIdSearchWidget(cnt);
-    	column_position = PreferenceUtils.getWidgetColumn(cnt);
+    	mType = PreferenceUtils.getTypeWidget(context);
+    	mCurrentSearch = PreferenceUtils.getIdSearchWidget(context);
+    	column_position = PreferenceUtils.getWidgetColumn(context);
 
         List<Entity> columns = DataFramework.getInstance().getEntityList("columns", "position=" + column_position);
 
@@ -509,19 +510,31 @@ public class ServiceWidgetTweets4x2 extends Service {
                 case TweetTopicsUtils.COLUMN_TIMELINE:
                     //loadUser(columns.get(0).getEntity("user_id").getId());
                     tweetList.addAll(DataFramework.getInstance().getEntityList("tweets_user", "type_id=" + TweetTopicsUtils.TWEET_TYPE_TIMELINE + " and user_tt_id=" + column_item.getEntity("user_id").getId(), "date desc"));
+
+                    for (int i=0; i<tweetList.size();i++) {
+                        mTweets.add(new InfoTweet(tweetList.get(i)));
+                    }
                     break;
                 case TweetTopicsUtils.COLUMN_MENTIONS:
                     //loadUser(columns.get(0).getEntity("user_id").getId());
                     tweetList.addAll(DataFramework.getInstance().getEntityList("tweets_user", "type_id=" + TweetTopicsUtils.TWEET_TYPE_MENTIONS + " and user_tt_id=" + column_item.getEntity("user_id").getId(), "date desc"));
+
+                    for (int i=0; i<tweetList.size();i++) {
+                        mTweets.add(new InfoTweet(tweetList.get(i)));
+                    }
                     break;
                 case TweetTopicsUtils.COLUMN_DIRECT_MESSAGES:
                     //loadUser(columns.get(0).getEntity("user_id").getId());
                     tweetList.addAll(DataFramework.getInstance().getEntityList("tweets_user", "type_id=" + TweetTopicsUtils.TWEET_TYPE_DIRECTMESSAGES + " and user_tt_id=" + column_item.getEntity("user_id").getId(), "date desc"));
+
+                    for (int i=0; i<tweetList.size();i++) {
+                        mTweets.add(new InfoTweet(tweetList.get(i)));
+                    }
                     break;
                 case TweetTopicsUtils.COLUMN_SEARCH:
                     try {
                         EntitySearch entitySearch = new EntitySearch(column_item.getLong("search_id"));
-                        QueryResult result = twitter.search(entitySearch.getQuery(cnt));
+                        QueryResult result = twitter.search(entitySearch.getQuery(context));
                         ArrayList<Tweet> tweets = (ArrayList<Tweet>)result.getTweets();
 
                         for (int i=0; i<tweets.size(); i++) {
@@ -533,52 +546,124 @@ public class ServiceWidgetTweets4x2 extends Service {
                         e.printStackTrace();
                     }
                     break;
-            }
+                case TweetTopicsUtils.COLUMN_RETWEETS_BY_OTHERS:
+                    try {
+                        ResponseList<Status> statii = ConnectionManager.getInstance().getTwitter(column_item.getEntity("user_id").getId()).getRetweetsOfMe();
 
-            for (int i=0; i<tweetList.size();i++) {
-                mTweets.add(new InfoTweet(tweetList.get(i)));
+                        for (int i=0; i<statii.size(); i++) {
+                            mTweets.add(new InfoTweet(statii.get(i)));
+                        }
+                    } catch (TwitterException e) {
+                        e.printStackTrace();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    break;
+                case TweetTopicsUtils.COLUMN_RETWEETS_BY_YOU:
+                    try {
+                        ResponseList<Status> statii = ConnectionManager.getInstance().getTwitter(column_item.getEntity("user_id").getId()).getRetweetedByMe();
+
+                        for (int i=0; i<statii.size(); i++) {
+                            mTweets.add(new InfoTweet(statii.get(i)));
+                        }
+                    } catch (TwitterException e) {
+                        e.printStackTrace();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    break;
+                case TweetTopicsUtils.COLUMN_FAVORITES:
+                    try {
+                        ResponseList<Status> statii = ConnectionManager.getInstance().getTwitter(column_item.getEntity("user_id").getId()).getFavorites();
+
+                        for (int i=0; i<statii.size(); i++) {
+                            mTweets.add(new InfoTweet(statii.get(i)));
+                        }
+                    } catch (TwitterException e) {
+                        e.printStackTrace();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    break;
+                case TweetTopicsUtils.COLUMN_FOLLOWERS:
+                    try {
+                        IDs followers_ids = ConnectionManager.getInstance().getTwitter(column_item.getEntity("user_id").getId()).getFollowersIDs(column_item.getEntity("user_id").getString("name"), -1);
+
+                        ResponseList<User> users = null;
+
+                        if (followers_ids.getIDs().length <= 100) {
+                            users = ConnectionManager.getInstance().getTwitter(column_item.getEntity("user_id").getId()).lookupUsers(followers_ids.getIDs());
+                        } else {
+                            int hundred_count = followers_ids.getIDs().length / 100;
+
+                            for (int i=0; i < hundred_count; i++) {
+                                if (users == null)
+                                    users = ConnectionManager.getInstance().getTwitter(column_item.getEntity("user_id").getId()).lookupUsers(Arrays.copyOfRange(followers_ids.getIDs(), i * 100, (i + 1) * 100 - 1));
+                                else
+                                    users.addAll(ConnectionManager.getInstance().getTwitter(column_item.getEntity("user_id").getId()).lookupUsers(Arrays.copyOfRange(followers_ids.getIDs(),i*100,(i+1)*100-1)));
+                            }
+
+                            if (followers_ids.getIDs().length % 100 > 0)
+                                users.addAll(ConnectionManager.getInstance().getTwitter(column_item.getEntity("user_id").getId()).lookupUsers(Arrays.copyOfRange(followers_ids.getIDs(),hundred_count*100 + 1,followers_ids.getIDs().length-1)));
+                        }
+
+                        for (User user : users) {
+                            InfoTweet row = new InfoTweet(user);
+                            mTweets.add(row);
+                        }
+                    } catch (TwitterException e) {
+                        e.printStackTrace();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    break;
+                case TweetTopicsUtils.COLUMN_FOLLOWINGS:
+                    try {
+                        IDs friends_ids = ConnectionManager.getInstance().getTwitter(column_item.getEntity("user_id").getId()).getFriendsIDs(column_item.getEntity("user_id").getString("name"), -1);
+
+                        ResponseList<User> users = null;
+
+                        if (friends_ids.getIDs().length <= 100) {
+                            users = ConnectionManager.getInstance().getTwitter(column_item.getEntity("user_id").getId()).lookupUsers(friends_ids.getIDs());
+                        } else {
+                            int hundred_count = friends_ids.getIDs().length / 100;
+
+                            for (int i=0; i < hundred_count; i++) {
+                                if (users == null)
+                                    users = ConnectionManager.getInstance().getTwitter(column_item.getEntity("user_id").getId()).lookupUsers(Arrays.copyOfRange(friends_ids.getIDs(), i * 100, (i + 1) * 100 - 1));
+                                else
+                                    users.addAll(ConnectionManager.getInstance().getTwitter(column_item.getEntity("user_id").getId()).lookupUsers(Arrays.copyOfRange(friends_ids.getIDs(),i*100,(i+1)*100-1)));
+                            }
+
+                            if (friends_ids.getIDs().length % 100 > 0)
+                                users.addAll(ConnectionManager.getInstance().getTwitter(column_item.getEntity("user_id").getId()).lookupUsers(Arrays.copyOfRange(friends_ids.getIDs(),hundred_count*100 + 1,friends_ids.getIDs().length-1)));
+                        }
+
+                        for (User user : users) {
+                            InfoTweet row = new InfoTweet(user);
+                            mTweets.add(row);
+                        }
+                    } catch (TwitterException e) {
+                        e.printStackTrace();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    break;
+                case TweetTopicsUtils.COLUMN_LIST_USER:
+                    try {
+                        Entity user_list_entity = new Entity("user_lists", Long.parseLong(column_item.getValue("userlist_id").toString()));
+
+                        ResponseList<twitter4j.Status> statii = ConnectionManager.getInstance().getTwitter(user_list_entity.getLong("user_id")).getUserListStatuses(user_list_entity.getInt("userlist_id"), new Paging(1));
+                        for (int i=0; i<statii.size(); i++) {
+                            mTweets.add(new InfoTweet(statii.get(i)));
+                        }
+                    } catch (TwitterException e) {
+                        e.printStackTrace();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
             }
         }
-
-    	/*if (mType==TIMELINE || mType==MENTIONS) {
-    		List<Entity> e = DataFramework.getInstance().getEntityList("users", "active=1");
-	    	if (e.size()==1) {
-	    		loadUser(e.get(0).getId());
-	    		ArrayList<Entity> ents = DataFramework.getInstance().getEntityList("tweets_user", "type_id="+mType+" and user_tt_id="+e.get(0).getId(), "date desc");
-	    		for (int i=0; i<ents.size();i++) {
-	    			mTweets.add(new InfoTweet(ents.get(i)));
-	    		}
-	    	}
-    	}    	
-    	
-    	if (mType==SEARCH) {
-    		
-    		if (mCurrentSearch>0) {
-    				    	
-		    	try {
-			    	Log.d(Utils.TAG_WIDGET, "Cargando busqueda con id " + mCurrentSearch);	    	
-			    	EntitySearch mEntitySearch = new EntitySearch(mCurrentSearch);
-			    	if (mEntitySearch.getInt("notifications")==1) {
-			    		ArrayList<Entity> ents = DataFramework.getInstance().getEntityList("tweets", "favorite=0 and search_id="+mEntitySearch.getId(), "date desc");
-			    		for (int i=0; i<ents.size();i++) {
-			    			mTweets.add(new InfoTweet(ents.get(i)));
-			    		}
-			    	} else {
-			    		QueryResult result = twitter.search(mEntitySearch.getQuery(cnt));
-						ArrayList<Tweet> tweets = (ArrayList<Tweet>)result.getTweets();
-						for (int i=0; i<tweets.size();i++) {
-			    			mTweets.add(new InfoTweet(tweets.get(i)));
-			    		}
-			    	}
-				} catch (TwitterException e) {
-					e.printStackTrace();
-		    	} catch (Exception e) {
-		    		e.printStackTrace();
-		    	}
-		    	
-    		}
-	    	
-    	}*/
     	
     	blocked = false;
 
@@ -607,6 +692,9 @@ public class ServiceWidgetTweets4x2 extends Service {
 				Intent i = new Intent(context, TweetTopicsActivity.class);
 				i.setAction(Intent.ACTION_VIEW);
 				i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                i.putExtra(TweetTopicsActivity.KEY_EXTRAS_GOTO_COLUMN_POSITION, column_position);
+                i.putExtra(TweetTopicsActivity.KEY_EXTRAS_GOTO_TWEET_ID, mTweets.get(mCurrentTweet).getId());
+
 				context.startActivity(i);
 	    	}
 	    	

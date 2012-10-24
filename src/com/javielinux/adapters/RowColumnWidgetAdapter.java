@@ -97,6 +97,9 @@ public class RowColumnWidgetAdapter extends BaseAdapter {
                 bitmap = ((BitmapDrawable) drawable).getBitmap();
                 bitmap = Bitmap.createScaledBitmap(bitmap, Utils.AVATAR_LARGE, Utils.AVATAR_LARGE, true);
                 break;
+            case TweetTopicsUtils.COLUMN_LIST_USER:
+                bitmap = ImageUtils.getBitmapAvatar(column.getEntity("userlist_id").getEntity("user_id").getId(), Utils.AVATAR_LARGE);
+                break;
         }
 
         return bitmap;

@@ -47,6 +47,8 @@ public class TweetTopicsActivity extends BaseLayersActivity implements PopupLink
 
     public static final String KEY_EXTRAS_GOTO_COLUMN_USER = "KEY_EXTRAS_GOTO_COLUMN_USER";
     public static final String KEY_EXTRAS_GOTO_COLUMN_TYPE = "KEY_EXTRAS_GOTO_COLUMN_TYPE";
+    public static final String KEY_EXTRAS_GOTO_COLUMN_POSITION = "KEY_EXTRAS_GOTO_COLUMN_POSITION";
+    public static final String KEY_EXTRAS_GOTO_TWEET_ID = "KEY_EXTRAS_GOTO_TWEET_ID";
 
     public static final int ACTIVITY_NEWEDITSEARCH = 0;
     public static final int ACTIVITY_NEWSTATUS = 1;
@@ -127,15 +129,24 @@ public class TweetTopicsActivity extends BaseLayersActivity implements PopupLink
             ((NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE)).cancelAll();
         }
 
+        long goToColumnPosition = -1;
         int goToColumnType = -1;
         long goToColumnUser = -1;
+        long selectedTweetId = -1;
+
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
+            if (extras.containsKey(KEY_EXTRAS_GOTO_COLUMN_POSITION)) {
+                goToColumnPosition = extras.getLong(KEY_EXTRAS_GOTO_COLUMN_POSITION);
+            }
             if (extras.containsKey(KEY_EXTRAS_GOTO_COLUMN_TYPE)) {
                 goToColumnType = extras.getInt(KEY_EXTRAS_GOTO_COLUMN_TYPE);
             }
             if (extras.containsKey(KEY_EXTRAS_GOTO_COLUMN_USER)) {
                 goToColumnUser = extras.getLong(KEY_EXTRAS_GOTO_COLUMN_USER);
+            }
+            if (extras.containsKey(KEY_EXTRAS_GOTO_TWEET_ID)) {
+                selectedTweetId = extras.getLong(KEY_EXTRAS_GOTO_TWEET_ID);
             }
         }
 
@@ -317,11 +328,13 @@ public class TweetTopicsActivity extends BaseLayersActivity implements PopupLink
                 createUserColumn(goToColumnUser, goToColumnType);
             }
         } else if (goToColumnType == TweetTopicsUtils.COLUMN_MY_ACTIVITY) {
+        } else if (goToColumnPosition > 0) {
+            goToColumn((int)goToColumnPosition, false, selectedTweetId);
         } else if (positionFromSensor>=0) {
-            goToColumn(positionFromSensor, false);
+            goToColumn(positionFromSensor, false, selectedTweetId);
         } else {
             int col = fragmentAdapter.getPositionColumnActive();
-            if (col > 0) goToColumn(col, false);
+            if (col > 0) goToColumn(col, false, selectedTweetId);
         }
 
         // comprobar si hay que proponer ir al market
@@ -386,7 +399,7 @@ public class TweetTopicsActivity extends BaseLayersActivity implements PopupLink
                         search.setValue("search_id", data.getLongExtra(DataFramework.KEY_ID, -1));
                         search.save();
 
-                        goToColumn(count, true);
+                        goToColumn(count, true, -1);
 
                     } else {
                         getFragmentPagerAdapter().getMyActivityFragment().fillData();
@@ -396,7 +409,7 @@ public class TweetTopicsActivity extends BaseLayersActivity implements PopupLink
                 break;
             case ACTIVITY_TRENDS_LOCATION:
                 if (resultCode == Activity.RESULT_OK) {
-                    goToColumn(data.getIntExtra("position", 0), true);
+                    goToColumn(data.getIntExtra("position", 0), true, -1);
                 }
                 break;
             case ACTIVITY_EDIT_SEARCH:
@@ -442,7 +455,7 @@ public class TweetTopicsActivity extends BaseLayersActivity implements PopupLink
             }
         }
         if (keyCode == KeyEvent.KEYCODE_MENU) {
-            goToColumn(0, false);
+            goToColumn(0, false, -1);
         }
         return super.onKeyDown(keyCode, event);
     }
@@ -480,7 +493,7 @@ public class TweetTopicsActivity extends BaseLayersActivity implements PopupLink
         ACTIONS
      */
 
-    public void goToColumn(final int position, final boolean refreshBarColumn) {
+    public void goToColumn(final int position, final boolean refreshBarColumn, final long selectedTweetId) {
         Handler myHandler = new Handler();
         myHandler.postDelayed(new Runnable() {
             @Override
@@ -489,6 +502,7 @@ public class TweetTopicsActivity extends BaseLayersActivity implements PopupLink
                     refreshColumns();
                 }
                 pager.setCurrentItem(position, false);
+                ((BaseListFragment)((TweetTopicsFragmentAdapter)pager.getAdapter()).getItem(position)).selected_tweet_id = selectedTweetId;
             }
         }, 100);
     }
@@ -548,11 +562,11 @@ public class TweetTopicsActivity extends BaseLayersActivity implements PopupLink
             user_list.setValue("user_id", userId);
             user_list.save();
 
-            goToColumn(position, true);
+            goToColumn(position, true, -1);
 
         } else {
             position = created_column_list.get(0).getInt("position");
-            goToColumn(position, false);
+            goToColumn(position, false, -1);
         }
 
     }
@@ -847,7 +861,7 @@ public class TweetTopicsActivity extends BaseLayersActivity implements PopupLink
             public void onAnimationEnd(Animator animator) {
                 layoutBackgroundColumnsBarContainer.setVisibility(View.GONE);
                 if (pos >= 0) {
-                    goToColumn(pos, false);
+                    goToColumn(pos, false, -1);
                 }
             }
 

@@ -11,6 +11,7 @@ import com.javielinux.utils.SplitActionBarMenu;
 abstract public class BaseListFragment extends Fragment {
 
     protected boolean flinging = false;
+    public long selected_tweet_id = -1;
 
     public BaseListFragment() {
         super();

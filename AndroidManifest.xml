@@ -114,8 +114,8 @@
 		
         <receiver android:name="com.javielinux.widget.WidgetTweets4x2" android:label="@string/name_widget_tweets_4x2">
             <intent-filter>
-	        	<action android:name="com.javielinux.tweettopics.WIDGET_CONTROL" />
-	        	<data android:scheme="tweettopics_widget_tweets" />
+	        	<action android:name="com.javielinux.tweettopics2.WIDGET_CONTROL" />
+	        	<data android:scheme="tweettopics2_widget_tweets" />
      		</intent-filter>
 			<intent-filter>
 				<action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
