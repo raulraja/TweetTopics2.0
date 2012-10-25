@@ -124,9 +124,8 @@
                     android:layout_width="0dip"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:lines="4"
-                    style="@style/WidgetTweetText"
-                    />
+                    android:lines="5"
+                    style="@style/WidgetTweetText" />
 
             <RelativeLayout
                 android:layout_height="wrap_content"
@@ -222,10 +221,10 @@
                 android:layout_below="@+id/w_tweet_layout"
 		    	>
 			<ImageButton android:id="@+id/btn_w_prev"
-				android:src="@drawable/btn_w_prev"
-				android:background="@android:color/transparent"
-				android:layout_width="wrap_content" android:layout_height="wrap_content"
-				></ImageButton>
+                android:background="@android:color/transparent"
+                android:layout_height="wrap_content"
+				android:layout_width="wrap_content"
+                android:src="@drawable/btn_w_prev" />
 				
 			<LinearLayout android:layout_width="wrap_content"
 			    	android:layout_height="wrap_content"
@@ -235,37 +234,47 @@
 			    	android:layout_below="@+id/w_tweet_text" 
 			    	android:id="@+id/w_tweet_photo_layout">
 				<ImageView android:id="@+id/widget_link_1"
-					android:src="@drawable/widget_icon_general_link_1" 
 					android:background="@drawable/image_link_background"
-					style="@style/WidgetTweetLink"
-					android:layout_width="wrap_content" android:layout_height="wrap_content"></ImageView>
+                    android:layout_height="wrap_content"
+					android:layout_width="wrap_content"
+                    android:src="@drawable/widget_icon_general_link_1"
+                    android:visibility="gone"
+                    style="@style/WidgetTweetLink" />
 				<ImageView android:id="@+id/widget_link_2"
-					android:src="@drawable/widget_icon_general_link_2" 
 					android:background="@drawable/image_link_background"
-					style="@style/WidgetTweetLink"
-					android:layout_width="wrap_content" android:layout_height="wrap_content"></ImageView>
+                    android:layout_height="wrap_content"
+					android:layout_width="wrap_content"
+                    android:src="@drawable/widget_icon_general_link_2"
+                    android:visibility="gone"
+                    style="@style/WidgetTweetLink" />
 				<ImageView android:id="@+id/widget_link_3"
-					android:src="@drawable/widget_icon_general_link_3" 
 					android:background="@drawable/image_link_background"
-					style="@style/WidgetTweetLink"
-					android:layout_width="wrap_content" android:layout_height="wrap_content"></ImageView>
+                    android:layout_height="wrap_content"
+					android:layout_width="wrap_content"
+                    android:src="@drawable/widget_icon_general_link_3"
+                    android:visibility="gone"
+                    style="@style/WidgetTweetLink" />
 				<ImageView android:id="@+id/widget_link_4"
-					android:src="@drawable/widget_icon_general_link_4" 
 					android:background="@drawable/image_link_background"
-					style="@style/WidgetTweetLink"
-					android:layout_width="wrap_content" android:layout_height="wrap_content"></ImageView>
+                    android:layout_height="wrap_content"
+					android:layout_width="wrap_content"
+                    android:src="@drawable/widget_icon_general_link_4"
+                    android:visibility="gone"
+                    style="@style/WidgetTweetLink" />
 				<ImageView android:id="@+id/widget_link_5"
-					android:src="@drawable/widget_icon_general_link_5" 
 					android:background="@drawable/image_link_background"
-					style="@style/WidgetTweetLink"
-					android:layout_width="wrap_content" android:layout_height="wrap_content"></ImageView>
+                    android:layout_height="wrap_content"
+					android:layout_width="wrap_content"
+                    android:src="@drawable/widget_icon_general_link_5"
+                    android:visibility="gone"
+                    style="@style/WidgetTweetLink" />
 			</LinearLayout> 
 				
 			<ImageButton android:id="@+id/btn_w_next"
-				android:src="@drawable/btn_w_next"
-				android:background="@android:color/transparent"
-				android:layout_width="wrap_content" android:layout_height="wrap_content"
-				></ImageButton>
+                android:background="@android:color/transparent"
+                android:layout_height="wrap_content"
+				android:layout_width="wrap_content"
+                android:src="@drawable/btn_w_next" />
 
 		</LinearLayout>
 

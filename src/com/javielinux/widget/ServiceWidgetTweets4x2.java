@@ -385,7 +385,7 @@ public class ServiceWidgetTweets4x2 extends Service {
                     }
                 }
 
-				for (int i=0; i<5; i++) {
+				/*for (int i=0; i<5; i++) {
 					int id = 0;
 					if (i==0) id = R.id.widget_link_1;
 					else if (i==1) id = R.id.widget_link_2;
@@ -402,7 +402,7 @@ public class ServiceWidgetTweets4x2 extends Service {
 							mRemoteView.setViewVisibility(id, View.GONE);
 						}
 					}
-				}
+				}*/
 				
 				if (null != latestLoadTask) {
 					latestLoadTask.cancel(true);

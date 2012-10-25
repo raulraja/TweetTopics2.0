@@ -215,10 +215,15 @@ public class ListUserFragment extends BaseListFragment implements APIDelegate<Ba
         listView.getRefreshableView().setSelection(firstVisible + count);
 
         if(selected_tweet_id > 0) {
-            for(int i=0; i < tweetsAdapter.getCount(); i++) {
+            int i = 0;
+            boolean found = false;
+
+            while (i < tweetsAdapter.getCount() && !found) {
                 if (tweetsAdapter.getItem(i).getId() == selected_tweet_id) {
-                    onListItemClick(listView.getRefreshableView(), i, i);
+                    onListItemClick(listView.getRefreshableView(), i + 1, i);
+                    found = true;
                 }
+                i++;
             }
         }
     }

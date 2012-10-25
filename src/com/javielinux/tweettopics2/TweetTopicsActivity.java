@@ -502,7 +502,7 @@ public class TweetTopicsActivity extends BaseLayersActivity implements PopupLink
                     refreshColumns();
                 }
                 pager.setCurrentItem(position, false);
-                ((BaseListFragment)((TweetTopicsFragmentAdapter)pager.getAdapter()).getItem(position)).selected_tweet_id = selectedTweetId;
+                ((BaseListFragment)fragmentAdapter.instantiateItem(pager,pager.getCurrentItem())).selected_tweet_id = selectedTweetId;
             }
         }, 100);
     }

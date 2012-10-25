@@ -277,13 +277,13 @@
     <style name="WidgetTweetText">
         <item name="android:layout_marginBottom">2dip</item>
         <item name="android:textColor">#ffffff</item>
-        <item name="android:textSize">14sp</item>
+        <item name="android:textSize">12sp</item>
      </style>
           
     <style name="WidgetTweetDate">
     	<item name="android:layout_marginTop">5dip</item>
     	<item name="android:layout_marginRight">5dip</item>
-    	<item name="android:textSize">12sp</item>
+    	<item name="android:textSize">11sp</item>
         <item name="android:textColor">#aaaaaa</item>
      </style>
      
