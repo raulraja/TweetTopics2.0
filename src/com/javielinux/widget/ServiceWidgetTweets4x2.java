@@ -19,7 +19,6 @@ import android.widget.RemoteViews;
 import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
 import com.androidquery.AQuery;
-import com.javielinux.api.response.TrendsResponse;
 import com.javielinux.database.EntitySearch;
 import com.javielinux.infos.InfoImagesTweet;
 import com.javielinux.infos.InfoLink;
@@ -471,9 +470,16 @@ public class ServiceWidgetTweets4x2 extends Service {
 	    		configureIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
 	            PendingIntent configurePendingIntent = PendingIntent.getActivity(context, 0, configureIntent, 0);
 	            mRemoteView.setOnClickPendingIntent(R.id.btn_w_configure, configurePendingIntent);
-				
+
+            } catch (IndexOutOfBoundsException e) {
+                e.printStackTrace();
+                column_position = 1;
+                PreferenceUtils.setWidgetColumn(context, column_position);
+                mRemoteView.setTextViewText(R.id.w_tweet_text, "Error");
 			} catch (Exception e) {
 				e.printStackTrace();
+                column_position = 1;
+                PreferenceUtils.setWidgetColumn(context, column_position);
 				mRemoteView.setTextViewText(R.id.w_tweet_text, "Error");
 			}
 	    	
