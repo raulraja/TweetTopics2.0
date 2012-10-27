@@ -389,7 +389,7 @@ public class TweetTopicsActivity extends BaseLayersActivity implements PopupLink
                     boolean create_column = data.getExtras().getBoolean("view", false);
 
                     if (create_column) {
-                        final int count = DataFramework.getInstance().getEntityListCount("columns", "") + 1;
+                        final int count = DBUtils.nextPositionColumn();
 
                         Entity type = new Entity("type_columns", (long) TweetTopicsUtils.COLUMN_SEARCH);
                         Entity search = new Entity("columns");
@@ -502,7 +502,9 @@ public class TweetTopicsActivity extends BaseLayersActivity implements PopupLink
                     refreshColumns();
                 }
                 pager.setCurrentItem(position, false);
-                ((BaseListFragment)fragmentAdapter.instantiateItem(pager,pager.getCurrentItem())).selected_tweet_id = selectedTweetId;
+                if (fragmentAdapter.instantiateItem(pager,pager.getCurrentItem()) instanceof BaseListFragment) {
+                    ((BaseListFragment)fragmentAdapter.instantiateItem(pager,pager.getCurrentItem())).selected_tweet_id = selectedTweetId;
+                }
             }
         }, 100);
     }
@@ -517,7 +519,7 @@ public class TweetTopicsActivity extends BaseLayersActivity implements PopupLink
         final ArrayList<Entity> created_column_list = DataFramework.getInstance().getEntityList("columns", "search_id=" + clickSearch.getId());
 
         if (created_column_list.size() == 0) {
-            final int position = DataFramework.getInstance().getEntityListCount("columns", "") + 1;
+            final int position = DBUtils.nextPositionColumn();
 
             Entity type = new Entity("type_columns", (long) TweetTopicsUtils.COLUMN_SEARCH);
             Entity search = new Entity("columns");
@@ -554,7 +556,7 @@ public class TweetTopicsActivity extends BaseLayersActivity implements PopupLink
         int position = 0;
 
         if (created_column_list.size() == 0) {
-            position = DataFramework.getInstance().getEntityListCount("columns", "") + 1;
+            position = DBUtils.nextPositionColumn();
 
             Entity user_list = new Entity("columns");
             user_list.setValue("type_id", typeId);

@@ -46,4 +46,14 @@ public class DBUtils {
         return type;
     }
 
+    public static int nextPositionColumn() {
+        int pos = -1;
+        for (Entity column : DataFramework.getInstance().getEntityList("columns")) {
+            if (column.getInt("position") > pos) {
+                pos = column.getInt("position");
+            }
+        }
+        return pos + 1;
+    }
+
 }

@@ -16,6 +16,7 @@ import com.javielinux.api.APITweetTopics;
 import com.javielinux.api.request.GetUserListRequest;
 import com.javielinux.api.response.BaseResponse;
 import com.javielinux.api.response.ErrorResponse;
+import com.javielinux.utils.DBUtils;
 import com.javielinux.utils.TweetTopicsUtils;
 import com.javielinux.utils.Utils;
 
@@ -201,7 +202,7 @@ public class UserListsActivity extends BaseActivity implements APIDelegate<BaseR
         int position = 0;
 
         if (created_column_list.size() == 0) {
-            position = DataFramework.getInstance().getEntityListCount("columns", "") + 1;
+            position = DBUtils.nextPositionColumn();
 
             Entity type = new Entity("type_columns", (long) TweetTopicsUtils.COLUMN_LIST_USER);
             Entity user_list = new Entity("columns");

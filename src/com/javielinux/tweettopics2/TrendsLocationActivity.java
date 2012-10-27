@@ -1,28 +1,24 @@
 package com.javielinux.tweettopics2;
 
-import android.app.AlertDialog;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.DataSetObserver;
-import android.graphics.Color;
 import android.graphics.Shader;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
-import android.util.AttributeSet;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.*;
+import android.widget.AdapterView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.Toast;
 import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
 import com.javielinux.adapters.RowTrendsLocationAdapter;
-import com.javielinux.adapters.RowUserListsAdapter;
 import com.javielinux.api.APIDelegate;
 import com.javielinux.api.APITweetTopics;
 import com.javielinux.api.request.TrendsLocationRequest;
 import com.javielinux.api.response.BaseResponse;
 import com.javielinux.api.response.ErrorResponse;
 import com.javielinux.api.response.TrendsLocationResponse;
+import com.javielinux.utils.DBUtils;
 import com.javielinux.utils.TweetTopicsUtils;
 import com.javielinux.utils.Utils;
 import twitter4j.Location;
@@ -31,7 +27,6 @@ import twitter4j.ResponseList;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.List;
 
 public class TrendsLocationActivity extends BaseActivity implements APIDelegate<BaseResponse> {
 
@@ -100,7 +95,7 @@ public class TrendsLocationActivity extends BaseActivity implements APIDelegate<
         int position = 0;
 
         if (created_column_list.size() == 0) {
-            position = DataFramework.getInstance().getEntityListCount("columns", "") + 1;
+            position = DBUtils.nextPositionColumn();
 
             Entity type = new Entity("type_columns", (long) TweetTopicsUtils.COLUMN_TRENDING_TOPIC);
             Entity user_list = new Entity("columns");
