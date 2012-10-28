@@ -2,7 +2,6 @@ package com.javielinux.widget;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
@@ -10,11 +9,9 @@ import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.Window;
 import com.android.dataframework.DataFramework;
-import com.android.dataframework.Entity;
-import com.javielinux.adapters.RowColumnWidgetAdapter;
 import com.javielinux.adapters.RowLinkWidgetAdapter;
-import com.javielinux.adapters.RowSearchWidgetAdapter;
 import com.javielinux.tweettopics2.R;
 import com.javielinux.utils.Utils;
 
@@ -28,6 +25,8 @@ public class WidgetTweetsLinks4x2 extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
         
         setResult(RESULT_CANCELED);
         

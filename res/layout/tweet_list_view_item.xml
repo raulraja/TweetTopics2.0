@@ -11,24 +11,17 @@
             android:id="@+id/lastread_layout"
             android:tileMode="repeat">
 
-        <FrameLayout
-                android:id="@+id/fr_avatar"
-                style="@style/TweetFrAvatar" >
-            <ImageView
-                    android:id="@+id/user_avatar"
-                    android:src="@drawable/avatar"
-                    style="@style/TweetAvatar" />
-            <ImageView android:id="@+id/tag_avatar"
-                       android:layout_height="wrap_content"
-                       android:layout_gravity="right"
-                       android:layout_width="wrap_content" />
-        </FrameLayout>
+
+        <ImageView
+                android:id="@+id/user_avatar"
+                android:src="@drawable/avatar"
+                style="@style/TweetAvatar" />
 
 
         <LinearLayout android:layout_width="fill_parent"
                       android:layout_height="wrap_content"
                       android:orientation="horizontal"
-                      android:layout_toRightOf="@id/fr_avatar"
+                      android:layout_toRightOf="@id/user_avatar"
                       android:id="@+id/tweet_user_name_layout"
                 >
             <TextView
@@ -68,7 +61,7 @@
                       android:layout_height="wrap_content"
                       android:orientation="horizontal"
                       android:layout_below="@+id/tweet_user_name_layout"
-                      android:layout_toRightOf="@id/fr_avatar"
+                      android:layout_toRightOf="@id/user_avatar"
                       android:id="@+id/tweet_text_layout"
                 >
 
@@ -89,8 +82,8 @@
                           android:gravity="center"
                     >
 
-                <ImageView android:layout_width="29dp"
-                              android:layout_height="27dp"
+                <ImageView android:layout_width="@dimen/size_image_tweet_width"
+                              android:layout_height="@dimen/size_image_tweet_height"
                               android:scaleType="centerCrop"
                               android:id="@+id/tweet_photo_img" />
 
@@ -102,7 +95,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="26dip"
                 android:orientation="horizontal"
-                android:paddingLeft="60dip"
+                android:paddingLeft="@dimen/size_separate_retweet"
                 android:paddingTop="5dip"
                 android:paddingBottom="5dip"
                 android:layout_below="@+id/tweet_text_layout"

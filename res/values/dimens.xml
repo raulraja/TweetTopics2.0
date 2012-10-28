@@ -29,10 +29,23 @@
 
     <dimen name="default_padding">8dp</dimen>
     <dimen name="default_separation">5dp</dimen>
-    <dimen name="footer_buttons_height">45dp</dimen>
-    <dimen name="footer_buttons_width">45dp</dimen>
+    <dimen name="footer_action_split_height">45dp</dimen>
 
     <dimen name="text_size_title_page_indicator">16sp</dimen>
     <dimen name="text_size_title_page">10sp</dimen>
+    <dimen name="text_size_title_tab">12sp</dimen>
+    <dimen name="text_size_title_counter">14sp</dimen>
+
+    <dimen name="size_avatar_default">48dp</dimen>
+    <dimen name="size_avatar_big">60dp</dimen>
+    <dimen name="size_avatar_medium">36dp</dimen>
+    <dimen name="size_avatar_small">30dp</dimen>
+
+    <!-- Tweet -->
+    <dimen name="size_text_tweet">14px</dimen>
+    <dimen name="size_header_tweet">13px</dimen>
+    <dimen name="size_image_tweet_width">29dp</dimen>
+    <dimen name="size_image_tweet_height">27dp</dimen>
+    <dimen name="size_separate_retweet">65dp</dimen>
 
 </resources>

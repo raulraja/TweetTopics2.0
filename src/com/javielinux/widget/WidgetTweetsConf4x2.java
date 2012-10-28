@@ -8,6 +8,7 @@ import android.content.DialogInterface.OnCancelListener;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Window;
 import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
 import com.javielinux.adapters.RowColumnWidgetAdapter;
@@ -25,6 +26,8 @@ public class WidgetTweetsConf4x2 extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
         
         setResult(RESULT_CANCELED);
         

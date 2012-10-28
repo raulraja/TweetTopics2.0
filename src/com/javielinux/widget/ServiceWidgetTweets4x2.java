@@ -10,6 +10,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.text.Html;
@@ -18,15 +19,13 @@ import android.view.View;
 import android.widget.RemoteViews;
 import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
-import com.androidquery.AQuery;
 import com.javielinux.database.EntitySearch;
 import com.javielinux.infos.InfoImagesTweet;
-import com.javielinux.infos.InfoLink;
 import com.javielinux.infos.InfoTweet;
 import com.javielinux.task.LoadImageWidgetAsyncTask;
 import com.javielinux.task.LoadImageWidgetAsyncTask.LoadImageWidgetAsyncTaskResponder;
 import com.javielinux.tweettopics2.R;
-import com.javielinux.tweettopics2.TweetTopicsActivity;
+import com.javielinux.tweettopics2.TweetActivity;
 import com.javielinux.twitter.ConnectionManager;
 import com.javielinux.utils.*;
 import twitter4j.*;
@@ -325,7 +324,7 @@ public class ServiceWidgetTweets4x2 extends Service {
                 } else {
                     mRemoteView.setViewVisibility(R.id.tag_conversation, View.GONE);
                 }
-
+                /*
 				ArrayList<String> links = LinksUtils.pullLinksHTTP(mTweets.get(mCurrentTweet).getText());
 
                 String linkForImage = mTweets.get(mCurrentTweet).getBestLink();
@@ -388,7 +387,7 @@ public class ServiceWidgetTweets4x2 extends Service {
                         mRemoteView.setImageViewResource(tweet_photo_id,typeResource);
                     }
                 }
-
+                */
 				/*for (int i=0; i<5; i++) {
 					int id = 0;
 					if (i==0) id = R.id.widget_link_1;
@@ -699,12 +698,18 @@ public class ServiceWidgetTweets4x2 extends Service {
 	    	}
 	    	
 	    	if (data.equals(Uri.parse(Utils.URI_SCHEME + "://command/app"))) {
-				Intent i = new Intent(context, TweetTopicsActivity.class);
-				i.setAction(Intent.ACTION_VIEW);
+//				Intent i = new Intent(context, TweetTopicsActivity.class);
+//				i.setAction(Intent.ACTION_VIEW);
+//				i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//              i.putExtra(TweetTopicsActivity.KEY_EXTRAS_GOTO_COLUMN_POSITION, column.getLong("position"));
+//              i.putExtra(TweetTopicsActivity.KEY_EXTRAS_GOTO_TWEET_ID, mTweets.get(mCurrentTweet).getId());
+                Intent i = new Intent(context, TweetActivity.class);
+                i.setAction(Intent.ACTION_VIEW);
 				i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                i.putExtra(TweetTopicsActivity.KEY_EXTRAS_GOTO_COLUMN_POSITION, column.getLong("position"));
-                i.putExtra(TweetTopicsActivity.KEY_EXTRAS_GOTO_TWEET_ID, mTweets.get(mCurrentTweet).getId());
-
+                Bundle bundle = new Bundle();
+                bundle.putParcelable(TweetActivity.KEY_EXTRAS_TWEET, mTweets.get(mCurrentTweet));
+                i.putExtra(Utils.KEY_ACTIVITY_ANIMATION, Utils.ACTIVITY_ANIMATION_RIGHT);
+                i.putExtra(Utils.KEY_EXTRAS_INFO, bundle);
 				context.startActivity(i);
 	    	}
 	    	

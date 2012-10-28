@@ -37,7 +37,6 @@ public class TweetsAdapter extends ArrayAdapter<InfoTweet> {
 
     public static class ViewHolder {
         public ImageView avatarView;
-        public ImageView tagAvatar;
         public ImageView tagMap;
         public ImageView tagConversation;
         public TextView screenName;
@@ -201,7 +200,6 @@ public class TweetsAdapter extends ArrayAdapter<InfoTweet> {
         viewHolder.avatarView = (ImageView)v.findViewById(R.id.user_avatar);
         viewHolder.tagMap = (ImageView)v.findViewById(R.id.tag_map);
         viewHolder.tagConversation = (ImageView)v.findViewById(R.id.tag_conversation);
-        viewHolder.tagAvatar = (ImageView)v.findViewById(R.id.tag_avatar);
         viewHolder.screenName = (TextView)v.findViewById(R.id.tweet_user_name_text);
         viewHolder.statusText = (TextView)v.findViewById(R.id.tweet_text);
         viewHolder.dateText = (TextView)v.findViewById(R.id.tweet_date);

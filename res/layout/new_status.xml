@@ -46,7 +46,7 @@
     <ScrollView
             android:layout_below="@id/new_status_shadow"
             android:id="@+id/new_status_scroll"
-            android:layout_marginBottom="@dimen/footer_buttons_height"
+            android:layout_marginBottom="@dimen/footer_action_split_height"
             android:layout_width="fill_parent" android:layout_height="fill_parent"
             >
 
@@ -167,7 +167,7 @@
                   android:layout_width="fill_parent"
                   android:layout_alignParentBottom="true"
                   android:gravity="center_vertical"
-                  android:layout_height="@dimen/footer_buttons_height"
+                  android:layout_height="@dimen/footer_action_split_height"
                   android:background="?attr/bottom_bar_background"
                   android:id="@+id/buttons_foot"
             >

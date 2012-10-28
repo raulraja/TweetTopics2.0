@@ -326,12 +326,13 @@ public class PreferenceUtils {
     public static int getSizeTitles(Context cnt) {
         SharedPreferences prefs = cnt.getSharedPreferences(Utils.APPLICATION_PREFERENCES, Context.MODE_PRIVATE);
         if (prefs.contains("size_titles")) {
-            return prefs.getInt("size_titles", 13);
+            return prefs.getInt("size_titles", (int)cnt.getResources().getDimension(R.dimen.size_header_tweet));
         } else {
+            int dimenDefault = (int)cnt.getResources().getDimension(R.dimen.size_header_tweet);
             SharedPreferences.Editor editor = prefs.edit();
-            editor.putInt("size_titles", 13);
+            editor.putInt("size_titles", dimenDefault);
             editor.commit();
-            return 13;
+            return dimenDefault;
         }
     }
 
@@ -346,12 +347,13 @@ public class PreferenceUtils {
     public static int getSizeTextNewStatus(Context cnt) {
         SharedPreferences prefs = cnt.getSharedPreferences(Utils.APPLICATION_PREFERENCES, Context.MODE_PRIVATE);
         if (prefs.contains("size_text_new_status")) {
-            return prefs.getInt("size_text_new_status", 14);
+            return prefs.getInt("size_text_new_status", (int)cnt.getResources().getDimension(R.dimen.size_text_tweet));
         } else {
+            int dimenDefault = (int)cnt.getResources().getDimension(R.dimen.size_text_tweet);
             SharedPreferences.Editor editor = prefs.edit();
-            editor.putInt("size_text_new_status", 14);
+            editor.putInt("size_text_new_status", dimenDefault);
             editor.commit();
-            return 14;
+            return dimenDefault;
         }
     }
 
@@ -366,12 +368,13 @@ public class PreferenceUtils {
     public static int getSizeText(Context cnt) {
         SharedPreferences prefs = cnt.getSharedPreferences(Utils.APPLICATION_PREFERENCES, Context.MODE_PRIVATE);
         if (prefs.contains("size_text")) {
-            return prefs.getInt("size_text", 14);
+            return prefs.getInt("size_text", (int)cnt.getResources().getDimension(R.dimen.size_text_tweet));
         } else {
+            int dimenDefault = (int)cnt.getResources().getDimension(R.dimen.size_text_tweet);
             SharedPreferences.Editor editor = prefs.edit();
-            editor.putInt("size_text", 14);
+            editor.putInt("size_text", dimenDefault);
             editor.commit();
-            return 14;
+            return dimenDefault;
         }
     }
 

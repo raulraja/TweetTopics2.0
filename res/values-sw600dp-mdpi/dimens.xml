@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+
+    <dimen name="actionbar_columns_height">100dp</dimen>
+    <dimen name="icon_columns_height">46dp</dimen>
+
+    <dimen name="actionbar_height">55dp</dimen>
+    <dimen name="sub_actionbar_height">40dp</dimen>
+
+    <dimen name="height_image_tweet">280dp</dimen>
+
+    <dimen name="default_padding">12dp</dimen>
+    <dimen name="default_separation">8dp</dimen>
+    <dimen name="footer_action_split_height">60dp</dimen>
+
+    <dimen name="text_size_title_page_indicator">20sp</dimen>
+    <dimen name="text_size_title_page">16sp</dimen>
+    <dimen name="text_size_title_tab">17sp</dimen>
+    <dimen name="text_size_title_counter">19sp</dimen>
+
+    <dimen name="size_avatar_default">60dp</dimen>
+    <dimen name="size_avatar_big">72dp</dimen>
+    <dimen name="size_avatar_medium">46dp</dimen>
+    <dimen name="size_avatar_small">40dp</dimen>
+
+    <!-- Tweet -->
+    <dimen name="size_text_tweet">17px</dimen>
+    <dimen name="size_header_tweet">16px</dimen>
+    <dimen name="size_image_tweet_width">44dp</dimen>
+    <dimen name="size_image_tweet_height">42dp</dimen>
+    <dimen name="size_separate_retweet">86dp</dimen>
+
+</resources>

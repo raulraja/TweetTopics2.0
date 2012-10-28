@@ -9,7 +9,7 @@
 
     <HorizontalScrollView android:id="@+id/split_action_bar_menu_scroll_view"
         android:background="?attr/bottom_bar_background"
-        android:layout_height="@dimen/footer_buttons_height"
+        android:layout_height="@dimen/footer_action_split_height"
         android:layout_width="fill_parent">
 
         <LinearLayout android:id="@+id/split_action_bar_menu_container"

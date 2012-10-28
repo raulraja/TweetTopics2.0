@@ -15,7 +15,7 @@
     <!-- Action bar -->
 
     <style name="CounterActionBar">
-        <item name="android:textSize">14sp</item>
+        <item name="android:textSize">@dimen/text_size_title_counter</item>
         <item name="android:textColor">#ffffff</item>
         <item name="android:textStyle">bold</item>
     </style>
@@ -186,71 +186,55 @@
         <item name="android:textSize">15sp</item>
         <item name="android:paddingLeft">15dip</item>
      </style>
-     
-    <style name="ButtonQuickActionLinkText">
-        <item name="android:textColor">#FF000000</item>
-        <item name="android:textSize">14sp</item>
-        <item name="android:paddingTop">2dip</item>
-        <item name="android:paddingBottom">5dip</item>
-     </style>
-     
-    <style name="ButtonQuickActionLink" parent="android:Widget.Button">
-        <item name="android:background">@drawable/button_background</item>
-        <item name="android:textColor">#FFFFFFFF</item>
-        <item name="android:textSize">11sp</item>
-        <item name="android:paddingTop">2dip</item>
-        <item name="android:paddingLeft">2dip</item>
-        <item name="android:layout_marginLeft">8dip</item>
-     </style>
 
     <style name="UserAvatar">
-        <item name="android:layout_width">60dip</item>
-        <item name="android:layout_height">60dip</item>
+        <item name="android:layout_width">@dimen/size_avatar_big</item>
+        <item name="android:layout_height">@dimen/size_avatar_big</item>
         <item name="android:padding">5dip</item>
     </style>
-     
+
     <style name="TweetFrAvatar">
-        <item name="android:layout_width">48dip</item>
-        <item name="android:layout_height">48dip</item>
-        <item name="android:layout_marginTop">6dip</item>
-        <item name="android:layout_marginLeft">6dip</item>
-        <item name="android:layout_marginRight">9dip</item>
+        <item name="android:layout_width">@dimen/size_avatar_default</item>
+        <item name="android:layout_height">@dimen/size_avatar_default</item>
+        <item name="android:layout_marginTop">@dimen/default_padding</item>
+        <item name="android:layout_marginLeft">@dimen/default_padding</item>
+        <item name="android:layout_marginRight">@dimen/default_padding</item>
      </style>
-     
+
     <style name="TweetAvatar">
-        <item name="android:layout_width">48dip</item>
-        <item name="android:layout_height">48dip</item>
+        <item name="android:layout_width">@dimen/size_avatar_default</item>
+        <item name="android:layout_height">@dimen/size_avatar_default</item>
         <item name="android:adjustViewBounds">true</item>
-        <item name="android:layout_marginTop">6dip</item>
-        <item name="android:layout_marginLeft">6dip</item>
-        <item name="android:layout_marginRight">9dip</item>
+        <item name="android:layout_marginTop">@dimen/default_padding</item>
+        <item name="android:layout_marginLeft">@dimen/default_padding</item>
+        <item name="android:layout_marginRight">@dimen/default_padding</item>
      </style>
      
     <style name="TweetBigAvatar">
-        <item name="android:layout_width">60dip</item>
-        <item name="android:layout_height">60dip</item>
+        <item name="android:layout_width">@dimen/size_avatar_big</item>
+        <item name="android:layout_height">@dimen/size_avatar_big</item>
         <item name="android:adjustViewBounds">true</item>
-        <item name="android:layout_marginTop">6dip</item>
-        <item name="android:layout_marginLeft">6dip</item>
-        <item name="android:layout_marginRight">9dip</item>
+        <item name="android:layout_marginTop">@dimen/default_padding</item>
+        <item name="android:layout_marginLeft">@dimen/default_padding</item>
+        <item name="android:layout_marginRight">@dimen/default_padding</item>
      </style>
      
     <style name="TweetAvatarMedium">
-        <item name="android:layout_width">36dip</item>
-        <item name="android:layout_height">36dip</item>
+        <item name="android:layout_width">@dimen/size_avatar_medium</item>
+        <item name="android:layout_height">@dimen/size_avatar_medium</item>
         <item name="android:adjustViewBounds">true</item>
-        <item name="android:layout_marginTop">6dip</item>
-        <item name="android:layout_marginLeft">6dip</item>
-        <item name="android:layout_marginRight">9dip</item>
+        <item name="android:layout_marginTop">@dimen/default_padding</item>
+        <item name="android:layout_marginLeft">@dimen/default_padding</item>
+        <item name="android:layout_marginRight">@dimen/default_padding</item>
      </style>
      
     <style name="TweetAvatarSmall">
-        <item name="android:layout_width">30dip</item>
-        <item name="android:layout_height">30dip</item>
+        <item name="android:layout_width">@dimen/size_avatar_small</item>
+        <item name="android:layout_height">@dimen/size_avatar_small</item>
         <item name="android:adjustViewBounds">true</item>
-        <item name="android:layout_marginTop">6dip</item>
-        <item name="android:layout_marginLeft">6dip</item>
-        <item name="android:layout_marginRight">9dip</item>
+        <item name="android:layout_marginTop">@dimen/default_padding</item>
+        <item name="android:layout_marginLeft">@dimen/default_padding</item>
+        <item name="android:layout_marginRight">@dimen/default_padding</item>
      </style>
      
     <style name="RetweetAvatar">
@@ -273,6 +257,14 @@
         <item name="android:textSize">12sp</item>
         <item name="android:textColor">#6cd4ef</item>
      </style>
+
+    <style name="WidgetTweetSource">
+        <item name="android:layout_marginTop">5dip</item>
+        <item name="android:layout_marginLeft">5dip</item>
+        <item name="android:textSize">11sp</item>
+        <item name="android:textColorLink">#999999</item>
+        <item name="android:textColor">#999999</item>
+    </style>
      
     <style name="WidgetTweetText">
         <item name="android:layout_marginBottom">2dip</item>

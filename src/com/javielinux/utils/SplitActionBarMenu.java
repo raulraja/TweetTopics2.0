@@ -53,7 +53,7 @@ public class SplitActionBarMenu {
 
     private void init(FragmentActivity activity) {
         this.activity = activity;
-        splitActionBarMenuHeight = activity.getResources().getDimension(R.dimen.footer_buttons_height);
+        splitActionBarMenuHeight = activity.getResources().getDimension(R.dimen.footer_action_split_height);
 
         Rect rect = new Rect();
         activity.getWindow().getDecorView().getWindowVisibleDisplayFrame(rect);
