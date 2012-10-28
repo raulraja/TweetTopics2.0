@@ -112,6 +112,20 @@ public class TweetTopicsFragment extends BaseListFragment implements APIDelegate
                 if (getTweetsFromInternet) {
                     reload();
                 } else {
+                    if(selected_tweet_id > 0) {
+                        int i = 0;
+                        boolean tweet_found = false;
+
+                        while (i < tweetsAdapter.getCount() && !tweet_found) {
+                            if (tweetsAdapter.getItem(i).getId() == selected_tweet_id) {
+                                onClickItemList(tweetsAdapter.getItem(i));
+                                selected_tweet_id = -1;
+                                tweet_found = true;
+                            }
+                            i++;
+                        }
+                    }
+
                     showTweetsList();
                 }
 
@@ -250,7 +264,6 @@ public class TweetTopicsFragment extends BaseListFragment implements APIDelegate
 
         });
 
-
         viewLoading = (LinearLayout) view.findViewById(R.id.tweet_view_loading);
         viewNoInternet = (LinearLayout) view.findViewById(R.id.tweet_view_no_internet);
         viewUpdate = (LinearLayout) view.findViewById(R.id.tweet_view_update);
@@ -351,8 +364,21 @@ public class TweetTopicsFragment extends BaseListFragment implements APIDelegate
 
             tweetsAdapter.notifyDataSetChanged();
             tweetsAdapter.launchVisibleTask();
-
             listView.getRefreshableView().setSelection(firstVisible + count + 1);
+
+            if(selected_tweet_id > 0) {
+                int i = 0;
+                boolean tweet_found = false;
+
+                while (i < tweetsAdapter.getCount() && !tweet_found) {
+                    if (tweetsAdapter.getItem(i).getId() == selected_tweet_id) {
+                        onClickItemList(tweetsAdapter.getItem(i));
+                        selected_tweet_id = -1;
+                        tweet_found = true;
+                    }
+                    i++;
+                }
+            }
 
             ((TweetTopicsActivity) getActivity()).reloadBarAvatar();
             sendBroadcastUpdateTweets();

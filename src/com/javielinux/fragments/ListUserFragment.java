@@ -154,7 +154,7 @@ public class ListUserFragment extends BaseListFragment implements APIDelegate<Ba
         listView.getRefreshableView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> arg0, View view, int position, long id) {
-                onListItemClick(view, position, id);
+                onClickItemList(tweetsAdapter.getItem(position - 1));
             }
         });
 
@@ -172,16 +172,6 @@ public class ListUserFragment extends BaseListFragment implements APIDelegate<Ba
         reload();
 
         return view;
-    }
-
-    private void onListItemClick(View v, int position, long id) {
-
-        if (getActivity() instanceof BaseLayersActivity) {
-            Bundle bundle = new Bundle();
-            bundle.putParcelable(TweetActivity.KEY_EXTRAS_TWEET, tweetsAdapter.getItem(position - 1));
-            ((BaseLayersActivity)getActivity()).startAnimationActivity(TweetActivity.class, bundle);
-        }
-
     }
 
     @Override
@@ -220,7 +210,8 @@ public class ListUserFragment extends BaseListFragment implements APIDelegate<Ba
 
             while (i < tweetsAdapter.getCount() && !found) {
                 if (tweetsAdapter.getItem(i).getId() == selected_tweet_id) {
-                    onListItemClick(listView.getRefreshableView(), i + 1, i);
+                    onClickItemList(tweetsAdapter.getItem(i));
+                    selected_tweet_id = -1;
                     found = true;
                 }
                 i++;

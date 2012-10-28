@@ -5,6 +5,8 @@ import com.android.dataframework.Entity;
 import com.javielinux.database.EntitySearch;
 import com.javielinux.database.EntityTweetUser;
 
+import java.util.ArrayList;
+
 public class DBUtils {
 
     public static long getIdFromUserName(String name) {
@@ -56,4 +58,27 @@ public class DBUtils {
         return pos + 1;
     }
 
+    public static Entity widgetFirstColumn() {
+
+        for (Entity column : DataFramework.getInstance().getEntityList("columns","is_temporary=0","position asc")) {
+            if (column.getEntity("type_id").getInt("show_in_widget") == 1) {
+                return column;
+            }
+        }
+
+        return null;
+    }
+
+    public static ArrayList<Entity> widgetColumnList() {
+
+        ArrayList<Entity> column_list = new ArrayList<Entity>();
+
+        for (Entity column : DataFramework.getInstance().getEntityList("columns","is_temporary=0","position asc")) {
+            if (column.getEntity("type_id").getInt("show_in_widget") == 1) {
+                column_list.add(column);
+            }
+        }
+
+        return column_list;
+    }
 }

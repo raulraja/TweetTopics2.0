@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<values>
+
+    <row table="type_columns" id="1">
+        <field name="description" value="Timeline" />
+        <field name="title" value="timeline" />
+        <field name="fragment" value="TweetTopicsFragment" />
+        <field name="show_in_widget" value="1" />
+    </row>
+
+    <row table="type_columns" id="2">
+        <field name="description" value="Mentions" />
+        <field name="title" value="mentions" />
+        <field name="fragment" value="TweetTopicsFragment" />
+        <field name="show_in_widget" value="1" />
+    </row>
+
+    <row table="type_columns" id="3">
+        <field name="description" value="Favorites" />
+        <field name="title" value="favorites" />
+        <field name="fragment" value="FavoritesFragment" />
+        <field name="show_in_widget" value="1" />
+    </row>
+
+    <row table="type_columns" id="4">
+        <field name="description" value="Direct messages" />
+        <field name="title" value="dms" />
+        <field name="fragment" value="TweetTopicsFragment" />
+        <field name="show_in_widget" value="1" />
+    </row>
+    <row table="type_columns" id="5">
+        <field name="description" value="Sent Direct messages" />
+        <field name="title" value="favorites" />
+        <field name="fragment" value="TweetTopicsFragment" />
+        <field name="show_in_widget" value="1" />
+    </row>
+
+    <row table="type_columns" id="6">
+        <field name="description" value="List user" />
+        <field name="title" value="list" />
+        <field name="fragment" value="ListUserFragment" />
+        <field name="show_in_widget" value="1" />
+    </row>
+
+    <row table="type_columns" id="7">
+        <field name="description" value="Your tweets, retweeted" />
+        <field name="title" value="title_my_tweets" />
+        <field name="fragment" value="RetweetFragment" />
+        <field name="show_in_widget" value="1" />
+    </row>
+
+    <row table="type_columns" id="8">
+        <field name="description" value="Retweets by you" />
+        <field name="title" value="title_my_retweets" />
+        <field name="fragment" value="RetweetFragment" />
+        <field name="show_in_widget" value="1" />
+    </row>
+
+    <row table="type_columns" id="9">
+        <field name="description" value="Retweets by others" />
+        <field name="title" value="title_retweet_others" />
+        <field name="fragment" value="RetweetFragment" />
+        <field name="show_in_widget" value="1" />
+    </row>
+
+    <row table="type_columns" id="10">
+        <field name="description" value="Trending topic" />
+        <field name="title" value="trending_topics" />
+        <field name="fragment" value="TrendingTopicsFragment" />
+        <field name="show_in_widget" value="0" />
+    </row>
+
+    <row table="type_columns" id="11">
+        <field name="description" value="Search" />
+        <field name="title" value="searches" />
+        <field name="fragment" value="SearchFragment" />
+        <field name="show_in_widget" value="1" />
+    </row>
+
+    <row table="type_columns" id="12">
+        <field name="description" value="Followers" />
+        <field name="title" value="title_followers" />
+        <field name="fragment" value="UsersFragment" />
+        <field name="show_in_widget" value="1" />
+    </row>
+
+    <row table="type_columns" id="13">
+        <field name="description" value="Followings" />
+        <field name="title" value="title_following" />
+        <field name="fragment" value="UsersFragment" />
+        <field name="show_in_widget" value="1" />
+    </row>
+
+    <row table="type_columns" id="14">
+        <field name="description" value="Timeline of user" />
+        <field name="title" value="timeline" />
+        <field name="fragment" value="TimelineUserFragment" />
+        <field name="show_in_widget" value="0" />
+    </row>
+
+    <row table="type_columns" id="15">
+        <field name="description" value="Saved tweets" />
+        <field name="title" value="title_saved_tweets" />
+        <field name="fragment" value="SavedTweetsFragment" />
+        <field name="show_in_widget" value="0" />
+    </row>
+
+    <row table="type_columns" id="16">
+        <field name="description" value="Saved images" />
+        <field name="title" value="title_saved_images" />
+        <field name="fragment" value="SavedImagesFragment" />
+        <field name="show_in_widget" value="0" />
+    </row>
+
+    <row table="type_columns" id="17">
+        <field name="description" value="Saved links" />
+        <field name="title" value="title_saved_links" />
+        <field name="fragment" value="SavedLinksFragment" />
+        <field name="show_in_widget" value="0" />
+    </row>
+
+    <row table="type_columns" id="18">
+        <field name="description" value="My activity" />
+        <field name="title" value="my_activity" />
+        <field name="fragment" value="MyActivityFragment" />
+        <field name="show_in_widget" value="0" />
+    </row>
+
+</values>

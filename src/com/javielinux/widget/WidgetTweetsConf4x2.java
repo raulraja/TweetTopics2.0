@@ -13,6 +13,7 @@ import com.android.dataframework.Entity;
 import com.javielinux.adapters.RowColumnWidgetAdapter;
 import com.javielinux.adapters.RowSearchWidgetAdapter;
 import com.javielinux.tweettopics2.R;
+import com.javielinux.utils.DBUtils;
 import com.javielinux.utils.Utils;
 
 import java.util.ArrayList;
@@ -55,7 +56,7 @@ public class WidgetTweetsConf4x2 extends Activity {
 		arType.add(ServiceWidgetTweets4x2.MENTIONS);    	
 		arType.add(ServiceWidgetTweets4x2.SEARCH);
 
-        final RowColumnWidgetAdapter adapter = new RowColumnWidgetAdapter(this, DataFramework.getInstance().getEntityList("columns", "is_temporary=0"));
+        final RowColumnWidgetAdapter adapter = new RowColumnWidgetAdapter(this, DBUtils.widgetColumnList());
 
         AlertDialog builder = new AlertDialog.Builder(this)
                 .setCancelable(true)
@@ -66,7 +67,7 @@ public class WidgetTweetsConf4x2 extends Activity {
                     public void onClick(DialogInterface dialog, int which) {
                         Intent i = new Intent(Intent.ACTION_VIEW);
                         i.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
-                        i.putExtra("column_position",Integer.parseInt(((Entity)adapter.getItem(which)).getValue("position").toString()));
+                        i.putExtra("column_id",((Entity)adapter.getItem(which)).getId());
                         WidgetTweetsConf4x2.this.sendOrderedBroadcast(i, null);
                         finish();
                     }

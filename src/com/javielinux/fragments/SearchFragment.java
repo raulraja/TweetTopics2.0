@@ -340,6 +340,20 @@ public class SearchFragment extends BaseListFragment implements APIDelegate<Base
             tweetsAdapter.launchVisibleTask();
             listView.getRefreshableView().setSelection(firstVisible + count);
             ((TweetTopicsActivity) getActivity()).reloadBarAvatar();
+
+            if(selected_tweet_id > 0) {
+                int i = 0;
+                boolean found = false;
+
+                while (i < tweetsAdapter.getCount() && !found) {
+                    if (tweetsAdapter.getItem(i).getId() == selected_tweet_id) {
+                        onClickItemList(tweetsAdapter.getItem(i));
+                        selected_tweet_id = -1;
+                        found = true;
+                    }
+                    i++;
+                }
+            }
         }
     }
 

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 
-<database name="tweet_db" version="27">
+<database name="tweet_db" version="28">
   
   <table name="search" to-string="%name%">
     <field name="name" obligatory="true" type="text" size="128"/>
@@ -222,5 +222,6 @@
     <field name="description" obligatory="true" type="text" size="64"/>
     <field name="title" type="string-identifier" />
     <field name="fragment" type="string" />
+    <field name="show_in_widget" type="int" default="0" new-in-version="28" />
   </table>
  </database>
