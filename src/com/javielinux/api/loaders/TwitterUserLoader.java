@@ -29,7 +29,7 @@ public class TwitterUserLoader extends AsynchronousLoader<BaseResponse> {
 
         try {
             EntityTweetUser entityTweetUser = new EntityTweetUser(user_id, TweetTopicsUtils.TWEET_TYPE_TIMELINE);
-            infoSaveTweets = entityTweetUser.saveTweets(getContext(), ConnectionManager.getInstance().getTwitter(request.getUserId()), false);
+            infoSaveTweets = entityTweetUser.saveTweets(getContext(), ConnectionManager.getInstance().getTwitter(request.getUserId()));
         } catch (Exception e) {
             e.printStackTrace();
             if (infoSaveTweets == null) {
@@ -49,7 +49,7 @@ public class TwitterUserLoader extends AsynchronousLoader<BaseResponse> {
 
         try {
             EntityTweetUser entityTweetUser = new EntityTweetUser(user_id, TweetTopicsUtils.TWEET_TYPE_MENTIONS);
-            infoSaveTweets = entityTweetUser.saveTweets(getContext(), ConnectionManager.getInstance().getTwitter(request.getUserId()), false);
+            infoSaveTweets = entityTweetUser.saveTweets(getContext(), ConnectionManager.getInstance().getTwitter(request.getUserId()));
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -71,10 +71,10 @@ public class TwitterUserLoader extends AsynchronousLoader<BaseResponse> {
         try {
             // TODO: Comprobar este código
             EntityTweetUser entityTweetUser = new EntityTweetUser(user_id, TweetTopicsUtils.TWEET_TYPE_DIRECTMESSAGES);
-            infoSaveTweets = entityTweetUser.saveTweets(getContext(), ConnectionManager.getInstance().getTwitter(request.getUserId()), false);
+            infoSaveTweets = entityTweetUser.saveTweets(getContext(), ConnectionManager.getInstance().getTwitter(request.getUserId()));
 
             EntityTweetUser entityTweetUser_send = new EntityTweetUser(user_id, TweetTopicsUtils.TWEET_TYPE_SENT_DIRECTMESSAGES);
-            infoSaveTweets = entityTweetUser_send.saveTweets(getContext(), ConnectionManager.getInstance().getTwitter(request.getUserId()), false);
+            infoSaveTweets = entityTweetUser_send.saveTweets(getContext(), ConnectionManager.getInstance().getTwitter(request.getUserId()));
 
         } catch (Exception e) {
             e.printStackTrace();

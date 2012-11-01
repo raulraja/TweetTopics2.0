@@ -1,10 +1,6 @@
 package com.javielinux.updatestatus;
 
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.app.Service;
-import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -28,10 +24,7 @@ import com.javielinux.task.UploadTwitlongerAsyncTask.UploadTwitlongerAsyncTaskRe
 import com.javielinux.tweettopics2.NewStatusActivity;
 import com.javielinux.tweettopics2.R;
 import com.javielinux.twitter.ConnectionManager;
-import com.javielinux.utils.ConstantUtils;
-import com.javielinux.utils.PreferenceUtils;
-import com.javielinux.utils.TweetTopicsUtils;
-import com.javielinux.utils.Utils;
+import com.javielinux.utils.*;
 import twitter4j.Twitter;
 
 import java.io.ByteArrayOutputStream;
@@ -46,23 +39,21 @@ import java.util.StringTokenizer;
 public class ServiceUpdateStatus extends Service implements UploadStatusAsyncTaskResponder, ImageUploadAsyncTaskResponder,
         DirectMessageAsyncTaskResponder, RetweetStatusAsyncTask.RetweetStatusAsyncTaskResponder {
 
-    private static int ID_NOTIFICATION = 151515;
+    private ArrayList<Long> usersId;
+    private HashMap<Long,String> usersNetwork;
 
-    private ArrayList<Long> mUsersId;
-    private HashMap<Long,String> mUsersNetwork;
+    private ArrayList<String> photos;
+    private ArrayList<String> photosRemoved;
 
-    private ArrayList<String> mPhotos;
-    private ArrayList<String> mPhotosRemoved;
+    private Entity entityStatus = null;
 
-    private Entity mEntityStatus = null;
-
-    private long mCurrentIdUser = 0;
+    private long currentIdUser = 0;
 
     public static Twitter twitter;
 
-    private String mText = "";
+    private String text = "";
 
-    private String mBaseURLImage = "";
+    private String baseURLImage = "";
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -90,10 +81,10 @@ public class ServiceUpdateStatus extends Service implements UploadStatusAsyncTas
 
     public void handleCommand(Intent intent) {
 
-        mUsersId = new ArrayList<Long>();
-        mUsersNetwork = new HashMap<Long, String>();
-        mPhotos = new ArrayList<String>();
-        mPhotosRemoved = new ArrayList<String>();
+        usersId = new ArrayList<Long>();
+        usersNetwork = new HashMap<Long, String>();
+        photos = new ArrayList<String>();
+        photosRemoved = new ArrayList<String>();
 
         try {
             DataFramework.getInstance().open(this, Utils.packageName);
@@ -105,14 +96,14 @@ public class ServiceUpdateStatus extends Service implements UploadStatusAsyncTas
 
         Log.d(Utils.TAG, "Creando nuevo estado");
 
-        mEntityStatus = DataFramework.getInstance().getTopEntity("send_tweets", "is_sent = 0", "");
+        entityStatus = DataFramework.getInstance().getTopEntity("send_tweets", "is_sent = 0", "");
 
-        if (mEntityStatus!=null) {
+        if (entityStatus !=null) {
 
             ArrayList<Long> auxUsersTwitter = new ArrayList<Long>();
             ArrayList<Long> auxUsersOthers = new ArrayList<Long>();
 
-            String users = mEntityStatus.getString("users");
+            String users = entityStatus.getString("users");
 
             for (String user : users.split(",")) {
                 try {
@@ -132,27 +123,27 @@ public class ServiceUpdateStatus extends Service implements UploadStatusAsyncTas
             // ordenar poniendo los de twitter los primeros
 
             for (long user : auxUsersTwitter) {
-                mUsersId.add(user);
-                mUsersNetwork.put(user, ConstantUtils.NETWORK_TWITTER_NAME);
+                usersId.add(user);
+                usersNetwork.put(user, ConstantUtils.NETWORK_TWITTER_NAME);
             }
             for (long user : auxUsersOthers) {
-                mUsersId.add(user);
-                mUsersNetwork.put(user, ConstantUtils.NETWORK_FACEBOOK_NAME);
+                usersId.add(user);
+                usersNetwork.put(user, ConstantUtils.NETWORK_FACEBOOK_NAME);
             }
 
-            mText = mEntityStatus.getString("text");
+            text = entityStatus.getString("text");
 
-            String photos = mEntityStatus.getString("photos");
+            String photos = entityStatus.getString("photos");
 
             if (!photos.equals("")) {
 
                 int type = Integer.parseInt(Utils.getPreference(this).getString("prf_service_image", "1"));
                 if (type==1) {
-                    mBaseURLImage = NewStatusActivity.URL_BASE_YFROG;
+                    baseURLImage = NewStatusActivity.URL_BASE_YFROG;
                 } else if (type==2) {
-                    mBaseURLImage = NewStatusActivity.URL_BASE_TWITPIC;
+                    baseURLImage = NewStatusActivity.URL_BASE_TWITPIC;
                 } else if (type==3) {
-                    mBaseURLImage = NewStatusActivity.URL_BASE_LOCKERZ;
+                    baseURLImage = NewStatusActivity.URL_BASE_LOCKERZ;
                 }
 
                 StringTokenizer tokens = new StringTokenizer(photos, "--");
@@ -160,7 +151,7 @@ public class ServiceUpdateStatus extends Service implements UploadStatusAsyncTas
                 while(tokens.hasMoreTokens()) {
                     String photo = tokens.nextToken();
                     if (!photo.equals("")) {
-                        mPhotos.add(photo);
+                        this.photos.add(photo);
                     }
                 }
 
@@ -169,7 +160,7 @@ public class ServiceUpdateStatus extends Service implements UploadStatusAsyncTas
             // empezamos a enviar
 
             try {
-                setMood(this.getString(R.string.update_status_uploading_msg), false);
+                sendNotification(this.getString(R.string.update_status_uploading_msg), false);
             } catch (Resources.NotFoundException e) {
                 e.printStackTrace();
             } catch (Exception e) {
@@ -190,29 +181,29 @@ public class ServiceUpdateStatus extends Service implements UploadStatusAsyncTas
     }
 
     private void launchTasks() {
-        if (mPhotos.size()>0) {
-            twitter = ConnectionManager.getInstance().getTwitter(mUsersId.get(0));
+        if (photos.size()>0) {
+            twitter = ConnectionManager.getInstance().getTwitter(usersId.get(0));
             try {
-                setMood(this.getString(R.string.update_status_uploading_image), false);
+                sendNotification(this.getString(R.string.update_status_uploading_image), false);
             } catch (Resources.NotFoundException e) {
                 e.printStackTrace();
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            uploadImage(mPhotos.get(0));
+            uploadImage(photos.get(0));
         } else {
-            if (mUsersId.size()>0) {
-                sendTweet(mUsersId.get(0));
+            if (usersId.size()>0) {
+                sendTweet(usersId.get(0));
             } else {
                 deleteTweet();
                 try {
-                    setMood(this.getString(R.string.update_status_correct), false);
+                    sendNotification(this.getString(R.string.update_status_correct), false);
                 } catch (Resources.NotFoundException e) {
                     e.printStackTrace();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                ((NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE)).cancel(ID_NOTIFICATION);
+                NotificationUtils.cancelNotification(this);
                 Intent update = new Intent();
                 update.putExtra("refresh-column", TweetTopicsUtils.TWEET_TYPE_TIMELINE);
                 update.setAction(Intent.ACTION_VIEW);
@@ -223,23 +214,23 @@ public class ServiceUpdateStatus extends Service implements UploadStatusAsyncTas
 
     private void sendTweet(long id) {
 
-        mCurrentIdUser = id;
+        currentIdUser = id;
 
 
-        if (mUsersNetwork.get(id).equals("facebook")) {
+        if (usersNetwork.get(id).equals("facebook")) {
             updateStatusFacebook();
         } else {
             twitter = ConnectionManager.getInstance().getTwitter(id);
 
-            if (mEntityStatus.getInt("type_id") == 3) { // retweet
+            if (entityStatus.getInt("type_id") == 3) { // retweet
                 retweetMessage();
             } else {
                 int shortURLLength = PreferenceUtils.getShortURLLength(this);
                 int shortURLLengthHttps = PreferenceUtils.getShortURLLengthHttps(this);
 
-                if (Utils.getLenghtTweet(mText, shortURLLength, shortURLLengthHttps)>140) {
-                    if (mEntityStatus.getInt("type_id") == 1) { // normal
-                        if (mEntityStatus.getInt("mode_tweetlonger") == NewStatusActivity.MODE_TL_TWITLONGER) { // twitlonger
+                if (Utils.getLenghtTweet(text, shortURLLength, shortURLLengthHttps)>140) {
+                    if (entityStatus.getInt("type_id") == 1) { // normal
+                        if (entityStatus.getInt("mode_tweetlonger") == NewStatusActivity.MODE_TL_TWITLONGER) { // twitlonger
                             updateTwitlonger();
                         } else {
                             updateStatus(NewStatusActivity.MODE_TL_N_TWEETS);
@@ -248,7 +239,7 @@ public class ServiceUpdateStatus extends Service implements UploadStatusAsyncTas
                         directMessage(NewStatusActivity.MODE_TL_N_TWEETS);
                     }
                 } else {
-                    if (mEntityStatus.getInt("type_id") == 1) { // normal
+                    if (entityStatus.getInt("type_id") == 1) { // normal
                         updateStatus(NewStatusActivity.MODE_TL_NONE);
                     } else { // directo
                         directMessage(NewStatusActivity.MODE_TL_NONE);
@@ -260,30 +251,30 @@ public class ServiceUpdateStatus extends Service implements UploadStatusAsyncTas
     }
 
     private void deleteCurrentId() {
-        mUsersId.remove(mCurrentIdUser);
+        usersId.remove(currentIdUser);
     }
 
     private void setErrorTweet() {
-        if (mEntityStatus.getLong("tweet_programmed_id")>0) {
-            Entity ent = mEntityStatus.getEntity("tweet_programmed_id");
+        if (entityStatus.getLong("tweet_programmed_id")>0) {
+            Entity ent = entityStatus.getEntity("tweet_programmed_id");
             ent.setValue("is_sent", 2);
             ent.save();
         }
-        mEntityStatus.setValue("is_sent", 1);
-        mEntityStatus.save();
+        entityStatus.setValue("is_sent", 1);
+        entityStatus.save();
     }
 
     private void deleteTweet() {
-        if (mEntityStatus.getLong("tweet_programmed_id")>0) {
-            Entity ent = mEntityStatus.getEntity("tweet_programmed_id");
+        if (entityStatus.getLong("tweet_programmed_id")>0) {
+            Entity ent = entityStatus.getEntity("tweet_programmed_id");
             ent.setValue("is_sent", 1);
             ent.save();
         }
-        if (mEntityStatus.getLong("tweet_draft_id")>0) {
-            Entity ent = mEntityStatus.getEntity("tweet_draft_id");
+        if (entityStatus.getLong("tweet_draft_id")>0) {
+            Entity ent = entityStatus.getEntity("tweet_draft_id");
             ent.delete();
         }
-        for (String photo : mPhotosRemoved) {
+        for (String photo : photosRemoved) {
             File f = new File(Utils.appUploadImageDirectory+photo);
             if (f.exists()) f.delete();
         }
@@ -293,7 +284,7 @@ public class ServiceUpdateStatus extends Service implements UploadStatusAsyncTas
 //            } catch (Exception e) {
 //                e.printStackTrace();
 //            }
-            mEntityStatus.delete();
+            entityStatus.delete();
 //            DataFramework.getInstance().close();
         } catch (IllegalStateException e) {
         } catch (Exception e) {}
@@ -307,20 +298,20 @@ public class ServiceUpdateStatus extends Service implements UploadStatusAsyncTas
 
     public void updateStatusFacebook() {
         FacebookHandler fbh = new FacebookHandler(null);
-        Facebook facebook = fbh.loadUser(mCurrentIdUser);
+        Facebook facebook = fbh.loadUser(currentIdUser);
         if (facebook!=null) {
             Bundle params = new Bundle();
-            params.putString("message", mText);
+            params.putString("message", text);
 
             String stream = "me/feed";
 
-            if (mPhotosRemoved.size()>0) {
+            if (photosRemoved.size()>0) {
 
                 stream = "me/photos";
 
                 byte[] data = null;
 
-                Bitmap bi = BitmapFactory.decodeFile(Utils.appUploadImageDirectory+mPhotosRemoved.get(0));
+                Bitmap bi = BitmapFactory.decodeFile(Utils.appUploadImageDirectory+ photosRemoved.get(0));
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
                 bi.compress(Bitmap.CompressFormat.JPEG, 100, baos);
                 data = baos.toByteArray();
@@ -373,7 +364,7 @@ public class ServiceUpdateStatus extends Service implements UploadStatusAsyncTas
     */
 
     public void updateStatus(int modeTL) {
-        new UploadStatusAsyncTask(this, this, twitter, modeTL).execute(mText, mEntityStatus.getString("reply_tweet_id"), mEntityStatus.getString("use_geo"));
+        new UploadStatusAsyncTask(this, this, twitter, modeTL).execute(text, entityStatus.getString("reply_tweet_id"), entityStatus.getString("use_geo"));
     }
 
     @Override
@@ -386,7 +377,7 @@ public class ServiceUpdateStatus extends Service implements UploadStatusAsyncTas
         if (error) {
             setErrorTweet();
             try {
-                setMood(this.getString(R.string.update_status_error_msg), true);
+                sendNotification(this.getString(R.string.update_status_error_msg), true);
             } catch (Resources.NotFoundException e) {
                 e.printStackTrace();
             } catch (Exception e) {
@@ -425,7 +416,7 @@ public class ServiceUpdateStatus extends Service implements UploadStatusAsyncTas
                 if (error) {
                     setErrorTweet();
                     try {
-                        setMood(ServiceUpdateStatus.this.getString(R.string.update_status_error_msg), true);
+                        sendNotification(ServiceUpdateStatus.this.getString(R.string.update_status_error_msg), true);
                     } catch (Resources.NotFoundException e) {
                         e.printStackTrace();
                     } catch (Exception e) {
@@ -437,7 +428,7 @@ public class ServiceUpdateStatus extends Service implements UploadStatusAsyncTas
                     launchTasks();
                 }
             }
-        }, twitter).execute(mText, mEntityStatus.getString("reply_tweet_id"), mEntityStatus.getString("use_geo"));
+        }, twitter).execute(text, entityStatus.getString("reply_tweet_id"), entityStatus.getString("use_geo"));
 
     }
 
@@ -448,7 +439,7 @@ public class ServiceUpdateStatus extends Service implements UploadStatusAsyncTas
     */
 
     public void retweetMessage() {
-        new RetweetStatusAsyncTask(this, twitter).execute(mEntityStatus.getLong("reply_tweet_id"));
+        new RetweetStatusAsyncTask(this, twitter).execute(entityStatus.getLong("reply_tweet_id"));
     }
 
     @Override
@@ -464,7 +455,7 @@ public class ServiceUpdateStatus extends Service implements UploadStatusAsyncTas
         if (error) {
             setErrorTweet();
             try {
-                setMood(this.getString(R.string.update_status_error_msg), true);
+                sendNotification(this.getString(R.string.update_status_error_msg), true);
             } catch (Resources.NotFoundException e) {
                 e.printStackTrace();
             } catch (Exception e) {
@@ -485,7 +476,7 @@ public class ServiceUpdateStatus extends Service implements UploadStatusAsyncTas
      */
 
     public void directMessage(int modeTL) {
-        new DirectMessageAsyncTask(this, twitter, modeTL).execute(mText, mEntityStatus.getString("username_direct"));
+        new DirectMessageAsyncTask(this, twitter, modeTL).execute(text, entityStatus.getString("username_direct"));
     }
 
     @Override
@@ -498,7 +489,7 @@ public class ServiceUpdateStatus extends Service implements UploadStatusAsyncTas
         if (error) {
             setErrorTweet();
             try {
-                setMood(this.getString(R.string.update_status_error_msg), true);
+                sendNotification(this.getString(R.string.update_status_error_msg), true);
             } catch (Resources.NotFoundException e) {
                 e.printStackTrace();
             } catch (Exception e) {
@@ -547,14 +538,14 @@ public class ServiceUpdateStatus extends Service implements UploadStatusAsyncTas
                     name = tokens.nextToken();
                 }
 
-                String base = mBaseURLImage + name;
+                String base = baseURLImage + name;
 
                 //Log.d(Utils.TAG, "Reemplazando " + base + " por " + imageUploadResult.url);
 
-                mText = mText.replace(base, imageUploadResult.url);
+                text = text.replace(base, imageUploadResult.url);
 
-                mPhotos.remove(imageUploadResult.file);
-                mPhotosRemoved.add(imageUploadResult.file);
+                photos.remove(imageUploadResult.file);
+                photosRemoved.add(imageUploadResult.file);
 
             } else {
                 error = true;
@@ -566,7 +557,7 @@ public class ServiceUpdateStatus extends Service implements UploadStatusAsyncTas
         if (error) {
             setErrorTweet();
             try {
-                setMood(this.getString(R.string.update_status_error_image), true);
+                sendNotification(this.getString(R.string.update_status_error_image), true);
             } catch (Resources.NotFoundException e) {
                 e.printStackTrace();
             } catch (Exception e) {
@@ -590,18 +581,9 @@ public class ServiceUpdateStatus extends Service implements UploadStatusAsyncTas
     *
     */
 
-    private void setMood(String text, boolean tryAgain) {
-        if (mEntityStatus.getLong("tweet_programmed_id")<=0) { // enviar sólo si no es un tweet programado
-            Notification notification = new Notification(R.drawable.ic_stat_send_tweet, text, System.currentTimeMillis());
-            notification.flags = Notification.FLAG_AUTO_CANCEL;
-            Intent i = new Intent();
-            if (tryAgain) i = new Intent(this, LaunchServiceUpdateStatus.class);
-
-            PendingIntent contentIntent = PendingIntent.getActivity(this, 0, i, 0);
-            notification.setLatestEventInfo(this, this.getText(R.string.app_name), text, contentIntent);
-
-
-            ((NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE)).notify(ID_NOTIFICATION, notification);
+    private void sendNotification(String text, boolean tryAgain) {
+        if (entityStatus.getLong("tweet_programmed_id")<=0) { // enviar sólo si no es un tweet programado
+            NotificationUtils.sendNotification(this, getString(R.string.app_name), text, "", true, false);
         }
     }
 

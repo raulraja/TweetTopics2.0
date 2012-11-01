@@ -1,14 +1,9 @@
 package com.javielinux.notifications;
 
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.media.RingtoneManager;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -21,8 +16,8 @@ import com.javielinux.notifications.AlarmAsyncTask.AlarmAsyncTaskResponder;
 import com.javielinux.preferences.IntegrationADW;
 import com.javielinux.preferences.IntegrationADWAdapter;
 import com.javielinux.tweettopics2.R;
-import com.javielinux.tweettopics2.TweetTopicsActivity;
 import com.javielinux.twitter.ConnectionManager;
+import com.javielinux.utils.NotificationUtils;
 import com.javielinux.utils.PreferenceUtils;
 import com.javielinux.utils.TweetTopicsUtils;
 import com.javielinux.utils.Utils;
@@ -151,7 +146,7 @@ public class AlarmOneNotificationAsyncTask extends AsyncTask<Void, Void, Void> {
     			if (TweetTopicsUtils.hasColumn(users.get(i).getId(), TweetTopicsUtils.COLUMN_TIMELINE)) {
     				EntityTweetUser etuTimeline = new EntityTweetUser(users.get(i).getId(), TweetTopicsUtils.TWEET_TYPE_TIMELINE);
 	    			if (!PreferenceUtils.getStatusWorkApp(mContext) && mType!=OnAlarmReceiver.ALARM_ONLY_OTHERS) {
-	    				etuTimeline.saveTweets(mContext, twitter, true);
+	    				etuTimeline.saveTweets(mContext, twitter);
 	    			}
    					mTotalTimelineADW += etuTimeline.getValueNewCount();
     			}
@@ -161,7 +156,7 @@ public class AlarmOneNotificationAsyncTask extends AsyncTask<Void, Void, Void> {
                 if (TweetTopicsUtils.hasColumn(users.get(i).getId(), TweetTopicsUtils.COLUMN_MENTIONS)) {
                     EntityTweetUser etuMentions = new EntityTweetUser(users.get(i).getId(), TweetTopicsUtils.TWEET_TYPE_MENTIONS);
                     if (!PreferenceUtils.getStatusWorkApp(mContext) && mType!=OnAlarmReceiver.ALARM_ONLY_TIMELINE) {
-                        InfoSaveTweets info = etuMentions.saveTweets(mContext, twitter, true);
+                        InfoSaveTweets info = etuMentions.saveTweets(mContext, twitter);
                         if (info.getNewMessages()>0 && mentions) showNotification = true;
                     }
                     if (mentions) mTotalSumMentions += etuMentions.getValueNewCount();
@@ -173,7 +168,7 @@ public class AlarmOneNotificationAsyncTask extends AsyncTask<Void, Void, Void> {
                 if (TweetTopicsUtils.hasColumn(users.get(i).getId(), TweetTopicsUtils.COLUMN_DIRECT_MESSAGES)) {
                     EntityTweetUser etuDMs = new EntityTweetUser(users.get(i).getId(), TweetTopicsUtils.TWEET_TYPE_DIRECTMESSAGES);
                     if (!PreferenceUtils.getStatusWorkApp(mContext) && mType!=OnAlarmReceiver.ALARM_ONLY_TIMELINE) {
-                        InfoSaveTweets info = etuDMs.saveTweets(mContext, twitter, true);
+                        InfoSaveTweets info = etuDMs.saveTweets(mContext, twitter);
                         if (info.getNewMessages()>0 && dms) showNotification = true;
                     }
                     if (dms) mTotalSumDMs += etuDMs.getValueNewCount();
@@ -184,7 +179,7 @@ public class AlarmOneNotificationAsyncTask extends AsyncTask<Void, Void, Void> {
     			
     			if (!PreferenceUtils.getStatusWorkApp(mContext) && mType!=OnAlarmReceiver.ALARM_ONLY_TIMELINE) {
     				EntityTweetUser etuSentDMs = new EntityTweetUser(users.get(i).getId(), TweetTopicsUtils.TWEET_TYPE_SENT_DIRECTMESSAGES);
-    				etuSentDMs.saveTweets(mContext, twitter, true);
+    				etuSentDMs.saveTweets(mContext, twitter);
     			}
     			
     		} catch (Exception ex) {
@@ -296,65 +291,9 @@ public class AlarmOneNotificationAsyncTask extends AsyncTask<Void, Void, Void> {
 
 		if (showNotification && !PreferenceUtils.getStatusWorkApp(mContext)) {
 			String text = mContext.getString(R.string.notif_mentions) + ": " + mTotalSumMentions + " " + mContext.getString(R.string.notif_directs) + ": " + mTotalSumDMs + " " + mContext.getString(R.string.notif_searches) + ": " + mTotalSearchesAWD;
-			setMood(R.drawable.ic_stat_notification, text, -1);
+            NotificationUtils.sendNotification(mContext, mContext.getString(R.string.app_name), text, "", false, true);
 		}
 		
 	}
-
-	
-    private void setMood(int moodId, String text, int type) {
-        Notification notification = new Notification(moodId, text, System.currentTimeMillis());
-        notification.flags = Notification.FLAG_AUTO_CANCEL;
-        Intent i = new Intent(mContext, TweetTopicsActivity.class);
-        //if (search_id>0) i.putExtra("notification_from_search_id", search_id);
-        
-        if (type>=0) i.putExtra("notification_from_type", type);
-        
-        PendingIntent contentIntent = PendingIntent.getActivity(mContext, 0, i, 0);
-        notification.setLatestEventInfo(mContext, mContext.getText(R.string.app_name), text, contentIntent);
-        
-        boolean led = mPreferences.getBoolean("prf_led_notifications", true);
-        if (led) {
-        	String color = mPreferences.getString("prf_led_color", "#FFFF0000");
-        	notification.ledARGB = Color.parseColor(color);//0xFFff0000;
-        	notification.flags = Notification.FLAG_SHOW_LIGHTS | Notification.FLAG_AUTO_CANCEL;
-        	notification.ledOnMS = 300; 
-        	notification.ledOffMS = 1000;
-        }
-        
-        boolean vibrate = mPreferences.getBoolean("prf_vibrate_notifications", true);
-        if (vibrate) {
-        	int mode = Integer.parseInt(mPreferences.getString("prf_time_vibrate", "3"));
-			if (mode==1) {
-				long[] pattern = { 500 };
-				notification.vibrate = pattern;
-			}
-			if (mode==2) {
-				long[] pattern = { 1000 };
-				notification.vibrate = pattern;
-			}
-			if (mode==3) {
-				long[] pattern = { 0, 500, 200, 500, 200 };
-				notification.vibrate = pattern;  
-			}
-			if (mode==4) {
-				long[] pattern = { 0, 250, 200, 250, 200, 250, 200, 250, 200 };
-				notification.vibrate = pattern;  
-			}
-        }
-        
-		boolean sound = mPreferences.getBoolean("prf_sound_notifications", true);
-		if (sound) {
-			String lringtone = mPreferences.getString("prf_ringtone", "");
-			if ( lringtone != "" ) {
-				notification.sound = Uri.parse(lringtone);			 	   		 		     
-			} else {
-				notification.sound = RingtoneManager.getActualDefaultRingtoneUri(mContext, RingtoneManager.TYPE_NOTIFICATION);
-			}
-					
-		}
-        
-        ((NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE)).notify(R.layout.tweettopics_activity, notification);
-    }
 
 }

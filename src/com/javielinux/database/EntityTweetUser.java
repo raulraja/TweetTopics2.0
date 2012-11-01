@@ -172,7 +172,7 @@ public class EntityTweetUser extends Entity {
         return "";
 	}
 	
-	public InfoSaveTweets saveTweets(Context context, Twitter twitter, boolean saveNotifications) {
+	public InfoSaveTweets saveTweets(Context context, Twitter twitter) {
 
 		InfoSaveTweets out = new InfoSaveTweets();
 
@@ -307,19 +307,19 @@ public class EntityTweetUser extends Entity {
 					out.setOlderId(statii.get(statii.size()-1).getId());
 									
 					Log.d(Utils.TAG,statii.size()+" mensajes nuevos en " +  getTypeText() + " de "+getString("name"));
-					
-					long fisrtId = 1;
-					Cursor c = DataFramework.getInstance().getCursor("tweets_user", new String[]{DataFramework.KEY_ID}, 
+
+					long nextId = 1;
+					Cursor c = DataFramework.getInstance().getCursor("tweets_user", new String[]{DataFramework.KEY_ID},
 							null, null, null, null, DataFramework.KEY_ID + " desc", "1");
 					if (!c.moveToFirst()) {
 						c.close();
-						fisrtId = 1;
+						nextId = 1;
 					} else {
 						long Id = c.getInt(0) + 1;
 						c.close();
-						fisrtId = Id;
+						nextId = Id;
 					}
-								
+
 					DataFramework.getInstance().getDB().beginTransaction();
 					
 					try {
@@ -328,7 +328,7 @@ public class EntityTweetUser extends Entity {
 							User u = statii.get(i).getUser();
 							if (u!=null) {
 								ContentValues args = new ContentValues();
-								args.put(DataFramework.KEY_ID, "" + fisrtId);
+								args.put(DataFramework.KEY_ID, "" + nextId);
 								args.put("type_id", tweet_type);
 								args.put("user_tt_id", "" + getId());
 								if (u.getProfileImageURL()!=null) {
@@ -380,7 +380,10 @@ public class EntityTweetUser extends Entity {
 								if (breakTimeline && isFirst) args.put("has_more_tweets_down", 1);
 		
 								DataFramework.getInstance().getDB().insert("tweets_user", null, args);
-								fisrtId++;
+
+                                out.addId(nextId);
+
+								nextId++;
 								
 								if (isFirst) isFirst = false;
 							}
@@ -422,16 +425,16 @@ public class EntityTweetUser extends Entity {
 					
 					Log.d(Utils.TAG,directs.size()+" mensajes directos a "+getString("name"));
 					
-					long fisrtId = 1;
+					long nextId = 1;
 					Cursor c = DataFramework.getInstance().getCursor("tweets_user", new String[]{DataFramework.KEY_ID}, 
 							null, null, null, null, DataFramework.KEY_ID + " desc", "1");
 					if (!c.moveToFirst()) {
 						c.close();
-						fisrtId = 1;
+						nextId = 1;
 					} else {
 						long Id = c.getInt(0) + 1;
 						c.close();
-						fisrtId = Id;
+						nextId = Id;
 					}
 					
 					DataFramework.getInstance().getDB().beginTransaction();
@@ -441,7 +444,7 @@ public class EntityTweetUser extends Entity {
 							User u = directs.get(i).getSender();
 							if (u!=null) {
 								ContentValues args = new ContentValues();
-								args.put(DataFramework.KEY_ID, "" + fisrtId);
+								args.put(DataFramework.KEY_ID, "" + nextId);
 								args.put("type_id", tweet_type);
 								args.put("user_tt_id", "" + getId());
 								if (u.getProfileImageURL()!=null) {
@@ -460,10 +463,12 @@ public class EntityTweetUser extends Entity {
 								args.put("text", directs.get(i).getText());
 								
 								DataFramework.getInstance().getDB().insert("tweets_user", null, args);
-								
+
+                                out.addId(nextId);
+
 								Log.d(Utils.TAG, "getRecipientScreenName: "+directs.get(i).getRecipientScreenName());
 								
-								fisrtId++;
+								nextId++;
 							}
 			
 						}

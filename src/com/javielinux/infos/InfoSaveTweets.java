@@ -3,6 +3,9 @@ package com.javielinux.infos;
 import com.javielinux.utils.Utils;
 import twitter4j.RateLimitStatus;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class InfoSaveTweets {
 
@@ -11,6 +14,8 @@ public class InfoSaveTweets {
 	private int error = Utils.NOERROR;
 	private RateLimitStatus rate = null;
 	private int newMessages = 0;
+
+    private List<Long> ids = new ArrayList<Long>();
 	
 	public InfoSaveTweets() {
 		
@@ -56,5 +61,12 @@ public class InfoSaveTweets {
 		return error;
 	}
 
-	
+
+    public List<Long> getIds() {
+        return ids;
+    }
+
+    public void addId(long id) {
+        ids.add(id);
+    }
 }
