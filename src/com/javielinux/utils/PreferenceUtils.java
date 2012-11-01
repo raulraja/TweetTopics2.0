@@ -478,17 +478,18 @@ public class PreferenceUtils {
 
     public static void showChangeLog(Context cnt) {
         boolean showChangeLog = false;
+        String version = cnt.getString(R.string.version);
         SharedPreferences prefs = cnt.getSharedPreferences(Utils.APPLICATION_PREFERENCES, Context.MODE_PRIVATE);
         if (prefs.contains("version")) {
-            if (!prefs.getString("version", Utils.VERSION).equals(Utils.VERSION)) {
+            if (!prefs.getString("version", version).equals(version)) {
                 SharedPreferences.Editor editor = prefs.edit();
-                editor.putString("version", Utils.VERSION);
+                editor.putString("version", version);
                 editor.commit();
                 showChangeLog = true;
             }
         } else {
             SharedPreferences.Editor editor = prefs.edit();
-            editor.putString("version", Utils.VERSION);
+            editor.putString("version", version);
             editor.commit();
             showChangeLog = true;
         }
@@ -510,7 +511,8 @@ public class PreferenceUtils {
     }
 
     public static void OnChageVersion(Context cnt) {
-        if (Utils.VERSION.equals("1.32")) {
+        String version = cnt.getString(R.string.version);
+        if (version.equals("1.32")) {
             ArrayList<String> colorsThemeWhite = new ArrayList<String>();
             colorsThemeWhite.add("#e0c8ce");
             colorsThemeWhite.add("#9be4e5");
@@ -532,7 +534,7 @@ public class PreferenceUtils {
             }
         }
 
-        if (Utils.VERSION.equals("1.61")) {
+        if (version.equals("1.61")) {
             ArrayList<Entity> ents = DataFramework.getInstance().getEntityList("tweets", "favorite=1");
             for (Entity ent : ents) {
                 Entity newent = new Entity("saved_tweets");

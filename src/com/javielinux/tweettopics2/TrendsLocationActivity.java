@@ -20,7 +20,6 @@ import com.javielinux.api.response.ErrorResponse;
 import com.javielinux.api.response.TrendsLocationResponse;
 import com.javielinux.utils.DBUtils;
 import com.javielinux.utils.TweetTopicsUtils;
-import com.javielinux.utils.Utils;
 import twitter4j.Location;
 import twitter4j.ResponseList;
 
@@ -44,8 +43,6 @@ public class TrendsLocationActivity extends BaseActivity implements APIDelegate<
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        Utils.setActivity(this);
 
         themeManager = new ThemeManager(this);
         themeManager.setTheme();

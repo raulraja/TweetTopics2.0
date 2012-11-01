@@ -1,10 +1,12 @@
 package com.javielinux.adapters;
 
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Shader;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.LoaderManager;
 import android.text.Html;
@@ -78,6 +80,8 @@ public class TweetsAdapter extends ArrayAdapter<InfoTweet> {
     private AQuery listAQuery;
 
     private PullToRefreshListView parentListView;
+
+    private SharedPreferences preference;
 
     public FragmentActivity getActivity() {
         return activity;
@@ -190,6 +194,9 @@ public class TweetsAdapter extends ArrayAdapter<InfoTweet> {
         hashThemeColors.put("color_tweet_retweet", themeManager.getColor("color_tweet_retweet"));
         hashThemeColors.put("color_tweet_usename", themeManager.getColor("color_tweet_usename"));
         hashThemeColors.put("color_tweet_date", themeManager.getColor("color_tweet_date"));
+
+        PreferenceManager.setDefaultValues(activity, R.xml.preferences, false);
+        preference = PreferenceManager.getDefaultSharedPreferences(activity);
 
     }
 
@@ -321,7 +328,7 @@ public class TweetsAdapter extends ArrayAdapter<InfoTweet> {
         aQuery.id(viewHolder.statusText).text(Html.fromHtml(html));
         viewHolder.statusText.setTextSize(PreferenceUtils.getSizeText(getContext()));
 
-        int typeInfo = Integer.parseInt(Utils.preference.getString("prf_username_right", "2"));
+        int typeInfo = Integer.parseInt(preference.getString("prf_username_right", "2"));
         String data = "";
         if (typeInfo == 2) {
             if (infoTweet.isRetweet()) {

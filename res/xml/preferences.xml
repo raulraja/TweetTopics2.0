@@ -272,18 +272,6 @@
 
             </PreferenceCategory>
 
-            <PreferenceCategory
-                    android:title="@string/title_prf_dev"
-                    >
-
-                <CheckBoxPreference
-                        android:defaultValue="false"
-                        android:key="prf_force_lite"
-                        android:title="@string/title_prf_force_lite"
-                        android:summary="@string/summary_prf_force_lite"/>
-
-            </PreferenceCategory>
-
         </PreferenceScreen>
 
         <PreferenceScreen

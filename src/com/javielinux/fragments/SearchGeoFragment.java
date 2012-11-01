@@ -1,14 +1,12 @@
 package com.javielinux.fragments;
 
 import android.content.Intent;
-import android.database.DataSetObserver;
 import android.location.Address;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,9 +19,7 @@ import com.javielinux.api.response.BaseResponse;
 import com.javielinux.api.response.ErrorResponse;
 import com.javielinux.api.response.GetGeolocationAddressResponse;
 import com.javielinux.database.EntitySearch;
-import com.javielinux.tweettopics2.MapSearch;
 import com.javielinux.tweettopics2.R;
-import com.javielinux.utils.Utils;
 
 import java.util.ArrayList;
 

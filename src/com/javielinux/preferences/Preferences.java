@@ -149,11 +149,6 @@ public class Preferences extends PreferenceActivity {
 
         colors = mThemeManager.getColors();
 
-        if (!Utils.isDev(this)) {
-            CheckBoxPreference forceLitePref = (CheckBoxPreference) findPreference("prf_force_lite");
-            forceLitePref.setEnabled(false);
-        }
-
         Preference timePrefTl = (Preference) findPreference("prf_time_notifications");
 
         timePrefTl.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {

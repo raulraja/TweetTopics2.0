@@ -423,7 +423,7 @@ public class ColorsApp extends ListActivity implements ColorDialog.OnChangeColor
 
 		url += SEP_BLOCK+getTheme(cnt);
 		
-		return LinksUtils.shortURL(url);
+		return LinksUtils.shortURL(cnt, url);
 		
 	}
     

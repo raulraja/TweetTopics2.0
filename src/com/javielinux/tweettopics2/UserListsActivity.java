@@ -50,8 +50,6 @@ public class UserListsActivity extends BaseActivity implements APIDelegate<BaseR
             e.printStackTrace();
         }
 
-        Utils.setActivity(this);
-
         long user_id = -1;
 
         if (savedInstanceState != null) {

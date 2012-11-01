@@ -1006,7 +1006,7 @@ public class MyActivityFragment extends Fragment {
 
     private void shareSearch(Entity search) {
         String name = search.getString("name");
-        String text = Utils.HASHTAG_SHARE + " " + Utils.exportSearch(search.getId()) + " " + name;
+        String text = Utils.HASHTAG_SHARE + " " + Utils.exportSearch(getActivity(), search.getId()) + " " + name;
         TweetActions.updateStatus(getActivity(), text);
     }
 }

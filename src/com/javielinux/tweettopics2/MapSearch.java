@@ -7,7 +7,6 @@ import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapActivity;
 import com.google.android.maps.MapController;
 import com.javielinux.utils.PreferenceUtils;
-import com.javielinux.utils.Utils;
 
 public class MapSearch extends MapActivity {
 
@@ -35,11 +34,11 @@ public class MapSearch extends MapActivity {
 		boolean isSearch = false;
 		
 		if (longitude==0&&latitude==0) isSearch = true;
-		
-		if (isSearch) {
-			mMap = new MapViewer(this, Utils.KEY_MAPS);
-		} else {
-			mMap = new MapViewer(this, Utils.KEY_MAPS, latitude, longitude);
+
+        mMap = new MapViewer(this, getString(R.string.google_maps_api));
+
+		if (!isSearch) {
+			mMap.createMarker(latitude, longitude);
 		}
 		
 		mMap.setClickable(true);

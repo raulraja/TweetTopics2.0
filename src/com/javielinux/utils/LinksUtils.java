@@ -1,7 +1,11 @@
 package com.javielinux.utils;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import com.javielinux.infos.InfoLink;
+import com.javielinux.tweettopics2.R;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
@@ -159,17 +163,20 @@ public class LinksUtils {
 
     }
 
-    static public String shortURL(String link) {
+    static public String shortURL(Context context, String link) {
 
     	link = largeLink(link);
 
-    	int s = (Integer.parseInt(Utils.preference.getString("prf_service_shorter", "1")));
+        PreferenceManager.setDefaultValues(context, R.xml.preferences, false);
+        SharedPreferences preference = PreferenceManager.getDefaultSharedPreferences(context);
+
+    	int s = (Integer.parseInt(preference.getString("prf_service_shorter", "1")));
     	if ( s == 1 ) { // bit.ly
     		String user = "tweettopics";
     		String key = "R_ba0652e93e7c9c527c016447d2e29091";
-    		if (!PreferenceUtils.getUsernameBitly(Utils.context).equals("") && !PreferenceUtils.getKeyBitly(Utils.context).equals("")) {
-    			user = PreferenceUtils.getUsernameBitly(Utils.context);
-        		key = PreferenceUtils.getKeyBitly(Utils.context);
+    		if (!PreferenceUtils.getUsernameBitly(context).equals("") && !PreferenceUtils.getKeyBitly(context).equals("")) {
+    			user = PreferenceUtils.getUsernameBitly(context);
+        		key = PreferenceUtils.getKeyBitly(context);
     		}
     		String url = "http://com.javielinux.api.bit.ly/v3/shorten?login="+user+"&apiKey="+key+"&format=json&longUrl=" + URLEncoder.encode(link);
 
@@ -189,8 +196,8 @@ public class LinksUtils {
 
     	} else { // karmacracy
     		// http://kcy.me/com.javielinux.api/?u=javielinux&key=nyk1tjr20x&format=json&url=http://www.javielinux.com
-    		String user = PreferenceUtils.getUsernameKarmacracy(Utils.context);
-    		String key = PreferenceUtils.getKeyKarmacracy(Utils.context);
+    		String user = PreferenceUtils.getUsernameKarmacracy(context);
+    		String key = PreferenceUtils.getKeyKarmacracy(context);
 
     		String url = "http://kcy.me/com.javielinux.api/?u="+user+"&key="+key+"&format=json&url=" + URLEncoder.encode(link);
 
@@ -214,7 +221,7 @@ public class LinksUtils {
 		return null;
     }
 
-    static public String shortLinks(String text, ArrayList<String> noImages) {
+    static public String shortLinks(Context context, String text, ArrayList<String> noImages) {
     	ArrayList<String> links = pullLinksHTTP(text);
     	String out = text;
     	for (int i=0; i<links.size(); i++) {
@@ -223,7 +230,7 @@ public class LinksUtils {
     				&& (!links.get(i).contains("lockerz.com")) && (!links.get(i).contains("kcy.me"))
     				&& (!links.get(i).contains("t.co")) && (!links.get(i).contains("tinyurl")) ) {
     			String link = links.get(i);
-    			String newUrl = shortURL(links.get(i));
+    			String newUrl = shortURL(context, links.get(i));
     			if (newUrl!=null) {
     				if (!newUrl.equals("")) out = out.replace(link, newUrl);
     			}

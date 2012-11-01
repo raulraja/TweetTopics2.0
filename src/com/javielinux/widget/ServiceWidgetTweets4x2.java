@@ -4,6 +4,7 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.appwidget.AppWidgetManager;
 import android.content.*;
+import android.database.CursorIndexOutOfBoundsException;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
@@ -509,7 +510,10 @@ public class ServiceWidgetTweets4x2 extends Service {
     	mCurrentSearch = PreferenceUtils.getIdSearchWidget(context);
     	long column_id = PreferenceUtils.getWidgetColumn(context);
 
-        column = new Entity("columns", column_id);
+        try {
+            column = new Entity("columns", column_id);
+        } catch (CursorIndexOutOfBoundsException e) {
+        } catch (Exception e) { }
 
         if (column != null) {
 

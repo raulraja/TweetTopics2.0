@@ -155,7 +155,7 @@ public class TweetTopicsActivity extends BaseLayersActivity implements PopupLink
             positionFromSensor = savedInstanceState.getInt(KEY_SAVE_STATE_COLUMN_POS);
         }
 
-        Utils.setActivity(this);
+        Utils.createDirectoriesIfIsNecessary();
 
         Display display = getWindowManager().getDefaultDisplay();
         widthScreen = display.getWidth();

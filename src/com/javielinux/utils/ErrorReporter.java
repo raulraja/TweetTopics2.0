@@ -8,6 +8,7 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Environment;
 import android.util.Log;
+import com.javielinux.tweettopics2.R;
 import com.javielinux.twitter.TwitterApplication;
 
 import java.io.*;
@@ -35,7 +36,7 @@ public class ErrorReporter implements Thread.UncaughtExceptionHandler
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
-        sb.append("\rVersion App: " + Utils.VERSION);
+        sb.append("\rVersion App: " + app.getApplicationContext().getString(R.string.version));
         sb.append("\rAndroid version: " + Build.VERSION.RELEASE);
         sb.append("\rPhone: " + Build.MODEL);
         try

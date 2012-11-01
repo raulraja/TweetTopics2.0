@@ -1,11 +1,13 @@
 package com.javielinux.tweettopics2;
 
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.res.Resources;
 import android.graphics.*;
 import android.media.ExifInterface;
 import android.os.Bundle;
 import android.os.Vibrator;
+import android.preference.PreferenceManager;
 import android.util.DisplayMetrics;
 import android.util.FloatMath;
 import android.util.Log;
@@ -102,13 +104,13 @@ public class AdjustImage extends BaseActivity implements OnTouchListener
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
-		Utils.setActivity(this);
-		
+
 		gd = new GestureDetector(new GestureDetector.SimpleOnGestureListener(){
 			@Override
 			public void onLongPress(MotionEvent e) {
-				if (Utils.preference.getBoolean("prf_zoom_one_finger", false)) {
+                PreferenceManager.setDefaultValues(AdjustImage.this, R.xml.preferences, false);
+                SharedPreferences preference = PreferenceManager.getDefaultSharedPreferences(AdjustImage.this);
+				if (preference.getBoolean("prf_zoom_one_finger", false)) {
 					((Vibrator) getSystemService(VIBRATOR_SERVICE)).vibrate(100);
 					mode = ZOOM_ONEFINGER;
 					startOneFinger.set(e.getX(), e.getY());

@@ -17,6 +17,7 @@ import com.javielinux.dialogs.OnSelectedIconAndText;
 import com.javielinux.dialogs.TwitterUsersConnectedDialogFragment;
 import com.javielinux.infos.InfoTweet;
 import com.javielinux.preferences.RetweetsTypes;
+import com.javielinux.tweettopics2.MapSearch;
 import com.javielinux.tweettopics2.NewStatusActivity;
 import com.javielinux.tweettopics2.R;
 import com.javielinux.tweettopics2.TweetActivity;
@@ -34,6 +35,7 @@ public class TweetActions {
     public static String TWEET_ACTION_LAST_READ = "lastread";
     public static String TWEET_ACTION_READ_AFTER = "readafter";
     public static String TWEET_ACTION_FAVORITE = "favorite";
+    public static String TWEET_ACTION_MAP = "map";
     public static String TWEET_ACTION_SHARE = "share";
     public static String TWEET_ACTION_MENTION = "mention";
     public static String TWEET_ACTION_CLIPBOARD = "clipboard";
@@ -52,7 +54,7 @@ public class TweetActions {
             showDialogRetweet(activity, fromUser, infoTweet);
         } else if (code.equals(TWEET_ACTION_LAST_READ)) {
             if (extra instanceof ListFragmentListener) {
-                ((ListFragmentListener)extra).onMarkPositionLastReadAsLastReadId(true);
+                ((ListFragmentListener) extra).onMarkPositionLastReadAsLastReadId(true);
             }
         } else if (code.equals(TWEET_ACTION_READ_AFTER)) {
             saveTweet(activity, infoTweet);
@@ -66,6 +68,8 @@ public class TweetActions {
             copyToClipboard(activity, infoTweet);
         } else if (code.equals(TWEET_ACTION_SEND_DM)) {
             directMessage(activity, fromUser, infoTweet.getUsername());
+        } else if (code.equals(TWEET_ACTION_MAP)) {
+            goToMap(activity, infoTweet);
         } else if (code.equals(TWEET_ACTION_DELETE_TWEET)) {
             //this.goToDeleteTweet(mTweetTopicsCore);
         } else if (code.equals(TWEET_ACTION_DELETE_UP_TWEET)) { // opción sólo para desarrollo
@@ -75,7 +79,7 @@ public class TweetActions {
 
     public static void goToFavorite(final FragmentActivity activity, final InfoTweet infoTweet) {
         ArrayList<Entity> ents = DataFramework.getInstance().getEntityList("users", "service is null or service = \"twitter.com\"");
-        if (ents.size()==1) {
+        if (ents.size() == 1) {
             createFavorite(activity, infoTweet, ents.get(0).getId());
         } else {
             TwitterUsersConnectedDialogFragment frag = new TwitterUsersConnectedDialogFragment(new OnSelectedIconAndText() {
@@ -94,7 +98,7 @@ public class TweetActions {
             ConnectionManager.getInstance().open(activity);
 
 
-            if (infoTweet.getTypeFrom()==InfoTweet.FROM_STATUS && infoTweet.getIdDB()>0) {
+            if (infoTweet.getTypeFrom() == InfoTweet.FROM_STATUS && infoTweet.getIdDB() > 0) {
                 try {
                     Entity ent = new Entity("tweets_user", infoTweet.getIdDB());
                     ent.setValue("is_favorite", 1);
@@ -176,7 +180,7 @@ public class TweetActions {
             int count = users.size();
             if (!users.contains("@" + infoTweet.getUsername())) count++;
 
-            if (fromUser>0) {
+            if (fromUser > 0) {
                 try {
                     Entity e = new Entity("users", fromUser);
                     if (e != null) {
@@ -248,7 +252,7 @@ public class TweetActions {
 
     public static void directMessage(FragmentActivity activity, long fromUser, String username) {
         Intent newstatus = new Intent(activity, NewStatusActivity.class);
-        if (fromUser>0) newstatus.putExtra("start_user_id", fromUser);
+        if (fromUser > 0) newstatus.putExtra("start_user_id", fromUser);
         newstatus.putExtra("type", NewStatusActivity.TYPE_DIRECT_MESSAGE);
         newstatus.putExtra("username_direct_message", username);
         activity.startActivity(newstatus);
@@ -292,7 +296,7 @@ public class TweetActions {
 
     private static void updateStatus(FragmentActivity activity, long fromUser, int type, String text, InfoTweet tweet, String prev) {
         Intent newstatus = new Intent(activity, NewStatusActivity.class);
-        if (fromUser>0) newstatus.putExtra("start_user_id", fromUser);
+        if (fromUser > 0) newstatus.putExtra("start_user_id", fromUser);
         newstatus.putExtra("text", text);
         newstatus.putExtra("type", type);
         newstatus.putExtra("retweet_prev", prev);
@@ -441,7 +445,7 @@ public class TweetActions {
     public static void showDialogTranslation(final TweetActivity activity) {
 
         View translate_dialog_footer = View.inflate(activity, R.layout.translate_dialog_footer, null);
-        final CheckBox translate_default_language_checkbox = (CheckBox)translate_dialog_footer.findViewById(R.id.translate_default_language_checkbox);
+        final CheckBox translate_default_language_checkbox = (CheckBox) translate_dialog_footer.findViewById(R.id.translate_default_language_checkbox);
 
         final ArrayList<String> languages_text = new ArrayList<String>();
         Collections.addAll(languages_text, activity.getResources().getStringArray(R.array.languages_translates));
@@ -450,7 +454,7 @@ public class TweetActions {
         Collections.addAll(languages_values, activity.getResources().getStringArray(R.array.languages_translates_values));
 
         CharSequence[] languages_char_sequence = new CharSequence[languages_text.size()];
-        for (int i=0; i < languages_text.size(); i++) {
+        for (int i = 0; i < languages_text.size(); i++) {
             languages_char_sequence[i] = languages_text.get(i);
         }
 
@@ -471,9 +475,20 @@ public class TweetActions {
         });
 
         builder.setNegativeButton(R.string.alert_dialog_cancel, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {}
+            public void onClick(DialogInterface dialog, int whichButton) {
+            }
         });
         builder.create();
         builder.show();
     }
+
+    public static void goToMap(FragmentActivity activity, InfoTweet tweet) {
+        if (tweet.hasLocation()) {
+            Intent map = new Intent(activity, MapSearch.class);
+            map.putExtra("longitude", tweet.getLongitude());
+            map.putExtra("latitude", tweet.getLatitude());
+            activity.startActivity(map);
+        }
+    }
+
 }

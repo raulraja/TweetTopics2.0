@@ -326,8 +326,6 @@ public class NewStatusActivity extends BaseActivity {
 
         overridePendingTransition(R.anim.pull_in_to_up, R.anim.hold);
 
-        Utils.setActivity(this);
-
         Utils.saveApiConfiguration(this);
 
         mShortURLLength = PreferenceUtils.getShortURLLength(this);
@@ -515,7 +513,7 @@ public class NewStatusActivity extends BaseActivity {
                 String text = mText.getText().toString();
                 int count = LinksUtils.pullLinksHTTP(text).size() - mImages.size();
                 if (count > 0) {
-                    mText.setText(LinksUtils.shortLinks(text, mImages));
+                    mText.setText(LinksUtils.shortLinks(NewStatusActivity.this, text, mImages));
                     Utils.showShortMessage(NewStatusActivity.this, count + " " + NewStatusActivity.this.getString(R.string.txt_shorter_n));
                 } else {
                     Utils.showShortMessage(NewStatusActivity.this, NewStatusActivity.this.getString(R.string.txt_shorter_0));

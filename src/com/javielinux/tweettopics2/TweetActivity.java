@@ -14,6 +14,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.*;
 import com.androidquery.AQuery;
+import com.google.android.maps.MapView;
 import com.javielinux.api.APIDelegate;
 import com.javielinux.api.APITweetTopics;
 import com.javielinux.api.request.LoadImageWidgetRequest;
@@ -63,6 +64,9 @@ public class TweetActivity extends BaseLayersActivity implements APIDelegate<Bas
     private SplitActionBarMenu splitActionBarMenu;
     private boolean is_translating;
     private boolean image_preview_displayed;
+
+    // map view
+    private MapView mapView;
 
     @Override
     public void onBackPressed() {
@@ -491,6 +495,11 @@ public class TweetActivity extends BaseLayersActivity implements APIDelegate<Bas
             ar.add(getString(R.string.share));
             arCode.add(TweetActions.TWEET_ACTION_SHARE);
 
+            if (infoTweet.hasLocation()) {
+                ar.add(getString(R.string.view_map));
+                arCode.add(TweetActions.TWEET_ACTION_MAP);
+            }
+
             CharSequence[] c = new CharSequence[ar.size()];
             for (int i=0; i<ar.size(); i++) {
                 c[i] = ar.get(i);
@@ -604,6 +613,15 @@ public class TweetActivity extends BaseLayersActivity implements APIDelegate<Bas
             }
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+    public MapView getMapView() {
+        if (mapView==null) {
+            mapView = new MapView(this, getString(R.string.google_maps_api));
+            mapView.setClickable(true);
+            mapView.setBuiltInZoomControls(true);
+        }
+        return mapView;
     }
 
 }

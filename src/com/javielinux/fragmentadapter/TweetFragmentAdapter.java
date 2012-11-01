@@ -44,10 +44,10 @@ public class TweetFragmentAdapter extends FragmentPagerAdapter  {
             tweet_fragment_code.add(TAB_CONVERSATION);
             tweet_fragment_titles.add(context.getString(R.string.conversation));
         }
-        if (infoTweet.getLatitude()!=0 && infoTweet.getLongitude()!=0) {
-            tweet_fragment_code.add(TAB_MAP);
-            tweet_fragment_titles.add(context.getString(R.string.map));
-        }
+//        if (infoTweet.hasLocation()) {
+//            tweet_fragment_code.add(TAB_MAP);
+//            tweet_fragment_titles.add(context.getString(R.string.map));
+//        }
     }
 
     @Override
@@ -57,7 +57,7 @@ public class TweetFragmentAdapter extends FragmentPagerAdapter  {
         } else if (tweet_fragment_code.get(index) == TAB_CONVERSATION) {
             return new TweetConversationFragment(infoTweet);
         } else if (tweet_fragment_code.get(index) == TAB_MAP) {
-            return new TweetMapFragment();
+            return new TweetMapFragment(infoTweet.getLatitude(),infoTweet.getLongitude());
         }
 
         return new Fragment();

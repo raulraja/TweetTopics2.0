@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Point;
 import android.graphics.drawable.Drawable;
+import android.util.AttributeSet;
 import android.view.MotionEvent;
 import com.google.android.maps.*;
 
@@ -19,21 +20,25 @@ public class MapViewer extends MapView {
 	private boolean move = false;
 	private float x = 0;
 	private float y = 0;
-	private boolean canCreateElements = false;
-	
-    public MapViewer(Context context, String apiKey) {
-		super(context, apiKey);
-    	setClickable(true);
-    	canCreateElements = true;
-	}
-    
-    public MapViewer(Context context, String apiKey, double latitude, double longitude) {
-		super(context, apiKey);
-    	setClickable(true);
-    	canCreateElements = false;
-    	placeMarker((int)(latitude*1E6), (int)(longitude*1E6));
-	}
-	
+	private boolean canCreateElements = true;
+
+    public MapViewer(Context context, String key) {
+        super(context, key);
+    }
+
+    public MapViewer(Context context, AttributeSet attrs) {
+        super(context, attrs);
+    }
+
+    public MapViewer(Context context, AttributeSet attrs, int defStyle) {
+        super(context, attrs, defStyle);
+    }
+
+    public void createMarker(double latitude, double longitude) {
+        canCreateElements = false;
+        placeMarker((int)(latitude*1E6), (int)(longitude*1E6));
+    }
+
 
 	@Override
 	public boolean onTouchEvent(MotionEvent ev) {

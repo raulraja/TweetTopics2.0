@@ -46,8 +46,6 @@ public class EditUserTwitter extends BaseActivity implements Runnable {
             e.printStackTrace();
         }
 
-        Utils.setActivity(this);
-
         if (savedInstanceState != null) {
             if (savedInstanceState.containsKey(DataFramework.KEY_ID))
                 mCurrentId = savedInstanceState.getLong(DataFramework.KEY_ID);
