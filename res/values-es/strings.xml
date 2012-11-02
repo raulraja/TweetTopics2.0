@@ -3,6 +3,13 @@
 
     <!-- v 2.0  -->
 
+    <string name="timelineFrom">Ha escrito en tu timeline %1$s</string>
+    <string name="mentionFrom">Has sido mencionado por %1$s</string>
+    <string name="dmFrom">Has recibido un DM de %1$s</string>
+
+    <string name="messageTo">Mensaje a %1$s</string>
+    <string name="messagesTo">%1$s mensajes a %2$s</string>
+
     <string name="select_icon">Selecciona un icono</string>
     <string name="shouldSelectOneUser">Deberías selecionar sólo un usuario</string>
 

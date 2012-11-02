@@ -178,7 +178,7 @@ public class AlarmAsyncTask extends AsyncTask<Void, Void, Void> {
                     if (!PreferenceUtils.getStatusWorkApp(context) && type != OnAlarmReceiver.ALARM_ONLY_TIMELINE) {
                         InfoSaveTweets info = etuMentions.saveTweets(context, twitter);
                         if (info.getNewMessages() > 0 && mentions) {
-                            userNotification.setIdsTimeline(info.getIds());
+                            userNotification.setIdsMentions(info.getIds());
                         }
                     }
 
@@ -192,7 +192,7 @@ public class AlarmAsyncTask extends AsyncTask<Void, Void, Void> {
                     if (!PreferenceUtils.getStatusWorkApp(context) && type != OnAlarmReceiver.ALARM_ONLY_TIMELINE) {
                         InfoSaveTweets info = etuDMs.saveTweets(context, twitter);
                         if (info.getNewMessages() > 0 && dms) {
-                            userNotification.setIdsTimeline(info.getIds());
+                            userNotification.setIdsDMs(info.getIds());
                         }
                     }
                     totalDMsAWD += etuDMs.getValueNewCount();

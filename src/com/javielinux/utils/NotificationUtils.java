@@ -20,10 +20,11 @@ import com.javielinux.tweettopics2.R;
 import com.javielinux.tweettopics2.TweetTopicsActivity;
 import com.javielinux.updatestatus.LaunchServiceUpdateStatus;
 
-import java.util.Date;
 import java.util.List;
 
 public class NotificationUtils {
+
+    private static int MAX_MESSAGES_INBOX = 8;
 
     private static int ID_NOTIFICATION_UPDATES = 151515;
     private static int ID_NOTIFICATION_SEARCHES = 161616;
@@ -33,7 +34,7 @@ public class NotificationUtils {
     }
 
     public static void cancelUserNotification(Context context, long id) {
-        ((NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE)).cancel((int)id);
+        ((NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE)).cancel((int) id);
     }
 
     public static void cancelSearchNotification(Context context, long id) {
@@ -63,10 +64,10 @@ public class NotificationUtils {
                     .setContentInfo(info)
                     .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.icon))
                     .setContentIntent(contentIntent);
-            notification = builder.getNotification();
+            notification = builder.build();
         }
 
-        if (notification !=null) {
+        if (notification != null) {
             if (feedback) {
                 addFeedback(context, notification);
             }
@@ -77,7 +78,7 @@ public class NotificationUtils {
 
     public static void sendUserNotification(Context context, UserNotifications userNotifications) {
 
-        if (userNotifications.getCount()>0) {
+        if (userNotifications.getCount() > 0) {
             Intent intent = new Intent(context, TweetTopicsActivity.class);
             intent.setAction(Intent.ACTION_VIEW);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -92,53 +93,138 @@ public class NotificationUtils {
             intent.putExtra(TweetTopicsActivity.KEY_EXTRAS_GOTO_COLUMN_TYPE, typeColumn);
             PendingIntent contentIntent = PendingIntent.getActivity(context, 0, intent, 0);
 
-            String largeIcon = null;
-            String title = "";
-            String text = "";
-            String info = "";
-
-            if (userNotifications.getCount() == 1) {
-                Entity tweet = new Entity("tweets_user", userNotifications.getFirstId());
-                largeIcon = tweet.getString("url_avatar");
-                title = tweet.getString("username");
-                text = tweet.getString("text");
-                Date timeTweet = new Date();
-                timeTweet.setTime(tweet.getLong("date"));
-                info = Utils.diffDate(new Date(), timeTweet);
-            } else {
-                title = userNotifications.getName();
-                if (userNotifications.getCountTimeline() > 0) {
-                    text += context.getString(R.string.notif_timeline) + ": " + userNotifications.getCountTimeline() + " ";
-                }
-                if (userNotifications.getCountMentions() > 0) {
-                    text += context.getString(R.string.notif_mentions) + ": " + userNotifications.getCountMentions() + " ";
-                }
-                if (userNotifications.getCountDMs() > 0) {
-                    text += context.getString(R.string.notif_directs) + ": " + userNotifications.getCountDMs() + " ";
-                }
-            }
-
             Notification notification = null;
 
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
-                notification = new Notification(R.drawable.ic_stat_notification, text, System.currentTimeMillis());
-                notification.flags = Notification.FLAG_AUTO_CANCEL;
-                notification.setLatestEventInfo(context, title, text, contentIntent);
-            } else {
-                Bitmap bitmapLargeIcon = ImageUtils.getBitmapAvatar(userNotifications.getId(), Utils.AVATAR_LARGE);
-                Notification.Builder builder = new Notification.Builder(context);
-                builder
-                        .setSmallIcon(R.drawable.ic_stat_notification)
-                        .setTicker(text)
-                        .setWhen(System.currentTimeMillis())
-                        .setContentTitle(title)
-                        .setContentText(text)
-                        .setContentInfo(info)
-                        .setLargeIcon(bitmapLargeIcon)
-                        .setContentIntent(contentIntent);
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
+                String title = "";
+                String text = "";
 
-                notification = builder.getNotification();
+                if (userNotifications.getCount() == 1) {
+                    Entity tweet = new Entity("tweets_user", userNotifications.getFirstId());
+                    title = tweet.getString("username");
+                    text = tweet.getString("text");
+                } else {
+                    title = userNotifications.getName();
+                    if (userNotifications.getCountTimeline() > 0) {
+                        text += context.getString(R.string.notif_timeline) + ": " + userNotifications.getCountTimeline() + " ";
+                    }
+                    if (userNotifications.getCountMentions() > 0) {
+                        text += context.getString(R.string.notif_mentions) + ": " + userNotifications.getCountMentions() + " ";
+                    }
+                    if (userNotifications.getCountDMs() > 0) {
+                        text += context.getString(R.string.notif_directs) + ": " + userNotifications.getCountDMs() + " ";
+                    }
+                }
+
+
+                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
+                    notification = new Notification(R.drawable.ic_stat_notification, text, System.currentTimeMillis());
+                    notification.flags = Notification.FLAG_AUTO_CANCEL;
+                    notification.setLatestEventInfo(context, title, text, contentIntent);
+                } else {
+                    Bitmap bitmapLargeIcon = ImageUtils.getBitmapAvatar(userNotifications.getId(), Utils.AVATAR_LARGE);
+                    Notification.Builder builder = new Notification.Builder(context);
+                    builder
+                            .setSmallIcon(R.drawable.ic_stat_notification)
+                            .setTicker(text)
+                            .setWhen(System.currentTimeMillis())
+                            .setContentTitle(title)
+                            .setContentText(text)
+                            .setLargeIcon(bitmapLargeIcon)
+                            .setContentIntent(contentIntent);
+
+                    notification = builder.build();
+                }
+            } else {
+
+                if (userNotifications.getCount() == 1) {
+                    Bitmap bitmapLargeIcon = ImageUtils.getBitmapAvatar(userNotifications.getId(), Utils.AVATAR_LARGE);
+
+                    Entity tweet = new Entity("tweets_user", userNotifications.getFirstId());
+                    int type = tweet.getInt("type_id");
+                    String shortTitle = context.getString(R.string.messageTo, "@" + userNotifications.getName());
+                    String shortMessage = "";
+                    if (type == TweetTopicsUtils.TWEET_TYPE_TIMELINE) {
+                        shortMessage = context.getString(R.string.timelineFrom, "@" + tweet.getString("username"));
+                    } else if (type == TweetTopicsUtils.TWEET_TYPE_MENTIONS) {
+                        shortMessage = context.getString(R.string.mentionFrom, "@" + tweet.getString("username"));
+                    } else if (type == TweetTopicsUtils.TWEET_TYPE_DIRECTMESSAGES) {
+                        shortMessage = context.getString(R.string.dmFrom, "@" + tweet.getString("username"));
+                    }
+
+                    Notification.Builder builder = new Notification.Builder(context);
+                    builder
+                            .setSmallIcon(R.drawable.ic_stat_notification)
+                            .setTicker(shortMessage)
+                            .setWhen(System.currentTimeMillis())
+                            .setContentTitle(shortTitle)
+                            .setContentText(shortMessage)
+                            .setLargeIcon(bitmapLargeIcon)
+                            .setContentIntent(contentIntent);
+
+                    Notification.BigTextStyle bigTextStyle = new Notification.BigTextStyle(builder)
+                            .bigText(tweet.getString("text"))
+                            .setBigContentTitle(shortTitle)
+                            .setSummaryText(shortMessage);
+
+                    notification = bigTextStyle.build();
+                } else {
+                    Bitmap bitmapLargeIcon = ImageUtils.getBitmapAvatar(userNotifications.getId(), Utils.AVATAR_LARGE);
+
+                    String shortTitle = context.getString(R.string.messagesTo, userNotifications.getCount(), "@" + userNotifications.getName());
+                    String shortMessage = "";
+                    if (userNotifications.getCountTimeline() > 0) {
+                        shortMessage += context.getString(R.string.notif_timeline) + ": " + userNotifications.getCountTimeline() + " ";
+                    }
+                    if (userNotifications.getCountMentions() > 0) {
+                        shortMessage += context.getString(R.string.notif_mentions) + ": " + userNotifications.getCountMentions() + " ";
+                    }
+                    if (userNotifications.getCountDMs() > 0) {
+                        shortMessage += context.getString(R.string.notif_directs) + ": " + userNotifications.getCountDMs() + " ";
+                    }
+
+                    Notification.Builder builder = new Notification.Builder(context);
+                    builder
+                            .setSmallIcon(R.drawable.ic_stat_notification)
+                            .setTicker(shortMessage)
+                            .setWhen(System.currentTimeMillis())
+                            .setContentTitle(shortTitle)
+                            .setContentText(shortMessage)
+                            .setLargeIcon(bitmapLargeIcon)
+                            .setContentIntent(contentIntent);
+
+                    Notification.InboxStyle n = new Notification.InboxStyle(builder)
+                            .setBigContentTitle(shortTitle)
+                            .setSummaryText(shortMessage);
+
+                    int count = 0;
+                    for (long id : userNotifications.getIdsMentions()) {
+                        if (count < MAX_MESSAGES_INBOX) {
+                            Entity tweet = new Entity("tweets_user", id);
+                            n.addLine(context.getString(R.string.mention) + " @" + tweet.getString("username") + ": " + tweet.getString("text"));
+                        }
+                        count++;
+                    }
+                    for (long id : userNotifications.getIdsDMs()) {
+                        if (count < MAX_MESSAGES_INBOX) {
+                            Entity tweet = new Entity("tweets_user", id);
+                            n.addLine(context.getString(R.string.dm) + " @" + tweet.getString("username") + ": " + tweet.getString("text"));
+                        }
+                        count++;
+                    }
+                    for (long id : userNotifications.getIdsTimeline()) {
+                        if (count < MAX_MESSAGES_INBOX) {
+                            Entity tweet = new Entity("tweets_user", id);
+                            n.addLine(context.getString(R.string.timeline) + " @" + tweet.getString("username") + ": " + tweet.getString("text"));
+                        }
+                        count++;
+                    }
+
+                    notification = n.build();
+                }
+
             }
+
 
             if (notification != null) {
                 addFeedback(context, notification);
@@ -150,7 +236,7 @@ public class NotificationUtils {
 
     public static void sendSearchNotification(Context context, List<SearchNotifications> list) {
 
-        if (list.size()>0) {
+        if (list.size() > 0) {
 
             Intent intent = new Intent(context, TweetTopicsActivity.class);
             intent.setAction(Intent.ACTION_VIEW);
@@ -188,7 +274,7 @@ public class NotificationUtils {
                         .setLargeIcon(bitmapLargeIcon)
                         .setContentIntent(contentIntent);
 
-                notification = builder.getNotification();
+                notification = builder.build();
             }
 
             if (notification != null) {

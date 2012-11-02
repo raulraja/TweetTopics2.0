@@ -23,6 +23,18 @@ public class UserNotifications {
         this.idsTimeline = idsTimeline;
     }
 
+    public List<Long> getIdsDMs() {
+        return idsDMs;
+    }
+
+    public List<Long> getIdsMentions() {
+        return idsMentions;
+    }
+
+    public List<Long> getIdsTimeline() {
+        return idsTimeline;
+    }
+
     public int getCountTimeline() {
         return idsTimeline.size();
     }
