@@ -6,8 +6,7 @@ import android.graphics.Shader;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.view.View;
 import android.widget.*;
 import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
@@ -27,9 +26,6 @@ public class SearchActivity extends BaseActivity implements APIDelegate<BaseResp
 
     public static String KEY_SEARCH = "search";
 
-    private static final int SAVE_ID = Menu.FIRST;
-    private static final int SAVE_LAUNCH_ID = Menu.FIRST + 1;
-
     protected ProgressDialog progressDialog;
 
     private ViewPager pager;
@@ -38,7 +34,7 @@ public class SearchActivity extends BaseActivity implements APIDelegate<BaseResp
 
     private ThemeManager themeManager;
     private EntitySearch search_entity = null;
-    private LinearLayout searchRoot;
+    private RelativeLayout searchRoot;
     private RelativeLayout searchBar;
 
     private boolean view;
@@ -48,7 +44,7 @@ public class SearchActivity extends BaseActivity implements APIDelegate<BaseResp
         super.onCreate(savedInstanceState);
 
         themeManager = new ThemeManager(this);
-        themeManager.setTranslucentTheme();
+        themeManager.setDialogTheme();
 
         String defaultSearch = "";
 
@@ -73,23 +69,27 @@ public class SearchActivity extends BaseActivity implements APIDelegate<BaseResp
         pager = (ViewPager)findViewById(R.id.search_pager);
         pager.setAdapter(fragmentAdapter);
 
-        searchRoot = (LinearLayout)findViewById(R.id.search_root);
+        searchRoot = (RelativeLayout)findViewById(R.id.search_root);
         searchBar = (RelativeLayout)findViewById(R.id.search_bar_background);
 
         indicator = (TabPageIndicator)findViewById(R.id.search_indicator);
         indicator.setViewPager(pager);
 
-        refreshTheme();
-    }
+        findViewById(R.id.bt_save).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                doSave();
+            }
+        });
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        super.onCreateOptionsMenu(menu);
-        menu.add(0, SAVE_ID, 0,  R.string.save)
-                .setIcon(android.R.drawable.ic_menu_save);
-        menu.add(0, SAVE_LAUNCH_ID, 0,  R.string.save_and_view)
-                .setIcon(android.R.drawable.ic_menu_directions);
-        return true;
+        findViewById(R.id.bt_save_and_view).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                doSaveAndView();
+            }
+        });
+
+        refreshTheme();
     }
 
     public void refreshTheme() {
@@ -105,21 +105,17 @@ public class SearchActivity extends BaseActivity implements APIDelegate<BaseResp
         themeManager.setColors();
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch(item.getItemId()) {
-            case SAVE_ID:
-                this.view = false;
-                save();
-                return true;
-            case SAVE_LAUNCH_ID:
-                this.view = true;
-                save();
-                return true;
-        }
 
-        return super.onOptionsItemSelected(item);
+    private void doSave() {
+        this.view = false;
+        save();
     }
+
+    private void doSaveAndView() {
+        this.view = true;
+        save();
+    }
+
 
     @Override
     protected void onPause() {

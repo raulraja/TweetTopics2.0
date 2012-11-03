@@ -15,7 +15,7 @@
         </activity>
     	<activity android:name="com.javielinux.twitter.AuthorizationActivity" />
 
-        <activity android:name="SearchActivity" android:screenOrientation="nosensor" />
+        <activity android:name="SearchActivity" android:screenOrientation="nosensor" android:theme="@style/Theme.Twitter.Translucent" />
         <activity android:name="TweetActivity" android:theme="@style/Theme.Twitter.Translucent" android:hardwareAccelerated="true" />
         <activity android:name="UserActivity" android:theme="@style/Theme.Twitter.Translucent" android:hardwareAccelerated="true" />
         <activity android:name="UserListsActivity" />

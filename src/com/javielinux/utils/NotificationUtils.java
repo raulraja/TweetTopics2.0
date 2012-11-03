@@ -29,6 +29,10 @@ public class NotificationUtils {
     private static int ID_NOTIFICATION_UPDATES = 151515;
     private static int ID_NOTIFICATION_SEARCHES = 161616;
 
+    public static int getUniqueId() {
+         return (int) (System.currentTimeMillis() & 0xfffffff);
+    }
+
     public static void cancelNotification(Context context) {
         ((NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE)).cancel(ID_NOTIFICATION_UPDATES);
     }
@@ -45,7 +49,7 @@ public class NotificationUtils {
 
         Intent intent = new Intent();
         if (tryAgain) intent = new Intent(context, LaunchServiceUpdateStatus.class);
-        PendingIntent contentIntent = PendingIntent.getActivity(context, 0, intent, 0);
+        PendingIntent contentIntent = PendingIntent.getActivity(context, getUniqueId(), intent, 0);
 
         Notification notification = null;
 
@@ -64,7 +68,7 @@ public class NotificationUtils {
                     .setContentInfo(info)
                     .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.icon))
                     .setContentIntent(contentIntent);
-            notification = builder.build();
+            notification = builder.getNotification();
         }
 
         if (notification != null) {
@@ -91,7 +95,7 @@ public class NotificationUtils {
                 typeColumn = TweetTopicsUtils.COLUMN_DIRECT_MESSAGES;
             }
             intent.putExtra(TweetTopicsActivity.KEY_EXTRAS_GOTO_COLUMN_TYPE, typeColumn);
-            PendingIntent contentIntent = PendingIntent.getActivity(context, 0, intent, 0);
+            PendingIntent contentIntent = PendingIntent.getActivity(context, getUniqueId(), intent, 0);
 
             Notification notification = null;
 
@@ -133,7 +137,7 @@ public class NotificationUtils {
                             .setLargeIcon(bitmapLargeIcon)
                             .setContentIntent(contentIntent);
 
-                    notification = builder.build();
+                    notification = builder.getNotification();
                 }
             } else {
 
@@ -242,39 +246,79 @@ public class NotificationUtils {
             intent.setAction(Intent.ACTION_VIEW);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             intent.putExtra(TweetTopicsActivity.KEY_EXTRAS_GOTO_COLUMN_TYPE, TweetTopicsUtils.COLUMN_MY_ACTIVITY);
-            PendingIntent contentIntent = PendingIntent.getActivity(context, 0, intent, 0);
-
-            String title = context.getString(R.string.searches);
-            String text = "";
-            String info = "";
-
-            for (SearchNotifications s : list) {
-                if (s.getTotal() > 0) {
-                    if (!text.isEmpty()) text += ", ";
-                    text += s.getName() + " (" + s.getTotal() + ")";
-                }
-            }
+            PendingIntent contentIntent = PendingIntent.getActivity(context, getUniqueId(), intent, 0);
 
             Notification notification = null;
 
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
-                notification = new Notification(R.drawable.ic_stat_notification, text, System.currentTimeMillis());
-                notification.flags = Notification.FLAG_AUTO_CANCEL;
-                notification.setLatestEventInfo(context, title, text, contentIntent);
+            int countMessages = 0;
+            for (SearchNotifications s : list) {
+                countMessages += s.getTotal();
+            }
+
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN || list.size() == 1) {
+
+                String title = context.getString(R.string.counterSearches, countMessages);
+                String text = "";
+                String info = "";
+
+                for (SearchNotifications s : list) {
+                    if (s.getTotal() > 0) {
+                        if (!text.isEmpty()) text += ", ";
+                        text += s.getName() + " (" + s.getTotal() + ")";
+                    }
+                }
+
+                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
+                    notification = new Notification(R.drawable.ic_stat_notification, text, System.currentTimeMillis());
+                    notification.flags = Notification.FLAG_AUTO_CANCEL;
+                    notification.setLatestEventInfo(context, title, text, contentIntent);
+                } else {
+                    Bitmap bitmapLargeIcon = BitmapFactory.decodeResource(context.getResources(), R.drawable.icon);
+                    Notification.Builder builder = new Notification.Builder(context);
+                    builder
+                            .setSmallIcon(R.drawable.ic_stat_notification)
+                            .setTicker(text)
+                            .setWhen(System.currentTimeMillis())
+                            .setContentTitle(title)
+                            .setContentText(text)
+                            .setContentInfo(info)
+                            .setLargeIcon(bitmapLargeIcon)
+                            .setContentIntent(contentIntent);
+
+                    notification = builder.getNotification();
+                }
+
             } else {
+
                 Bitmap bitmapLargeIcon = BitmapFactory.decodeResource(context.getResources(), R.drawable.icon);
+
+                String shortTitle = context.getString(R.string.searches);
+                String shortMessage = context.getString(R.string.counterSearches, countMessages);
+
                 Notification.Builder builder = new Notification.Builder(context);
                 builder
                         .setSmallIcon(R.drawable.ic_stat_notification)
-                        .setTicker(text)
+                        .setTicker(shortMessage)
                         .setWhen(System.currentTimeMillis())
-                        .setContentTitle(title)
-                        .setContentText(text)
-                        .setContentInfo(info)
+                        .setContentTitle(shortTitle)
+                        .setContentText(shortMessage)
                         .setLargeIcon(bitmapLargeIcon)
                         .setContentIntent(contentIntent);
 
-                notification = builder.build();
+                Notification.InboxStyle n = new Notification.InboxStyle(builder)
+                        .setBigContentTitle(shortTitle)
+                        .setSummaryText(shortMessage);
+
+                int count = 0;
+                for (SearchNotifications s : list) {
+                    if (count < MAX_MESSAGES_INBOX) {
+                        n.addLine(context.getString(R.string.counterSearch, s.getTotal(), s.getName()));
+                    }
+                    count++;
+                }
+
+                notification = n.build();
+
             }
 
             if (notification != null) {

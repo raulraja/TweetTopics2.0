@@ -23,7 +23,10 @@ import android.text.Editable;
 import android.text.Html;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.*;
+import android.view.KeyEvent;
+import android.view.LayoutInflater;
+import android.view.MenuItem;
+import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.*;
 import android.widget.SeekBar.OnSeekBarChangeListener;
@@ -88,12 +91,6 @@ public class NewStatusActivity extends BaseActivity {
     public static final int ACTIVITY_USER = 0;
 
     private int mModeTweetLonger = MODE_TL_NONE;
-
-    private static final int TAKEPHOTO_ID = Menu.FIRST;
-    private static final int DEFAULTTEXT_ID = Menu.FIRST + 1;
-    private static final int NEW_DRAFT_ID = Menu.FIRST + 2;
-    private static final int VIEW_DRAFT_ID = Menu.FIRST + 3;
-    protected static final int SIZE_TEXT_ID = Menu.FIRST + 4;
 
     protected ProgressDialog progressDialog;
 
