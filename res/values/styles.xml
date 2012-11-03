@@ -146,7 +146,7 @@
         <item name="android:textColor">?color_textbutton_sidebar</item>
         <item name="android:background">?button_transparent_background</item>
         <item name="android:gravity">center_horizontal</item>
-        <item name="android:textSize">11sp</item>
+        <item name="android:textSize">@dimen/text_size_small_default</item>
         <item name="android:paddingTop">5dip</item>
         <item name="android:paddingBottom">5dip</item>
      </style>
@@ -176,8 +176,8 @@
      
     <style name="ButtonSmallFootSidebar" parent="android:Widget.Button">
         <item name="android:background">@android:drawable/menuitem_background</item>
-        <item name="android:paddingLeft">5dip</item>
-        <item name="android:paddingRight">5dip</item>
+        <item name="android:paddingLeft">@dimen/default_separation</item>
+        <item name="android:paddingRight">@dimen/default_separation</item>
      </style>
      
     <style name="ButtonMain" parent="android:Widget.Button">
@@ -313,6 +313,7 @@
     <style name="TweetTitle">
         <item name="android:layout_marginTop">5dip</item>
         <item name="android:textStyle">bold</item>
+        <item name="android:textSize">@dimen/text_size_title_default</item>
         <item name="android:textColor">?color_tweet_usename</item>
      </style>
      
@@ -323,7 +324,7 @@
      
     <style name="TweetTextSidebar">
         <item name="android:layout_margin">5dip</item>
-        <item name="android:textSize">15sp</item>
+        <item name="android:textSize">@dimen/text_size_tweet_sidebar</item>
         <item name="android:textColor">?color_tweet_text</item>
      </style>
      
@@ -360,7 +361,7 @@
      
     <style name="TweetDateSidebar">
     	<item name="android:layout_marginRight">5dip</item>
-    	<item name="android:textSize">10sp</item>
+    	<item name="android:textSize">@dimen/text_size_small_default</item>
         <item name="android:textColor">?color_tweet_date</item>
      </style>
 
@@ -381,13 +382,13 @@
     </style>
 
     <style name="MyActivityFullName">
-        <item name="android:textSize">16sp</item>
+        <item name="android:textSize">@dimen/text_size_title_default</item>
         <item name="android:textColor">?color_title_general</item>
         <item name="android:textStyle">bold</item>
     </style>
 
     <style name="MyActivityName">
-        <item name="android:textSize">13sp</item>
+        <item name="android:textSize">@dimen/text_size_description_default</item>
         <item name="android:textColor">?color_desc_general</item>
         <item name="android:textStyle">bold</item>
     </style>
@@ -404,7 +405,7 @@
      </style>
 	
     <style name="TextGridSearch">
-        <item name="android:textSize">14sp</item>
+        <item name="android:textSize">@dimen/size_text_tweet</item>
         <item name="android:textColor">?attr/color_grid_search</item>
     </style>
     
@@ -414,29 +415,29 @@
     </style>
 	
     <style name="TextLink">
-        <item name="android:textSize">10sp</item>
+        <item name="android:textSize">@dimen/text_size_small_default</item>
         <item name="android:textColor">?attr/color_link_general</item>
-        <item name="android:layout_marginTop">10dip</item>
-        <item name="android:layout_marginBottom">3dip</item>
+        <item name="android:layout_marginTop">@dimen/default_padding</item>
+        <item name="android:layout_marginBottom">@dimen/default_separation</item>
     </style>
 	
     <style name="TextTitle">
-        <item name="android:textSize">15sp</item>
+        <item name="android:textSize">@dimen/text_size_title_default</item>
         <item name="android:textColor">?attr/color_title_general</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:layout_marginBottom">5dip</item>
+        <item name="android:layout_marginBottom">@dimen/default_separation</item>
     </style>
     
     <style name="TextSubTitle">
-        <item name="android:textSize">10sp</item>
+        <item name="android:textSize">@dimen/text_size_small_default</item>
         <item name="android:textColor">?attr/color_desc_general</item>
-        <item name="android:layout_marginBottom">10dip</item>
+        <item name="android:layout_marginBottom">@dimen/default_padding</item>
     </style>
     
     <style name="TextDescription">
-        <item name="android:textSize">12sp</item>
+        <item name="android:textSize">@dimen/text_size_description_default</item>
         <item name="android:textColor">?attr/color_desc_general</item>
-        <item name="android:layout_marginBottom">10dip</item>
+        <item name="android:layout_marginBottom">@dimen/default_padding</item>
         <item name="android:layout_marginLeft">15dip</item>
     </style>
     
@@ -520,22 +521,22 @@
     </style>
 
     <style name="TitleListBig">
-        <item name="android:textSize">20sp</item>
+        <item name="android:textSize">@dimen/text_size_big_default</item>
         <item name="android:textColor">?color_title_general</item>
     </style>
 
     <style name="TitleListMiddle">
-        <item name="android:textSize">17sp</item>
+        <item name="android:textSize">@dimen/text_size_title_default</item>
         <item name="android:textColor">?color_title_general</item>
     </style>
 
     <style name="TitleListSmall">
-        <item name="android:textSize">13sp</item>
+        <item name="android:textSize">@dimen/text_size_small_default</item>
         <item name="android:textColor">?color_title_general</item>
     </style>
 
     <style name="SubTitleApp">
-        <item name="android:textSize">15sp</item>
+        <item name="android:textSize">@dimen/text_size_subtitle_default</item>
         <item name="android:textColor">?color_title_general</item>
     </style>
     

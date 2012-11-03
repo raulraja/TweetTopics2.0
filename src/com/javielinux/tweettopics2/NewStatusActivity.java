@@ -702,33 +702,6 @@ public class NewStatusActivity extends BaseActivity {
         mDataUsers.addView(v);
     }
 
-    private void addInviteFacebookInLayout() {
-        View v = View.inflate(this, R.layout.users_item_new_status, null);
-
-        ImageView img = (ImageView) v.findViewById(R.id.user_item_avatar);
-        try {
-            img.setImageResource(R.drawable.icon_facebook_large);
-        } catch (Exception e) {
-            e.printStackTrace();
-            img.setImageResource(R.drawable.avatar);
-        }
-
-        ImageView tag_network = (ImageView) v.findViewById(R.id.user_item_tag_network);
-
-        tag_network.setImageBitmap(null);
-
-        /*
-        v.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				Intent newuser = new Intent(NewStatusActivity.this, Users.class);
-				NewStatusActivity.this.startActivityForResult(newuser, ACTIVITY_USER);
-			}
-        });
-        */
-        mDataUsers.addView(v);
-    }
-
     private void loadUsers(long userStart) {
         mUsers.clear();
         List<Entity> ents = DataFramework.getInstance().getEntityList("users");
@@ -760,19 +733,9 @@ public class NewStatusActivity extends BaseActivity {
                 }
             }
         } else {
-            if (Utils.isLite(this)) {
-                addUserInLayout(mUsers.get(0));
-                if (mUsers.size() > 1) {
-                    addUserInLayout(mUsers.get(1));
-                } else {
-                    addInviteFacebookInLayout();
-                }
-            } else {
-                for (UserStatus user : mUsers) {
-                    addUserInLayout(user);
-                }
+            for (UserStatus user : mUsers) {
+                addUserInLayout(user);
             }
-
         }
 
     }

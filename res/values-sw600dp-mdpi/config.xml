@@ -1,0 +1,5 @@
+<resources>
+    <!-- General -->
+    <integer name="columns_search_my_activity">5</integer>
+
+</resources>

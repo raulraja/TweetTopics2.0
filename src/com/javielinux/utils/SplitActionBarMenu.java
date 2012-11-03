@@ -3,7 +3,6 @@ package com.javielinux.utils;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.support.v4.app.FragmentActivity;
-import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.HorizontalScrollView;
@@ -140,14 +139,10 @@ public class SplitActionBarMenu {
 
             final InfoSubMenuTweet infoSubMenuTweet = new InfoSubMenuTweet(activity, code);
             ImageButton imageButton = new ImageButton(activity);
-            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, 0.0f);
-            layoutParams.gravity = Gravity.CENTER;
-            layoutParams.height = LinearLayout.LayoutParams.WRAP_CONTENT;
-            layoutParams.setMargins(25, 0, 25, 0);
-            layoutParams.width = LinearLayout.LayoutParams.WRAP_CONTENT;
-
-            imageButton.setLayoutParams(layoutParams);
-            imageButton.setBackgroundResource(infoSubMenuTweet.getResDrawable());
+            imageButton.setBackgroundResource(R.drawable.default_background);
+            int padding = (int) activity.getResources().getDimension(R.dimen.default_padding);
+            imageButton.setPadding(padding, padding, padding, padding);
+            imageButton.setImageResource(infoSubMenuTweet.getResDrawable());
             imageButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

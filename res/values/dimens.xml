@@ -36,6 +36,14 @@
     <dimen name="text_size_title_tab">12sp</dimen>
     <dimen name="text_size_title_counter">14sp</dimen>
 
+    <dimen name="text_size_title_default">16sp</dimen>
+    <dimen name="text_size_subtitle_default">15sp</dimen>
+    <dimen name="text_size_big_default">18sp</dimen>
+    <dimen name="text_size_small_default">10sp</dimen>
+    <dimen name="text_size_description_default">13sp</dimen>
+
+    <dimen name="text_size_tweet_sidebar">13sp</dimen>
+
     <dimen name="size_avatar_default">48dp</dimen>
     <dimen name="size_avatar_big">60dp</dimen>
     <dimen name="size_avatar_medium">36dp</dimen>
