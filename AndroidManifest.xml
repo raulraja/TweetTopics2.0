@@ -33,7 +33,7 @@
 		<activity android:name="com.javielinux.preferences.TweetProgrammed" android:theme="@android:style/Theme.Holo" />
 		<activity android:name="com.javielinux.preferences.NewEditTweetProgrammed" android:theme="@android:style/Theme.Holo" />
 		<activity android:name="com.javielinux.preferences.ColorsApp" android:theme="@android:style/Theme.Holo" />
-		<activity android:name="ShowImage" android:theme="@style/Theme.TwitterBlack.Translucent" />
+		<activity android:name=".ShowImageActivity" android:theme="@style/Theme.TwitterBlack.Translucent" />
 		<activity android:name="QRCode" />
 		<activity android:name="AdjustImage" />
 		<activity android:name="com.javielinux.preferences.SubMenuTweet" android:theme="@android:style/Theme.Holo" />

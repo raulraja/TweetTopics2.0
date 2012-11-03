@@ -18,6 +18,7 @@ import com.javielinux.preferences.Colors;
 import com.javielinux.tweettopics2.NewStatusActivity;
 import com.javielinux.tweettopics2.R;
 import com.javielinux.tweettopics2.SearchActivity;
+import com.javielinux.tweettopics2.ShowImageActivity;
 import com.javielinux.twitter.ConnectionManager;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
@@ -83,11 +84,17 @@ public class UserActions {
         } else if (code.equals(USER_ACTION_SEND_DIRECT)) {
             goToDirect(activity, fromUser, infoUsers);
         } else if (code.equals(USER_ACTION_VIEW_PHOTO_PROFILE)) {
-            // TODO ver foto
+            goToImageProfile(activity, infoUsers);
         } else if (code.equals(USER_ACTION_CHANGE_RELATIONSHIP)) {
             return goToChangeRelationship(activity, infoUsers, (InfoUsers.Friend)extra);
         }
         return null;
+    }
+
+    public static void goToImageProfile(FragmentActivity activity, InfoUsers infoUsers) {
+        Intent showImage = new Intent(activity, ShowImageActivity.class);
+        showImage.putExtra(ShowImageActivity.KEY_EXTRA_URL_IMAGE, infoUsers.getURLAvatar(InfoUsers.SIZE_ORIGINAL));
+        activity.startActivity(showImage);
     }
 
     public static void goToDirect(FragmentActivity activity, long fromUser, InfoUsers infoUsers) {

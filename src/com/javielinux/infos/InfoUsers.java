@@ -164,10 +164,6 @@ public class InfoUsers {
 	public String getUrlAvatar() {
 		return urlAvatar;
 	}
-	
-	public String getBigUrlAvatar() {
-		return urlAvatar.replace("_normal", "").replace("JPG", "jpg");
-	}
 
     public HashMap<String, Friend> getFriendly() {
         return friendly;
