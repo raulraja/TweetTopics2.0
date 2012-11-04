@@ -220,12 +220,14 @@ public class MyActivityAdapter extends BaseAdapter {
                     }
                 });
 
+                int sizeFontNumber = (int)context.getResources().getDimension(R.dimen.size_number_circle_default);
+
                 ImageView imgCounterTimeline = (ImageView) v.findViewById(R.id.my_activity_counter_timeline);
                 int totalTimeline = DataFramework.getInstance().getEntityListCount("tweets_user", "type_id = " + TweetTopicsUtils.TWEET_TYPE_TIMELINE
                         + " AND user_tt_id=" + item.getId() + " AND tweet_id >'" + Utils.fillZeros("" + item.getString("last_timeline_id")) + "'");
                 if (totalTimeline > 0) {
                     imgCounterTimeline.setVisibility(View.VISIBLE);
-                    imgCounterTimeline.setImageBitmap(ImageUtils.getBitmapNumber(context, totalTimeline, Color.RED, Utils.TYPE_RECTANGLE, 11));
+                    imgCounterTimeline.setImageBitmap(ImageUtils.getBitmapNumber(context, totalTimeline, Color.RED, Utils.TYPE_RECTANGLE, sizeFontNumber));
                 } else {
                     imgCounterTimeline.setVisibility(View.GONE);
                 }
@@ -244,7 +246,7 @@ public class MyActivityAdapter extends BaseAdapter {
                         + " AND user_tt_id=" + item.getId() + " AND tweet_id >'" + Utils.fillZeros("" + item.getString("last_mention_id")) + "'");
                 if (totalMentions > 0) {
                     imgCounterMentions.setVisibility(View.VISIBLE);
-                    imgCounterMentions.setImageBitmap(ImageUtils.getBitmapNumber(context, totalMentions, Color.RED, Utils.TYPE_RECTANGLE, 11));
+                    imgCounterMentions.setImageBitmap(ImageUtils.getBitmapNumber(context, totalMentions, Color.RED, Utils.TYPE_RECTANGLE, sizeFontNumber));
                 } else {
                     imgCounterMentions.setVisibility(View.GONE);
                 }
@@ -263,7 +265,7 @@ public class MyActivityAdapter extends BaseAdapter {
                         + " AND user_tt_id=" + item.getId() + " AND tweet_id >'" + Utils.fillZeros("" + item.getString("last_direct_id")) + "'");
                 if (totalDirectMessages > 0) {
                     imgCounterDirectMessages.setVisibility(View.VISIBLE);
-                    imgCounterDirectMessages.setImageBitmap(ImageUtils.getBitmapNumber(context, totalDirectMessages, Color.RED, Utils.TYPE_RECTANGLE, 11));
+                    imgCounterDirectMessages.setImageBitmap(ImageUtils.getBitmapNumber(context, totalDirectMessages, Color.RED, Utils.TYPE_RECTANGLE, sizeFontNumber));
                 } else {
                     imgCounterDirectMessages.setVisibility(View.GONE);
                 }

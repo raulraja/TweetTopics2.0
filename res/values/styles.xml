@@ -405,7 +405,7 @@
      </style>
 	
     <style name="TextGridSearch">
-        <item name="android:textSize">@dimen/size_text_tweet</item>
+        <item name="android:textSize">@dimen/text_size_description_default</item>
         <item name="android:textColor">?attr/color_grid_search</item>
     </style>
     

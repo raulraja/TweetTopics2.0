@@ -667,8 +667,8 @@ public class TweetTopicsActivity extends BaseLayersActivity implements PopupLink
         for (int i = 0; i < fragmentAdapter.getFragmentList().size(); i++) {
 
             Button button = new Button(this);
-            button.setPadding(0, 13, 0, 0);
-            button.setTextSize(11);
+            button.setPadding(0, (int)getResources().getDimension(R.dimen.default_padding), 0, 0);
+            button.setTextSize(getResources().getDimension(R.dimen.text_size_horizontal_buttons));
             button.setCompoundDrawablePadding(2);
             button.setTextColor(themeManager.getColor("color_button_bar_title_column"));
 

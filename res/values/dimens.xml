@@ -41,19 +41,31 @@
     <dimen name="text_size_big_default">18sp</dimen>
     <dimen name="text_size_small_default">10sp</dimen>
     <dimen name="text_size_description_default">13sp</dimen>
+    <dimen name="size_number_circle_default">11px</dimen> <!-- No usar de forma general -->
 
-    <dimen name="text_size_tweet_sidebar">13sp</dimen>
+    <!-- Sidebar -->
+    <dimen name="text_size_tweet_sidebar">15sp</dimen>
 
+    <!-- Horizontal slide buttons -->
+    <dimen name="size_number_circle_horizontal_buttons">14px</dimen> <!-- No usar de forma general -->
+    <dimen name="text_size_horizontal_buttons">11px</dimen> <!-- No usar de forma general -->
+
+    <!-- Tweet -->
+    <dimen name="size_text_tweet">14px</dimen> <!-- No usar de forma general -->
+    <dimen name="size_header_tweet">13px</dimen> <!-- No usar de forma general -->
+    <dimen name="size_image_tweet_width">29dp</dimen>
+    <dimen name="size_image_tweet_height">27dp</dimen>
+    <dimen name="size_separate_retweet">65dp</dimen>
+
+    <!-- Size avatar -->
     <dimen name="size_avatar_default">48dp</dimen>
     <dimen name="size_avatar_big">60dp</dimen>
     <dimen name="size_avatar_medium">36dp</dimen>
     <dimen name="size_avatar_small">30dp</dimen>
 
-    <!-- Tweet -->
-    <dimen name="size_text_tweet">14px</dimen>
-    <dimen name="size_header_tweet">13px</dimen>
-    <dimen name="size_image_tweet_width">29dp</dimen>
-    <dimen name="size_image_tweet_height">27dp</dimen>
-    <dimen name="size_separate_retweet">65dp</dimen>
+    <dimen name="size_avatar_small">30px</dimen> <!-- No usar de forma general -->
+    <dimen name="size_avatar_medium">36px</dimen> <!-- No usar de forma general -->
+    <dimen name="size_avatar_large">48px</dimen> <!-- No usar de forma general -->
+    <dimen name="size_avatar_xlarge">54px</dimen> <!-- No usar de forma general -->
 
 </resources>

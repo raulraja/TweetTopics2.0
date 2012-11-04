@@ -70,12 +70,10 @@ public class ImageUtils {
         mDrawable.setGradientRadius((float) (Math.sqrt(2) * 60));
         if (colorLine != 0 && !stroke && Utils.getPreference(cnt).getBoolean("prf_use_no_read", true)) {
             Drawable[] d = new Drawable[2];
-            d[0] = new InsetDrawable(new ColorDrawable(colorLine), 4, 0, 0, 0);
-            Rect bounds = new Rect();
-            bounds.left = 4;
-            mDrawable.setBounds(bounds);
+            d[0] = new ColorDrawable(colorLine);
             d[1] = mDrawable;
             LayerDrawable layer = new LayerDrawable(d);
+            layer.setLayerInset(1, 4, 0, 0, 0);
             return layer;
         } else {
             return mDrawable;
@@ -107,7 +105,7 @@ public class ImageUtils {
     static public Bitmap createBitmapSelectedAvatar(long id, int size) {
 
         int border = 4;
-        int sizeAvatar = size - (border*2);
+        int sizeAvatar = size - (border * 2);
 
         Bitmap avatar = getBitmapAvatar(id, sizeAvatar);
         Bitmap bmp = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888);
@@ -117,9 +115,9 @@ public class ImageUtils {
             paint.setAntiAlias(true);
             paint.setShader(new LinearGradient(0, 0, 0, 22, 0xff94c147, 0xff658729, Shader.TileMode.CLAMP));
 
-            avatar = getRoundedCornerBitmap(avatar, size/2);
+            avatar = getRoundedCornerBitmap(avatar, size / 2);
             Canvas canvas = new Canvas(bmp);
-            canvas.drawCircle(size/2, size/2, size/2, paint);
+            canvas.drawCircle(size / 2, size / 2, size / 2, paint);
             canvas.drawBitmap(avatar, border, border, null);
         }
 
@@ -129,7 +127,7 @@ public class ImageUtils {
     static public Bitmap createBitmapUnselectedAvatar(long id, int size) {
 
         int border = 4;
-        int sizeAvatar = size - (border*2);
+        int sizeAvatar = size - (border * 2);
 
         Bitmap avatar = toGrayscale(getBitmapAvatar(id, sizeAvatar));
         Bitmap bmp = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888);
@@ -139,9 +137,9 @@ public class ImageUtils {
             paint.setAntiAlias(true);
             paint.setShader(new LinearGradient(0, 0, 0, 22, 0xffb72121, 0xffe82f2f, Shader.TileMode.CLAMP));
 
-            avatar = getRoundedCornerBitmap(avatar, size/2);
+            avatar = getRoundedCornerBitmap(avatar, size / 2);
             Canvas canvas = new Canvas(bmp);
-            canvas.drawCircle(size/2, size/2, size/2, paint);
+            canvas.drawCircle(size / 2, size / 2, size / 2, paint);
             canvas.drawBitmap(avatar, border, border, null);
         }
 
@@ -251,10 +249,10 @@ public class ImageUtils {
                 float height = paintText.descent() - paintText.ascent();
 
                 int size = (int) ((width > height) ? width : height) + 7;
-                int offset = (int)((size > bitmap_height)? 0 : (bitmap_height - size));
+                int offset = (int) ((size > bitmap_height) ? 0 : (bitmap_height - size));
                 int radius = (size - 2) / 2;
                 //int center = size / 2;
-                int center = (int)(size + offset) / 2;
+                int center = (int) (size + offset) / 2;
                 int ytext = center + (int) paintText.descent() + 2;
 
                 //Bitmap bmp = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888);
@@ -274,9 +272,9 @@ public class ImageUtils {
                 int hBox = (int) height + 4;
                 int hBoxFinal = hBox;
 
-                int offset = (int)((hBoxFinal > bitmap_height)? 0 : (bitmap_height - hBoxFinal));
+                int offset = (int) ((hBoxFinal > bitmap_height) ? 0 : (bitmap_height - hBoxFinal));
 
-                int ytext = (offset / 2 ) + (hBox / 2) + (int) paintText.descent() + 2;
+                int ytext = (offset / 2) + (hBox / 2) + (int) paintText.descent() + 2;
                 int center = wBox / 2;
                 //int ytext = (hBox / 2) + (int) paintText.descent() + 2;
                 //RectF boxRect = new RectF(1, 1, wBox - 1, hBox - 1);
@@ -285,7 +283,7 @@ public class ImageUtils {
                 Path pathFill = new Path();
                 pathFill.addRoundRect(boxRect, 7, 7, Path.Direction.CCW);
                 if (type == Utils.TYPE_BUBBLE) {
-                    pathFill.moveTo(7,(offset / 2) +  hBox - 2);
+                    pathFill.moveTo(7, (offset / 2) + hBox - 2);
                     pathFill.lineTo(7, (offset / 2) + hBox + 4);
                     pathFill.lineTo(12, (offset / 2) + hBox - 2);
                     hBoxFinal = hBox + 6;
@@ -358,9 +356,9 @@ public class ImageUtils {
                 int size = (int) ((width > height) ? width : height) + 7;
                 Bitmap bmp = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888);
                 Canvas c = new Canvas(bmp);
-                RectF boxRect = new RectF(0,0,size,size);
+                RectF boxRect = new RectF(0, 0, size, size);
                 c.drawRoundRect(boxRect, 5, 5, paintStroke);
-                boxRect = new RectF(1,1,size-1,size-1);
+                boxRect = new RectF(1, 1, size - 1, size - 1);
                 c.drawRoundRect(boxRect, 5, 5, paintFill);
                 return bmp;
             }

@@ -95,17 +95,18 @@ public class TweetTopicsFragmentAdapter extends FragmentPagerAdapter {
             int column_type = fragmentList.get(position).getInt("type_id");
             int tweets_count = 0;
             Bitmap bitmap = null;
-
+            int size = (int)context.getResources().getDimension(R.dimen.size_avatar_large);
+            int sizeNumber = (int)context.getResources().getDimension(R.dimen.size_number_circle_horizontal_buttons);
             switch (column_type) {
                 case TweetTopicsUtils.COLUMN_TIMELINE:
                 case TweetTopicsUtils.COLUMN_MENTIONS:
                 case TweetTopicsUtils.COLUMN_DIRECT_MESSAGES:
                     tweets_count = DBUtils.getUnreadTweetsUser(column_type, fragmentList.get(position).getEntity("user_id").getId());
-                    bitmap = ImageUtils.getBitmapAvatar(fragmentList.get(position).getEntity("user_id").getId(), Utils.AVATAR_LARGE);
+                    bitmap = ImageUtils.getBitmapAvatar(fragmentList.get(position).getEntity("user_id").getId(), size);
                     if (tweets_count > 0) {
                         Paint paint = new Paint();
                         paint.setAntiAlias(true);
-                        Bitmap number = ImageUtils.getBitmapNumber(context, tweets_count, Color.RED, Utils.TYPE_RECTANGLE, 14, Utils.AVATAR_LARGE / 2);
+                        Bitmap number = ImageUtils.getBitmapNumber(context, tweets_count, Color.RED, Utils.TYPE_RECTANGLE, sizeNumber, size / 2);
                         Bitmap newBitmap = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), Bitmap.Config.ARGB_8888);
                         Canvas canvas = new Canvas(newBitmap);
                         canvas.drawBitmap(bitmap, 0, 0, paint);
@@ -119,7 +120,7 @@ public class TweetTopicsFragmentAdapter extends FragmentPagerAdapter {
                 case TweetTopicsUtils.COLUMN_FOLLOWERS:
                 case TweetTopicsUtils.COLUMN_FOLLOWINGS:
                 case TweetTopicsUtils.COLUMN_FAVORITES:
-                    return ImageUtils.getBitmapAvatar(fragmentList.get(position).getEntity("user_id").getId(), Utils.AVATAR_LARGE);
+                    return ImageUtils.getBitmapAvatar(fragmentList.get(position).getEntity("user_id").getId(), size);
                 case TweetTopicsUtils.COLUMN_SEARCH:
                     Entity searchEntity = new Entity("search", fragmentList.get(position).getLong("search_id"));
 
@@ -132,7 +133,7 @@ public class TweetTopicsFragmentAdapter extends FragmentPagerAdapter {
                     if (tweets_count > 0) {
                         Paint paint = new Paint();
                         paint.setAntiAlias(true);
-                        Bitmap number = ImageUtils.getBitmapNumber(context, tweets_count, Color.RED, Utils.TYPE_RECTANGLE, 14, Utils.AVATAR_LARGE / 2);
+                        Bitmap number = ImageUtils.getBitmapNumber(context, tweets_count, Color.RED, Utils.TYPE_RECTANGLE, sizeNumber, size / 2);
                         Bitmap newBitmap = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), Bitmap.Config.ARGB_8888);
                         Canvas canvas = new Canvas(newBitmap);
                         canvas.drawBitmap(bitmap, 0, 0, paint);
