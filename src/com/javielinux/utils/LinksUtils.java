@@ -178,7 +178,7 @@ public class LinksUtils {
     			user = PreferenceUtils.getUsernameBitly(context);
         		key = PreferenceUtils.getKeyBitly(context);
     		}
-    		String url = "http://com.javielinux.api.bit.ly/v3/shorten?login="+user+"&apiKey="+key+"&format=json&longUrl=" + URLEncoder.encode(link);
+    		String url = "http://api.bit.ly/v3/shorten?login="+user+"&apiKey="+key+"&format=json&longUrl=" + URLEncoder.encode(link);
 
     		HttpGet request = new HttpGet(url);
     		HttpClient client = new DefaultHttpClient();
@@ -195,11 +195,11 @@ public class LinksUtils {
     		}
 
     	} else { // karmacracy
-    		// http://kcy.me/com.javielinux.api/?u=javielinux&key=nyk1tjr20x&format=json&url=http://www.javielinux.com
+    		// http://kcy.me/api/?u=javielinux&key=nyk1tjr20x&format=json&url=http://www.javielinux.com
     		String user = PreferenceUtils.getUsernameKarmacracy(context);
     		String key = PreferenceUtils.getKeyKarmacracy(context);
 
-    		String url = "http://kcy.me/com.javielinux.api/?u="+user+"&key="+key+"&format=json&url=" + URLEncoder.encode(link);
+    		String url = "http://kcy.me/api/?u="+user+"&key="+key+"&format=json&url=" + URLEncoder.encode(link);
 
     		HttpGet request = new HttpGet(url);
     		HttpClient client = new DefaultHttpClient();
@@ -247,7 +247,7 @@ public class LinksUtils {
 				|| (link.contains("ow.ly")) || (link.contains("ff.im")) || (link.contains("post.ly"))
 				|| (link.contains("j.mp")) || (link.contains("t.co")) ) {
 
-			String url = "http://www.longurlplease.com/com.javielinux.api/v1.1?q=" + link;
+			String url = "http://www.longurlplease.com/api/v1.1?q=" + link;
 
 			HttpGet request = new HttpGet(url);
 			HttpClient client = new DefaultHttpClient();
@@ -290,10 +290,10 @@ public class LinksUtils {
 		}
 
 		if (link.contains("kcy.me")) {
-			//http://karmacracy.com/com.javielinux.api/v1/kcy/2e10?appkey=tweet!t0pic
+			//http://karmacracy.com/api/v1/kcy/2e10?appkey=tweet!t0pic
 			try {
 				String id = link.substring(link.lastIndexOf("/")+1);
-				String url = "http://karmacracy.com/com.javielinux.api/v1/kcy/"+id+"?appkey=tweet!t0pic";
+				String url = "http://karmacracy.com/api/v1/kcy/"+id+"?appkey=tweet!t0pic";
 
 				HttpGet request = new HttpGet(url);
 				HttpClient client = new DefaultHttpClient();
@@ -318,7 +318,7 @@ public class LinksUtils {
 		if (!done) {
 
 			try {
-				String url = "http://www.longurlplease.com/com.javielinux.api/v1.1?q=" + link;
+				String url = "http://www.longurlplease.com/api/v1.1?q=" + link;
 				HttpGet request = new HttpGet(url);
 				HttpClient client = new DefaultHttpClient();
 				HttpResponse httpResponse;
@@ -645,7 +645,7 @@ public class LinksUtils {
             String idbase58 = link.substring(link.lastIndexOf("/")+1);
             String id = String.valueOf(alphaToNumber(idbase58));
 
-            String urlApi = "http://com.javielinux.api.flickr.com/services/rest/?method=flickr.photos.getInfo&api_key=6ce2af123df7dd2a7dab086f086e9824&photo_id="+id+"&format=json&nojsoncallback=1";
+            String urlApi = "http://api.flickr.com/services/rest/?method=flickr.photos.getInfo&api_key=6ce2af123df7dd2a7dab086f086e9824&photo_id="+id+"&format=json&nojsoncallback=1";
 
             Log.d(Utils.TAG, "urlApi: (" + link + ") " + urlApi);
 
@@ -786,7 +786,7 @@ public class LinksUtils {
 
         if (link.contains("plixi") || link.contains("lockerz")) {
 
-            String strURL = "http://com.javielinux.api.plixi.com/com.javielinux.api/tpapi.svc/metadatafromurl?url=" + link;
+            String strURL = "http://api.plixi.com/api/tpapi.svc/metadatafromurl?url=" + link;
             try {
                 Document doc = null;
                 try {
@@ -831,7 +831,7 @@ public class LinksUtils {
 
         if (link.contains("twitgoo")) {
             String id = link.substring(link.lastIndexOf("/")+1);
-            String strURL = "http://twitgoo.com/com.javielinux.api/message/info/" + id;
+            String strURL = "http://twitgoo.com/api/message/info/" + id;
             Document doc = null;
             try {
                 URL url;
@@ -871,7 +871,7 @@ public class LinksUtils {
 
         if (link.contains("vimeo")) {
             String id = link.substring(link.lastIndexOf("/")+1);
-            String strURL = "http://vimeo.com/com.javielinux.api/v2/video/"+id+".xml";
+            String strURL = "http://vimeo.com/api/v2/video/"+id+".xml";
 
             Document doc = null;
             try {
@@ -931,7 +931,7 @@ public class LinksUtils {
             String imgThumb = "http://img.youtube.com/vi/"+id+"/2.jpg";
             String imgLarge = "http://img.youtube.com/vi/"+id+"/0.jpg";
 
-            String strURL = "http://gdata.youtube.com/feeds/com.javielinux.api/videos/"+id;
+            String strURL = "http://gdata.youtube.com/feeds/api/videos/"+id;
 
             Document doc = null;
             try {

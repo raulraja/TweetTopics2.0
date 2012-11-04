@@ -149,6 +149,11 @@ public class SearchFragment extends BaseListFragment implements APIDelegate<Base
     }
 
     public void reload() {
+        if (infoTweets.size() <= 0) {
+            showLoading();
+        } else {
+            showUpdating();
+        }
         Log.d(Utils.TAG, "reloadSearch : " + search_entity.getId());
 
         SearchRequest searchRequest = new SearchRequest(search_entity);
@@ -380,6 +385,7 @@ public class SearchFragment extends BaseListFragment implements APIDelegate<Base
                 public void run() {
 
                     try {
+                        tweetsAdapter.setLastReadPosition(positionLastRead);
                         long id = tweetsAdapter.getItem(positionLastRead).getId();
                         if (search_entity != null) {
                             search_entity.setValue("last_tweet_id", id + "");

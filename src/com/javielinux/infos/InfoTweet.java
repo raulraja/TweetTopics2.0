@@ -64,10 +64,25 @@ public class InfoTweet implements Parcelable {
     private int linksCount = 0;
 	
 	public InfoTweet(Tweet tweet) {
-		writeTweet(tweet);
-	}
-	
-	private void writeTweet(Tweet tweet) {
+        urls = new ArrayList<URLContent>();
+//        if (tweet.getURLEntities()!=null) {
+//            for (URLEntity urlEntity : tweet.getURLEntities()) {
+//                URLContent urlContent = new URLContent();
+//                urlContent.normal = urlEntity.getURL().toString();
+//                urlContent.display = urlEntity.getDisplayURL();
+//                urlContent.expanded = urlEntity.getExpandedURL().toString();
+//            }
+//        }
+//        if (tweet.getMediaEntities()!=null) {
+//            for (MediaEntity mediaEntity : tweet.getMediaEntities()) {
+//                URLContent urlContent = new URLContent();
+//                urlContent.normal = mediaEntity.getURL().toString();
+//                urlContent.display = mediaEntity.getDisplayURL();
+//                urlContent.expanded = mediaEntity.getExpandedURL().toString();
+//                urlContent.linkMediaThumb = mediaEntity.getMediaURL().toString() + ":thumb";
+//                urlContent.linkMediaLarge = mediaEntity.getMediaURL().toString() + ":medium";
+//            }
+//        }
 		mTypeFrom = FROM_TWEETS;
 		id = tweet.getId();
 		urlAvatar = tweet.getProfileImageUrl();
@@ -89,10 +104,7 @@ public class InfoTweet implements Parcelable {
 	}
 	
 	public InfoTweet(Status status) {
-		writeStatus(status);
-	}
-	
-	private void writeStatus(Status status) {
+        urls = new ArrayList<URLContent>();
 		mTypeFrom = FROM_STATUS;
 		id = status.getId();
 		urlAvatar = status.getUser().getProfileImageURL().toString();
@@ -125,10 +137,6 @@ public class InfoTweet implements Parcelable {
 	}
 
 	public InfoTweet(Entity entity) {
-		writeEntity(entity);
-	}
-	
-	private void writeEntity(Entity entity) {
 		if (entity.getTable().equals("tweets")) {
 			mTypeFrom = FROM_TWEETS;
         } else if (entity.getTable().equals("saved_tweets")) {
@@ -172,10 +180,7 @@ public class InfoTweet implements Parcelable {
 	}
 	
 	public InfoTweet(User user) {
-		writeUser(user);
-	}
-	
-	private void writeUser(User user) {
+        urls = new ArrayList<URLContent>();
 		mTypeFrom = FROM_USER;
 
 		urlAvatar = user.getProfileImageURL().toString();

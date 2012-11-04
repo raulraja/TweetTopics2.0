@@ -1115,7 +1115,7 @@ public class Utils {
 
         try {
             if (text.startsWith("http://bit.ly")) {
-                String url = "http://www.longurlplease.com/com.javielinux.api/v1.1?q=" + text;
+                String url = "http://www.longurlplease.com/api/v1.1?q=" + text;
 
                 HttpGet request = new HttpGet(url);
                 HttpClient client = new DefaultHttpClient();

@@ -1,6 +1,6 @@
 <resources>
     <!-- General -->
-    <string name="package_verified_premium">com.javielinux.marcagol</string>
+    <string name="package_verified_premium">com.javielinux.tweettopics.pro</string>
     <string name="version">2.0</string>
     <integer name="columns_search_my_activity">3</integer>
 

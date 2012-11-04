@@ -93,98 +93,99 @@ public class TweetActivity extends BaseLayersActivity implements APIDelegate<Bas
         if (infoTweet==null) {
             Utils.showMessage(this, R.string.error_general);
             finish();
-        }
-
-        setContentView(R.layout.tweet_activity);
-
-        imgAvatar = ((ImageView)findViewById(R.id.tweet_avatar));
-        imgAvatar.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                goToLink("@"+(infoTweet.isRetweet()?infoTweet.getUsernameRetweet():infoTweet.getUsername()));
-            }
-
-        });
-
-        String urlAvatar = infoTweet.getUrlAvatar();
-        String name = infoTweet.getUsername();
-        String fullname = infoTweet.getFullname();
-        if (infoTweet.isRetweet()) {
-            name = infoTweet.getUsernameRetweet();
-            urlAvatar = infoTweet.getUrlAvatarRetweet();
-            fullname = infoTweet.getFullnameRetweet();
-        }
-
-        File file = Utils.getFileForSaveURL(this, urlAvatar);
-        if (file.exists()) {
-            imgAvatar.setImageBitmap(BitmapFactory.decodeFile(file.getAbsolutePath()));
         } else {
-            APITweetTopics.execute(this, getSupportLoaderManager(), new APIDelegate<LoadImageWidgetResponse>() {
-                @Override
-                public void onResults(LoadImageWidgetResponse result) {
-                    try {
-                        imgAvatar.setImageBitmap(result.getBitmap());
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
+
+            setContentView(R.layout.tweet_activity);
+
+            imgAvatar = ((ImageView)findViewById(R.id.tweet_avatar));
+            imgAvatar.setOnClickListener(new View.OnClickListener() {
 
                 @Override
-                public void onError(ErrorResponse error) {
+                public void onClick(View v) {
+                    goToLink("@"+(infoTweet.isRetweet()?infoTweet.getUsernameRetweet():infoTweet.getUsername()));
                 }
-            }, new LoadImageWidgetRequest(urlAvatar));
 
-        }
+            });
 
-        txtUsername = ((TextView)findViewById(R.id.tweet_username));
-        txtUsername.setText( name + ((fullname.equals(""))?"":" (" + fullname + ")") );
-
-        txtDate = ((TextView)findViewById(R.id.tweet_date));
-        txtDate.setText(Utils.timeFromTweetExtended(this, infoTweet.getDate()));
-
-        txtText = ((TextView)findViewById(R.id.tweet_text));
-        String html = infoTweet.getTextHTMLFinal();
-        if (html.equals("")) html = Utils.toHTML(this, infoTweet.getText());
-        txtText.setText(Html.fromHtml(html));
-
-        fragmentAdapter = new TweetFragmentAdapter(this, getSupportFragmentManager(), infoTweet);
-
-        pager = (ViewPager)findViewById(R.id.tweet_pager);
-        pager.setAdapter(fragmentAdapter);
-
-        indicator = (TabPageIndicator)findViewById(R.id.tweet_indicator);
-        indicator.setViewPager(pager);
-
-        (findViewById(R.id.tweet_btn_favorite)).setOnClickListener(clickFavorite);
-        (findViewById(R.id.tweet_btn_reply)).setOnClickListener(clickReply);
-        (findViewById(R.id.tweet_btn_retweet)).setOnClickListener(clickRetweet);
-        (findViewById(R.id.tweet_btn_translate)).setOnClickListener(clickTranslate);
-        (findViewById(R.id.tweet_btn_translate)).setOnLongClickListener(longClickTranslate);
-        (findViewById(R.id.tweet_btn_original_tweet)).setOnClickListener(clickOriginalTweet);
-        (findViewById(R.id.tweet_btn_more)).setOnClickListener(clickMore);
-
-        llRoot = (FrameLayout)findViewById(R.id.tweet_ll);
-        tweetInfoLayout = (LinearLayout)findViewById(R.id.tweet_info_ll);
-        zoom_image = (ImageViewZoomTouch )findViewById(R.id.zoom_image);
-        tweetContent = (RelativeLayout)findViewById(R.id.tweet_content);
-        tweetActionsContainer = (LinearLayout)findViewById(R.id.tweet_actions_container);
-        viewLoading = (LinearLayout)findViewById(R.id.tweet_text_loading);
-
-        tweetContent.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (image_preview_displayed)
-                    zoomOutImage();
+            String urlAvatar = infoTweet.getUrlAvatar();
+            String name = infoTweet.getUsername();
+            String fullname = infoTweet.getFullname();
+            if (infoTweet.isRetweet()) {
+                name = infoTweet.getUsernameRetweet();
+                urlAvatar = infoTweet.getUrlAvatarRetweet();
+                fullname = infoTweet.getFullnameRetweet();
             }
-        });
-        popupLinks = new PopupLinks(this);
-        popupLinks.loadPopup(llRoot);
 
-        splitActionBarMenu = new SplitActionBarMenu(this);
-        splitActionBarMenu.loadSplitActionBarMenu(llRoot);
+            File file = Utils.getFileForSaveURL(this, urlAvatar);
+            if (file.exists()) {
+                imgAvatar.setImageBitmap(BitmapFactory.decodeFile(file.getAbsolutePath()));
+            } else {
+                APITweetTopics.execute(this, getSupportLoaderManager(), new APIDelegate<LoadImageWidgetResponse>() {
+                    @Override
+                    public void onResults(LoadImageWidgetResponse result) {
+                        try {
+                            imgAvatar.setImageBitmap(result.getBitmap());
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
 
-        refreshTheme();
+                    @Override
+                    public void onError(ErrorResponse error) {
+                    }
+                }, new LoadImageWidgetRequest(urlAvatar));
+
+            }
+
+            txtUsername = ((TextView)findViewById(R.id.tweet_username));
+            txtUsername.setText( name + ((fullname.equals(""))?"":" (" + fullname + ")") );
+
+            txtDate = ((TextView)findViewById(R.id.tweet_date));
+            txtDate.setText(Utils.timeFromTweetExtended(this, infoTweet.getDate()));
+
+            txtText = ((TextView)findViewById(R.id.tweet_text));
+            String html = infoTweet.getTextHTMLFinal();
+            if (html.equals("")) html = Utils.toHTML(this, infoTweet.getText());
+            txtText.setText(Html.fromHtml(html));
+
+            fragmentAdapter = new TweetFragmentAdapter(this, getSupportFragmentManager(), infoTweet);
+
+            pager = (ViewPager)findViewById(R.id.tweet_pager);
+            pager.setAdapter(fragmentAdapter);
+
+            indicator = (TabPageIndicator)findViewById(R.id.tweet_indicator);
+            indicator.setViewPager(pager);
+
+            (findViewById(R.id.tweet_btn_favorite)).setOnClickListener(clickFavorite);
+            (findViewById(R.id.tweet_btn_reply)).setOnClickListener(clickReply);
+            (findViewById(R.id.tweet_btn_retweet)).setOnClickListener(clickRetweet);
+            (findViewById(R.id.tweet_btn_translate)).setOnClickListener(clickTranslate);
+            (findViewById(R.id.tweet_btn_translate)).setOnLongClickListener(longClickTranslate);
+            (findViewById(R.id.tweet_btn_original_tweet)).setOnClickListener(clickOriginalTweet);
+            (findViewById(R.id.tweet_btn_more)).setOnClickListener(clickMore);
+
+            llRoot = (FrameLayout)findViewById(R.id.tweet_ll);
+            tweetInfoLayout = (LinearLayout)findViewById(R.id.tweet_info_ll);
+            zoom_image = (ImageViewZoomTouch )findViewById(R.id.zoom_image);
+            tweetContent = (RelativeLayout)findViewById(R.id.tweet_content);
+            tweetActionsContainer = (LinearLayout)findViewById(R.id.tweet_actions_container);
+            viewLoading = (LinearLayout)findViewById(R.id.tweet_text_loading);
+
+            tweetContent.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (image_preview_displayed)
+                        zoomOutImage();
+                }
+            });
+            popupLinks = new PopupLinks(this);
+            popupLinks.loadPopup(llRoot);
+
+            splitActionBarMenu = new SplitActionBarMenu(this);
+            splitActionBarMenu.loadSplitActionBarMenu(llRoot);
+
+            refreshTheme();
+        }
     }
 
     @Override

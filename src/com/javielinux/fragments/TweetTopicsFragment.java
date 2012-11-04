@@ -408,6 +408,7 @@ public class TweetTopicsFragment extends BaseListFragment implements APIDelegate
                 @Override
                 public void run() {
                     try {
+                        tweetsAdapter.setLastReadPosition(positionLastRead);
                         long id = tweetsAdapter.getItem(positionLastRead).getId();
                         if (user_entity != null) {
                             user_entity.saveLastId(id);

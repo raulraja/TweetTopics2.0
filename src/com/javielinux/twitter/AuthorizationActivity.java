@@ -86,21 +86,27 @@ public class AuthorizationActivity extends Activity {
 		ConnectionManager.getInstance().open(this);
     	
 //        ConnectionManager.getInstance().setNetworkConfig(network);
-        
-        String authUrl = null;
-		try {
-			authUrl = ConnectionManager.getInstance().getAuthenticationURL();
-		} catch (TwitterException e) {
-			e.printStackTrace();
-		}		
-		
-		
-		if (authUrl!=null) {
-			webView.loadUrl(authUrl);
-		} else {
-			Utils.showMessage(this, getString(R.string.problem_twitter_auth));
-			finish();
-		}
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                String authUrl = null;
+                try {
+                    authUrl = ConnectionManager.getInstance().getAuthenticationURL();
+                } catch (TwitterException e) {
+                    e.printStackTrace();
+                }
+
+
+                if (authUrl!=null) {
+                    webView.loadUrl(authUrl);
+                } else {
+                    Utils.showMessage(AuthorizationActivity.this, getString(R.string.problem_twitter_auth));
+                    finish();
+                }
+            }
+        }).start();
+
 	}
     
     @Override
