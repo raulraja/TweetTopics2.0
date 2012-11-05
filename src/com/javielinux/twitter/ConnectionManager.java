@@ -28,6 +28,10 @@ import java.util.List;
 
 public class ConnectionManager {
 
+    interface TwitterAuthentication {
+        void onFinalizeOAuthentication();
+    }
+
 	private static final String KEY_AUTH_KEY = "auth_key";
 	private static final String KEY_AUTH_SECRET_KEY = "auth_secret_key";
 
@@ -164,14 +168,25 @@ public class ConnectionManager {
 		return requestTokenOAuth.getAuthorizationURL();
 	}
 
-	public void finalizeOAuthentication(Uri uri) throws TwitterException {
-		String verifier = uri.getQueryParameter("oauth_verifier");
-		accessTokenOAuth = twitterOAuth.getOAuthAccessToken(requestTokenOAuth,verifier);
-		oAuthAccessToken = accessTokenOAuth.getToken();
-		oAuthAccessTokenSecret = accessTokenOAuth.getTokenSecret();
-        twitterOAuth.setOAuthAccessToken(accessTokenOAuth);
+	public void finalizeOAuthentication(final Uri uri, final TwitterAuthentication twitterAuthentication) {
 
-		storeAccessToken(twitterOAuth);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    String verifier = uri.getQueryParameter("oauth_verifier");
+                    accessTokenOAuth = twitterOAuth.getOAuthAccessToken(requestTokenOAuth,verifier);
+                    oAuthAccessToken = accessTokenOAuth.getToken();
+                    oAuthAccessTokenSecret = accessTokenOAuth.getTokenSecret();
+                    twitterOAuth.setOAuthAccessToken(accessTokenOAuth);
+                    storeAccessToken(twitterOAuth);
+                    twitterAuthentication.onFinalizeOAuthentication();
+                } catch (TwitterException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+
 	}
 
 	private void storeAccessToken(Twitter twitter) {

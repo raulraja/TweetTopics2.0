@@ -96,14 +96,19 @@ public class CreateDefaultColumnsUserDialogFragment extends DialogFragment {
 
                 // create friend
                 if (boxInvite.isChecked()) {
-                    try {
-                        ConnectionManager.getInstance().getTwitter(userEntity.getId()).createFriendship("tweettopics_app");
-                    } catch (TwitterException e1) {
-                        e1.printStackTrace();
-                    } catch (IllegalArgumentException e) {
-                        e.printStackTrace();
-                    }
                     Utils.showMessage(getActivity(), getActivity().getString(R.string.thanks));
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                ConnectionManager.getInstance().getTwitter(userEntity.getId()).createFriendship("tweettopics_app");
+                            } catch (TwitterException e1) {
+                                e1.printStackTrace();
+                            } catch (IllegalArgumentException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }).start();
                 }
             }
 

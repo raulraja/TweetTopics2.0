@@ -3,6 +3,8 @@
 
     <!-- v 2.0  -->
 
+    <string name="redirecting">Redirecting</string>
+
     <string name="counterSearches">%1$s messages in all searches</string>
     <string name="counterSearch">%1$s messages in search %2$s</string>
 

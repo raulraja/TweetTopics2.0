@@ -3,6 +3,8 @@
 
     <!-- v 2.0  -->
 
+    <string name="redirecting">Redireccionando</string>
+
     <string name="timelineFrom">Ha escrito en tu timeline %1$s</string>
     <string name="mentionFrom">Has sido mencionado por %1$s</string>
     <string name="dmFrom">Has recibido un DM de %1$s</string>

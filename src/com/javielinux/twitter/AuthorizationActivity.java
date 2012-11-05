@@ -7,6 +7,7 @@ import android.net.http.SslError;
 import android.os.Bundle;
 import android.view.View;
 import android.webkit.*;
+import android.widget.LinearLayout;
 import com.javielinux.tweettopics2.R;
 import com.javielinux.utils.PreferenceUtils;
 import com.javielinux.utils.Utils;
@@ -16,6 +17,7 @@ public class AuthorizationActivity extends Activity {
 
 	public static String TWITTER_HOST = "www.tweet-topics.com";
 	private WebView webView;
+    private LinearLayout llRedirecting;
   
 	private String network = "twitter.com";
 	
@@ -26,14 +28,14 @@ public class AuthorizationActivity extends Activity {
 			if (uri!=null && uri.getHost().equals(TWITTER_HOST)) {
 				String token = uri.getQueryParameter("oauth_token");
 				if (null != token) {
-					webView.setVisibility(View.INVISIBLE);
-					try {
-						ConnectionManager.getInstance().finalizeOAuthentication(uri);
-					} catch (TwitterException e) {
-						e.printStackTrace();
-					}
-                    setResult(RESULT_OK);
-					finish();
+                    showRedirecting();
+				    ConnectionManager.getInstance().finalizeOAuthentication(uri, new ConnectionManager.TwitterAuthentication() {
+                        @Override
+                        public void onFinalizeOAuthentication() {
+                            setResult(RESULT_OK);
+                            finish();
+                        }
+                    });
 				} else {
 					//Toast.makeText(AuthorizationActivity.this, "No se ha podido acceder a Twitter", Toast.LENGTH_LONG).show();
 				}
@@ -62,11 +64,14 @@ public class AuthorizationActivity extends Activity {
 		}
 		
 		CookieSyncManager.createInstance(this);
-    
-		webView = new WebView(this);
+
+        setContentView(R.layout.twitter_oauth);
+
+		webView = (WebView)findViewById(R.id.twitter_oauth_webview);
 		webView.setWebViewClient(webViewClient);
-    
-		setContentView(webView);
+
+        llRedirecting = (LinearLayout)findViewById(R.id.twitter_oauth_redirecting);
+        llRedirecting.setVisibility(View.GONE);
 		
 		CookieManager.getInstance().removeAllCookie();
 		CookieManager.getInstance().removeExpiredCookie();
@@ -75,6 +80,11 @@ public class AuthorizationActivity extends Activity {
 		CookieSyncManager.getInstance().sync();
 		
 	}
+
+    private void showRedirecting() {
+        llRedirecting.setVisibility(View.VISIBLE);
+        webView.setVisibility(View.GONE);
+    }
   
 	@Override
 	protected void onResume() {

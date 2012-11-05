@@ -92,33 +92,37 @@ public class TweetActions {
         }
     }
 
-    public static boolean createFavorite(FragmentActivity activity, InfoTweet infoTweet, long id) {
-        try {
-
-            ConnectionManager.getInstance().open(activity);
+    public static boolean createFavorite(FragmentActivity activity, final InfoTweet infoTweet, final long id) {
+        ConnectionManager.getInstance().open(activity);
 
 
-            if (infoTweet.getTypeFrom() == InfoTweet.FROM_STATUS && infoTweet.getIdDB() > 0) {
+        if (infoTweet.getTypeFrom() == InfoTweet.FROM_STATUS && infoTweet.getIdDB() > 0) {
+            try {
+                Entity ent = new Entity("tweets_user", infoTweet.getIdDB());
+                ent.setValue("is_favorite", 1);
+                ent.save();
+            } catch (CursorIndexOutOfBoundsException e) {
+                e.printStackTrace();
+            }
+        }
+
+        Utils.showMessage(activity, activity.getString(R.string.favorite_save));
+
+        infoTweet.setFavorited(true);
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
                 try {
-                    Entity ent = new Entity("tweets_user", infoTweet.getIdDB());
-                    ent.setValue("is_favorite", 1);
-                    ent.save();
-                } catch (CursorIndexOutOfBoundsException e) {
+                    ConnectionManager.getInstance().getTwitter(id).createFavorite(infoTweet.getId());
+                } catch (TwitterException e) {
                     e.printStackTrace();
                 }
             }
-            ConnectionManager.getInstance().getTwitter(id).createFavorite(infoTweet.getId());
-            Utils.showMessage(activity, activity.getString(R.string.favorite_save));
+        }).start();
 
-            infoTweet.setFavorited(true);
+        return true;
 
-            return true;
-
-        } catch (TwitterException e) {
-            e.printStackTrace();
-            Utils.showMessage(activity, activity.getString(R.string.favorite_no_save));
-            return false;
-        }
     }
 
     public static void copyToClipboard(FragmentActivity activity, InfoTweet infoTweet) {
