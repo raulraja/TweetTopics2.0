@@ -675,7 +675,7 @@ public class TweetTopicsActivity extends BaseLayersActivity implements PopupLink
             Bitmap bmp = fragmentAdapter.getButtonBigActionBar(i);
 
             if (bmp == null) {
-                bmp = BitmapFactory.decodeResource(getResources(), R.drawable.icon);
+                bmp = BitmapFactory.decodeResource(getResources(), R.drawable.icon_dolphin);
             }
 
             bmp = ImageUtils.getBitmap(bmp, (int) getResources().getDimension(R.dimen.icon_columns_height));
@@ -756,7 +756,13 @@ public class TweetTopicsActivity extends BaseLayersActivity implements PopupLink
         } else {
             imgBarAvatar.setVisibility(View.VISIBLE);
             imgBarCounter.setVisibility(View.GONE);
-            imgBarAvatar.setImageBitmap(fragmentAdapter.getIconItem(pager.getCurrentItem()));
+
+            Bitmap bmp = fragmentAdapter.getIconItem(pager.getCurrentItem());
+            if (bmp == null) {
+                bmp = BitmapFactory.decodeResource(getResources(), R.drawable.icon_dolphin);
+            }
+
+            imgBarAvatar.setImageBitmap(bmp);
         }
     }
 
