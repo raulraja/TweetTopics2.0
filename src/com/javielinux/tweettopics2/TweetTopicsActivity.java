@@ -14,6 +14,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.StateListDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
@@ -799,90 +800,87 @@ public class TweetTopicsActivity extends BaseLayersActivity implements PopupLink
         refreshActionBarColumns();
         isShowColumnsItems = true;
 
-//        int left = layoutBackgroundColumnsBar.getChildAt(pager.getCurrentItem()).getLeft();
-//        int top = layoutBackgroundColumnsBar.getChildAt(pager.getCurrentItem()).getTop();
-
         layoutBackgroundColumnsBar.scrollToView(pager.getCurrentItem());
 
         layoutBackgroundColumnsBarContainer.setVisibility(View.VISIBLE);
 
-        /*
-        ValueAnimator moveMargins = ValueAnimator.ofFloat(getResources().getDimension(R.dimen.actionbar_height), getResources().getDimension(R.dimen.actionbar_columns_height));
-        moveMargins.setDuration(250);
-        moveMargins.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator valueAnimator) {
-                RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.FILL_PARENT);
-                float value = (Float)valueAnimator.getAnimatedValue();
-                params.setMargins(0,(int)value, 0,0);
-                pager.setLayoutParams(params);
-            }
-        });
-        */
+        int movePager = (int) getResources().getDimension(R.dimen.actionbar_columns_height) - (int) getResources().getDimension(R.dimen.actionbar_height);
 
-        int distance = (int) getResources().getDimension(R.dimen.actionbar_columns_height) - (int) getResources().getDimension(R.dimen.actionbar_height);
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
 
-        ObjectAnimator translationPager = ObjectAnimator.ofFloat(pager, "translationY", 0f, distance);
-        translationPager.setDuration(250);
+            RelativeLayout.LayoutParams lpPager = (RelativeLayout.LayoutParams)pager.getLayoutParams();
+            lpPager.setMargins(0,lpPager.topMargin+movePager,0,0);
+            pager.requestLayout();
 
-        ObjectAnimator translationOut = ObjectAnimator.ofFloat(layoutBackgroundBar, "translationY", 0f, -getResources().getDimension(R.dimen.actionbar_height));
-        translationOut.setDuration(250);
+            layoutBackgroundBar.setVisibility(View.GONE);
 
-        AnimatorSet animatorSet = new AnimatorSet();
-        animatorSet.playTogether(translationOut, translationPager);
-        animatorSet.start();
+        } else {
+
+            ObjectAnimator translationPager = ObjectAnimator.ofFloat(pager, "translationY", 0f, movePager);
+            translationPager.setDuration(250);
+
+            ObjectAnimator translationOut = ObjectAnimator.ofFloat(layoutBackgroundBar, "translationY", 0f, -getResources().getDimension(R.dimen.actionbar_height));
+            translationOut.setDuration(250);
+
+            AnimatorSet animatorSet = new AnimatorSet();
+            animatorSet.playTogether(translationOut, translationPager);
+            animatorSet.start();
+        }
     }
 
     public void showActionBarIndicatorAndMovePager(final int pos) {
         isShowColumnsItems = false;
 
-        ObjectAnimator translationIn = ObjectAnimator.ofFloat(layoutBackgroundBar, "translationY", -getResources().getDimension(R.dimen.actionbar_height), 0f);
-        translationIn.setDuration(250);
-        /*
-        ValueAnimator moveMargins = ValueAnimator.ofFloat(getResources().getDimension(R.dimen.actionbar_columns_height), (int)getResources().getDimension(R.dimen.actionbar_height));
-        moveMargins.setDuration(250);
-        moveMargins.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator valueAnimator) {
-                RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.FILL_PARENT);
-                float value = (Float)valueAnimator.getAnimatedValue();
-                params.setMargins(0,(int)value,0,0);
-                pager.setLayoutParams(params);
-            }
-        });
-         */
+        int movePager = (int) getResources().getDimension(R.dimen.actionbar_columns_height) - (int) getResources().getDimension(R.dimen.actionbar_height);
 
-        int distance = (int) getResources().getDimension(R.dimen.actionbar_columns_height) - (int) getResources().getDimension(R.dimen.actionbar_height);
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
 
-        ObjectAnimator translationPager = ObjectAnimator.ofFloat(pager, "translationY", distance, 0f);
-        translationPager.setDuration(250);
+            RelativeLayout.LayoutParams lpPager = (RelativeLayout.LayoutParams)pager.getLayoutParams();
+            lpPager.setMargins(0,lpPager.topMargin-movePager,0,0);
+            pager.requestLayout();
 
-        AnimatorSet animatorSet = new AnimatorSet();
-        animatorSet.playTogether(translationPager, translationIn);
+            layoutBackgroundBar.setVisibility(View.VISIBLE);
 
-        animatorSet.addListener(new Animator.AnimatorListener() {
-            @Override
-            public void onAnimationStart(Animator animator) {
+            layoutBackgroundColumnsBarContainer.setVisibility(View.GONE);
+            if (pos >= 0) {
+                goToColumn(pos, false, -1);
             }
 
-            @Override
-            public void onAnimationEnd(Animator animator) {
-                layoutBackgroundColumnsBarContainer.setVisibility(View.GONE);
-                if (pos >= 0) {
-                    goToColumn(pos, false, -1);
+        } else {
+
+            ObjectAnimator translationIn = ObjectAnimator.ofFloat(layoutBackgroundBar, "translationY", -getResources().getDimension(R.dimen.actionbar_height), 0f);
+            translationIn.setDuration(250);
+
+            ObjectAnimator translationPager = ObjectAnimator.ofFloat(pager, "translationY", movePager, 0f);
+            translationPager.setDuration(250);
+
+            AnimatorSet animatorSet = new AnimatorSet();
+            animatorSet.playTogether(translationPager, translationIn);
+
+            animatorSet.addListener(new Animator.AnimatorListener() {
+                @Override
+                public void onAnimationStart(Animator animator) {
                 }
-            }
 
-            @Override
-            public void onAnimationCancel(Animator animator) {
-            }
+                @Override
+                public void onAnimationEnd(Animator animator) {
+                    layoutBackgroundColumnsBarContainer.setVisibility(View.GONE);
+                    if (pos >= 0) {
+                        goToColumn(pos, false, -1);
+                    }
+                }
 
-            @Override
-            public void onAnimationRepeat(Animator animator) {
-            }
-        });
+                @Override
+                public void onAnimationCancel(Animator animator) {
+                }
 
-        animatorSet.start();
+                @Override
+                public void onAnimationRepeat(Animator animator) {
+                }
+            });
+
+            animatorSet.start();
+        }
 
     }
 

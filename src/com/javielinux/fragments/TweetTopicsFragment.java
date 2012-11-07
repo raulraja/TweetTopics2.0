@@ -329,18 +329,19 @@ public class TweetTopicsFragment extends BaseListFragment implements APIDelegate
                     countHide++;
                 } else {
                     InfoTweet infoTweet = new InfoTweet(tweets.get(i));
+                    infoTweet.setRead(false);
 
-                    if (!found && entityTweetUser.getValueLastId() >= tweets.get(i).getLong("tweet_id")) {
-                        infoTweet.setLastRead(true);
-                        found = true;
-                    }
-
-                    if (i >= tweets.size() - 1 && !found) {
-                        infoTweet.setLastRead(true);
-                        found = true;
-                    }
-
-                    infoTweet.setRead(found);
+//                    if (!found && entityTweetUser.getValueLastId() >= tweets.get(i).getLong("tweet_id")) {
+//                        infoTweet.setLastRead(true);
+//                        found = true;
+//                    }
+//
+//                    if (i >= tweets.size() - 1 && !found) {
+//                        infoTweet.setLastRead(true);
+//                        found = true;
+//                    }
+//
+//                    infoTweet.setRead(found);
 
                     try {
                         infoTweets.add(0, infoTweet);

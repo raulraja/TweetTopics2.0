@@ -126,9 +126,14 @@ public class TweetActions {
     }
 
     public static void copyToClipboard(FragmentActivity activity, InfoTweet infoTweet) {
-        ClipboardManager clipboard = (ClipboardManager) activity.getSystemService(Context.CLIPBOARD_SERVICE);
-        clipboard.setText(infoTweet.getText());
-        Utils.showMessage(activity, activity.getString(R.string.copied_to_clipboard));
+        try {
+            ClipboardManager clipboard = (ClipboardManager) activity.getSystemService(Context.CLIPBOARD_SERVICE);
+            clipboard.setText(infoTweet.getText());
+            Utils.showMessage(activity, activity.getString(R.string.copied_to_clipboard));
+        } catch (NoClassDefFoundError e) {
+            Utils.showMessage(activity, activity.getString(R.string.error_general));
+            e.printStackTrace();
+        }
     }
 
     public static void goToMention(FragmentActivity activity, long fromUser, InfoTweet infoTweet) {

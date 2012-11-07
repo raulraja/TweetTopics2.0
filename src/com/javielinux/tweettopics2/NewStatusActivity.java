@@ -604,7 +604,7 @@ public class NewStatusActivity extends BaseActivity {
             args.putInt(AlertDialogFragment.KEY_ALERT_TITLE, R.string.actions);
             args.putBoolean(AlertDialogFragment.KEY_ALERT_HAS_POSITIVE_BUTTON, false);
             args.putBoolean(AlertDialogFragment.KEY_ALERT_CANCELABLE, false);
-            args.putInt(AlertDialogFragment.KEY_ALERT_ARRAY_ITEMS, R.array.popupmenu_my_activity_more_options);
+            args.putInt(AlertDialogFragment.KEY_ALERT_ARRAY_ITEMS, R.array.popupmenu_new_status_more_options);
             frag.setArguments(args);
             frag.setAlertButtonListener(new AlertDialogFragment.AlertButtonListener() {
                 @Override
