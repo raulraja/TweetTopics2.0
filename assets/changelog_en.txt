@@ -1,3 +1,23 @@
+Happy new version TweetTopics 2.0, beta version
+
+This version thanks to a new developer @francisco_dr and help of @sike27 that created new icon
+
+We love dolphins!!
+
+Version 2.0
+============
+
+- Adapt to ICS and Jelly Bean
+- Columns for display tweets
+- Screen "My activity". You can see all information
+- Discover that there is behind a new action bar. Surprise!!
+- Access to all link of tweet more quickly
+- New notifications
+- Adapt to 7" devices. Can you say Nexus 7?
+- And more... and more
+
+Build number 66
+
 Version 1.72
 ============
 

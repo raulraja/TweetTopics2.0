@@ -205,7 +205,7 @@ public class NotificationUtils {
                     for (long id : userNotifications.getIdsMentions()) {
                         if (count < MAX_MESSAGES_INBOX) {
                             Entity tweet = new Entity("tweets_user", id);
-                            n.addLine(context.getString(R.string.mention) + " @" + tweet.getString("username") + ": " + tweet.getString("text"));
+                            n.addLine(context.getString(R.string.mentioned) + " @" + tweet.getString("username") + ": " + tweet.getString("text"));
                         }
                         count++;
                     }

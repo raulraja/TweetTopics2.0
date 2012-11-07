@@ -1,3 +1,25 @@
+TweetTopics 2.0 ya está aquí. eso si en beta
+
+Esta nueva versión con la colaboración durante meses de un nuevo desarrollador @francisco_dr y la ayuda de @sike27 que ha creado nuestro nuevo icono
+
+Nos encantan los delfines!!
+
+Version 2.0
+============
+
+- Adaptado a ICS y Jelly Bean
+- Columnas ver tus tweets en toda su magnitud
+- Pantalla "Mi actividad" que recoge toda la información de un vistazo
+- Descubre que hay detrás del ActionBar ¡¡Sorpresa!!
+- Accede a todos los enlaces de un tweet de forma más cómoda
+- Nuevas notificaciones
+- Adaptado a pantallas de 7 pulgadas. Nexus 7 powa!
+- Mejor rendimiento
+- Todo lo que tenías antes, pero ahora mejor!
+- Alguna sorpresa que descubrirás al usar el nuevo TweetTopics!
+
+Build number 66
+
 Version 1.72
 ============
 

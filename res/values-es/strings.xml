@@ -3,6 +3,8 @@
 
     <!-- v 2.0  -->
 
+    <string name="mentioned">Mención</string>
+
     <string name="redirecting">Redireccionando</string>
 
     <string name="timelineFrom">Ha escrito en tu timeline %1$s</string>
