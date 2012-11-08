@@ -4,6 +4,12 @@
     <string name="version">2.0</string>
     <integer name="columns_search_my_activity">3</integer>
 
-    <string name="google_maps_api">0B8Rsd6rLL0n3BmfwM95oh8joV49fiR3OOmqY0Q</string><!-- Debug key -->
+    <string name="email_send_errors">tweettopics.issues@gmail.com</string>
+
+    <!-- Debug key -->
+    <!--<string name="google_maps_api">0B8Rsd6rLL0n3BmfwM95oh8joV49fiR3OOmqY0Q</string>-->
+
+    <!-- Signed key -->
+    <string name="google_maps_api">0B8Rsd6rLL0ngGNfVVxkYfqECjcDuJ9UhrfOETg</string>
 
 </resources>

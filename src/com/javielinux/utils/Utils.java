@@ -1248,9 +1248,8 @@ public class Utils {
         cnt.startActivity(msg);*/
         Intent gmail = new Intent(Intent.ACTION_VIEW);
         gmail.setClassName("com.google.android.gm", "com.google.android.gm.ComposeActivityGmail");
-        //gmail.putExtra(Intent.EXTRA_EMAIL, new String[] { "tweettopics.issues@gmail.com" });
-        gmail.putExtra(Intent.EXTRA_EMAIL, new String[]{"javi.pacheco@gmail.com", "franciscodr@gmail.com"});
-        gmail.setData(Uri.parse("javi.pacheco@gmail.com"));
+        gmail.putExtra(Intent.EXTRA_EMAIL, new String[]{cnt.getString(R.string.email_send_errors)});
+        gmail.setData(Uri.parse(cnt.getString(R.string.email_send_errors)));
         gmail.putExtra(Intent.EXTRA_SUBJECT, "TweetTopics crash");
         gmail.setType("plain/text");
         gmail.putExtra(Intent.EXTRA_TEXT, ErrorReporter.getErrors(cnt));
