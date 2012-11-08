@@ -1,6 +1,6 @@
 <resources>
     <!-- General -->
     <integer name="columns_search_my_activity">5</integer>
-    <integer name="columns_tweets">1</integer>
+    <integer name="columns_tweets">2</integer>
 
 </resources>

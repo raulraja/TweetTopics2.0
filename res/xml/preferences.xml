@@ -292,7 +292,7 @@
                         android:dialogTitle="@string/title_prf_theme"/>
 
                 <ListPreference
-                        android:defaultValue="1"
+                        android:defaultValue="2"
                         android:key="prf_orientation"
                         android:title="@string/title_prf_orientation"
                         android:summary="@string/summary_prf_orientation"

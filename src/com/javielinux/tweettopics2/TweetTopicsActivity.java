@@ -121,7 +121,7 @@ public class TweetTopicsActivity extends BaseLayersActivity implements PopupLink
             Thread.setDefaultUncaughtExceptionHandler(new ErrorReporter(currentHandler, getApplication()));
         }
 
-        if (PreferenceManager.getDefaultSharedPreferences(this).getString("prf_orientation", "1").equals("2")) {
+        if (PreferenceManager.getDefaultSharedPreferences(this).getString("prf_orientation", "2").equals("2")) {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
         }
 
@@ -588,13 +588,20 @@ public class TweetTopicsActivity extends BaseLayersActivity implements PopupLink
 
     private boolean deleteColumn(final int position) {
 
-        ArrayList<Entity> deleted_column = DataFramework.getInstance().getEntityList("columns", "position=" + position);
+        Entity deleted_column = null;
+
+        try {
+            deleted_column = DataFramework.getInstance().getEntityList("columns", "", "position asc").get(position - 1);
+        } catch (IndexOutOfBoundsException e) {
+        } catch (Exception e ) {
+        }
+
 
         boolean result = false;
 
-        if (deleted_column.size() > 0) {
+        if (deleted_column != null) {
 
-            result = deleted_column.get(0).delete();
+            result = deleted_column.delete();
 
             if (result) {
                 DataFramework.getInstance().getDB().execSQL("UPDATE columns SET position=position-1 WHERE position>" + position);
@@ -770,34 +777,76 @@ public class TweetTopicsActivity extends BaseLayersActivity implements PopupLink
         }
     }
 
-    private void reorganizeColumns(final int starting_position, final int ending_position) {
+    private void reorganizeColumns(final int startPosition, final int endPosition) {
 
-        ArrayList<Entity> moved_column = DataFramework.getInstance().getEntityList("columns", "position=" + starting_position);
+        ArrayList<Entity> columns = DataFramework.getInstance().getEntityList("columns", "", "position asc");
 
-        if (moved_column.size() > 0) {
-            if (starting_position > ending_position) {
-                DataFramework.getInstance().getDB().execSQL("UPDATE columns SET position=position+1 WHERE position BETWEEN " + ending_position + " AND " + (starting_position - 1));
-            } else if (starting_position < ending_position) {
-                DataFramework.getInstance().getDB().execSQL("UPDATE columns SET position=position-1 WHERE position BETWEEN " + (starting_position + 1) + " AND " + ending_position);
+        if (columns.size() > 0) {
+
+            Entity beforeColumn = null;
+            for (int i = startPosition; i<=endPosition; i++) {
+                Entity currentColumn = null;
+                try {
+                    currentColumn = columns.get(i - 1);
+                } catch (IndexOutOfBoundsException e) {
+                } catch (Exception e ) {
+                }
+                if (currentColumn != null && beforeColumn != null) {
+                    int beforePositionDB = beforeColumn.getInt("position");
+                    int currentPositionDB = currentColumn.getInt("position");
+                    beforeColumn.setValue("position", currentPositionDB);
+                    beforeColumn.save();
+                    currentColumn.setValue("position", beforePositionDB);
+                    currentColumn.save();
+                }
+                columns = DataFramework.getInstance().getEntityList("columns", "", "position asc");
+                try {
+                    beforeColumn = columns.get(i - 1);
+                } catch (IndexOutOfBoundsException e) {
+                } catch (Exception e ) {
+                }
             }
 
-            boolean result = false;
+            Handler myHandler = new Handler();
+            myHandler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    Log.d("TweetTopics2.0", "Reorganizando las columnas");
+                    fragmentAdapter.refreshColumnList();
+                }
+            }, 100);
 
-            moved_column.get(0).setValue("position", ending_position);
-            result = moved_column.get(0).save();
-
-            if (result) {
-                Handler myHandler = new Handler();
-                myHandler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        Log.d("TweetTopics2.0", "Eliminando las columnas");
-                        fragmentAdapter.refreshColumnList();
-                    }
-                }, 100);
-            }
         }
     }
+
+//    private void reorganizeColumns(final int starting_position, final int ending_position) {
+//
+//        ArrayList<Entity> moved_column = DataFramework.getInstance().getEntityList("columns", "position=" + starting_position);
+//
+//        if (moved_column.size() > 0) {
+//            if (starting_position > ending_position) {
+//                DataFramework.getInstance().getDB().execSQL("UPDATE columns SET position=position+1 WHERE position BETWEEN " + ending_position + " AND " + (starting_position - 1));
+//            } else if (starting_position < ending_position) {
+//                DataFramework.getInstance().getDB().execSQL("UPDATE columns SET position=position-1 WHERE position BETWEEN " + (starting_position + 1) + " AND " + ending_position);
+//            }
+//
+//            boolean result = false;
+//
+//            moved_column.get(0).setValue("position", ending_position);
+//            result = moved_column.get(0).save();
+//
+//            if (result) {
+//                Handler myHandler = new Handler();
+//                myHandler.postDelayed(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        Log.d("TweetTopics2.0", "Eliminando las columnas");
+//                        fragmentAdapter.refreshColumnList();
+//                    }
+//                }, 100);
+//            }
+//        }
+//    }
 
     public void showActionBarColumns() {
         refreshActionBarColumns();

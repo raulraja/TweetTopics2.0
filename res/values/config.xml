@@ -4,6 +4,8 @@
     <string name="version">2.0</string>
     <integer name="columns_search_my_activity">3</integer>
 
+    <integer name="columns_tweets">1</integer>
+
     <string name="email_send_errors">tweettopics.issues@gmail.com</string>
 
     <!-- Debug key -->

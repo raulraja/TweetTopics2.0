@@ -301,7 +301,7 @@
   <string-array name="entries_prf_orientation">
     <!-- v 1.30  -->
     <item>Vertical</item>
-    <item>Sensor (labs)</item>
+    <item>Sensor</item>
   </string-array>
   <string-array name="entries_prf_orientation_values">
     <item>1</item>

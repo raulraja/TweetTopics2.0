@@ -29,10 +29,13 @@ public class TweetTopicsFragmentAdapter extends FragmentPagerAdapter {
     private MyActivityFragment myActivityFragment;
     private ArrayList<Entity> fragmentList = new ArrayList<Entity>();
 
+    private int nColumns = 1;
+
     public TweetTopicsFragmentAdapter(Context context, FragmentManager fragmentManager) {
         super(fragmentManager);
         this.context = context;
         fillColumnList();
+        nColumns = context.getResources().getInteger(R.integer.columns_tweets);
     }
 
     public void fillColumnList() {
