@@ -7,13 +7,15 @@ public class LoadTypeStatusRequest implements BaseRequest {
     private String user_search_text = "";
     private String user = "";
     private int list_id = 0;
+    private long[] userIdList;
 
-    public LoadTypeStatusRequest(long userId, int type, String user, String user_search_text, int list_id) {
+    public LoadTypeStatusRequest(long userId, int type, String user, String user_search_text, int list_id, long[] userIdList) {
         this.userId = userId;
         this.type = type;
         this.user = user;
         this.user_search_text = user_search_text;
         this.list_id = list_id;
+        this.userIdList = userIdList;
     }
 
     public int getType() {
@@ -50,6 +52,14 @@ public class LoadTypeStatusRequest implements BaseRequest {
 
     public void setUserId(long userId) {
         this.userId = userId;
+    }
+
+    public long[] getUserIdList() {
+        return userIdList;
+    }
+
+    public void setUserIdList(long[] userIdList) {
+        this.userIdList = userIdList;
     }
 
     @Override

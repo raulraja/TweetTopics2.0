@@ -100,7 +100,7 @@ public class RetweetFragment extends BaseListFragment implements APIDelegate<Bas
     public void reload() {
         Log.d(Utils.TAG, "reloadColumnUser : " + column_entity.getInt("type_id"));
 
-        APITweetTopics.execute(getActivity(), getLoaderManager(), this, new LoadTypeStatusRequest(user_entity.getId(), typeUserColumn, user_entity.getString("name"), "", -1));
+        APITweetTopics.execute(getActivity(), getLoaderManager(), this, new LoadTypeStatusRequest(user_entity.getId(), typeUserColumn, user_entity.getString("name"), "", -1,null));
     }
 
     @Override

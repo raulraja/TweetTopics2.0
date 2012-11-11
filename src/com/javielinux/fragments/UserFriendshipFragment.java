@@ -12,23 +12,26 @@ import com.android.dataframework.Entity;
 import com.javielinux.adapters.TweetsAdapter;
 import com.javielinux.api.APIDelegate;
 import com.javielinux.api.APITweetTopics;
+import com.javielinux.api.loaders.GetUserFriendshipMembersLoader;
 import com.javielinux.api.loaders.LoadTypeStatusLoader;
+import com.javielinux.api.request.GetUserFriendshipMembersRequest;
 import com.javielinux.api.request.LoadTypeStatusRequest;
-import com.javielinux.api.response.BaseResponse;
-import com.javielinux.api.response.ErrorResponse;
-import com.javielinux.api.response.LoadTypeStatusResponse;
+import com.javielinux.api.response.*;
 import com.javielinux.infos.InfoTweet;
 import com.javielinux.infos.InfoUsers;
 import com.javielinux.tweettopics2.R;
 import com.javielinux.tweettopics2.ThemeManager;
 import com.javielinux.utils.CacheData;
 import com.javielinux.utils.ImageUtils;
+import com.javielinux.utils.TweetTopicsUtils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
-public class UserTimelineFragment extends BaseListFragment implements APIDelegate<BaseResponse> {
+public class UserFriendshipFragment extends BaseListFragment implements APIDelegate<BaseResponse> {
 
     private static String KEY_SAVE_STATE_USER = "KEY_SAVE_STATE_USER";
+    private static String KEY_SAVE_STATE_COLUMN_TYPE = "KEY_SAVE_STATE_COLUMN_TYPE";
 
     private ArrayList<InfoTweet> tweet_list;
     private LinearLayout viewLoading;
@@ -36,22 +39,36 @@ public class UserTimelineFragment extends BaseListFragment implements APIDelegat
 
     private TweetsAdapter adapter;
     private InfoUsers infoUsers;
+    private long[] userIdList;
 
-    public UserTimelineFragment() {
+    private int column_type;
+    private int getUserFriendshipMembersTypeUserColumn = 0;
+    private int loadTypeStatusTypeUserColumn = 0;
+
+    public UserFriendshipFragment() {
         super();
     }
 
-    public UserTimelineFragment(InfoUsers infoUsers) {
-        init(infoUsers);
+    public UserFriendshipFragment(InfoUsers infoUsers, int column_type) {
+        init(infoUsers,column_type);
     }
 
-    public void init(InfoUsers infoUsers) {
+    public void init(InfoUsers infoUsers,int column_type) {
         this.infoUsers = infoUsers;
+
+        if (column_type == TweetTopicsUtils.COLUMN_FOLLOWERS) {
+            getUserFriendshipMembersTypeUserColumn = GetUserFriendshipMembersLoader.FOLLOWERS;
+            loadTypeStatusTypeUserColumn = LoadTypeStatusLoader.FOLLOWERS;
+        } else {
+            getUserFriendshipMembersTypeUserColumn = GetUserFriendshipMembersLoader.FRIENDS;
+            loadTypeStatusTypeUserColumn = LoadTypeStatusLoader.FRIENDS;
+        }
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         outState.putString(KEY_SAVE_STATE_USER, infoUsers.getName());
+        outState.putInt(KEY_SAVE_STATE_COLUMN_TYPE, column_type);
         super.onSaveInstanceState(outState);
     }
 
@@ -59,7 +76,7 @@ public class UserTimelineFragment extends BaseListFragment implements APIDelegat
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (savedInstanceState!=null && savedInstanceState.containsKey(KEY_SAVE_STATE_USER)) {
-            init(CacheData.getCacheUser(savedInstanceState.getString(KEY_SAVE_STATE_USER)));
+            init(CacheData.getCacheUser(savedInstanceState.getString(KEY_SAVE_STATE_USER)),savedInstanceState.getInt(KEY_SAVE_STATE_COLUMN_TYPE));
         }
         tweet_list = new ArrayList<InfoTweet>();
         adapter = new TweetsAdapter(getActivity(), getLoaderManager(), tweet_list);
@@ -68,9 +85,9 @@ public class UserTimelineFragment extends BaseListFragment implements APIDelegat
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        View view = View.inflate(getActivity(), R.layout.user_timeline_fragment, null);
+        View view = View.inflate(getActivity(), R.layout.user_mentions_fragment, null);
 
-        list = ((ListView)view.findViewById(R.id.user_timeline_list));
+        list = ((ListView)view.findViewById(R.id.user_mentions_list));
         // poner estilo de la listas de las preferencias del usuario
         ThemeManager themeManager = new ThemeManager(getActivity());
         list.setDivider(ImageUtils.createDividerDrawable(getActivity(), themeManager.getColor("color_divider_tweet")));
@@ -95,18 +112,45 @@ public class UserTimelineFragment extends BaseListFragment implements APIDelegat
             }
         });
 
-        viewLoading = (LinearLayout) view.findViewById(R.id.user_timeline_loading);
+        viewLoading = (LinearLayout) view.findViewById(R.id.user_mentions_loading);
 
-        getUserTimelineTweets();
+        getUserFriendshipMembers();
 
         return view;
     }
 
-    private void getUserTimelineTweets() {
+    private void getUserFriendshipMembers() {
         if (infoUsers != null) {
             showLoading();
-            APITweetTopics.execute(getActivity(), getLoaderManager(), this, new LoadTypeStatusRequest(-1, LoadTypeStatusLoader.USER_TIMELINE, infoUsers.getName(), "", -1,null));
+
+            APITweetTopics.execute(getActivity(), getLoaderManager(), new APIDelegate() {
+                @Override
+                public void onResults(BaseResponse response) {
+                    GetUserFriendshipMembersResponse result = (GetUserFriendshipMembersResponse) response;
+                    userIdList = result.getFriendshipMembersIds();
+                    getUserFriendshipTweets();
+                }
+
+                @Override
+                public void onError(ErrorResponse error) {
+                    error.getError().printStackTrace();
+                    list.setVisibility(View.VISIBLE);
+                }
+            }, new GetUserFriendshipMembersRequest(getUserFriendshipMembersTypeUserColumn,infoUsers.getName()));
+        } else {
+            showTweetsList();
         }
+    }
+
+    public void getUserFriendshipTweets() {
+        long[] userIds;
+
+        if (userIdList.length < 100)
+            userIds = userIdList;
+        else
+            userIds = Arrays.copyOfRange(userIdList, 0, 99);
+
+        APITweetTopics.execute(getActivity(), getLoaderManager(), this, new LoadTypeStatusRequest(-1, loadTypeStatusTypeUserColumn, infoUsers.getName(), "", -1, userIds));
     }
 
     public void showLoading() {

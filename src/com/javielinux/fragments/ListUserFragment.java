@@ -20,10 +20,8 @@ import com.javielinux.api.response.BaseResponse;
 import com.javielinux.api.response.ErrorResponse;
 import com.javielinux.api.response.LoadTypeStatusResponse;
 import com.javielinux.infos.InfoTweet;
-import com.javielinux.tweettopics2.BaseLayersActivity;
 import com.javielinux.tweettopics2.R;
 import com.javielinux.tweettopics2.ThemeManager;
-import com.javielinux.tweettopics2.TweetActivity;
 import com.javielinux.utils.ImageUtils;
 import com.javielinux.utils.Utils;
 
@@ -97,7 +95,7 @@ public class ListUserFragment extends BaseListFragment implements APIDelegate<Ba
     public void reload() {
         Log.d(Utils.TAG, "reloadColumnUser : " + column_entity.getInt("type_id"));
 
-        LoadTypeStatusRequest loadTypeStatusRequest = new LoadTypeStatusRequest(list_user_entity.getLong("user_id"), LoadTypeStatusLoader.LIST, "", "", list_user_entity.getInt("userlist_id"));
+        LoadTypeStatusRequest loadTypeStatusRequest = new LoadTypeStatusRequest(list_user_entity.getLong("user_id"), LoadTypeStatusLoader.LIST, "", "", list_user_entity.getInt("userlist_id"), null);
 
         APITweetTopics.execute(getActivity(), getLoaderManager(), this, loadTypeStatusRequest);
     }

@@ -15,10 +15,13 @@ import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.javielinux.adapters.TweetsAdapter;
 import com.javielinux.api.APIDelegate;
 import com.javielinux.api.APITweetTopics;
+import com.javielinux.api.loaders.GetUserFriendshipMembersLoader;
 import com.javielinux.api.loaders.LoadTypeStatusLoader;
+import com.javielinux.api.request.GetUserFriendshipMembersRequest;
 import com.javielinux.api.request.LoadTypeStatusRequest;
 import com.javielinux.api.response.BaseResponse;
 import com.javielinux.api.response.ErrorResponse;
+import com.javielinux.api.response.GetUserFriendshipMembersResponse;
 import com.javielinux.api.response.LoadTypeStatusResponse;
 import com.javielinux.infos.InfoTweet;
 import com.javielinux.tweettopics2.R;
@@ -28,6 +31,7 @@ import com.javielinux.utils.TweetTopicsUtils;
 import com.javielinux.utils.Utils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class UsersFragment extends BaseListFragment implements APIDelegate<BaseResponse> {
 
@@ -44,7 +48,10 @@ public class UsersFragment extends BaseListFragment implements APIDelegate<BaseR
     private LinearLayout viewNoInternet;
     private LinearLayout viewUpdate;
 
-    private int typeUserColumn = 0;
+    private int getUserFriendshipMembersTypeUserColumn = 0;
+    private int loadTypeStatusTypeUserColumn = 0;
+
+    private long[] userIdList;
 
     public UsersFragment() {
         super();
@@ -57,9 +64,11 @@ public class UsersFragment extends BaseListFragment implements APIDelegate<BaseR
     public void init(long columnId) {
         column_entity = new Entity("columns", columnId);
         if (column_entity.getInt("type_id") == TweetTopicsUtils.COLUMN_FOLLOWERS) {
-            typeUserColumn = LoadTypeStatusLoader.FOLLOWERS;
+            loadTypeStatusTypeUserColumn = LoadTypeStatusLoader.FOLLOWERS;
+            getUserFriendshipMembersTypeUserColumn = GetUserFriendshipMembersLoader.FOLLOWERS;
         } else if (column_entity.getInt("type_id")== TweetTopicsUtils.COLUMN_FOLLOWINGS) {
-            typeUserColumn = LoadTypeStatusLoader.FRIENDS;
+            loadTypeStatusTypeUserColumn = LoadTypeStatusLoader.FRIENDS;
+            getUserFriendshipMembersTypeUserColumn = GetUserFriendshipMembersLoader.FRIENDS;
         }
         user_entity = new Entity("users", column_entity.getLong("user_id"));
     }
@@ -97,9 +106,35 @@ public class UsersFragment extends BaseListFragment implements APIDelegate<BaseR
         listView.setVisibility(View.VISIBLE);
     }
 
+    public void getUserIdList() {
+        APITweetTopics.execute(getActivity(), getLoaderManager(), new APIDelegate() {
+            @Override
+            public void onResults(BaseResponse response) {
+                GetUserFriendshipMembersResponse result = (GetUserFriendshipMembersResponse) response;
+                userIdList = result.getFriendshipMembersIds();
+                reload();
+            }
+
+            @Override
+            public void onError(ErrorResponse error) {
+                error.getError().printStackTrace();
+                listView.onRefreshComplete();
+                showNoInternet();
+            }
+        }, new GetUserFriendshipMembersRequest(getUserFriendshipMembersTypeUserColumn,user_entity.getString("name")));
+    }
+
     public void reload() {
         Log.d(Utils.TAG, "reloadColumnUser : " + column_entity.getInt("type_id"));
-        APITweetTopics.execute(getActivity(), getLoaderManager(), this, new LoadTypeStatusRequest(user_entity.getId(), typeUserColumn, user_entity.getString("name"), "", -1));
+
+        long[] userIds;
+
+        if (userIdList.length < 100)
+            userIds = userIdList;
+        else
+            userIds = Arrays.copyOfRange(userIdList, 0, 99);
+
+        APITweetTopics.execute(getActivity(), getLoaderManager(), this, new LoadTypeStatusRequest(user_entity.getId(), loadTypeStatusTypeUserColumn, user_entity.getString("name"), "", -1, userIds));
     }
 
     @Override
@@ -140,7 +175,8 @@ public class UsersFragment extends BaseListFragment implements APIDelegate<BaseR
         listView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener() {
             @Override
             public void onRefresh(PullToRefreshBase refreshView) {
-                reload();
+                //reload();
+                getUserIdList();
             }
         });
         listView.getRefreshableView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -183,18 +219,17 @@ public class UsersFragment extends BaseListFragment implements APIDelegate<BaseR
 
         if (infoTweets.size()<=0) {
             showLoading();
-            reload();
+            //reload();
+            getUserIdList();
         }
 
         return view;
     }
 
     @Override
-    public void onResults(BaseResponse r) {
+    public void onResults(BaseResponse response) {
 
-        Log.d(Utils.TAG,"UsersFragment: onResult");
-
-        LoadTypeStatusResponse result = (LoadTypeStatusResponse) r;
+        LoadTypeStatusResponse result = (LoadTypeStatusResponse) response;
 
         listView.onRefreshComplete();
         showTweetsList();
@@ -215,10 +250,9 @@ public class UsersFragment extends BaseListFragment implements APIDelegate<BaseR
             }
         }
 
-        //tweetsAdapter.setLastReadPosition(tweetsAdapter.getLastReadPosition() + count);
         tweetsAdapter.notifyDataSetChanged();
         tweetsAdapter.launchVisibleTask();
-        listView.getRefreshableView().setSelection(firstVisible + count);
+        listView.getRefreshableView().setSelection(0);
 
         if(selected_tweet_id > 0) {
             int i = 0;

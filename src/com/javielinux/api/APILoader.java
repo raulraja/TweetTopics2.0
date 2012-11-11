@@ -112,6 +112,8 @@ public class APILoader implements LoaderManager.LoaderCallbacks {
             loader = new UserMentionsLoader(context, (UserMentionsRequest)baseRequest);
         } else if (baseRequest instanceof SearchContentInDBRequest) {
             loader = new SearchContentInDBLoader(context, (SearchContentInDBRequest)baseRequest);
+        } else if (baseRequest instanceof GetUserFriendshipMembersRequest) {
+            loader = new GetUserFriendshipMembersLoader(context, (GetUserFriendshipMembersRequest)baseRequest);
         }
 
         return loader;

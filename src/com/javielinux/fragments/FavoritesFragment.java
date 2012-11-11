@@ -99,7 +99,7 @@ public class FavoritesFragment extends BaseListFragment implements APIDelegate<B
     public void reload() {
         Log.d(Utils.TAG, "reloadColumnUser : " + column_entity.getInt("type_id"));
 
-        APITweetTopics.execute(getActivity(), getLoaderManager(), this, new LoadTypeStatusRequest(user_entity.getId(), LoadTypeStatusLoader.FAVORITES, user_entity.getString("name"),"",-1));
+        APITweetTopics.execute(getActivity(), getLoaderManager(), this, new LoadTypeStatusRequest(user_entity.getId(), LoadTypeStatusLoader.FAVORITES, user_entity.getString("name"),"",-1,null));
     }
 
     @Override

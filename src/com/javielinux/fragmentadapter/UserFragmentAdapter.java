@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import com.javielinux.fragments.*;
 import com.javielinux.infos.InfoUsers;
 import com.javielinux.tweettopics2.R;
+import com.javielinux.utils.TweetTopicsUtils;
 
 import java.util.ArrayList;
 
@@ -15,8 +16,10 @@ public class UserFragmentAdapter extends FragmentPagerAdapter {
     public static int TAB_INFO = 0;
     public static int TAB_TIMELINE = 1;
     public static int TAB_MENTIONS = 2;
-    public static int TAB_LIST = 3;
-    public static int TAB_LIST_INCLUDED = 4;
+    public static int TAB_FOLLOWERS = 3;
+    public static int TAB_FRIENDS = 4;
+    public static int TAB_LIST = 5;
+    public static int TAB_LIST_INCLUDED = 6;
 
     private InfoUsers infoUsers;
 
@@ -45,6 +48,12 @@ public class UserFragmentAdapter extends FragmentPagerAdapter {
         user_fragment_code.add(TAB_MENTIONS);
         user_fragment_titles.add(context.getString(R.string.mentions));
 
+        user_fragment_code.add(TAB_FOLLOWERS);
+        user_fragment_titles.add(context.getString(R.string.followers));
+
+        user_fragment_code.add(TAB_FRIENDS);
+        user_fragment_titles.add(context.getString(R.string.friends));
+
         user_fragment_code.add(TAB_LIST);
         user_fragment_titles.add(context.getString(R.string.lists));
 
@@ -62,6 +71,10 @@ public class UserFragmentAdapter extends FragmentPagerAdapter {
             return new UserTimelineFragment(infoUsers);
         } else if (user_fragment_code.get(index) == TAB_MENTIONS) {
             return new UserMentionsFragment(infoUsers);
+        } else if (user_fragment_code.get(index) == TAB_FOLLOWERS) {
+            return new UserFriendshipFragment(infoUsers, TweetTopicsUtils.COLUMN_FOLLOWERS);
+        } else if (user_fragment_code.get(index) == TAB_FRIENDS) {
+            return new UserFriendshipFragment(infoUsers, TweetTopicsUtils.COLUMN_FOLLOWINGS);
         } else if (user_fragment_code.get(index) == TAB_LIST) {
             return new UserListFragment(infoUsers);
         } else if (user_fragment_code.get(index) == TAB_LIST_INCLUDED) {
