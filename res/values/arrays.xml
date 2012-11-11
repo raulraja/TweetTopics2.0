@@ -15,6 +15,11 @@
         <item>@string/exit</item>
     </string-array>
 
+    <string-array name="popupmenu_my_activity_more_actions"><!-- 2.0 -->
+        <item>@string/tweets_saved</item>
+        <item>@string/trending_topics</item>
+    </string-array>
+
     <string-array name="entries_prf_max_download"><!-- 1.71 -->
         <item>60</item>
         <item>80</item>
