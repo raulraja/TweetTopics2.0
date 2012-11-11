@@ -232,6 +232,7 @@
     </string-array>
     
     <string-array name="actions_users">
+        <item>Show user</item>
     	<item>Benutzer bearbeiten</item>
         <item>Avatar &#228;ndern</item> <!-- v 1.70  -->
     	<item>Avatar aktualisieren</item>

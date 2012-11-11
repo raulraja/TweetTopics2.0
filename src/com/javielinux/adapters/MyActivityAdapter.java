@@ -170,6 +170,15 @@ public class MyActivityAdapter extends BaseAdapter {
 
             long id = item.getId();
 
+            v.setTag(R.id.item_user_my_activity, item);
+
+            v.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    myActivityFragment.clickUser((Entity) view.getTag(R.id.item_user_my_activity));
+                }
+            });
+
             //v.setBackgroundDrawable(ImageUtils.createStateListDrawable(context, themeManager.getColor("list_background_row_color")));
 
             ImageView img = (ImageView) v.findViewById(R.id.my_activity_user_icon);
@@ -179,13 +188,6 @@ public class MyActivityAdapter extends BaseAdapter {
                 e.printStackTrace();
                 img.setImageResource(R.drawable.avatar);
             }
-            img.setTag(item);
-            img.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    myActivityFragment.clickUser((Entity) view.getTag());
-                }
-            });
 
             ImageView tag_network = (ImageView) v.findViewById(R.id.my_activity_user_tag_network);
 

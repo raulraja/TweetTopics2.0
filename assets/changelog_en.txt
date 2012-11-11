@@ -1,8 +1,13 @@
-Happy new version TweetTopics 2.0, beta version
+Version 2.01
+============
 
-This version thanks to a new developer @francisco_dr and help of @sike27 that created new icon
+- You can display your saved tweets
+- You can display friends and follower of users
+- Bug fixed when Edit Users
+- Bug fixed when open submenu (longpress) in 2.3.3 android versiones
+- Improvement in user's list
 
-We love dolphins!!
+Build number 2
 
 Version 2.0
 ============

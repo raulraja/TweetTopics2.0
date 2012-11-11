@@ -166,7 +166,6 @@
 
 	<!-- v 1.19  -->
 	
-	<string name="version">1.04</string>
     <string name="hello">Привет МИР, TweetTopics!</string>
     <string name="app_name">TweetTopics</string>
     <string name="no_users">Нет пользователей. Для того чтобы использовать TweetTopics, нужно добавить хотя бы одного пользователя Twitter</string>

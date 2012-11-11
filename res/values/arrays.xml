@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string-array name="popupmenu_list_users_more_options"><!-- 2.0 -->
+        <item>@string/update</item>
+    </string-array>
+
     <string-array name="popupmenu_new_status_more_options"><!-- 2.0 -->
         <item>@string/take_photo</item>
         <item>@string/new_draft</item>
@@ -266,6 +270,7 @@
     </string-array>
     
     <string-array name="actions_users">
+        <item>Show user</item>
     	<item>Edit user</item>
         <item>Change avatar</item> <!-- v 1.70  -->
     	<item>Refresh avatar</item>

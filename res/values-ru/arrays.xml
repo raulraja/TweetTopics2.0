@@ -138,10 +138,17 @@
     <item>Удалить</item>
   </string-array>
   <string-array name="actions_users">
-    <item>Редактировать пользователя</item>
-    <item>Обновить аватар</item>
-    <item>Удалить</item>
-      <item>Посмотреть списки</item>
+      <item>Show user</item>
+      <item>Edit user</item>
+      <item>Change avatar</item> <!-- v 1.70  -->
+      <item>Refresh avatar</item>
+      <item>Delete</item>
+      <item>Show lists</item>
+      <item>Favorites</item>
+      <item>Retweets by user</item>
+      <item>Retweets by others</item>
+      <item>Followers</item>
+      <item>Followings</item>
   </string-array>
   <string-array name="actions_samples_search">
     <item>Android: General</item>

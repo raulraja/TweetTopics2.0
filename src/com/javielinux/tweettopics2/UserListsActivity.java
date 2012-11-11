@@ -3,9 +3,12 @@ package com.javielinux.tweettopics2;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Shader;
 import android.graphics.drawable.BitmapDrawable;
+import android.os.Build;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.*;
 import com.android.dataframework.DataFramework;
@@ -16,10 +19,14 @@ import com.javielinux.api.APITweetTopics;
 import com.javielinux.api.request.GetUserListRequest;
 import com.javielinux.api.response.BaseResponse;
 import com.javielinux.api.response.ErrorResponse;
+import com.javielinux.dialogs.AlertDialogFragment;
+import com.javielinux.preferences.Preferences;
 import com.javielinux.utils.DBUtils;
+import com.javielinux.utils.ImageUtils;
 import com.javielinux.utils.TweetTopicsUtils;
 import com.javielinux.utils.Utils;
 
+import java.io.File;
 import java.util.ArrayList;
 
 public class UserListsActivity extends BaseActivity implements APIDelegate<BaseResponse> {
@@ -34,11 +41,41 @@ public class UserListsActivity extends BaseActivity implements APIDelegate<BaseR
 
     private ThemeManager themeManager;
 
-    private LinearLayout viewUserListsParent;
+    private LinearLayout mLayoutBackgroundApp;
     private LinearLayout viewNoLists;
     private LinearLayout viewLoading;
     private LinearLayout viewNoInternet;
     private GridView viewUserLists;
+
+    private RelativeLayout layoutActionBar;
+
+    private TextView titlePage;
+
+    public void refreshTheme() {
+        boolean hasWallpaper = false;
+        File f = new File(Preferences.IMAGE_WALLPAPER);
+        if (f.exists()) {
+            try {
+                BitmapDrawable bmp = (BitmapDrawable) BitmapDrawable.createFromPath(Preferences.IMAGE_WALLPAPER);
+                bmp.setTileModeXY(Shader.TileMode.REPEAT, Shader.TileMode.REPEAT);
+                mLayoutBackgroundApp.setBackgroundDrawable(bmp);
+                hasWallpaper = true;
+            } catch (OutOfMemoryError e) {
+                e.printStackTrace();
+            }
+        }
+
+        if (!hasWallpaper) {
+            mLayoutBackgroundApp.setBackgroundColor(Color.parseColor("#" + themeManager.getStringColor("color_background_new_status")));
+        }
+
+        themeManager.setColors();
+        layoutActionBar.setBackgroundDrawable(ImageUtils.createBackgroundDrawable(this, themeManager.getColor("color_top_bar"), false, 0));
+
+        titlePage.setTextColor(themeManager.getColor("color_indicator_text"));
+        titlePage.setTextSize(getResources().getDimension(R.dimen.text_size_title_page));
+
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -75,20 +112,18 @@ public class UserListsActivity extends BaseActivity implements APIDelegate<BaseR
 
         setContentView(R.layout.userlists_activity);
 
-        viewUserListsParent = (LinearLayout) this.findViewById(R.id.user_lists_parent);
+        mLayoutBackgroundApp = (LinearLayout) this.findViewById(R.id.user_lists_parent);
+        layoutActionBar = (RelativeLayout) findViewById(R.id.user_list_bar_action);
+        titlePage = (TextView) this.findViewById(R.id.user_list_bar_title);
+
+        refreshTheme();
+
         viewNoLists = (LinearLayout) this.findViewById(R.id.user_lists_view_no_lists);
         viewLoading = (LinearLayout) this.findViewById(R.id.user_lists_view_loading);
         viewNoInternet = (LinearLayout) this.findViewById(R.id.user_lists_view_no_internet);
         viewUserLists = (GridView) this.findViewById(R.id.grid_userlist);
 
-        BitmapDrawable bmp = (BitmapDrawable) this.getResources().getDrawable(themeManager.getResource("search_tile"));
-        if (bmp != null) {
-            bmp.setTileModeXY(Shader.TileMode.REPEAT, Shader.TileMode.REPEAT);
-            viewUserListsParent.setBackgroundDrawable(bmp);
-        }
-
-        TextView userOwnList = (TextView) this.findViewById(R.id.user_list_selection);
-        userOwnList.setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.user_list_selection).setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
@@ -98,8 +133,7 @@ public class UserListsActivity extends BaseActivity implements APIDelegate<BaseR
 
         });
 
-        TextView userFollowingList = (TextView) this.findViewById(R.id.user_following_list_selection);
-        userFollowingList.setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.user_following_list_selection).setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
@@ -109,31 +143,16 @@ public class UserListsActivity extends BaseActivity implements APIDelegate<BaseR
 
         });
 
-        TextView userListUpdate = (TextView) this.findViewById(R.id.user_list_update);
-        userListUpdate.setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.user_list_more_options).setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                new AlertDialog.Builder(UserListsActivity.this)
-                        .setIcon(android.R.drawable.ic_dialog_alert)
-                        .setTitle(R.string.user_list)
-                        .setMessage(R.string.user_list_update_message)
-                        .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                showLoading();
-                                reload();
-                            }
-                        })
-                        .setNegativeButton(R.string.no, null)
-                        .show();
+                showMenuOptions(v);
             }
 
         });
 
-        TextView userListClose = (TextView) this.findViewById(R.id.user_list_close);
-        userListClose.setOnClickListener(new View.OnClickListener() {
-
+        findViewById(R.id.user_list_bar_icon).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 UserListsActivity.this.finish();
@@ -167,6 +186,69 @@ public class UserListsActivity extends BaseActivity implements APIDelegate<BaseR
         if (userlist_entities.size() == 0) {
             showLoading();
             reload();
+        }
+    }
+
+    private void update() {
+        new AlertDialog.Builder(UserListsActivity.this)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setTitle(R.string.user_list)
+                .setMessage(R.string.user_list_update_message)
+                .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        showLoading();
+                        reload();
+                    }
+                })
+                .setNegativeButton(R.string.no, null)
+                .show();
+    }
+
+    private void showMenuOptions(View view) {
+        if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.HONEYCOMB) {
+            PopupMenu popupMenu = new PopupMenu(this, view);
+            popupMenu.getMenuInflater().inflate(R.menu.list_users_more_actions, popupMenu.getMenu());
+            popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+
+                @Override
+                public boolean onMenuItemClick(MenuItem item) {
+                    if (item.getItemId() == R.id.popupmenu_list_user_update) {
+                        update();
+                    }
+                    return true;
+                }
+            });
+            popupMenu.show();
+        } else {
+            AlertDialogFragment frag = new AlertDialogFragment();
+            Bundle args = new Bundle();
+            args.putInt(AlertDialogFragment.KEY_ALERT_TITLE, R.string.actions);
+            args.putBoolean(AlertDialogFragment.KEY_ALERT_HAS_POSITIVE_BUTTON, false);
+            args.putBoolean(AlertDialogFragment.KEY_ALERT_CANCELABLE, false);
+            args.putInt(AlertDialogFragment.KEY_ALERT_ARRAY_ITEMS, R.array.popupmenu_list_users_more_options);
+            frag.setArguments(args);
+            frag.setAlertButtonListener(new AlertDialogFragment.AlertButtonListener() {
+                @Override
+                public void OnAlertButtonOk() {
+                }
+
+                @Override
+                public void OnAlertButtonCancel() {
+                }
+
+                @Override
+                public void OnAlertButtonNeutral() {
+                }
+
+                @Override
+                public void OnAlertItems(int which) {
+                    if (which == 0) {
+                        update();
+                    }
+                }
+            });
+            frag.show(getSupportFragmentManager(), "dialog");
         }
     }
 

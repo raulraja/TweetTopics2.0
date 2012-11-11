@@ -446,7 +446,6 @@
 
 	<!-- v 1.19  -->
 	
-	<string name="version">1.04</string>
     <string name="hello">Hello World, TweetTopics!</string>
     <string name="app_name">TweetTopics</string>
     <string name="no_users">Kein Benutzer angelegt. Um TweetTopics nutzen zu k&#246;nnen muss mindestens ein Twitter-Konto hinzugef&#252;gt werden.</string>

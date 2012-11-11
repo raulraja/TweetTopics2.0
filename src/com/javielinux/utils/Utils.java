@@ -1,6 +1,7 @@
 package com.javielinux.utils;
 
 import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -258,10 +259,18 @@ public class Utils {
         if (name.startsWith("@")) {
             return "drawable/letter_user";
         }
-        String c = name.toLowerCase().substring(0, 1);
-        Log.d(Utils.TAG, "es: " + c);
-        int id = cnt.getResources().getIdentifier(Utils.packageName + ":drawable/letter_" + c, null, null);
-        if (id > 0) {
+        int id = 0;
+        String c = null;
+        try {
+            c = name.toLowerCase().substring(0, 1);
+            Log.d(Utils.TAG, "es: " + c);
+            id = cnt.getResources().getIdentifier(Utils.packageName + ":drawable/letter_" + c, null, null);
+        } catch (StringIndexOutOfBoundsException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (id > 0 && c != null) {
             return "drawable/letter_" + c;
         } else {
             return "drawable/letter_az";
@@ -1240,20 +1249,23 @@ public class Utils {
     }
 
     public static void sendLastCrash(Activity cnt) {
-        /*Intent msg=new Intent(Intent.ACTION_SEND);
-        msg.setType("text/plain");
-        msg.putExtra(Intent.EXTRA_EMAIL, new String[] {"tweettopics.issues@gmail.com"});
-        msg.putExtra(Intent.EXTRA_SUBJECT, "TweetTopics crash");
-        msg.putExtra(Intent.EXTRA_TEXT, Html.fromHtml(ErrorReporter.getErrors(cnt)));
-        cnt.startActivity(msg);*/
-        Intent gmail = new Intent(Intent.ACTION_VIEW);
-        gmail.setClassName("com.google.android.gm", "com.google.android.gm.ComposeActivityGmail");
-        gmail.putExtra(Intent.EXTRA_EMAIL, new String[]{cnt.getString(R.string.email_send_errors)});
-        gmail.setData(Uri.parse(cnt.getString(R.string.email_send_errors)));
-        gmail.putExtra(Intent.EXTRA_SUBJECT, "TweetTopics crash");
-        gmail.setType("plain/text");
-        gmail.putExtra(Intent.EXTRA_TEXT, ErrorReporter.getErrors(cnt));
-        cnt.startActivity(gmail);
+        try {
+            Intent gmail = new Intent(Intent.ACTION_VIEW);
+            gmail.setClassName("com.google.android.gm", "com.google.android.gm.ComposeActivityGmail");
+            gmail.putExtra(Intent.EXTRA_EMAIL, new String[]{cnt.getString(R.string.email_send_errors)});
+            gmail.setData(Uri.parse(cnt.getString(R.string.email_send_errors)));
+            gmail.putExtra(Intent.EXTRA_SUBJECT, "TweetTopics crash");
+            gmail.setType("plain/text");
+            gmail.putExtra(Intent.EXTRA_TEXT, ErrorReporter.getErrors(cnt));
+            cnt.startActivity(gmail);
+        } catch (ActivityNotFoundException e) {
+            Intent msg=new Intent(Intent.ACTION_SEND);
+            msg.putExtra(Intent.EXTRA_EMAIL, new String[]{cnt.getString(R.string.email_send_errors)});
+            msg.putExtra(Intent.EXTRA_SUBJECT, "TweetTopics crash");
+            msg.setType("plain/text");
+            msg.putExtra(Intent.EXTRA_TEXT, ErrorReporter.getErrors(cnt));
+            cnt.startActivity(msg);
+        }
     }
 
     public static boolean isLite(Context context) {

@@ -29,10 +29,7 @@ import com.javielinux.api.loaders.ProfileImageLoader;
 import com.javielinux.api.request.ProfileImageRequest;
 import com.javielinux.api.response.ErrorResponse;
 import com.javielinux.api.response.ProfileImageResponse;
-import com.javielinux.dialogs.AlertDialogFragment;
-import com.javielinux.dialogs.CreateDefaultColumnsUserDialogFragment;
-import com.javielinux.dialogs.SelectImageDialogFragment;
-import com.javielinux.dialogs.TypeSocialNetworksDialogFragment;
+import com.javielinux.dialogs.*;
 import com.javielinux.facebook.FacebookHandler;
 import com.javielinux.preferences.Preferences;
 import com.javielinux.tweettopics2.*;
@@ -57,6 +54,8 @@ public class MyActivityFragment extends Fragment {
     private ListView listUsers;
     private TextView lblEmpty;
     private ProgressDialog progressDialog;
+
+    private Entity userSelected = null;
 
     private long idUser = 0;
 
@@ -366,6 +365,7 @@ public class MyActivityFragment extends Fragment {
 
 
     public void clickUser(Entity user) {
+        userSelected = user;
         idUser = user.getId();
         if (user.getString("service").equals("facebook")) {
             showFacebookDialog();
@@ -403,10 +403,18 @@ public class MyActivityFragment extends Fragment {
             myHandler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    ((TweetTopicsActivity)getActivity()).getFragmentPagerAdapter().refreshColumnList();
-                    ((TweetTopicsActivity)getActivity()).refreshActionBarColumns();
+                    ((TweetTopicsActivity) getActivity()).getFragmentPagerAdapter().refreshColumnList();
+                    ((TweetTopicsActivity) getActivity()).refreshActionBarColumns();
                 }
             }, 100);
+        }
+    }
+
+    public void showUser() {
+        if (getActivity() instanceof BaseLayersActivity) {
+            Bundle bundle = new Bundle();
+            bundle.putString(UserActivity.KEY_EXTRAS_USER, userSelected.getString("name"));
+            ((BaseLayersActivity)getActivity()).startAnimationActivity(UserActivity.class, bundle);
         }
     }
 
@@ -446,7 +454,6 @@ public class MyActivityFragment extends Fragment {
                     startAuthorization(Utils.NETWORK_FACEBOOK);
                 } else {
                     showDialogBuyPro();
-                    Utils.showMessage(getActivity(), getString(R.string.max_users_lite));
                 }
             } else {
                 startAuthorization(Utils.NETWORK_FACEBOOK);
@@ -498,7 +505,6 @@ public class MyActivityFragment extends Fragment {
                 startAuthorization(Utils.NETWORK_TWITTER);
             } else {
                 showDialogBuyPro();
-                Utils.showMessage(getActivity(), getString(R.string.max_users_lite));
             }
         } else {
             startAuthorization(Utils.NETWORK_TWITTER);
@@ -518,7 +524,7 @@ public class MyActivityFragment extends Fragment {
         APITweetTopics.execute(getActivity(), getLoaderManager(), new APIDelegate<ProfileImageResponse>() {
             @Override
             public void onResults(ProfileImageResponse result) {
-                progressDialog.cancel();
+                progressDialog.dismiss();
 
                 fillData();
                 if (result.getReady())
@@ -528,7 +534,7 @@ public class MyActivityFragment extends Fragment {
 
             @Override
             public void onError(ErrorResponse error) {
-                progressDialog.cancel();
+                progressDialog.dismiss();
                 Utils.showMessage(getActivity(), getActivity().getString(R.string.refresh_avatar_no_correct));
             }
         }, new ProfileImageRequest(ProfileImageLoader.REFRESH_AVATAR, idUser));
@@ -565,7 +571,8 @@ public class MyActivityFragment extends Fragment {
     }
 
     public void showDialogBuyPro() {
-        // TODO
+        BuyProDialogFragment frag = new BuyProDialogFragment();
+        frag.show(getFragmentManager(), "dialog");
     }
 
     private void showFacebookDialog() {
@@ -637,24 +644,26 @@ public class MyActivityFragment extends Fragment {
             @Override
             public void OnAlertItems(int which) {
                 if (which == 0) {
-                    editUser();
+                    showUser();
                 } else if (which == 1) {
-                    showSelectImageDialog();
+                    editUser();
                 } else if (which == 2) {
-                    refreshAvatar();
+                    showSelectImageDialog();
                 } else if (which == 3) {
-                    showDeleteUserDialog();
+                    refreshAvatar();
                 } else if (which == 4) {
-                    showUserLists();
+                    showDeleteUserDialog();
                 } else if (which == 5) {
-                    createUserFavoritesColumn();
+                    showUserLists();
                 } else if (which == 6) {
-                    createUserRetweetByUserColumn();
+                    createUserFavoritesColumn();
                 } else if (which == 7) {
-                    createUserRetweetByOtherColumn();
+                    createUserRetweetByUserColumn();
                 } else if (which == 8) {
-                    createUserFollowersColumn();
+                    createUserRetweetByOtherColumn();
                 } else if (which == 9) {
+                    createUserFollowersColumn();
+                } else if (which == 10) {
                     createUserFollowingsColumn();
                 }
 

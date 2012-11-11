@@ -1,8 +1,14 @@
-TweetTopics 2.0 ya está aquí. eso si en beta
+Version 2.01
+============
 
-Esta nueva versión con la colaboración durante meses de un nuevo desarrollador @francisco_dr y la ayuda de @sike27 que ha creado nuestro nuevo icono
+- Se pueden ver los tweets guardados
+- Se pueden ver los amigos y seguidores de un usuario
+- Corregidos problemas al editar usuario
+- Corregido problema al mostrar subment en Android 2.3.3<
+- Mejoras en la apariencia cuando se muestran las listas de usuari
+- Corrección de errores
 
-Nos encantan los delfines!!
+Build number 2
 
 Version 2.0
 ============

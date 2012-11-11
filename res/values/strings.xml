@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!-- v 2.01  -->
+
+    <string name="buyKey">Buy key</string>
+    <string name="buyKeyMessage">You can\'t do this action. If you need it, you can buy a key in Google Play and you\'ll get this and other features</string>
+
     <!-- v 2.0  -->
 
     <string name="mentioned">Mention</string>
@@ -543,7 +548,6 @@
 
 	<!-- v 1.19  -->
 	
-	<string name="version">1.04</string>
     <string name="hello">Hello World, TweetTopics!</string>
     <string name="app_name">TweetTopics 2</string>
     <string name="no_users">No users. In order to use TweetTopics, you need to add at least one Twitter user</string>

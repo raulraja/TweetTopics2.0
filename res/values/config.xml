@@ -1,7 +1,7 @@
 <resources>
     <!-- General -->
     <string name="package_verified_premium">com.javielinux.tweettopics.pro</string>
-    <string name="version">2.0</string>
+    <string name="version">2.01</string>
     <integer name="columns_search_my_activity">3</integer>
 
     <integer name="columns_tweets">1</integer>

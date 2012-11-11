@@ -14,6 +14,10 @@ public class TypeSocialNetworksDialogFragment extends DialogFragment {
 
     private DialogInterface.OnClickListener onClickListener;
 
+    public TypeSocialNetworksDialogFragment() {
+        super();
+    }
+
     public TypeSocialNetworksDialogFragment(DialogInterface.OnClickListener onClickListener) {
         super();
         this.onClickListener = onClickListener;

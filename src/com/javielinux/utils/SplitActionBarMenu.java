@@ -2,6 +2,7 @@ package com.javielinux.utils;
 
 import android.graphics.Point;
 import android.graphics.Rect;
+import android.os.Build;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,7 +53,7 @@ public class SplitActionBarMenu {
 
     private void init(FragmentActivity activity) {
         this.activity = activity;
-        splitActionBarMenuHeight = activity.getResources().getDimension(R.dimen.footer_action_split_height);
+        splitActionBarMenuHeight = activity.getResources().getDimension(R.dimen.actionbar_columns_height);
 
         Rect rect = new Rect();
         activity.getWindow().getDecorView().getWindowVisibleDisplayFrame(rect);
@@ -84,30 +85,34 @@ public class SplitActionBarMenu {
 
     public void hideSplitActionBarMenu() {
 
-        ObjectAnimator translationY = ObjectAnimator.ofFloat(scroll_view_layout, "translationY", screenHeight - Utils.dip2px(activity, splitActionBarMenuHeight), screenHeight);
-        translationY.setDuration(250);
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
+            root_layout.setVisibility(View.INVISIBLE);
+        } else {
+            ObjectAnimator translationY = ObjectAnimator.ofFloat(scroll_view_layout, "translationY", 0, - Utils.dip2px(activity, splitActionBarMenuHeight));
+            translationY.setDuration(250);
 
-        AnimatorSet animatorSet = new AnimatorSet();
-        animatorSet.playTogether(translationY);
-        animatorSet.addListener(new Animator.AnimatorListener() {
-            @Override
-            public void onAnimationStart(Animator animator) {
-            }
+            AnimatorSet animatorSet = new AnimatorSet();
+            animatorSet.playTogether(translationY);
+            animatorSet.addListener(new Animator.AnimatorListener() {
+                @Override
+                public void onAnimationStart(Animator animator) {
+                }
 
-            @Override
-            public void onAnimationEnd(Animator animator) {
-                root_layout.setVisibility(View.INVISIBLE);
-            }
+                @Override
+                public void onAnimationEnd(Animator animator) {
+                    root_layout.setVisibility(View.INVISIBLE);
+                }
 
-            @Override
-            public void onAnimationCancel(Animator animator) {
-            }
+                @Override
+                public void onAnimationCancel(Animator animator) {
+                }
 
-            @Override
-            public void onAnimationRepeat(Animator animator) {
-            }
-        });
-        animatorSet.start();
+                @Override
+                public void onAnimationRepeat(Animator animator) {
+                }
+            });
+            animatorSet.start();
+        }
 
     }
 
@@ -174,30 +179,35 @@ public class SplitActionBarMenu {
         } else {
             loadActionButtons(codes, infoTweet, ownerColumn);
 
-            ObjectAnimator translationY = ObjectAnimator.ofFloat(scroll_view_layout, "translationY", screenHeight, screenHeight - Utils.dip2px(activity, splitActionBarMenuHeight));
-            translationY.setDuration(250);
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
+                root_layout.setVisibility(View.VISIBLE);
+            } else {
+                ObjectAnimator translationY = ObjectAnimator.ofFloat(scroll_view_layout, "translationY", - Utils.dip2px(activity, splitActionBarMenuHeight), 0);
+                translationY.setDuration(250);
 
-            AnimatorSet animatorSet = new AnimatorSet();
-            animatorSet.playTogether(translationY);
-            animatorSet.addListener(new Animator.AnimatorListener() {
-                @Override
-                public void onAnimationStart(Animator animator) {
-                    root_layout.setVisibility(View.VISIBLE);
-                }
+                AnimatorSet animatorSet = new AnimatorSet();
+                animatorSet.playTogether(translationY);
+                animatorSet.addListener(new Animator.AnimatorListener() {
+                    @Override
+                    public void onAnimationStart(Animator animator) {
+                        root_layout.setVisibility(View.VISIBLE);
+                    }
 
-                @Override
-                public void onAnimationEnd(Animator animator) {
-                }
+                    @Override
+                    public void onAnimationEnd(Animator animator) {
+                    }
 
-                @Override
-                public void onAnimationCancel(Animator animator) {
-                }
+                    @Override
+                    public void onAnimationCancel(Animator animator) {
+                    }
 
-                @Override
-                public void onAnimationRepeat(Animator animator) {
-                }
-            });
-            animatorSet.start();
+                    @Override
+                    public void onAnimationRepeat(Animator animator) {
+                    }
+                });
+                animatorSet.start();
+
+            }
         }
     }
 }
