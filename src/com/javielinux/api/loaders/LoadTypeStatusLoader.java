@@ -1,6 +1,7 @@
 package com.javielinux.api.loaders;
 
 import android.content.Context;
+import android.util.Log;
 import com.javielinux.api.AsynchronousLoader;
 import com.javielinux.api.request.LoadTypeStatusRequest;
 import com.javielinux.api.response.BaseResponse;
@@ -8,6 +9,7 @@ import com.javielinux.api.response.ErrorResponse;
 import com.javielinux.api.response.LoadTypeStatusResponse;
 import com.javielinux.infos.InfoTweet;
 import com.javielinux.twitter.ConnectionManager;
+import com.javielinux.utils.Utils;
 import twitter4j.*;
 
 import java.util.ArrayList;
@@ -75,25 +77,53 @@ public class LoadTypeStatusLoader extends AsynchronousLoader<BaseResponse> {
 					result.add(new InfoTweet(statii.get(i)));
 				}
 			} else if (request.getType()==FOLLOWERS) {
-               IDs followers_ids = ConnectionManager.getInstance().getTwitter(request.getUserId()).getFollowersIDs(request.getUser(), -1);
+                ArrayList<Long> followers_id_arraylist = new ArrayList<Long>();
+                IDs followers_ids_response;
+                long cursor = -1;
+
+                do {
+                    followers_ids_response = ConnectionManager.getInstance().getTwitter(request.getUserId()).getFollowersIDs(request.getUser(), cursor);
+
+                    for (long id :followers_ids_response.getIDs()) {
+                        followers_id_arraylist.add(id);
+                    }
+                    cursor = followers_ids_response.getNextCursor();
+                } while (followers_ids_response.hasNext());
+
+                Log.d(Utils.TAG + ":Followers","Número de followers: " + followers_id_arraylist.size());
+
+                long[] followers_ids = new long[followers_id_arraylist.size()];
+                int index = 0;
+
+                for (Long follower_id : followers_id_arraylist) {
+                    followers_ids[index] = follower_id.longValue();
+                    index++;
+                }
+
+                followers_id_arraylist.clear();
 
                 ResponseList<User> users = null;
 
-                if (followers_ids.getIDs().length <= 100) {
-                    users = ConnectionManager.getInstance().getTwitter(request.getUserId()).lookupUsers(followers_ids.getIDs());
+                if (followers_ids.length <= 100) {
+                    users = ConnectionManager.getInstance().getTwitter(request.getUserId()).lookupUsers(followers_ids);
                 } else {
-                    int hundred_count = followers_ids.getIDs().length / 100;
+                    int hundred_count = followers_ids.length / 100;
+                    hundred_count = 5;
 
                     for (int i=0; i < hundred_count; i++) {
                         if (users == null)
-                            users = ConnectionManager.getInstance().getTwitter(request.getUserId()).lookupUsers(Arrays.copyOfRange(followers_ids.getIDs(),i*100,(i+1)*100-1));
+                            users = ConnectionManager.getInstance().getTwitter(request.getUserId()).lookupUsers(Arrays.copyOfRange(followers_ids,i*100,(i+1)*100-1));
                         else
-                            users.addAll(ConnectionManager.getInstance().getTwitter(request.getUserId()).lookupUsers(Arrays.copyOfRange(followers_ids.getIDs(),i*100,(i+1)*100-1)));
+                            users.addAll(ConnectionManager.getInstance().getTwitter(request.getUserId()).lookupUsers(Arrays.copyOfRange(followers_ids,i*100,(i+1)*100-1)));
+
+                        Log.d(Utils.TAG + ":Followers","Centena de followers número: " + (i + 1));
                     }
 
-                    if (followers_ids.getIDs().length % 100 > 0)
-                        users.addAll(ConnectionManager.getInstance().getTwitter(request.getUserId()).lookupUsers(Arrays.copyOfRange(followers_ids.getIDs(),hundred_count*100 + 1,followers_ids.getIDs().length-1)));
+                    /*if (followers_ids.length % 100 > 0)
+                        users.addAll(ConnectionManager.getInstance().getTwitter(request.getUserId()).lookupUsers(Arrays.copyOfRange(followers_ids,hundred_count*100 + 1,followers_ids.length-1)));*/
                 }
+
+                Log.d(Utils.TAG + ":Followers","Número de usuarios: " + users.size());
 
 				for (User user : users) {
 					InfoTweet row = new InfoTweet(user);

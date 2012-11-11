@@ -104,6 +104,25 @@
                     android:layout_height="wrap_content"
                     android:layout_width="fill_parent" />
         </FrameLayout>
+
+        <FrameLayout
+                android:id="@+id/FrameLayout04"
+                android:paddingLeft="@dimen/default_padding"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content">
+            <ImageButton
+                    android:id="@+id/my_activity_followers"
+                    android:background="?button_transparent_background"
+                    android:gravity="center"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:src="?icon_content_direct" />
+            <ImageView
+                    android:id="@+id/my_activity_counter_followers"
+                    android:layout_gravity="right"
+                    android:layout_height="wrap_content"
+                    android:layout_width="fill_parent" />
+        </FrameLayout>
     </LinearLayout>
 
 </RelativeLayout>

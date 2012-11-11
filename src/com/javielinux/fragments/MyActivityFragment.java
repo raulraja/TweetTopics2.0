@@ -181,7 +181,7 @@ public class MyActivityFragment extends Fragment {
 
             @Override
             public void onClick(View v) {
-                newTrending();
+                showMenuMoreActions(v);
             }
 
         });
@@ -202,6 +202,57 @@ public class MyActivityFragment extends Fragment {
         lblEmpty = (TextView) view.findViewById(R.id.my_activity_empty);
 
         return view;
+    }
+
+    private void showMenuMoreActions(View v) {
+        if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.HONEYCOMB) {
+            PopupMenu popupMenu = new PopupMenu(getActivity(), v);
+            popupMenu.getMenuInflater().inflate(R.menu.my_activity_more_actions, popupMenu.getMenu());
+            popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+
+                @Override
+                public boolean onMenuItemClick(MenuItem item) {
+                    if (item.getItemId() == R.id.popupmenu_more_actions_saved_tweet) {
+                        createSavedTweetColumn();
+                    } else if (item.getItemId() == R.id.popupmenu_more_actions_trending_topics) {
+                        newTrending();
+                    }
+                    return true;
+                }
+            });
+            popupMenu.show();
+        } else {
+            AlertDialogFragment frag = new AlertDialogFragment();
+            Bundle args = new Bundle();
+            args.putInt(AlertDialogFragment.KEY_ALERT_TITLE, R.string.actions);
+            args.putBoolean(AlertDialogFragment.KEY_ALERT_HAS_POSITIVE_BUTTON, false);
+            args.putBoolean(AlertDialogFragment.KEY_ALERT_CANCELABLE, false);
+            args.putInt(AlertDialogFragment.KEY_ALERT_ARRAY_ITEMS, R.array.popupmenu_my_activity_more_actions);
+            frag.setArguments(args);
+            frag.setAlertButtonListener(new AlertDialogFragment.AlertButtonListener() {
+                @Override
+                public void OnAlertButtonOk() {
+                }
+
+                @Override
+                public void OnAlertButtonCancel() {
+                }
+
+                @Override
+                public void OnAlertButtonNeutral() {
+                }
+
+                @Override
+                public void OnAlertItems(int which) {
+                    if (which == 0) {
+                        createSavedTweetColumn();
+                    } else if (which == 1) {
+                        newTrending();
+                    }
+                }
+            });
+            frag.show(getFragmentManager(), "dialog");
+        }
     }
 
     private void showMenuOptions(View v) {
@@ -406,6 +457,10 @@ public class MyActivityFragment extends Fragment {
 
     public void newTrending() {
         ((TweetTopicsActivity)getActivity()).newTrending();
+    }
+
+    public void createSavedTweetColumn() {
+        ((TweetTopicsActivity)getActivity()).createSavedTweetColumn();
     }
 
     public void createUserColumn(long userId, int typeId) {

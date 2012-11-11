@@ -192,6 +192,8 @@ public class UsersFragment extends BaseListFragment implements APIDelegate<BaseR
     @Override
     public void onResults(BaseResponse r) {
 
+        Log.d(Utils.TAG,"UsersFragment: onResult");
+
         LoadTypeStatusResponse result = (LoadTypeStatusResponse) r;
 
         listView.onRefreshComplete();

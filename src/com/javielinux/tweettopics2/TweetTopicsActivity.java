@@ -577,6 +577,30 @@ public class TweetTopicsActivity extends BaseLayersActivity implements PopupLink
 
     }
 
+    public void createSavedTweetColumn() {
+
+        ArrayList<Entity> created_column_list = DataFramework.getInstance().getEntityList("columns", "type_id = " + TweetTopicsUtils.COLUMN_SAVED_TWEETS);
+
+        int position = 0;
+
+        if (created_column_list.size() == 0) {
+            position = DBUtils.nextPositionColumn();
+
+            Entity user_list = new Entity("columns");
+            user_list.setValue("type_id", TweetTopicsUtils.COLUMN_SAVED_TWEETS);
+            user_list.setValue("position", position);
+            user_list.setValue("user_id", -1);
+            user_list.save();
+
+            goToColumn(position, true, -1);
+
+        } else {
+            position = created_column_list.get(0).getInt("position");
+            goToColumn(position, false, -1);
+        }
+
+    }
+
     public void deleteSearchInColumn(long id) {
         for (Entity entity : fragmentAdapter.getFragmentList()) {
             if (entity.getInt("search_id") == id) {

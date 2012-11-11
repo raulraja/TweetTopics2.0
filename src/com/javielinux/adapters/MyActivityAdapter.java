@@ -279,7 +279,7 @@ public class MyActivityAdapter extends BaseAdapter {
             ArrayList<Entity> items = element.entitiesSearch;
 
             for (Entity item : items) {
-                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                 params.weight = 1;
                 ((LinearLayout) v).addView(drawSearch(item), params);
             }

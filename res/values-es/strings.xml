@@ -52,7 +52,7 @@
     <string name="searches">Búsquedas</string>
     <string name="title_followers">Seguidores</string>
     <string name="title_following">Amigos</string>
-    <string name="title_saved_tweets">Tweets</string>
+    <string name="title_saved_tweets">Tweets guardados</string>
     <string name="title_saved_images">Imágenes</string>
     <string name="title_saved_links">Enlaces</string>
     <string name="trending_topics_back">Volver a trending topics</string>

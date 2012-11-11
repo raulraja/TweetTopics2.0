@@ -55,7 +55,7 @@
     <string name="searches">Searches</string>
     <string name="title_followers">Followers</string>
     <string name="title_following">Followings</string>
-    <string name="title_saved_tweets">Tweets</string>
+    <string name="title_saved_tweets">Saved tweets</string>
     <string name="title_saved_images">Images</string>
     <string name="title_saved_links">Links</string>
     <string name="trending_topics_back">Return to trending topics</string>
@@ -440,7 +440,7 @@
 	
 	<string name="need_text">Need a write a text</string>
 	
-	<string name="new_draft">Create darft</string>
+	<string name="new_draft">Create draft</string>
 	<string name="view_draft">Drafts</string>
 	<string name="new_programmed">Schedule tweet</string>
 	

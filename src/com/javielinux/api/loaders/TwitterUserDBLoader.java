@@ -92,6 +92,45 @@ public class TwitterUserDBLoader extends AsynchronousLoader<BaseResponse> {
             response.setInfoTweets(infoTweets);
             response.setPosition(pos);
             response.setCountHide(countHide);
+        } else if (request.getColumn() == TweetTopicsUtils.COLUMN_SAVED_TWEETS) {
+            ArrayList<Entity> tweets;
+
+            try {
+                tweets = DataFramework.getInstance().getEntityList("saved_tweets", "", "date desc");
+            } catch (Exception exception) {
+                tweets = DataFramework.getInstance().getEntityList("saved_tweets", "", "date desc", "0," + Utils.MAX_ROW_BYSEARCH);
+            }
+
+            for (int i = 0; i < tweets.size(); i++) {
+
+                boolean delete_tweet = false;
+
+                if (i > 0) {
+                    if (tweets.get(i).getLong("tweet_id") == tweets.get(i - 1).getLong("tweet_id")) {
+                        delete_tweet = true;
+                    }
+                }
+                if (delete_tweet) {
+                    try {
+                        tweets.get(i).delete();
+
+                    } catch (Exception exception) {
+                        exception.printStackTrace();
+                    }
+                } else {
+                    InfoTweet infoTweet = new InfoTweet(tweets.get(i));
+
+                    try {
+                        infoTweets.add(infoTweet);
+                    } catch (OutOfMemoryError er) {
+                        i = tweets.size();
+                    }
+                }
+            }
+
+            response.setInfoTweets(infoTweets);
+            response.setPosition(0);
+            response.setCountHide(0);
         } else {
             EntityTweetUser entityTweetUser = new EntityTweetUser(request.getUserId(), request.getTypeUserColumn());
 

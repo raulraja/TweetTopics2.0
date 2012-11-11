@@ -239,6 +239,8 @@ public class TweetTopicsFragmentAdapter extends FragmentPagerAdapter {
             case TweetTopicsUtils.COLUMN_FOLLOWERS:
             case TweetTopicsUtils.COLUMN_FOLLOWINGS:
                 return new UsersFragment(fragmentList.get(index).getId());
+            case TweetTopicsUtils.COLUMN_SAVED_TWEETS:
+                return new SavedTweetFragment(fragmentList.get(index).getId());
             default:
                 return new NoFoundFragment(fragmentList.get(index).getString("description"));
         }
@@ -250,16 +252,20 @@ public class TweetTopicsFragmentAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getItemPosition(Object item) {
-        BaseListFragment fragment = (BaseListFragment) item;
-        Entity column_entity = fragment.getColumnEntity();
+        if (item instanceof BaseListFragment) {
+            BaseListFragment fragment = (BaseListFragment) item;
+            Entity column_entity = fragment.getColumnEntity();
 
-        int position = fragmentList.indexOf(column_entity);
-        if (position < 0) {
-            Log.d("TweetTopics2.0", "Fragment doesn't exist");
-            return POSITION_NONE;
+            int position = fragmentList.indexOf(column_entity);
+            if (position < 0) {
+                Log.d("TweetTopics2.0", "Fragment doesn't exist");
+                return POSITION_NONE;
+            } else {
+                Log.d("TweetTopics2.0", "Fragment exists: " + column_entity.getString("title") + " - " + position);
+                return position;
+            }
         } else {
-            Log.d("TweetTopics2.0", "Fragment exists: " + column_entity.getString("title") + " - " + position);
-            return position;
+            return 0;
         }
     }
 
