@@ -27,6 +27,7 @@ import twitter4j.TwitterException;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.concurrent.Callable;
 
 public class TweetActions {
 
@@ -326,7 +327,11 @@ public class TweetActions {
         activity.startActivity(newstatus);
     }
 
-    public static void showDialogRetweet(final FragmentActivity activity, final long fromUser, final InfoTweet it) {
+    public static void showDialogRetweet(FragmentActivity activity, long fromUser, InfoTweet it) {
+        showDialogRetweet(activity, fromUser, it, null);
+    }
+
+    public static void showDialogRetweet(final FragmentActivity activity, final long fromUser, final InfoTweet it, final Callable callBack) {
         final ArrayList<String> phrases = new ArrayList<String>();
         ArrayList<Entity> ents = DataFramework.getInstance().getEntityList("types_retweets");
 
@@ -351,7 +356,7 @@ public class TweetActions {
                 String phrase = phrases.get(which);
                 if (phrase.equals("_RN_")) {
                     if (it != null) {
-                        retweetStatus(activity, it.getId());
+                        retweetStatus(activity, it.getId(), callBack);
                     }
                 } else if (phrase.equals("_EM_")) {
                     if (it != null) {
@@ -416,13 +421,18 @@ public class TweetActions {
         activity.startService(new Intent(activity, ServiceUpdateStatus.class));
     }
 
-    public static void retweetStatus(final FragmentActivity activity, final long tweet_id) {
+    public static void retweetStatus(final FragmentActivity activity, final long tweet_id, final Callable callBack) {
 
         ArrayList<Entity> ents = DataFramework.getInstance().getEntityList("users", "service is null or service = \"twitter.com\"");
 
         if (ents.size() == 1) {
 
             sendRetweet(activity, ents.get(0).getId() + "", tweet_id);
+            try {
+                if (callBack != null) callBack.call();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
         } else {
 
@@ -436,6 +446,11 @@ public class TweetActions {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             sendRetweet(activity, adapter.getItem(which).getId() + "", tweet_id);
+                            try {
+                                if (callBack != null) callBack.call();
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
                         }
 
                     })

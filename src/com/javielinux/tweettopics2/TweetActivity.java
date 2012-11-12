@@ -37,6 +37,7 @@ import com.viewpagerindicator.TabPageIndicator;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.concurrent.Callable;
 
 public class TweetActivity extends BaseLayersActivity implements APIDelegate<BaseResponse>, PopupLinks.PopupLinksListener, SplitActionBarMenu.SplitActionBarMenuListener {
 
@@ -395,7 +396,13 @@ public class TweetActivity extends BaseLayersActivity implements APIDelegate<Bas
 
         @Override
         public void onClick(View view) {
-            TweetActions.showDialogRetweet(TweetActivity.this, userActive, infoTweet);
+            TweetActions.showDialogRetweet(TweetActivity.this, userActive, infoTweet, new Callable() {
+                @Override
+                public Object call() throws Exception {
+                    finish();
+                    return null;
+                }
+            });
         }
     };
 
