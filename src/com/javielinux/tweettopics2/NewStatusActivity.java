@@ -1023,7 +1023,7 @@ public class NewStatusActivity extends BaseActivity {
             return;
         }
 
-        InfoUsers infoUsers = CacheData.getCacheUser(user);
+        InfoUsers infoUsers = CacheData.getInstance().getCacheUser(user);
 
         if (infoUsers==null || !infoUsers.hasFriendly(userDM)) {
             final String userDMFinal = userDM;

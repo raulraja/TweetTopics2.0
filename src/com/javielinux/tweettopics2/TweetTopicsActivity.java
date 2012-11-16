@@ -96,6 +96,8 @@ public class TweetTopicsActivity extends BaseLayersActivity implements PopupLink
 
         super.onCreate(savedInstanceState);
 
+        CacheData.getInstance().fillHide();
+
         OnAlarmReceiver.callAlarm(this);
 
         if (PreferenceUtils.getFinishForceClose(this)) {
@@ -285,12 +287,16 @@ public class TweetTopicsActivity extends BaseLayersActivity implements PopupLink
         imgBarAvatarGestureDetector = new GestureDetector(new GestureDetector.SimpleOnGestureListener() {
             @Override
             public void onLongPress(MotionEvent e) {
-                ((BaseListFragment)fragmentAdapter.instantiateItem(pager,pager.getCurrentItem())).goToTop();
+                if (fragmentAdapter.instantiateItem(pager,pager.getCurrentItem()) instanceof BaseListFragment) {
+                    ((BaseListFragment)fragmentAdapter.instantiateItem(pager,pager.getCurrentItem())).goToTop();
+                }
             }
 
             @Override
             public boolean onDoubleTap(MotionEvent e) {
-                ((BaseListFragment)fragmentAdapter.instantiateItem(pager,pager.getCurrentItem())).goToTop();
+                if (fragmentAdapter.instantiateItem(pager,pager.getCurrentItem()) instanceof BaseListFragment) {
+                    ((BaseListFragment)fragmentAdapter.instantiateItem(pager,pager.getCurrentItem())).goToTop();
+                }
                 return true;
             }
 

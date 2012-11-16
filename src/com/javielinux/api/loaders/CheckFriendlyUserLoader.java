@@ -30,7 +30,7 @@ public class CheckFriendlyUserLoader extends AsynchronousLoader<BaseResponse> {
             if (infoUsers==null) {
                 User user_data = ConnectionManager.getInstance().getAnonymousTwitter().showUser(request.getUser());
                 infoUsers = new InfoUsers(user_data);
-                CacheData.addCacheUsers(infoUsers);
+                CacheData.getInstance().addCacheUsers(infoUsers);
             }
             infoUsers.checkFriend(getContext(), request.getUserCheck());
             response.setInfoUsers(infoUsers);

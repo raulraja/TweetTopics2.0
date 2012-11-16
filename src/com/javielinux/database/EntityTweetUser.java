@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.SQLException;
+import android.database.sqlite.SQLiteException;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import com.android.dataframework.DataFramework;
@@ -54,9 +55,13 @@ public class EntityTweetUser extends Entity {
 
     public void saveLastId(long id) {
         if (tweet_type!=TweetTopicsUtils.TWEET_TYPE_SENT_DIRECTMESSAGES) {
-            ContentValues args = new ContentValues();
-            args.put(getFieldLastId(), id + "");
-            DataFramework.getInstance().getDB().update(getTable(), args, DataFramework.KEY_ID + "=" + getId(), null);
+            try {
+                ContentValues args = new ContentValues();
+                args.put(getFieldLastId(), id + "");
+                DataFramework.getInstance().getDB().update(getTable(), args, DataFramework.KEY_ID + "=" + getId(), null);
+            } catch (SQLiteException e) {
+                e.printStackTrace();
+            }
         }
     }
 	

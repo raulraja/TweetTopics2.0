@@ -36,7 +36,7 @@ public class LoadUserLoader extends AsynchronousLoader<BaseResponse> {
 
             response.setInfoUsers(infoUsers);
 
-            CacheData.addCacheUsers(infoUsers);
+            CacheData.getInstance().addCacheUsers(infoUsers);
 
             return response;
 		} catch (TwitterException e) {

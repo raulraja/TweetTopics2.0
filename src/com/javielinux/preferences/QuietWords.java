@@ -14,6 +14,7 @@ import com.android.dataframework.Entity;
 import com.javielinux.adapters.QuietWordsAdapter;
 import com.javielinux.tweettopics2.BaseActivity;
 import com.javielinux.tweettopics2.R;
+import com.javielinux.utils.CacheData;
 import com.javielinux.utils.Utils;
 
 public class QuietWords extends BaseActivity {
@@ -108,6 +109,7 @@ public class QuietWords extends BaseActivity {
 					ent.setValue("type_id", 3);	
 				}
 		    	ent.save();
+                CacheData.getInstance().fillHide();
 		    	refresh();
 	
 			}
@@ -128,6 +130,7 @@ public class QuietWords extends BaseActivity {
     private void deleteItem() {
     	Entity ent = new Entity("quiet", mCurrentId);
     	ent.delete();
+        CacheData.getInstance().fillHide();
     	refresh ();
     }
     

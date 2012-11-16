@@ -2,23 +2,16 @@ package com.javielinux.adapters;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import com.android.dataframework.Entity;
 import com.androidquery.AQuery;
-import com.javielinux.api.APIDelegate;
-import com.javielinux.api.APITweetTopics;
-import com.javielinux.api.request.LoadLinkRequest;
-import com.javielinux.api.response.ErrorResponse;
-import com.javielinux.api.response.LoadLinkResponse;
 import com.javielinux.infos.InfoLink;
 import com.javielinux.tweettopics2.R;
-import com.javielinux.utils.*;
+import com.javielinux.utils.CacheData;
+import com.javielinux.utils.LinksUtils;
 
 import java.util.List;
 
@@ -82,8 +75,8 @@ public class RowLinkWidgetAdapter extends BaseAdapter {
 
         if (!item.startsWith("#") && !item.startsWith("@")) {
 
-            if (CacheData.existCacheInfoLink(item)) {
-                InfoLink infoLink = CacheData.getCacheInfoLink(item);
+            if (CacheData.getInstance().existCacheInfoLink(item)) {
+                InfoLink infoLink = CacheData.getInstance().getCacheInfoLink(item);
                 String thumb = infoLink.getLinkImageThumb();
 
                 if (thumb.equals("")) {

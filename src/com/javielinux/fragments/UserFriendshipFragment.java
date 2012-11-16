@@ -16,7 +16,10 @@ import com.javielinux.api.loaders.GetUserFriendshipMembersLoader;
 import com.javielinux.api.loaders.LoadTypeStatusLoader;
 import com.javielinux.api.request.GetUserFriendshipMembersRequest;
 import com.javielinux.api.request.LoadTypeStatusRequest;
-import com.javielinux.api.response.*;
+import com.javielinux.api.response.BaseResponse;
+import com.javielinux.api.response.ErrorResponse;
+import com.javielinux.api.response.GetUserFriendshipMembersResponse;
+import com.javielinux.api.response.LoadTypeStatusResponse;
 import com.javielinux.infos.InfoTweet;
 import com.javielinux.infos.InfoUsers;
 import com.javielinux.tweettopics2.R;
@@ -76,7 +79,7 @@ public class UserFriendshipFragment extends BaseListFragment implements APIDeleg
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (savedInstanceState!=null && savedInstanceState.containsKey(KEY_SAVE_STATE_USER)) {
-            init(CacheData.getCacheUser(savedInstanceState.getString(KEY_SAVE_STATE_USER)),savedInstanceState.getInt(KEY_SAVE_STATE_COLUMN_TYPE));
+            init(CacheData.getInstance().getCacheUser(savedInstanceState.getString(KEY_SAVE_STATE_USER)),savedInstanceState.getInt(KEY_SAVE_STATE_COLUMN_TYPE));
         }
         tweet_list = new ArrayList<InfoTweet>();
         adapter = new TweetsAdapter(getActivity(), getLoaderManager(), tweet_list);

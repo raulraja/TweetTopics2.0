@@ -187,7 +187,7 @@ public class PopupLinks {
             frag.setArguments(args);
             frag.show(activity.getSupportFragmentManager(), "dialog");
         } else {
-            InfoLink infoLink = CacheData.getCacheInfoLink(link);
+            InfoLink infoLink = CacheData.getInstance().getCacheInfoLink(link);
 
             if (infoLink != null && infoLink.isExtensiveInfo() && infoLink.getType() == InfoLink.IMAGE) {
                 if (activity instanceof BaseLayersActivity) {

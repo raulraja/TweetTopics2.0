@@ -20,7 +20,6 @@ import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.Toast;
-import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
 import com.javielinux.infos.InfoLink;
 import com.javielinux.preferences.ColorsApp;
@@ -133,51 +132,12 @@ public class Utils {
 
     //static public String filesDirPath = Environment.getExternalStorageDirectory().getAbsolutePath()+"/tweettopics/avatars/";
 
-    static public ArrayList<String> hideUser = new ArrayList<String>();
-    static public ArrayList<String> hideWord = new ArrayList<String>();
-    static public ArrayList<String> hideSource = new ArrayList<String>();
-
     static public int dip2px(Context cnt, float dip) {
         final float scale = cnt.getResources().getDisplayMetrics().density;
         // Convert the dps to pixels, based on density scale
         return (int) (dip * scale + 0.5f);
     }
 
-    static public void fillHide() {
-        hideWord.clear();
-        hideUser.clear();
-        hideSource.clear();
-        ArrayList<Entity> words = DataFramework.getInstance().getEntityList("quiet");
-        for (Entity word : words) {
-            if (word.getInt("type_id") == 1) { // palabra
-                hideWord.add(word.getString("word").toLowerCase());
-            }
-            if (word.getInt("type_id") == 2) { // usuario
-                hideUser.add(word.getString("word").toLowerCase());
-            }
-            if (word.getInt("type_id") == 3) { // fuente
-                hideSource.add(word.getString("word").toLowerCase());
-            }
-        }
-    }
-
-    static public boolean isHideWordInText(String text) {
-        for (String word : hideWord) {
-            if (text.toLowerCase().contains(word.toLowerCase())) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    static public boolean isHideSourceInText(String text) {
-        for (String word : hideSource) {
-            if (text.toLowerCase().contains(word.toLowerCase())) {
-                return true;
-            }
-        }
-        return false;
-    }
 
     static public SharedPreferences getPreference(Context cnt) {
         PreferenceManager.setDefaultValues(cnt, R.xml.preferences, false);
@@ -588,7 +548,7 @@ public class Utils {
                     if (hash.hasMoreTokens()) u.linkMediaThumb = hash.nextToken();
                     if (hash.hasMoreTokens()) u.linkMediaLarge = hash.nextToken();
                     if (u.linkMediaThumb != null && !u.linkMediaThumb.equals("")) {
-                        CacheData.putURLMedia(u.expanded, u);
+                        CacheData.getInstance().putURLMedia(u.expanded, u);
                     }
                     out.add(u);
                 }

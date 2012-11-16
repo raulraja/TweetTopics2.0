@@ -275,20 +275,24 @@ public class TweetTopicsFragmentAdapter extends FragmentPagerAdapter {
 
     @Override
     public CharSequence getPageTitle(int position) {
-        int type_column = fragmentList.get(position).getInt("type_id");
-        switch (type_column) {
-            case TweetTopicsUtils.COLUMN_SEARCH:
-                Entity ent = new Entity("search", fragmentList.get(position).getLong("search_id"));
-                return ent.getString("name");
-            case TweetTopicsUtils.COLUMN_LIST_USER:
-                Entity list_user_entity = new Entity("user_lists", fragmentList.get(position).getLong("userlist_id"));
-                return list_user_entity.getString("name");
-            case TweetTopicsUtils.COLUMN_TRENDING_TOPIC:
-                return fragmentList.get(position).getEntity("type_id").getString("title") + " " + fragmentList.get(position).getString("description");
-            default:
-                return fragmentList.get(position).getEntity("type_id").getString("title");
-        }
+        try {
+            int type_column = fragmentList.get(position).getInt("type_id");
+            switch (type_column) {
+                case TweetTopicsUtils.COLUMN_SEARCH:
+                    Entity ent = new Entity("search", fragmentList.get(position).getLong("search_id"));
+                    return ent.getString("name");
+                case TweetTopicsUtils.COLUMN_LIST_USER:
+                    Entity list_user_entity = new Entity("user_lists", fragmentList.get(position).getLong("userlist_id"));
+                    return list_user_entity.getString("name");
+                case TweetTopicsUtils.COLUMN_TRENDING_TOPIC:
+                    return fragmentList.get(position).getEntity("type_id").getString("title") + " " + fragmentList.get(position).getString("description");
+                default:
+                    return fragmentList.get(position).getEntity("type_id").getString("title");
+            }
+        } catch (CursorIndexOutOfBoundsException e) {
+        } catch (Exception e) {}
 
+        return context.getString(R.string.app_name);
     }
 
     public void clearColumnList() {

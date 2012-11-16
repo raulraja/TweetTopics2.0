@@ -400,6 +400,12 @@ public class SearchFragment extends BaseListFragment implements APIDelegate<Base
                         });
                     } catch (ArrayIndexOutOfBoundsException e) {
                         e.printStackTrace();
+                    } catch (IndexOutOfBoundsException e) {
+                        e.printStackTrace();
+                    } catch (NullPointerException e) {
+                        e.printStackTrace();
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
 
                 }

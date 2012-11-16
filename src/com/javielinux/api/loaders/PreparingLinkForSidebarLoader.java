@@ -24,7 +24,7 @@ public class PreparingLinkForSidebarLoader extends AsynchronousLoader<BaseRespon
 
 		try {
             PreparingLinkForSidebarResponse response = new PreparingLinkForSidebarResponse();
-			CacheData.putCacheInfoLinks(link, LinksUtils.getInfoTweet(link));
+            CacheData.getInstance().putCacheInfoLinks(link, LinksUtils.getInfoTweet(link));
 
             response.setReady(true);
             return response;

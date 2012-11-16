@@ -44,7 +44,7 @@ public class UserProfileFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (savedInstanceState!=null && savedInstanceState.containsKey(KEY_SAVE_STATE_USER)) {
-            init(CacheData.getCacheUser(savedInstanceState.getString(KEY_SAVE_STATE_USER)));
+            init(CacheData.getInstance().getCacheUser(savedInstanceState.getString(KEY_SAVE_STATE_USER)));
         }
         adapter = new UserProfileAdapter(getActivity(), infoUsers);
     }

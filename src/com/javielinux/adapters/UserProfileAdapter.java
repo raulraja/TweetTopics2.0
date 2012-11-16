@@ -74,7 +74,9 @@ public class UserProfileAdapter extends BaseAdapter {
         this.activity = activity;
         this.infoUser = infoUser;
 
-        reload();
+        if (activity != null && infoUser != null) {
+            reload();
+        }
 
 	}
 

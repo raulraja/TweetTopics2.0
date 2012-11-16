@@ -197,7 +197,7 @@ public class TweetActivity extends BaseLayersActivity implements APIDelegate<Bas
             Bundle extras = getIntent().getExtras();
             if (extras!=null) {
                 if (extras.containsKey(Utils.KEY_EXTRAS_INFO) && extras.getBundle(Utils.KEY_EXTRAS_INFO).containsKey(KEY_EXTRAS_LINK)) {
-                    InfoLink infoLink = CacheData.getCacheInfoLink(extras.getBundle(Utils.KEY_EXTRAS_INFO).getString(KEY_EXTRAS_LINK));
+                    InfoLink infoLink = CacheData.getInstance().getCacheInfoLink(extras.getBundle(Utils.KEY_EXTRAS_INFO).getString(KEY_EXTRAS_LINK));
 
                     if (infoLink != null && infoLink.isExtensiveInfo() && infoLink.getType() == InfoLink.IMAGE) {
                         getImage(infoLink);
@@ -314,7 +314,7 @@ public class TweetActivity extends BaseLayersActivity implements APIDelegate<Bas
             frag.setArguments(args);
             frag.show(getSupportFragmentManager(), "dialog");
         } else {
-            InfoLink infoLink = CacheData.getCacheInfoLink(link);
+            InfoLink infoLink = CacheData.getInstance().getCacheInfoLink(link);
 
             if (infoLink != null && infoLink.isExtensiveInfo() && infoLink.getType() == InfoLink.IMAGE) {
                 getImage(infoLink);

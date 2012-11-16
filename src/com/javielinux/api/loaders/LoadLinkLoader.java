@@ -30,7 +30,7 @@ public class LoadLinkLoader extends AsynchronousLoader<BaseResponse> {
         if (il==null) {
             il = LinksUtils.getInfoTweet(request.getLink());
             if (il!=null) {
-                CacheData.putCacheInfoLinks(request.getLink(), il);
+                CacheData.getInstance().putCacheInfoLinks(request.getLink(), il);
             }
         }
 
@@ -61,7 +61,7 @@ public class LoadLinkLoader extends AsynchronousLoader<BaseResponse> {
 
         }
 
-        if (il!=null) CacheData.putCacheInfoLinks(request.getLink(), il);
+        if (il!=null) CacheData.getInstance().putCacheInfoLinks(request.getLink(), il);
 
         response.setInfoLink(il);
 

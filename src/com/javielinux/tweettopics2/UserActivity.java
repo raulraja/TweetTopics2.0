@@ -76,7 +76,7 @@ public class UserActivity extends BaseLayersActivity implements PopupLinks.Popup
             finish();
         }
 
-        infoUser = CacheData.getCacheUser(username);
+        infoUser = CacheData.getInstance().getCacheUser(username);
 
         setContentView(R.layout.user_activity);
 

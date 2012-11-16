@@ -28,10 +28,7 @@ import com.javielinux.infos.InfoTweet;
 import com.javielinux.tweettopics2.R;
 import com.javielinux.tweettopics2.ThemeManager;
 import com.javielinux.tweettopics2.TweetTopicsActivity;
-import com.javielinux.utils.ImageUtils;
-import com.javielinux.utils.ListFragmentListener;
-import com.javielinux.utils.TweetTopicsUtils;
-import com.javielinux.utils.Utils;
+import com.javielinux.utils.*;
 import com.javielinux.widget.WidgetCounters2x1;
 import com.javielinux.widget.WidgetCounters4x1;
 
@@ -292,7 +289,6 @@ public class TweetTopicsFragment extends BaseListFragment implements APIDelegate
 
             switch (column_entity.getInt("type_id")) {
                 case TweetTopicsUtils.COLUMN_TIMELINE:
-                    Utils.fillHide();
                     whereType = " AND type_id = " + TweetTopicsUtils.TWEET_TYPE_TIMELINE;
                     break;
                 case TweetTopicsUtils.COLUMN_MENTIONS:
@@ -321,11 +317,11 @@ public class TweetTopicsFragment extends BaseListFragment implements APIDelegate
             EntityTweetUser entityTweetUser = new EntityTweetUser(user_entity.getId(), column_entity.getInt("type_id"));
 
             for (int i = tweets.size() - 1; i >= 0; i--) {
-                if (is_timeline && Utils.hideUser.contains(tweets.get(i).getString("username").toLowerCase())) { // usuario
+                if (is_timeline && CacheData.getInstance().isHideUserInText(tweets.get(i).getString("username").toLowerCase())) { // usuario
                     countHide++;
-                } else if (is_timeline && Utils.isHideWordInText(tweets.get(i).getString("text").toLowerCase())) { // palabra
+                } else if (is_timeline && CacheData.getInstance().isHideWordInText(tweets.get(i).getString("text").toLowerCase())) { // palabra
                     countHide++;
-                } else if (is_timeline && Utils.isHideSourceInText(tweets.get(i).getString("source").toLowerCase())) { // fuente
+                } else if (is_timeline && CacheData.getInstance().isHideSourceInText(tweets.get(i).getString("source").toLowerCase())) { // fuente
                     countHide++;
                 } else {
                     InfoTweet infoTweet = new InfoTweet(tweets.get(i));
@@ -422,6 +418,12 @@ public class TweetTopicsFragment extends BaseListFragment implements APIDelegate
                             });
                         }
                     } catch (ArrayIndexOutOfBoundsException e) {
+                        e.printStackTrace();
+                    } catch (IndexOutOfBoundsException e) {
+                        e.printStackTrace();
+                    } catch (NullPointerException e) {
+                        e.printStackTrace();
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }

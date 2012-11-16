@@ -1,7 +1,6 @@
 package com.javielinux.adapters;
 
 
-import android.content.Context;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.LoaderManager;
 import android.view.View;
@@ -21,7 +20,6 @@ import com.javielinux.api.response.LoadUserResponse;
 import com.javielinux.infos.InfoLink;
 import com.javielinux.infos.InfoUsers;
 import com.javielinux.tweettopics2.R;
-import com.javielinux.tweettopics2.TweetActivity;
 import com.javielinux.utils.CacheData;
 import com.javielinux.utils.Utils;
 
@@ -135,7 +133,7 @@ public class TweetsLinkAdapter extends ArrayAdapter<String> {
             AQuery aQuery = listAQuery.recycle(convertView);
 
             if (link.startsWith("@")) {  // es un usuario
-                InfoUsers user = CacheData.getCacheUser(link.replace("@", ""));
+                InfoUsers user = CacheData.getInstance().getCacheUser(link.replace("@", ""));
 
                 if (user!=null) {
                     viewHolder.containerLoading.setVisibility(View.GONE);
@@ -173,7 +171,7 @@ public class TweetsLinkAdapter extends ArrayAdapter<String> {
 
             } else {
 
-                InfoLink il = CacheData.getCacheInfoLink(link);
+                InfoLink il = CacheData.getInstance().getCacheInfoLink(link);
 
                 if (il == null) {
                     viewHolder.containerLoading.setVisibility(View.VISIBLE);

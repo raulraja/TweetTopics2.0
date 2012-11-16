@@ -116,6 +116,7 @@ public class UserActions {
         ent.setValue("word", infoUsers.getName());
         ent.setValue("type_id", 2);
         ent.save();
+        CacheData.getInstance().fillHide();
         Utils.showMessage(activity, activity.getString(R.string.user_hidden_correct));
     }
 

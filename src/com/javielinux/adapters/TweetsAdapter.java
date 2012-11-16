@@ -120,7 +120,7 @@ public class TweetsAdapter extends ArrayAdapter<InfoTweet> {
         } catch (IndexOutOfBoundsException e) {}
 
         if (!linkForImage.equals("") && !linkForImage.startsWith("@") && !linkForImage.startsWith("#")) {
-            if (!CacheData.existCacheInfoLink(linkForImage)) {
+            if (!CacheData.getInstance().existCacheInfoLink(linkForImage)) {
                 try {
                     APITweetTopics.execute(getContext(), loaderManager, new APIDelegate<LoadLinkResponse>() {
 
@@ -445,8 +445,8 @@ public class TweetsAdapter extends ArrayAdapter<InfoTweet> {
 
             InfoLink infoLink = null;
 
-            if (CacheData.existCacheInfoLink(linkForImage)) {
-                infoLink = CacheData.getCacheInfoLink(linkForImage);
+            if (CacheData.getInstance().existCacheInfoLink(linkForImage)) {
+                infoLink = CacheData.getInstance().getCacheInfoLink(linkForImage);
             }
 
             int typeResource = getTypeResource(linkForImage);

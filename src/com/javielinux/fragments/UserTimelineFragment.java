@@ -59,7 +59,7 @@ public class UserTimelineFragment extends BaseListFragment implements APIDelegat
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (savedInstanceState!=null && savedInstanceState.containsKey(KEY_SAVE_STATE_USER)) {
-            init(CacheData.getCacheUser(savedInstanceState.getString(KEY_SAVE_STATE_USER)));
+            init(CacheData.getInstance().getCacheUser(savedInstanceState.getString(KEY_SAVE_STATE_USER)));
         }
         tweet_list = new ArrayList<InfoTweet>();
         adapter = new TweetsAdapter(getActivity(), getLoaderManager(), tweet_list);

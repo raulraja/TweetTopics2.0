@@ -10,6 +10,7 @@ import com.android.dataframework.Entity;
 import com.javielinux.tweettopics2.R;
 import com.javielinux.tweettopics2.SearchActivity;
 import com.javielinux.tweettopics2.TweetTopicsActivity;
+import com.javielinux.utils.CacheData;
 import com.javielinux.utils.PreferenceUtils;
 import com.javielinux.utils.TweetActions;
 import com.javielinux.utils.Utils;
@@ -42,6 +43,7 @@ public class HashTagDialogFragment extends DialogFragment {
                             ent.setValue("word", hashtag);
                             ent.setValue("type_id", 1);
                             ent.save();
+                            CacheData.getInstance().fillHide();
                             Utils.showMessage(getActivity(), getActivity().getString(R.string.hashtag_hidden_correct));
                         } else if (which==2) {
                             Intent edit_search = new Intent(getActivity(), SearchActivity.class);

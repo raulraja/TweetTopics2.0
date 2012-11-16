@@ -11,6 +11,8 @@ import com.javielinux.api.response.BaseResponse;
 import com.javielinux.api.response.ErrorResponse;
 import com.javielinux.utils.Utils;
 
+import java.util.concurrent.RejectedExecutionException;
+
 public class APILoader implements LoaderManager.LoaderCallbacks {
 
     private Context context;
@@ -35,6 +37,8 @@ public class APILoader implements LoaderManager.LoaderCallbacks {
                 loaderManager.restartLoader(baseRequest.hashCode(), null, this);
             }
         } catch (IllegalStateException e) {
+            e.printStackTrace();
+        } catch (RejectedExecutionException e) {
             e.printStackTrace();
         }
     }

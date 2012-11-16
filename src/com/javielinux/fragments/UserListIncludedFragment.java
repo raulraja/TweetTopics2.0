@@ -59,7 +59,7 @@ public class UserListIncludedFragment extends Fragment implements APIDelegate<Ba
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (savedInstanceState!=null && savedInstanceState.containsKey(KEY_SAVE_STATE_USER)) {
-            init(CacheData.getCacheUser(savedInstanceState.getString(KEY_SAVE_STATE_USER)));
+            init(CacheData.getInstance().getCacheUser(savedInstanceState.getString(KEY_SAVE_STATE_USER)));
         }
         user_list = new ArrayList<UserList>();
         adapter = new UserListsAdapter(getActivity(), user_list);

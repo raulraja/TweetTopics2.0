@@ -89,7 +89,7 @@ public class LinksAdapter extends BaseAdapter {
         boolean hasImage = false;
 
         if (link.startsWith("@")) {
-            InfoUsers infoUser = CacheData.getCacheUser(link);
+            InfoUsers infoUser = CacheData.getInstance().getCacheUser(link);
             if (infoUser!=null) {
 
                 Bitmap avatar = aQuery.getCachedImage(infoUser.getUrlAvatar());
@@ -121,8 +121,8 @@ public class LinksAdapter extends BaseAdapter {
             }
         } else if (!link.startsWith("#")) {
 
-            if (CacheData.existCacheInfoLink(link)) {
-                InfoLink item = CacheData.getCacheInfoLink(link);
+            if (CacheData.getInstance().existCacheInfoLink(link)) {
+                InfoLink item = CacheData.getInstance().getCacheInfoLink(link);
                 String thumb = item.getLinkImageThumb();
                 if (thumb.equals("")) {
                     aQuery.id(viewHolder.image).image(typeResource);

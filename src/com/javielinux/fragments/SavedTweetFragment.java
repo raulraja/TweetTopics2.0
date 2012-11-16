@@ -44,6 +44,10 @@ public class SavedTweetFragment extends BaseListFragment implements APIDelegate<
     private LinearLayout viewNoInternet;
     private LinearLayout viewUpdate;
 
+    public SavedTweetFragment() {
+        super();
+    }
+
     public SavedTweetFragment(long columnId) {
         init(columnId);
     }

@@ -469,8 +469,8 @@ public class LinksUtils {
     	link = largeLink(link);
 
         // si es un url media
-        if (CacheData.existURLMedia(link)) {
-            Utils.URLContent content = CacheData.getURLMedia(link);
+        if (CacheData.getInstance().existURLMedia(link)) {
+            Utils.URLContent content = CacheData.getInstance().getURLMedia(link);
             InfoLink il = new InfoLink();
             il.setService("Twitter Pic");
             il.setExtensiveInfo(true);

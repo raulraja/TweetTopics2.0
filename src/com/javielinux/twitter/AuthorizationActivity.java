@@ -10,7 +10,6 @@ import android.webkit.*;
 import android.widget.LinearLayout;
 import com.javielinux.tweettopics2.R;
 import com.javielinux.utils.PreferenceUtils;
-import com.javielinux.utils.Utils;
 import twitter4j.TwitterException;
 
 public class AuthorizationActivity extends Activity {
@@ -111,7 +110,7 @@ public class AuthorizationActivity extends Activity {
                 if (authUrl!=null) {
                     webView.loadUrl(authUrl);
                 } else {
-                    Utils.showMessage(AuthorizationActivity.this, getString(R.string.problem_twitter_auth));
+                    // TODO Mostrar un mensaje, un toast aquí casca
                     finish();
                 }
             }
