@@ -16,6 +16,7 @@
     <string-array name="popupmenu_my_activity_more_options"><!-- 2.0 -->
         <item>@string/size</item>
         <item>@string/preferences</item>
+        <item>@string/themes</item>
         <item>@string/exit</item>
     </string-array>
 

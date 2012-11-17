@@ -410,11 +410,17 @@ public class ColorsApp extends ListActivity implements ColorDialog.OnChangeColor
     	
     }
     
-    public static void exportTheme(Context cnt) {
-    	Intent newstatus = new Intent(cnt, NewStatusActivity.class);
-    	newstatus.putExtra("text", Utils.HASHTAG_SHARE_THEME + " " + URLExportTheme(cnt));
-    	newstatus.putExtra("type", NewStatusActivity.TYPE_NORMAL);
-    	cnt.startActivity(newstatus);
+    public static void exportTheme(final Context cnt) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                String url = URLExportTheme(cnt);
+                Intent newstatus = new Intent(cnt, NewStatusActivity.class);
+                newstatus.putExtra("text", Utils.HASHTAG_SHARE_THEME + " " + url);
+                newstatus.putExtra("type", NewStatusActivity.TYPE_NORMAL);
+                cnt.startActivity(newstatus);
+            }
+        }).start();
     }
     
     public static String URLExportTheme(Context cnt) {

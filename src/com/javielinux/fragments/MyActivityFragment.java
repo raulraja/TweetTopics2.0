@@ -42,6 +42,7 @@ import com.javielinux.utils.Utils;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.util.Locale;
+import java.util.concurrent.Callable;
 
 public class MyActivityFragment extends Fragment {
 
@@ -258,6 +259,29 @@ public class MyActivityFragment extends Fragment {
         }
     }
 
+    private void showThemeDialog() {
+        ThemeManagerDialogFragment frag = new ThemeManagerDialogFragment(new Callable() {
+            @Override
+            public Object call() throws Exception {
+                if (DataFramework.getInstance().getEntityList("themes").size()>0) {
+                    LoadThemeDialogFragment frag = new LoadThemeDialogFragment(new Callable() {
+                        @Override
+                        public Object call() throws Exception {
+                            ((TweetTopicsActivity)getActivity()).refreshTheme();
+                            return null;
+                        }
+                    });
+                    frag.show(getFragmentManager(), "dialog");
+                } else {
+                    Utils.showMessage(getActivity(), getString(R.string.no_themes));
+                }
+
+                return null;
+            }
+        });
+        frag.show(getFragmentManager(), "dialog");
+    }
+
     private void showMenuOptions(View v) {
         if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.HONEYCOMB) {
             PopupMenu popupMenu = new PopupMenu(getActivity(), v);
@@ -268,6 +292,8 @@ public class MyActivityFragment extends Fragment {
                 public boolean onMenuItemClick(MenuItem item) {
                     if (item.getItemId() == R.id.popupmenu_more_options_size) {
                         showSizeText();
+                    } else if (item.getItemId() == R.id.popupmenu_more_options_theme) {
+                        showThemeDialog();
                     } else if (item.getItemId() == R.id.popupmenu_more_options_preferences) {
                         Intent i = new Intent(getActivity(), Preferences.class);
                         startActivity(i);
@@ -307,6 +333,8 @@ public class MyActivityFragment extends Fragment {
                         Intent i = new Intent(getActivity(), Preferences.class);
                         startActivity(i);
                     } else if (which == 2) {
+                        showThemeDialog();
+                    }  else if (which == 3) {
                         showDialogExit();
                     }
                 }

@@ -33,6 +33,8 @@ import com.javielinux.fragmentadapter.TweetTopicsFragmentAdapter;
 import com.javielinux.fragments.BaseListFragment;
 import com.javielinux.infos.InfoTweet;
 import com.javielinux.notifications.OnAlarmReceiver;
+import com.javielinux.task.IntentIntegrator;
+import com.javielinux.task.IntentResult;
 import com.javielinux.utils.*;
 import com.nineoldandroids.animation.Animator;
 import com.nineoldandroids.animation.AnimatorSet;
@@ -392,6 +394,21 @@ public class TweetTopicsActivity extends BaseLayersActivity implements PopupLink
 
         super.onActivityResult(requestCode, resultCode, data);
 
+        IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+        if (scanResult != null) {
+            String result = scanResult.getContents();
+            if (result!=null) {
+                if (result.startsWith("tweettopics%%qr")) {
+                    importSearch(result);
+                }
+                if (result.startsWith("tweettopics%%theme")) {
+                    importTheme(result);
+                }
+            } else {
+                Utils.showMessage(this, getString(R.string.error_general));
+            }
+        }
+
         switch (requestCode) {
             case ACTIVITY_NEWEDITSEARCH:
 
@@ -682,6 +699,24 @@ public class TweetTopicsActivity extends BaseLayersActivity implements PopupLink
 
     public long getUserOwnerCurrentColumn() {
         return fragmentAdapter.getUserOwnerColumn(pager.getCurrentItem());
+    }
+
+    public void importSearch(String text) {
+        if (Utils.importSearch(this, text)) {
+            Utils.showMessage(this, getString(R.string.import_correct));
+            refreshMyActivity();
+        } else {
+            Utils.showMessage(this, getString(R.string.import_no_correct));
+        }
+    }
+
+    public void importTheme(String text) {
+        if (Utils.importTheme(this, text)) {
+            Utils.showMessage(this, getString(R.string.import_correct));
+            refreshTheme();
+        } else {
+            Utils.showMessage(this, getString(R.string.import_no_correct));
+        }
     }
 
     private Bitmap getThumb(String s) {
