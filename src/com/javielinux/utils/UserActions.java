@@ -15,10 +15,7 @@ import com.javielinux.api.response.BaseResponse;
 import com.javielinux.api.response.ErrorResponse;
 import com.javielinux.infos.InfoUsers;
 import com.javielinux.preferences.Colors;
-import com.javielinux.tweettopics2.NewStatusActivity;
-import com.javielinux.tweettopics2.R;
-import com.javielinux.tweettopics2.SearchActivity;
-import com.javielinux.tweettopics2.ShowImageActivity;
+import com.javielinux.tweettopics2.*;
 import com.javielinux.twitter.ConnectionManager;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
@@ -36,6 +33,7 @@ public class UserActions {
     public static String USER_ACTION_SEND_DIRECT = "send_direct";
     public static String USER_ACTION_CHANGE_RELATIONSHIP = "change_relationship";
     public static String USER_ACTION_VIEW_PHOTO_PROFILE = "view_photo_profile";
+    public static String USER_ACTION_MY_LISTS = "my_lists";
 
     public static InfoUsers execByCode(String code, FragmentActivity activity, long fromUser, InfoUsers infoUsers) {
          return execByCode(code, activity, fromUser, infoUsers, null);
@@ -87,6 +85,11 @@ public class UserActions {
             goToImageProfile(activity, infoUsers);
         } else if (code.equals(USER_ACTION_CHANGE_RELATIONSHIP)) {
             return goToChangeRelationship(activity, infoUsers, (InfoUsers.Friend)extra);
+        } else if (code.equals(USER_ACTION_MY_LISTS)) {
+            Intent userLists = new Intent(activity, UserListsActivity.class);
+            userLists.putExtra(DataFramework.KEY_ID, (long)-1);
+            userLists.putExtra("screenName", infoUsers.getName());
+            activity.startActivity(userLists);
         }
         return null;
     }

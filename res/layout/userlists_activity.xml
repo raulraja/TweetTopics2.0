@@ -148,4 +148,38 @@
         android:stretchMode="columnWidth">
     </GridView>
 
+    <LinearLayout android:id="@+id/user_lists_load_more"
+        android:gravity="center"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <Button android:id="@+id/but_user_lists_load_more"
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:text="@string/load_more_footer"/>
+
+        <LinearLayout android:id="@+id/user_lists_load_more_view_loading"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:orientation="horizontal"
+            android:padding="8sp"
+            android:visibility="gone">
+
+            <ProgressBar
+                android:indeterminate="true"
+                android:layout_height="16sp"
+                android:layout_marginRight="6sp"
+                android:layout_width="16sp" />
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="@string/loading" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
 </LinearLayout>

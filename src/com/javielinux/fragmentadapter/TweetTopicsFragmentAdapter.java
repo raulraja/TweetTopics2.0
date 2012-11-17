@@ -282,8 +282,9 @@ public class TweetTopicsFragmentAdapter extends FragmentPagerAdapter {
                     Entity ent = new Entity("search", fragmentList.get(position).getLong("search_id"));
                     return ent.getString("name");
                 case TweetTopicsUtils.COLUMN_LIST_USER:
-                    Entity list_user_entity = new Entity("user_lists", fragmentList.get(position).getLong("userlist_id"));
-                    return list_user_entity.getString("name");
+                    //Entity list_user_entity = new Entity("user_lists", fragmentList.get(position).getLong("userlist_id"));
+                    //return list_user_entity.getString("name");
+                    return fragmentList.get(position).getString("description");
                 case TweetTopicsUtils.COLUMN_TRENDING_TOPIC:
                     return fragmentList.get(position).getEntity("type_id").getString("title") + " " + fragmentList.get(position).getString("description");
                 default:

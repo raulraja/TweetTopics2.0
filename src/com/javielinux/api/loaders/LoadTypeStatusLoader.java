@@ -93,7 +93,14 @@ public class LoadTypeStatusLoader extends AsynchronousLoader<BaseResponse> {
                     result.add(new InfoTweet(statii.get(i)));
                 }
 			} else if (request.getType()==LIST) {
-				ResponseList<twitter4j.Status> statii = ConnectionManager.getInstance().getTwitter(request.getUserId()).getUserListStatuses(request.getListId(), new Paging(1));
+				ResponseList<twitter4j.Status> statii;
+
+                if (request.getUserId() < 0) {
+                    statii = ConnectionManager.getInstance().getAnonymousTwitter().getUserListStatuses(request.getListId(), new Paging(1));
+                } else {
+                    statii = ConnectionManager.getInstance().getTwitter(request.getUserId()).getUserListStatuses(request.getListId(), new Paging(1));
+                }
+
 				for (int i=0; i<statii.size(); i++) {
 					result.add(new InfoTweet(statii.get(i)));
 				}

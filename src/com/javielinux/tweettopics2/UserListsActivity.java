@@ -16,28 +16,32 @@ import com.android.dataframework.Entity;
 import com.javielinux.adapters.RowUserListsAdapter;
 import com.javielinux.api.APIDelegate;
 import com.javielinux.api.APITweetTopics;
+import com.javielinux.api.loaders.GetUserListLoader;
 import com.javielinux.api.request.GetUserListRequest;
 import com.javielinux.api.response.BaseResponse;
 import com.javielinux.api.response.ErrorResponse;
+import com.javielinux.api.response.GetUserListResponse;
 import com.javielinux.dialogs.AlertDialogFragment;
 import com.javielinux.preferences.Preferences;
 import com.javielinux.utils.DBUtils;
 import com.javielinux.utils.ImageUtils;
 import com.javielinux.utils.TweetTopicsUtils;
 import com.javielinux.utils.Utils;
+import twitter4j.UserList;
 
 import java.io.File;
 import java.util.ArrayList;
 
 public class UserListsActivity extends BaseActivity implements APIDelegate<BaseResponse> {
 
-    private static int SHOW_TWEETS = 1;
-    private static int SHOW_TWEETS_FOLLOWINGLIST = 2;
-
     private Entity user_entity;
     private RowUserListsAdapter userListsAdapter;
-    private ArrayList<Entity> userlist_entities;
+    private ArrayList<UserList> userListArrayList;
     private int type_id;
+    private long user_id;
+    private String screenName;
+    private long nextCursor;
+    private boolean loadingMoreUserList;
 
     private ThemeManager themeManager;
 
@@ -45,7 +49,10 @@ public class UserListsActivity extends BaseActivity implements APIDelegate<BaseR
     private LinearLayout viewNoLists;
     private LinearLayout viewLoading;
     private LinearLayout viewNoInternet;
+    private LinearLayout viewLoadMore;
+    private LinearLayout viewLoadMoreLoading;
     private GridView viewUserLists;
+    private Button buttonLoadMore;
 
     private RelativeLayout layoutActionBar;
 
@@ -87,25 +94,34 @@ public class UserListsActivity extends BaseActivity implements APIDelegate<BaseR
             e.printStackTrace();
         }
 
-        long user_id = -1;
+        user_id = -1;
 
         if (savedInstanceState != null) {
             if (savedInstanceState.containsKey(DataFramework.KEY_ID))
                 user_id = savedInstanceState.getLong(DataFramework.KEY_ID);
+            if (savedInstanceState.containsKey("screenName"))
+                screenName = savedInstanceState.getString("screenName");
         } else {
             Bundle extras = getIntent().getExtras();
 
             if (extras != null) {
                 if (extras.containsKey(DataFramework.KEY_ID)) user_id = extras.getLong(DataFramework.KEY_ID);
+                if (extras.containsKey("screenName")) screenName = extras.getString("screenName");
             }
         }
 
-        if (user_id < 0) {
+        if (user_id < 0 && screenName == "") {
             Utils.showMessage(this, R.string.error_general);
             finish();
         }
 
-        user_entity = new Entity("users", user_id);
+        if (user_id >= 0) {
+            user_entity = new Entity("users", user_id);
+            screenName = user_entity.getString("name");
+        }
+
+        nextCursor = -1;
+        loadingMoreUserList = false;
 
         themeManager = new ThemeManager(this);
         themeManager.setTheme();
@@ -122,13 +138,17 @@ public class UserListsActivity extends BaseActivity implements APIDelegate<BaseR
         viewLoading = (LinearLayout) this.findViewById(R.id.user_lists_view_loading);
         viewNoInternet = (LinearLayout) this.findViewById(R.id.user_lists_view_no_internet);
         viewUserLists = (GridView) this.findViewById(R.id.grid_userlist);
+        viewLoadMore = (LinearLayout) this.findViewById(R.id.user_lists_load_more);
+        viewLoadMoreLoading = (LinearLayout) this.findViewById(R.id.user_lists_load_more_view_loading);
+        buttonLoadMore = (Button) this.findViewById(R.id.but_user_lists_load_more);
 
         findViewById(R.id.user_list_selection).setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                type_id = SHOW_TWEETS;
-                fillGridUserLists();
+                type_id = GetUserListLoader.OWN_LISTS;
+                loadingMoreUserList = false;
+                reload();
             }
 
         });
@@ -137,8 +157,9 @@ public class UserListsActivity extends BaseActivity implements APIDelegate<BaseR
 
             @Override
             public void onClick(View v) {
-                type_id = SHOW_TWEETS_FOLLOWINGLIST;
-                fillGridUserLists();
+                type_id = GetUserListLoader.MEMBERSHIP_LIST;
+                loadingMoreUserList = false;
+                reload();
             }
 
         });
@@ -159,15 +180,25 @@ public class UserListsActivity extends BaseActivity implements APIDelegate<BaseR
             }
         });
 
-        userlist_entities = new ArrayList<Entity>();
-        userListsAdapter = new RowUserListsAdapter(this, userlist_entities);
+        findViewById(R.id.but_user_lists_load_more).setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                loadingMoreUserList = true;
+                reload();
+            }
+
+        });
+
+        userListArrayList = new ArrayList<UserList>();
+        userListsAdapter = new RowUserListsAdapter(this, userListArrayList);
         GridView gridUserList = (GridView)this.findViewById(R.id.grid_userlist);
         gridUserList.setAdapter(userListsAdapter);
 
         gridUserList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> av, View v, int pos, long id) {
-                Entity userList = userListsAdapter.getItem(pos);
+                UserList userList = userListsAdapter.getItem(pos);
 
                 createUserListsColumn(userList);
             }
@@ -180,13 +211,9 @@ public class UserListsActivity extends BaseActivity implements APIDelegate<BaseR
             }
         });
 
-        type_id = SHOW_TWEETS;
-        fillGridUserLists();
+        type_id = GetUserListLoader.OWN_LISTS;
 
-        if (userlist_entities.size() == 0) {
-            showLoading();
-            reload();
-        }
+        reload();
     }
 
     private void update() {
@@ -262,6 +289,7 @@ public class UserListsActivity extends BaseActivity implements APIDelegate<BaseR
     public void onError(ErrorResponse error) {
         error.getError().printStackTrace();
         showNoInternet();
+        Utils.showMessage(this,error.getMsgError());
     }
 
     @Override
@@ -270,14 +298,63 @@ public class UserListsActivity extends BaseActivity implements APIDelegate<BaseR
     }
 
     @Override
-    public void onResults(BaseResponse result) {
-        if (!result.isError())
-            fillGridUserLists();
+    public void onResults(BaseResponse response) {
+        if (!loadingMoreUserList) {
+            userListArrayList.clear();
+        }
+
+        GetUserListResponse result = (GetUserListResponse)response;
+        nextCursor = result.getNextCursor();
+        userListArrayList.addAll(result.getUserListArrayList());
+
+        viewLoadMoreLoading.setVisibility(View.GONE);
+
+        if (nextCursor > 0) {
+            showButtonLoadMore();
+            userListsAdapter.setExistsMoreElements(true);
+        } else {
+            hideButtonLoadMore();
+            userListsAdapter.setExistsMoreElements(false);
+        }
+
+        userListsAdapter.notifyDataSetChanged();
+
+        if (userListsAdapter.getCount() == 0) {
+            showNoLists();
+        } else {
+            showUserLists();
+            viewUserLists.setSelection(userListsAdapter.getCount() - 1);
+        }
     }
 
-    private void createUserListsColumn(Entity userList) {
+    private void createUserListsColumn(UserList userList) {
 
         ArrayList<Entity> created_column_list = DataFramework.getInstance().getEntityList("columns", "userlist_id=" + userList.getId());
+        int position = 0;
+
+        if (created_column_list.size() == 0) {
+            position = DBUtils.nextPositionColumn();
+
+            Entity type = new Entity("type_columns", (long) TweetTopicsUtils.COLUMN_LIST_USER);
+            Entity user_list = new Entity("columns");
+            user_list.setValue("description", userList.getName());
+            user_list.setValue("type_id", type);
+            user_list.setValue("user_id", user_id);
+            user_list.setValue("position", position);
+            user_list.setValue("userlist_id", userList.getId());
+            user_list.save();
+            Toast.makeText(this, getString(R.string.column_created, userList.getName()), Toast.LENGTH_LONG).show();
+        } else {
+            position = created_column_list.get(0).getInt("position");
+        }
+
+        Intent intent = getIntent();
+        intent.putExtra("position", position);
+
+        setResult(RESULT_OK, intent);
+        finish();
+
+        /*ArrayList<Entity> created_column_list = DataFramework.getInstance().getEntityList("columns", "userlist_id=" + userList.getId());
 
         int position = 0;
 
@@ -300,36 +377,17 @@ public class UserListsActivity extends BaseActivity implements APIDelegate<BaseR
         intent.putExtra("position", position);
 
         setResult(RESULT_OK, intent);
-        finish();
-    }
-
-    private void fillGridUserLists() {
-
-        userlist_entities.clear();
-
-        ArrayList<Entity> userlist_data;
-
-        if (type_id == SHOW_TWEETS) {
-            userlist_data = DataFramework.getInstance().getEntityList("user_lists", "user_id=" + user_entity.getId() + " AND type_id=1", "");
-        } else {
-            userlist_data = DataFramework.getInstance().getEntityList("user_lists", "user_id=" + user_entity.getId() + " AND type_id=2", "");
-        }
-
-        for (int i = 0; i < userlist_data.size(); i++)
-            userlist_entities.add(userlist_data.get(i));
-
-        userListsAdapter.notifyDataSetChanged();
-
-        if (userListsAdapter.getCount() == 0) {
-            showNoLists();
-        } else {
-            showUserLists();
-        }
+        finish();*/
     }
 
     public void reload() {
+        if (loadingMoreUserList) {
+            showLoadingMore();
+        } else {
+            showLoading();
+        }
 
-        GetUserListRequest getUserListRequest = new GetUserListRequest(user_entity);
+        GetUserListRequest getUserListRequest = new GetUserListRequest(user_id, screenName, type_id, nextCursor);
         APITweetTopics.execute(this, getSupportLoaderManager(), this, getUserListRequest);
     }
 
@@ -345,6 +403,24 @@ public class UserListsActivity extends BaseActivity implements APIDelegate<BaseR
         viewLoading.setVisibility(View.VISIBLE);
         viewNoInternet.setVisibility(View.GONE);
         viewUserLists.setVisibility(View.GONE);
+        viewLoadMore.setVisibility(View.GONE);
+    }
+
+    public void showLoadingMore() {
+        buttonLoadMore.setVisibility(View.GONE);
+        viewLoadMoreLoading.setVisibility(View.VISIBLE);
+    }
+
+    public void showButtonLoadMore() {
+        viewLoadMore.setVisibility(View.VISIBLE);
+        buttonLoadMore.setVisibility(View.VISIBLE);
+        viewLoadMoreLoading.setVisibility(View.GONE);
+    }
+
+    public void hideButtonLoadMore() {
+        viewLoadMore.setVisibility(View.GONE);
+        buttonLoadMore.setVisibility(View.GONE);
+        viewLoadMoreLoading.setVisibility(View.GONE);
     }
 
     public void showNoInternet() {
@@ -352,6 +428,7 @@ public class UserListsActivity extends BaseActivity implements APIDelegate<BaseR
         viewLoading.setVisibility(View.GONE);
         viewNoInternet.setVisibility(View.VISIBLE);
         viewUserLists.setVisibility(View.GONE);
+        viewLoadMore.setVisibility(View.GONE);
     }
 
     public void showUserLists() {

@@ -233,6 +233,9 @@ public class UserActivity extends BaseLayersActivity implements PopupLinks.Popup
             ar.add(getString(R.string.send_direct_message));
             arCode.add(UserActions.USER_ACTION_SEND_DIRECT);
 
+            ar.add(getString(R.string.show_lists));
+            arCode.add(UserActions.USER_ACTION_MY_LISTS);
+
             CharSequence[] c = new CharSequence[ar.size()];
             for (int i=0; i<ar.size(); i++) {
                 c[i] = ar.get(i);

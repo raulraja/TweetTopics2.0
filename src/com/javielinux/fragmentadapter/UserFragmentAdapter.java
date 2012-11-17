@@ -18,8 +18,6 @@ public class UserFragmentAdapter extends FragmentPagerAdapter {
     public static int TAB_MENTIONS = 2;
     public static int TAB_FOLLOWERS = 3;
     public static int TAB_FRIENDS = 4;
-    public static int TAB_LIST = 5;
-    public static int TAB_LIST_INCLUDED = 6;
 
     private InfoUsers infoUsers;
 
@@ -53,13 +51,6 @@ public class UserFragmentAdapter extends FragmentPagerAdapter {
 
         user_fragment_code.add(TAB_FRIENDS);
         user_fragment_titles.add(context.getString(R.string.friends));
-
-        user_fragment_code.add(TAB_LIST);
-        user_fragment_titles.add(context.getString(R.string.lists));
-
-        user_fragment_code.add(TAB_LIST_INCLUDED);
-        user_fragment_titles.add(context.getString(R.string.list_follow_me));
-
     }
 
 
@@ -75,10 +66,6 @@ public class UserFragmentAdapter extends FragmentPagerAdapter {
             return new UserFriendshipFragment(infoUsers, TweetTopicsUtils.COLUMN_FOLLOWERS);
         } else if (user_fragment_code.get(index) == TAB_FRIENDS) {
             return new UserFriendshipFragment(infoUsers, TweetTopicsUtils.COLUMN_FOLLOWINGS);
-        } else if (user_fragment_code.get(index) == TAB_LIST) {
-            return new UserListFragment(infoUsers);
-        } else if (user_fragment_code.get(index) == TAB_LIST_INCLUDED) {
-            return new UserListIncludedFragment(infoUsers);
         }
         return new Fragment();
     }

@@ -32,7 +32,7 @@ public class ListUserFragment extends BaseListFragment implements APIDelegate<Ba
     private static String KEY_SAVE_STATE_COLUMN_ID = "KEY_SAVE_STATE_COLUMN_ID";
 
     private Entity column_entity;
-    private Entity list_user_entity;
+    //private Entity list_user_entity;
 
     private TweetsAdapter tweetsAdapter;
     private ArrayList<InfoTweet> infoTweets = new ArrayList<InfoTweet>();
@@ -54,7 +54,7 @@ public class ListUserFragment extends BaseListFragment implements APIDelegate<Ba
 
     public void init(long columnId) {
         column_entity = new Entity("columns", columnId);
-        list_user_entity = new Entity("user_lists", Long.parseLong(column_entity.getValue("userlist_id").toString()));
+        //list_user_entity = new Entity("user_lists", Long.parseLong(column_entity.getValue("userlist_id").toString()));
     }
 
     public Entity getColumnEntity() {
@@ -95,7 +95,8 @@ public class ListUserFragment extends BaseListFragment implements APIDelegate<Ba
     public void reload() {
         Log.d(Utils.TAG, "reloadColumnUser : " + column_entity.getInt("type_id"));
 
-        LoadTypeStatusRequest loadTypeStatusRequest = new LoadTypeStatusRequest(list_user_entity.getLong("user_id"), LoadTypeStatusLoader.LIST, "", "", list_user_entity.getInt("userlist_id"), null);
+        LoadTypeStatusRequest loadTypeStatusRequest = new LoadTypeStatusRequest(column_entity.getLong("user_id"), LoadTypeStatusLoader.LIST, "", "", column_entity.getInt("userlist_id"), null);
+        //LoadTypeStatusRequest loadTypeStatusRequest = new LoadTypeStatusRequest(list_user_entity.getLong("user_id"), LoadTypeStatusLoader.LIST, "", "", list_user_entity.getInt("userlist_id"), null);
 
         APITweetTopics.execute(getActivity(), getLoaderManager(), this, loadTypeStatusRequest);
     }

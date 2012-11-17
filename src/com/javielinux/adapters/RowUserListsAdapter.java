@@ -5,17 +5,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import com.android.dataframework.Entity;
 import com.androidquery.AQuery;
 import com.javielinux.components.AlphaTextView;
 import com.javielinux.tweettopics2.R;
+import twitter4j.UserList;
 
 import java.util.ArrayList;
 
-public class RowUserListsAdapter extends ArrayAdapter<Entity> {
+public class RowUserListsAdapter extends ArrayAdapter<UserList> {
 
 	private Activity activity;
-    private ArrayList<Entity> elements;
+    private ArrayList<UserList> elements;
+    private boolean existsMoreElements;
     private AQuery listAQuery;
 
     public static class ViewHolder {
@@ -23,12 +24,13 @@ public class RowUserListsAdapter extends ArrayAdapter<Entity> {
         public AlphaTextView title;
     }
 
-    public RowUserListsAdapter(Activity activity, ArrayList<Entity> elements)
+    public RowUserListsAdapter(Activity activity, ArrayList<UserList> elements)
     {
         super(activity, R.layout.row_userlist, elements);
 
         this.activity = activity;
         this.elements = elements;
+        this.existsMoreElements = false;
 
         listAQuery = new AQuery(activity);
     }
@@ -47,13 +49,29 @@ public class RowUserListsAdapter extends ArrayAdapter<Entity> {
         elements.clear();
     }
 
-    @Override
-    public int getCount() {
-        return elements.size();
+    public boolean getExistsMoreElements() {
+        return this.existsMoreElements;
+    }
+
+    public void setExistsMoreElements(boolean existsMoreElements) {
+        this.existsMoreElements = existsMoreElements;
     }
 
     @Override
-    public Entity getItem(int position) {
+    public int getCount() {
+        int count = elements.size();
+
+        if (existsMoreElements) {
+            while (count > 3 && count % 3 != 0) {
+                count--;
+            }
+        }
+
+        return count;
+    }
+
+    @Override
+    public UserList getItem(int position) {
         return elements.get(position);
     }
 
@@ -65,7 +83,7 @@ public class RowUserListsAdapter extends ArrayAdapter<Entity> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        Entity item = getItem(position) ;
+        UserList item = getItem(position);
 
 
         View view;
@@ -79,10 +97,10 @@ public class RowUserListsAdapter extends ArrayAdapter<Entity> {
         ViewHolder viewHolder = RowUserListsAdapter.generateViewHolder(view);
 
         AQuery aQuery = listAQuery.recycle(convertView);
+        aQuery.id(viewHolder.avatarView).image(item.getUser().getProfileImageURL().toString(), true, true, 0, R.drawable.avatar, aQuery.getCachedImage(R.drawable.avatar), 0);
 
-        aQuery.id(viewHolder.avatarView).image(item.getString("url_avatar"), true, true, 0, R.drawable.avatar, aQuery.getCachedImage(R.drawable.avatar), 0);
 
-        viewHolder.title.setText(item.getString("name"));
+        viewHolder.title.setText(item.getName());
 
 		return view;
     }
