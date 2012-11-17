@@ -30,30 +30,34 @@
         <item name="android:textColorLink">#FFEE0000</item>
     </style>
 
+    <!-- Popup -->
+
     <style name="ButtonOptions">
-        <item name="android:textSize">11sp</item>
-        <item name="android:layout_margin">5sp</item>
-        <item name="android:textColor">?color_title_general</item>
+        <item name="android:textSize">@dimen/text_size_text_popup</item>
+        <item name="android:layout_margin">@dimen/default_padding</item>
+        <item name="android:textColor">#eeeeee</item>
         <item name="android:background">@android:color/transparent</item>
+    </style>
+
+    <style name="PopupLinksImage">
+        <item name="android:padding">@dimen/default_separation</item>
+        <item name="android:adjustViewBounds">true</item>
+        <item name="android:layout_width">@dimen/text_size_image_popup</item>
+        <item name="android:layout_height">@dimen/text_size_image_popup</item>
+    </style>
+
+    <style name="PopupLinksText">
+        <item name="android:paddingBottom">@dimen/default_padding</item>
+        <item name="android:textColor">#ededed</item>
+        <item name="android:lines">1</item>
+        <item name="android:textSize">@dimen/text_size_text_popup</item>
+        <item name="android:gravity">center_horizontal</item>
     </style>
     
     <style name="LoadMore">
         <item name="android:textSize">16sp</item>
         <item name="android:textColor">?color_title_general</item>
     </style>
-    
-    <style name="TextAppearance.Title">
-        <item name="android:textStyle">bold</item>
-    </style>
- 
-    <style name="TextAppearance.Button">
-        <item name="android:textStyle">bold</item>
-    </style>
- 
-    <style name="TextAppearance.EditText">
-        <item name="android:textSize">14sp</item>
-    </style>
-
 
     <style name="SelectUserNewStatusUsername">
         <item name="android:textColor">#eeeeee</item>
@@ -82,43 +86,12 @@
     <style name="link_like_text">
     	<item name="android:textColor">#00f</item>
     </style>
-     
-    <style name="TextAppearance.Title.WindowTitle">
-        <item name="android:textColor">#ffffff</item>
-        <item name="android:textSize">16sp</item>
-        <item name="android:textStyle">bold</item>
-    </style>
+
  
     <style name="WindowTitleBackground">
         <item name="android:background">@drawable/window_title_background</item>
     </style>
 
-    <style name="WindowTitle">
-        <item name="android:singleLine">true</item>
-        <item name="android:textAppearance">@style/TextAppearance.Title.WindowTitle</item>
-        <item name="android:shadowColor">#BB000000</item>
-        <item name="android:shadowRadius">2</item>
-        <item name="android:paddingLeft">4dip</item>
-    </style>
-    
-    <style name="WindowMainTitle">
-        <item name="android:singleLine">true</item>
-        <item name="android:textAppearance">@style/TextAppearance.Title.WindowTitle</item>
-        <item name="android:shadowColor">#99ffffff</item>
-        <item name="android:shadowRadius">2</item>
-        <item name="android:paddingLeft">4dip</item>
-        <item name="android:textColor">#4f7590</item>
-    </style>
-    
-    <style name="SlideTitle">
-        <item name="android:singleLine">true</item>
-        <item name="android:textAppearance">@style/TextAppearance.Title.WindowTitle</item>
-        <item name="android:shadowColor">#BB000000</item>
-        <item name="android:shadowRadius">2</item>
-        <item name="android:paddingLeft">4dip</item>
-        <item name="android:textSize">13sp</item>
-        <item name="android:textColor">?color_textbutton_general</item>
-    </style>
      
     <style name="Widget" parent="android:Widget">
         <item name="android:textAppearance">@style/TextAppearance</item>

@@ -300,14 +300,14 @@
                         android:entryValues="@array/entries_prf_orientation_values"
                         android:dialogTitle="@string/title_prf_orientation"/>
 
-                <ListPreference
-                        android:defaultValue="1"
-                        android:key="prf_positions_links"
-                        android:title="@string/title_prf_positions_links"
-                        android:summary="@string/summary_prf_positions_links"
-                        android:entries="@array/entries_prf_positions_links"
-                        android:entryValues="@array/entries_prf_positions_links_values"
-                        android:dialogTitle="@string/title_prf_positions_links"/>
+                <!--<ListPreference-->
+                        <!--android:defaultValue="1"-->
+                        <!--android:key="prf_positions_links"-->
+                        <!--android:title="@string/title_prf_positions_links"-->
+                        <!--android:summary="@string/summary_prf_positions_links"-->
+                        <!--android:entries="@array/entries_prf_positions_links"-->
+                        <!--android:entryValues="@array/entries_prf_positions_links_values"-->
+                        <!--android:dialogTitle="@string/title_prf_positions_links"/>-->
 
                 <Preference
                         android:key="prf_colors_app"

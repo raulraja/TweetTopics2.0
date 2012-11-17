@@ -40,8 +40,6 @@
 		<item name="color_title_search">#FF000000</item>
 		
 		<item name="color_title_search_short">#FF333333</item>
-				
-		<item name="bottom_bar_background">@drawable/bottom_bar_background</item>
 		
 		<item name="color_shadow_listview">#FFdddddd</item>
 		
@@ -85,6 +83,7 @@
         <item name="icon_content_add_trending">@drawable/icon_content_add_trending_dark</item>
         <item name="icon_content_edit">@drawable/icon_content_edit_dark</item>
         <item name="icon_content_favorite">@drawable/icon_content_favorite</item>
+        <item name="icon_action_more_options_sidebar">@drawable/icon_action_more_options</item>
         <item name="icon_action_more_options">@drawable/icon_action_more_options_dark</item>
         <item name="icon_content_delete">@drawable/icon_content_delete</item>
         <item name="icon_content_timeline">@drawable/icon_content_timeline</item>
@@ -124,7 +123,7 @@
         <item name="android:editTextStyle">@style/BaseEditText</item>
 
         <!-- Tabs indicator -->
-        <item name="vpiTabPageIndicatorStyle">@style/Widget.TabPageIndicator</item>
+        <item name="vpiTabPageIndicatorStyle">@style/Widget.TabPageIndicator.Dark</item>
 	
 		<item name="color_tweet_usename">#ffffffff</item>
 		<item name="color_tweet_source">#ffbfbfbf</item>
@@ -146,8 +145,6 @@
 		<item name="color_title_search">#FFFFFFFF</item>
 		
 		<item name="color_title_search_short">#FFCCCCCC</item>
-		
-		<item name="bottom_bar_background">@drawable/bottom_bar_background_dark</item>
 		
 		<item name="color_shadow_listview">#FF222222</item>
 		
@@ -191,6 +188,7 @@
         <item name="icon_content_add_trending">@drawable/icon_content_add_trending_dark</item>
         <item name="icon_content_edit">@drawable/icon_content_edit_dark</item>
         <item name="icon_content_favorite">@drawable/icon_content_favorite_dark</item>
+        <item name="icon_action_more_options_sidebar">@drawable/icon_action_more_options_dark</item>
         <item name="icon_action_more_options">@drawable/icon_action_more_options_dark</item>
         <item name="icon_content_delete">@drawable/icon_content_delete_dark</item>
         <item name="icon_content_timeline">@drawable/icon_content_timeline_dark</item>

@@ -36,8 +36,6 @@
 		<item name="color_title_search">#FF000000</item>
 		
 		<item name="color_title_search_short">#FF333333</item>
-				
-		<item name="bottom_bar_background">@drawable/bottom_bar_background</item>
 		
 		<item name="color_shadow_listview">#FFdddddd</item>
 		
@@ -81,6 +79,7 @@
         <item name="icon_content_add_trending">@drawable/icon_content_add_trending_dark</item>
         <item name="icon_content_edit">@drawable/icon_content_edit_dark</item>
         <item name="icon_content_favorite">@drawable/icon_content_favorite</item>
+        <item name="icon_action_more_options_sidebar">@drawable/icon_action_more_options</item>
         <item name="icon_action_more_options">@drawable/icon_action_more_options_dark</item>
         <item name="icon_content_delete">@drawable/icon_content_delete</item>
         <item name="icon_content_timeline">@drawable/icon_content_timeline</item>
@@ -115,7 +114,7 @@
 	<style name="Theme.TwitterBlack" parent="@android:style/Theme.Black">
 
         <!-- Tabs indicator -->
-        <item name="vpiTabPageIndicatorStyle">@style/Widget.TabPageIndicator</item>
+        <item name="vpiTabPageIndicatorStyle">@style/Widget.TabPageIndicator.Dark</item>
 	
 		<item name="color_tweet_usename">#ffffffff</item>
 		<item name="color_tweet_source">#ffbfbfbf</item>
@@ -137,8 +136,6 @@
 		<item name="color_title_search">#FFFFFFFF</item>
 		
 		<item name="color_title_search_short">#FFCCCCCC</item>
-		
-		<item name="bottom_bar_background">@drawable/bottom_bar_background_dark</item>
 		
 		<item name="color_shadow_listview">#FF222222</item>
 		
@@ -182,6 +179,7 @@
         <item name="icon_content_add_trending">@drawable/icon_content_add_trending_dark</item>
         <item name="icon_content_edit">@drawable/icon_content_edit_dark</item>
         <item name="icon_content_favorite">@drawable/icon_content_favorite_dark</item>
+        <item name="icon_action_more_options_sidebar">@drawable/icon_action_more_options_dark</item>
         <item name="icon_action_more_options">@drawable/icon_action_more_options_dark</item>
         <item name="icon_content_delete">@drawable/icon_content_delete_dark</item>
         <item name="icon_content_timeline">@drawable/icon_content_timeline_dark</item>
@@ -217,6 +215,23 @@
     </style>
 
     <style name="TextAppearance.TabPageIndicator" parent="Widget">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/vpi__light_theme</item>
+    </style>
+
+    <style name="Widget.TabPageIndicator.Dark" parent="Widget">
+        <item name="android:gravity">center</item>
+        <item name="android:background">@drawable/vpi__tab_indicator</item>
+        <item name="android:paddingLeft">22dip</item>
+        <item name="android:paddingRight">22dip</item>
+        <item name="android:paddingTop">12dp</item>
+        <item name="android:paddingBottom">12dp</item>
+        <item name="android:textAppearance">@style/TextAppearance.TabPageIndicator.Dark</item>
+        <item name="android:textSize">@dimen/text_size_title_tab</item>
+        <item name="android:maxLines">1</item>
+    </style>
+
+    <style name="TextAppearance.TabPageIndicator.Dark" parent="Widget">
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">@color/vpi__dark_theme</item>
     </style>

@@ -221,9 +221,9 @@ public class ColorsApp extends ListActivity implements ColorDialog.OnChangeColor
         	editor.putString("prf_theme", t.get("theme"));
     	}
     	
-    	if (t.containsKey("positions_links")) {
-        	editor.putString("prf_positions_links", t.get("positions_links"));
-    	}
+//    	if (t.containsKey("positions_links")) {
+//        	editor.putString("prf_positions_links", t.get("positions_links"));
+//    	}
     	
     	if (t.containsKey("use_gradient")) {
         	editor.putBoolean("prf_use_gradient", t.get("use_gradient").equals("1"));
@@ -350,7 +350,7 @@ public class ColorsApp extends ListActivity implements ColorDialog.OnChangeColor
     	SharedPreferences preferences = Utils.getPreference(cnt);
     	    	    	
     	theme += SEP_BLOCK+"theme"+SEP_VALUES+preferences.getString("prf_theme", "1");
-    	theme += SEP_BLOCK+"positions_links"+SEP_VALUES+preferences.getString("prf_positions_links", "1");
+//    	theme += SEP_BLOCK+"positions_links"+SEP_VALUES+preferences.getString("prf_positions_links", "1");
     	theme += SEP_BLOCK+"use_gradient"+SEP_VALUES + (preferences.getBoolean("prf_use_gradient", true)?"1":"0");
     	theme += SEP_BLOCK+"use_divider_tweet"+SEP_VALUES + (preferences.getBoolean("prf_use_divider_tweet", true)?"1":"0");
 

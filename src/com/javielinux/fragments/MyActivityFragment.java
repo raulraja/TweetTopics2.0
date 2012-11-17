@@ -152,6 +152,10 @@ public class MyActivityFragment extends Fragment {
         themeManager = new ThemeManager(getActivity());
         themeManager.setTheme();
 
+        themeManager.setColors();
+
+        view.findViewById(R.id.layout_foot).setBackgroundColor(themeManager.getColor("color_bottom_bar"));
+
         BitmapDrawable bmp = (BitmapDrawable) getActivity().getResources().getDrawable(themeManager.getResource("search_tile"));
         if (bmp != null) {
             bmp.setTileModeXY(Shader.TileMode.REPEAT, Shader.TileMode.REPEAT);

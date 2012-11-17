@@ -102,8 +102,11 @@ public class EditUserTwitter extends BaseActivity implements Runnable {
 
         themeManager = new ThemeManager(this);
         themeManager.setTheme();
+        themeManager.setColors();
 
         setContentView(R.layout.edit_user_twitter);
+
+        findViewById(R.id.buttons_foot).setBackgroundColor(themeManager.getColor("color_bottom_bar"));
 
         mLayoutBackgroundApp = (LinearLayout) findViewById(R.id.layout_background_app);
         layoutActionBar = (RelativeLayout) findViewById(R.id.edit_user_bar_action);

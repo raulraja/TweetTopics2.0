@@ -26,6 +26,10 @@
     <dimen name="text_size_description_default">16sp</dimen>
     <dimen name="size_number_circle_default">15px</dimen> <!-- No usar de forma general -->
 
+    <!-- Popup -->
+    <dimen name="text_size_text_popup">17sp</dimen>
+    <dimen name="text_size_image_popup">64dp</dimen>
+
     <!-- Sidebar -->
     <dimen name="text_size_tweet_sidebar">19sp</dimen>
 

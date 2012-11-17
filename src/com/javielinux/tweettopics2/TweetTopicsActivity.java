@@ -284,7 +284,7 @@ public class TweetTopicsActivity extends BaseLayersActivity implements PopupLink
             }
         });
 
-        imgBarAvatarGestureDetector = new GestureDetector(new GestureDetector.SimpleOnGestureListener() {
+        imgBarAvatarGestureDetector = new GestureDetector(this, new GestureDetector.SimpleOnGestureListener() {
             @Override
             public void onLongPress(MotionEvent e) {
                 if (fragmentAdapter.instantiateItem(pager,pager.getCurrentItem()) instanceof BaseListFragment) {
