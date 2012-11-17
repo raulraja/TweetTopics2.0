@@ -7,6 +7,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.text.Html;
@@ -57,22 +58,22 @@ public class TweetActivity extends BaseLayersActivity implements APIDelegate<Bas
 
     private FrameLayout llRoot;
     private LinearLayout tweetInfoLayout;
-    private ImageViewZoomTouch zoom_image;
+    private ImageViewZoomTouch ivImageLarger;
     private RelativeLayout tweetContent;
     private LinearLayout viewLoading;
     private LinearLayout tweetActionsContainer;
     private PopupLinks popupLinks;
     private SplitActionBarMenu splitActionBarMenu;
-    private boolean is_translating;
-    private boolean image_preview_displayed;
+    private boolean isTranslating;
+    private boolean imageLargerDisplayed;
 
     // map view
     private MapView mapView;
 
     @Override
     public void onBackPressed() {
-        if (image_preview_displayed)
-            zoomOutImage();
+        if (imageLargerDisplayed)
+            hideImage();
         else
             super.onBackPressed();
     }
@@ -84,26 +85,31 @@ public class TweetActivity extends BaseLayersActivity implements APIDelegate<Bas
         themeManager = new ThemeManager(this);
         themeManager.setTranslucentTheme();
 
+        InfoLink infoLink = null;
+
         Bundle extras = getIntent().getExtras();
-        if (extras!=null) {
+        if (extras != null) {
             if (extras.containsKey(Utils.KEY_EXTRAS_INFO)) {
                 infoTweet = (InfoTweet) extras.getBundle(Utils.KEY_EXTRAS_INFO).getParcelable(KEY_EXTRAS_TWEET);
             }
+            if (extras.containsKey(Utils.KEY_EXTRAS_INFO) && extras.getBundle(Utils.KEY_EXTRAS_INFO).containsKey(KEY_EXTRAS_LINK)) {
+                infoLink = CacheData.getInstance().getCacheInfoLink(extras.getBundle(Utils.KEY_EXTRAS_INFO).getString(KEY_EXTRAS_LINK));
+            }
         }
 
-        if (infoTweet==null) {
+        if (infoTweet == null) {
             Utils.showMessage(this, R.string.error_general);
             finish();
         } else {
 
             setContentView(R.layout.tweet_activity);
 
-            imgAvatar = ((ImageView)findViewById(R.id.tweet_avatar));
+            imgAvatar = ((ImageView) findViewById(R.id.tweet_avatar));
             imgAvatar.setOnClickListener(new View.OnClickListener() {
 
                 @Override
                 public void onClick(View v) {
-                    goToLink("@"+(infoTweet.isRetweet()?infoTweet.getUsernameRetweet():infoTweet.getUsername()));
+                    goToLink("@" + (infoTweet.isRetweet() ? infoTweet.getUsernameRetweet() : infoTweet.getUsername()));
                 }
 
             });
@@ -138,23 +144,23 @@ public class TweetActivity extends BaseLayersActivity implements APIDelegate<Bas
 
             }
 
-            txtUsername = ((TextView)findViewById(R.id.tweet_username));
-            txtUsername.setText( name + ((fullname.equals(""))?"":" (" + fullname + ")") );
+            txtUsername = ((TextView) findViewById(R.id.tweet_username));
+            txtUsername.setText(name + ((fullname.equals("")) ? "" : " (" + fullname + ")"));
 
-            txtDate = ((TextView)findViewById(R.id.tweet_date));
+            txtDate = ((TextView) findViewById(R.id.tweet_date));
             txtDate.setText(Utils.timeFromTweetExtended(this, infoTweet.getDate()));
 
-            txtText = ((TextView)findViewById(R.id.tweet_text));
+            txtText = ((TextView) findViewById(R.id.tweet_text));
             String html = infoTweet.getTextHTMLFinal();
             if (html.equals("")) html = Utils.toHTML(this, infoTweet.getText());
             txtText.setText(Html.fromHtml(html));
 
             fragmentAdapter = new TweetFragmentAdapter(this, getSupportFragmentManager(), infoTweet);
 
-            pager = (ViewPager)findViewById(R.id.tweet_pager);
+            pager = (ViewPager) findViewById(R.id.tweet_pager);
             pager.setAdapter(fragmentAdapter);
 
-            indicator = (TabPageIndicator)findViewById(R.id.tweet_indicator);
+            indicator = (TabPageIndicator) findViewById(R.id.tweet_indicator);
             indicator.setViewPager(pager);
 
             (findViewById(R.id.tweet_btn_favorite)).setOnClickListener(clickFavorite);
@@ -165,18 +171,18 @@ public class TweetActivity extends BaseLayersActivity implements APIDelegate<Bas
             (findViewById(R.id.tweet_btn_original_tweet)).setOnClickListener(clickOriginalTweet);
             (findViewById(R.id.tweet_btn_more)).setOnClickListener(clickMore);
 
-            llRoot = (FrameLayout)findViewById(R.id.tweet_ll);
-            tweetInfoLayout = (LinearLayout)findViewById(R.id.tweet_info_ll);
-            zoom_image = (ImageViewZoomTouch )findViewById(R.id.zoom_image);
-            tweetContent = (RelativeLayout)findViewById(R.id.tweet_content);
-            tweetActionsContainer = (LinearLayout)findViewById(R.id.tweet_actions_container);
-            viewLoading = (LinearLayout)findViewById(R.id.tweet_text_loading);
+            llRoot = (FrameLayout) findViewById(R.id.tweet_ll);
+            tweetInfoLayout = (LinearLayout) findViewById(R.id.tweet_info_ll);
+            ivImageLarger = (ImageViewZoomTouch) findViewById(R.id.zoom_image);
+            tweetContent = (RelativeLayout) findViewById(R.id.tweet_content);
+            tweetActionsContainer = (LinearLayout) findViewById(R.id.tweet_actions_container);
+            viewLoading = (LinearLayout) findViewById(R.id.tweet_text_loading);
 
             tweetContent.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if (image_preview_displayed)
-                        zoomOutImage();
+                    if (imageLargerDisplayed)
+                        hideImage();
                 }
             });
             popupLinks = new PopupLinks(this);
@@ -186,6 +192,12 @@ public class TweetActivity extends BaseLayersActivity implements APIDelegate<Bas
             splitActionBarMenu.loadSplitActionBarMenu(llRoot);
 
             refreshTheme();
+
+            // muestra la imagen si está en  versiones anteriores a HONEYCOMB
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB && infoLink != null && infoLink.isExtensiveInfo() && infoLink.getType() == InfoLink.IMAGE) {
+                showImage(infoLink);
+            }
+
         }
     }
 
@@ -193,21 +205,24 @@ public class TweetActivity extends BaseLayersActivity implements APIDelegate<Bas
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
 
-        if (hasFocus) {
-            Bundle extras = getIntent().getExtras();
-            if (extras!=null) {
-                if (extras.containsKey(Utils.KEY_EXTRAS_INFO) && extras.getBundle(Utils.KEY_EXTRAS_INFO).containsKey(KEY_EXTRAS_LINK)) {
-                    InfoLink infoLink = CacheData.getInstance().getCacheInfoLink(extras.getBundle(Utils.KEY_EXTRAS_INFO).getString(KEY_EXTRAS_LINK));
+        // muestra la imagen si está en  versiones superiores a HONEYCOMB
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            if (hasFocus) {
+                Bundle extras = getIntent().getExtras();
+                if (extras != null) {
+                    if (extras.containsKey(Utils.KEY_EXTRAS_INFO) && extras.getBundle(Utils.KEY_EXTRAS_INFO).containsKey(KEY_EXTRAS_LINK)) {
+                        InfoLink infoLink = CacheData.getInstance().getCacheInfoLink(extras.getBundle(Utils.KEY_EXTRAS_INFO).getString(KEY_EXTRAS_LINK));
 
-                    if (infoLink != null && infoLink.isExtensiveInfo() && infoLink.getType() == InfoLink.IMAGE) {
-                        getImage(infoLink);
+                        if (infoLink != null && infoLink.isExtensiveInfo() && infoLink.getType() == InfoLink.IMAGE) {
+                            showImage(infoLink);
+                        }
                     }
                 }
             }
         }
     }
 
-    public void zoomInImage() {
+    public void showImage(InfoLink infoLink) {
 
         int screenHeight = 0;
         try {
@@ -220,86 +235,93 @@ public class TweetActivity extends BaseLayersActivity implements APIDelegate<Bas
 
         Rect rect = new Rect();
         getWindow().getDecorView().getWindowVisibleDisplayFrame(rect);
-        int statusBarHeight= rect.top;
+        int statusBarHeight = rect.top;
 
-        final float translation_offset = (float) screenHeight - statusBarHeight - tweetActionsContainer.getTop();
+        final float translationOffset = (float) screenHeight - statusBarHeight - tweetActionsContainer.getTop();
 
-        ObjectAnimator tweetInfoLayoutAnimator = ObjectAnimator.ofFloat(tweetInfoLayout,"translationY",0.0f,translation_offset);
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
+            Intent showImage = new Intent(this, ShowImageActivity.class);
+            showImage.putExtra(ShowImageActivity.KEY_EXTRA_URL_IMAGE, infoLink.getLinkImageLarge());
+            startActivity(showImage);
+        } else {
+
+            AQuery aQuery = new AQuery(this).recycle(ivImageLarger);
+            aQuery.id(ivImageLarger).image(infoLink.getLinkImageLarge(), true, true, 0, R.drawable.icon_tweet_image_large, aQuery.getCachedImage(R.drawable.icon_tweet_image_large), 0);
+
+            ObjectAnimator tweetInfoLayoutAnimator = ObjectAnimator.ofFloat(tweetInfoLayout, "translationY", 0.0f, translationOffset);
+            tweetInfoLayoutAnimator.setDuration(250);
+
+            AnimatorSet animatorSet = new AnimatorSet();
+            animatorSet.addListener(new Animator.AnimatorListener() {
+                @Override
+                public void onAnimationStart(Animator animator) {
+                    FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) ivImageLarger.getLayoutParams();
+                    layoutParams.setMargins(0, 0, 0, tweetActionsContainer.getTop());
+                    ivImageLarger.setLayoutParams(layoutParams);
+                    ivImageLarger.setVisibility(View.VISIBLE);
+                }
+
+                @Override
+                public void onAnimationEnd(Animator animator) {
+                    imageLargerDisplayed = true;
+                }
+
+                @Override
+                public void onAnimationCancel(Animator animator) {
+                }
+
+                @Override
+                public void onAnimationRepeat(Animator animator) {
+                }
+            });
+
+            animatorSet.playTogether(tweetInfoLayoutAnimator);
+            animatorSet.start();
+        }
+    }
+
+    public void hideImage() {
+
+        int screenHeight = 0;
+        try {
+            Point size = new Point();
+            getWindowManager().getDefaultDisplay().getSize(size);
+            screenHeight = size.y;
+        } catch (NoSuchMethodError e) {
+            screenHeight = getWindowManager().getDefaultDisplay().getHeight();
+        }
+
+        Rect rect = new Rect();
+        getWindow().getDecorView().getWindowVisibleDisplayFrame(rect);
+        int statusBarHeight = rect.top;
+
+        float translationOffset = (float) screenHeight - statusBarHeight - tweetActionsContainer.getTop();
+
+        ObjectAnimator tweetInfoLayoutAnimator = ObjectAnimator.ofFloat(tweetInfoLayout, "translationY", translationOffset, 0.0f);
         tweetInfoLayoutAnimator.setDuration(250);
 
         AnimatorSet animatorSet = new AnimatorSet();
         animatorSet.addListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animator) {
-                FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams)zoom_image.getLayoutParams();
-                layoutParams.setMargins(0,0,0,tweetActionsContainer.getTop());
-                zoom_image.setLayoutParams(layoutParams);
-                zoom_image.setVisibility(View.VISIBLE);
             }
 
             @Override
             public void onAnimationEnd(Animator animator) {
-                image_preview_displayed = true;
+                imageLargerDisplayed = false;
+                ivImageLarger.setVisibility(View.GONE);
             }
 
             @Override
-            public void onAnimationCancel(Animator animator) {}
-
-            @Override
-            public void onAnimationRepeat(Animator animator) {}
-        });
-
-        animatorSet.playTogether(tweetInfoLayoutAnimator);
-        animatorSet.start();
-    }
-
-    public void zoomOutImage() {
-
-        int screenHeight = 0;
-        try {
-            Point size = new Point();
-            getWindowManager().getDefaultDisplay().getSize(size);
-            screenHeight = size.y;
-        } catch (NoSuchMethodError e) {
-            screenHeight = getWindowManager().getDefaultDisplay().getHeight();
-        }
-
-        Rect rect = new Rect();
-        getWindow().getDecorView().getWindowVisibleDisplayFrame(rect);
-        int statusBarHeight= rect.top;
-
-        float translation_offset = (float) screenHeight - statusBarHeight - tweetActionsContainer.getTop();
-
-        ObjectAnimator tweetInfoLayoutAnimator = ObjectAnimator.ofFloat(tweetInfoLayout,"translationY",translation_offset,0.0f);
-        tweetInfoLayoutAnimator.setDuration(250);
-
-        AnimatorSet animatorSet = new AnimatorSet();
-        animatorSet.addListener(new Animator.AnimatorListener() {
-            @Override
-            public void onAnimationStart(Animator animator) {}
-
-            @Override
-            public void onAnimationEnd(Animator animator) {
-                image_preview_displayed = false;
-                zoom_image.setVisibility(View.GONE);
+            public void onAnimationCancel(Animator animator) {
             }
 
             @Override
-            public void onAnimationCancel(Animator animator) {}
-
-            @Override
-            public void onAnimationRepeat(Animator animator) {}
+            public void onAnimationRepeat(Animator animator) {
+            }
         });
         animatorSet.playTogether(tweetInfoLayoutAnimator);
         animatorSet.start();
-    }
-
-    public void getImage(InfoLink infoLink) {
-
-        AQuery aQuery = new AQuery(this).recycle(zoom_image);
-        aQuery.id(zoom_image).image(infoLink.getLinkImageLarge(), true, true, 0, R.drawable.icon_tweet_image_large, aQuery.getCachedImage(R.drawable.icon_tweet_image_large), 0);
-
-        zoomInImage();
     }
 
     public void goToLink(String link) {
@@ -317,10 +339,10 @@ public class TweetActivity extends BaseLayersActivity implements APIDelegate<Bas
             InfoLink infoLink = CacheData.getInstance().getCacheInfoLink(link);
 
             if (infoLink != null && infoLink.isExtensiveInfo() && infoLink.getType() == InfoLink.IMAGE) {
-                getImage(infoLink);
+                showImage(infoLink);
             } else {
                 if (link.startsWith("www")) {
-                    link = "http://"+link;
+                    link = "http://" + link;
                 }
                 Uri uri = Uri.parse(link);
                 Intent intent = new Intent(android.content.Intent.ACTION_VIEW, uri);
@@ -331,11 +353,11 @@ public class TweetActivity extends BaseLayersActivity implements APIDelegate<Bas
 
     private void refreshTheme() {
         if (activityAnimation == Utils.ACTIVITY_ANIMATION_RIGHT) {
-            llRoot.setPadding(29,0,0,0);
+            llRoot.setPadding(29, 0, 0, 0);
             llRoot.setBackgroundResource((themeManager.getTheme() == 1) ? R.drawable.bg_sidebar : R.drawable.bg_sidebar_dark);
             tweetInfoLayout.setBackgroundResource((themeManager.getTheme() == 1) ? R.drawable.bg_sidebar_no_border : R.drawable.bg_sidebar_no_border_dark);
         } else {
-            llRoot.setPadding(0,29,0,0);
+            llRoot.setPadding(0, 29, 0, 0);
             llRoot.setBackgroundResource((themeManager.getTheme() == 1) ? R.drawable.bg_sidebar_left : R.drawable.bg_sidebar_left_dark);
             tweetInfoLayout.setBackgroundResource((themeManager.getTheme() == 1) ? R.drawable.bg_sidebar_no_border : R.drawable.bg_sidebar_no_border_dark);
         }
@@ -343,8 +365,8 @@ public class TweetActivity extends BaseLayersActivity implements APIDelegate<Bas
 
     public void translateTweet(final String language) {
 
-        Button btn_translate = (Button)findViewById(R.id.tweet_btn_translate);
-        Button btn_original_tweet = (Button)findViewById(R.id.tweet_btn_original_tweet);
+        Button btn_translate = (Button) findViewById(R.id.tweet_btn_translate);
+        Button btn_original_tweet = (Button) findViewById(R.id.tweet_btn_original_tweet);
 
         ObjectAnimator hideTweetText = ObjectAnimator.ofFloat(txtText, "alpha", 1f, 0f);
         hideTweetText.setDuration(250);
@@ -354,23 +376,26 @@ public class TweetActivity extends BaseLayersActivity implements APIDelegate<Bas
         showViewLoading.setDuration(250);
 
         AnimatorSet animatorSet = new AnimatorSet();
-        animatorSet.playTogether(hideTweetText,showViewLoading);
+        animatorSet.playTogether(hideTweetText, showViewLoading);
 
         animatorSet.addListener(new Animator.AnimatorListener() {
             @Override
-            public void onAnimationStart(Animator animator) {}
+            public void onAnimationStart(Animator animator) {
+            }
 
             @Override
             public void onAnimationEnd(Animator animator) {
-                is_translating = true;
+                isTranslating = true;
                 APITweetTopics.execute(TweetActivity.this, getSupportLoaderManager(), TweetActivity.this, new LoadTranslateTweetRequest(infoTweet.getText(), language));
             }
 
             @Override
-            public void onAnimationCancel(Animator animator) {}
+            public void onAnimationCancel(Animator animator) {
+            }
 
             @Override
-            public void onAnimationRepeat(Animator animator) {}
+            public void onAnimationRepeat(Animator animator) {
+            }
         });
 
         animatorSet.start();
@@ -421,7 +446,7 @@ public class TweetActivity extends BaseLayersActivity implements APIDelegate<Bas
 
         @Override
         public void onClick(View view) {
-            if (!is_translating) {
+            if (!isTranslating) {
                 if (PreferenceUtils.getTraslationDefaultLanguage(TweetActivity.this) == "")
                     TweetActions.showDialogTranslation(TweetActivity.this);
                 else
@@ -434,8 +459,8 @@ public class TweetActivity extends BaseLayersActivity implements APIDelegate<Bas
 
         @Override
         public void onClick(View view) {
-            Button btn_translate = (Button)findViewById(R.id.tweet_btn_translate);
-            final Button btn_original_tweet = (Button)findViewById(R.id.tweet_btn_original_tweet);
+            Button btn_translate = (Button) findViewById(R.id.tweet_btn_translate);
+            final Button btn_original_tweet = (Button) findViewById(R.id.tweet_btn_original_tweet);
 
             ObjectAnimator showTranslateButton = ObjectAnimator.ofFloat(btn_translate, "alpha", 0f, 1f);
             showTranslateButton.setDuration(250);
@@ -444,11 +469,12 @@ public class TweetActivity extends BaseLayersActivity implements APIDelegate<Bas
             hideOriginalTweetButton.setDuration(250);
 
             AnimatorSet animatorSet = new AnimatorSet();
-            animatorSet.playTogether(showTranslateButton,hideOriginalTweetButton);
+            animatorSet.playTogether(showTranslateButton, hideOriginalTweetButton);
 
             animatorSet.addListener(new Animator.AnimatorListener() {
                 @Override
-                public void onAnimationStart(Animator animator) {}
+                public void onAnimationStart(Animator animator) {
+                }
 
                 @Override
                 public void onAnimationEnd(Animator animator) {
@@ -459,10 +485,12 @@ public class TweetActivity extends BaseLayersActivity implements APIDelegate<Bas
                 }
 
                 @Override
-                public void onAnimationCancel(Animator animator) {}
+                public void onAnimationCancel(Animator animator) {
+                }
 
                 @Override
-                public void onAnimationRepeat(Animator animator) {}
+                public void onAnimationRepeat(Animator animator) {
+                }
             });
 
             animatorSet.start();
@@ -489,14 +517,14 @@ public class TweetActivity extends BaseLayersActivity implements APIDelegate<Bas
             }
 
             // TODO Borrar tweet de un usuario
-             /*
-            if (infoTweet.isTimeline()) {
-                if (infoTweet.getUsername().equals(mTweetTopicsCore.getTweetTopics().getActiveUser().getString("name"))) {
-                    ar.add(getString(R.string.delete_tweet));
-                    arCode.add("delete_tweet");
-                }
-            }
-                 */
+            /*
+       if (infoTweet.isTimeline()) {
+           if (infoTweet.getUsername().equals(mTweetTopicsCore.getTweetTopics().getActiveUser().getString("name"))) {
+               ar.add(getString(R.string.delete_tweet));
+               arCode.add("delete_tweet");
+           }
+       }
+            */
             ar.add(getString(R.string.copy_to_clipboard));
             arCode.add(TweetActions.TWEET_ACTION_CLIPBOARD);
 
@@ -509,7 +537,7 @@ public class TweetActivity extends BaseLayersActivity implements APIDelegate<Bas
             }
 
             CharSequence[] c = new CharSequence[ar.size()];
-            for (int i=0; i<ar.size(); i++) {
+            for (int i = 0; i < ar.size(); i++) {
                 c[i] = ar.get(i);
             }
 
@@ -534,8 +562,8 @@ public class TweetActivity extends BaseLayersActivity implements APIDelegate<Bas
     };
 
     private void showOriginalTweetText() {
-        Button btn_translate = (Button)findViewById(R.id.tweet_btn_translate);
-        Button btn_original_tweet = (Button)findViewById(R.id.tweet_btn_original_tweet);
+        Button btn_translate = (Button) findViewById(R.id.tweet_btn_translate);
+        Button btn_original_tweet = (Button) findViewById(R.id.tweet_btn_original_tweet);
 
         txtText.setVisibility(View.VISIBLE);
         ObjectAnimator showTweetText = ObjectAnimator.ofFloat(txtText, "alpha", 0f, 1f);
@@ -552,11 +580,12 @@ public class TweetActivity extends BaseLayersActivity implements APIDelegate<Bas
         showOriginalTweetButton.setDuration(250);
 
         AnimatorSet animatorSet = new AnimatorSet();
-        animatorSet.playTogether(showTweetText,hideViewLoading,hideTranslateButton,showOriginalTweetButton);
+        animatorSet.playTogether(showTweetText, hideViewLoading, hideTranslateButton, showOriginalTweetButton);
 
         animatorSet.addListener(new Animator.AnimatorListener() {
             @Override
-            public void onAnimationStart(Animator animator) {}
+            public void onAnimationStart(Animator animator) {
+            }
 
             @Override
             public void onAnimationEnd(Animator animator) {
@@ -564,10 +593,12 @@ public class TweetActivity extends BaseLayersActivity implements APIDelegate<Bas
             }
 
             @Override
-            public void onAnimationCancel(Animator animator) {}
+            public void onAnimationCancel(Animator animator) {
+            }
 
             @Override
-            public void onAnimationRepeat(Animator animator) {}
+            public void onAnimationRepeat(Animator animator) {
+            }
         });
 
         animatorSet.start();
@@ -575,9 +606,9 @@ public class TweetActivity extends BaseLayersActivity implements APIDelegate<Bas
 
     @Override
     public void onResults(BaseResponse response) {
-        is_translating = false;
+        isTranslating = false;
 
-        LoadTranslateTweetResponse result = (LoadTranslateTweetResponse)response;
+        LoadTranslateTweetResponse result = (LoadTranslateTweetResponse) response;
 
         String html = Utils.toHTML(TweetActivity.this, result.getText());
         txtText.setText(Html.fromHtml(html));
@@ -587,7 +618,7 @@ public class TweetActivity extends BaseLayersActivity implements APIDelegate<Bas
 
     @Override
     public void onError(ErrorResponse error) {
-        is_translating = false;
+        isTranslating = false;
 
         error.getError().printStackTrace();
 
@@ -624,7 +655,7 @@ public class TweetActivity extends BaseLayersActivity implements APIDelegate<Bas
     }
 
     public MapView getMapView() {
-        if (mapView==null) {
+        if (mapView == null) {
             mapView = new MapView(this, getString(R.string.google_maps_api));
             mapView.setClickable(true);
             mapView.setBuiltInZoomControls(true);

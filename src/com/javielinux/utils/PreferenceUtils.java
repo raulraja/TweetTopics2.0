@@ -544,7 +544,7 @@ public class PreferenceUtils {
                 newent.setValue("user_id", ent.getString("user_id"));
                 newent.setValue("tweet_id", ent.getString("tweet_id"));
                 newent.setValue("text", ent.getString("text"));
-                newent.setValue("source", ent.getString("source"));
+//                newent.setValue("source", ent.getString("source"));
                 newent.setValue("to_username", ent.getString("to_username"));
                 newent.setValue("to_user_id", ent.getString("to_user_id"));
                 newent.setValue("date", ent.getString("date"));

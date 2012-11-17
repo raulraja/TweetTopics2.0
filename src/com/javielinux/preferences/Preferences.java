@@ -2,6 +2,7 @@ package com.javielinux.preferences;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager.NameNotFoundException;
@@ -609,6 +610,10 @@ public class Preferences extends PreferenceActivity {
         try {
             File f = new File(FILE_BACKUP);
             if (f.exists()) f.delete();
+            // Eliminar todos los source para no guardarlos en el backup... dan problemas
+            ContentValues args = new ContentValues();
+            args.put("source", "");
+            DataFramework.getInstance().getDB().update("saved_tweets", args, null, null);
             DataFramework.getInstance().backup(FILE_BACKUP);
             Utils.showMessage(this, this.getString(R.string.backup_correct));
         } catch (XmlPullParserException e) {

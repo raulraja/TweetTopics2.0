@@ -167,7 +167,7 @@ public class TweetActions {
                 ent.setValue("tweet_id", infoTweet.getId() + "");
                 ent.setValue("text", infoTweet.getText());
                 ent.setValue("text_urls", infoTweet.getTextURLs());
-                ent.setValue("source", infoTweet.getSource());
+//                ent.setValue("source", infoTweet.getSource());
                 ent.setValue("to_username", infoTweet.getToUsername());
                 ent.setValue("to_user_id", infoTweet.getToUserId());
                 ent.setValue("date", infoTweet.getDate().getTime() + "");
