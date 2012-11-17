@@ -77,7 +77,6 @@ public class LinksAdapter extends BaseAdapter {
 
         if (null == convertView) {
             convertView = activity.getLayoutInflater().inflate(R.layout.row_links, parent, false);
-            //convertView = View.inflate(activity, R.layout.row_links, null);
             convertView.setTag(generateViewHolder(convertView));
         }
 

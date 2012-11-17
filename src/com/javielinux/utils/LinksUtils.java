@@ -332,6 +332,8 @@ public class LinksUtils {
 				e.printStackTrace();
             } catch (JSONException e) {
                 e.printStackTrace();
+            } catch (IllegalArgumentException e) {
+                e.printStackTrace();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

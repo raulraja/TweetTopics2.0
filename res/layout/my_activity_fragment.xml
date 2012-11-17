@@ -26,7 +26,6 @@
         android:layout_width="fill_parent" />
 
     <LinearLayout android:id="@+id/layout_foot"
-        android:background="?attr/bottom_bar_background"
         android:gravity="center_vertical"
         android:layout_height="@dimen/footer_action_split_height"
         android:layout_width="fill_parent"

@@ -33,8 +33,6 @@
 
     <attr name="color_grid_search" format="color"/>
 
-    <attr name="bottom_bar_background" format="string"/>
-
     <attr name="bg_sidebar" format="string"/>
 
     <attr name="color_shadow_listview" format="color"/>
@@ -60,6 +58,7 @@
     <attr name="icon_content_add_trending" format="string"/>
     <attr name="icon_content_edit" format="string"/>
     <attr name="icon_content_favorite" format="string"/>
+    <attr name="icon_action_more_options_sidebar" format="string"/>
     <attr name="icon_action_more_options" format="string"/>
     <attr name="icon_content_delete" format="string"/>
     <attr name="icon_content_timeline" format="string"/>

@@ -45,6 +45,7 @@ public class SearchActivity extends BaseActivity implements APIDelegate<BaseResp
 
         themeManager = new ThemeManager(this);
         themeManager.setDialogTheme();
+        themeManager.setColors();
 
         String defaultSearch = "";
 
@@ -63,6 +64,8 @@ public class SearchActivity extends BaseActivity implements APIDelegate<BaseResp
         if (search_entity == null) search_entity = new EntitySearch();
 
         setContentView(R.layout.search_activity);
+
+        findViewById(R.id.buttons_foot).setBackgroundColor(themeManager.getColor("color_bottom_bar"));
 
         fragmentAdapter = new SearchFragmentAdapter(this, getSupportFragmentManager(), search_entity, defaultSearch);
 

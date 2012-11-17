@@ -131,7 +131,7 @@
                 </FrameLayout>
 
                 <Button android:id="@+id/tweet_btn_more"
-                        android:drawableTop="?icon_action_more_options"
+                        android:drawableTop="?icon_action_more_options_sidebar"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:layout_width="0px"

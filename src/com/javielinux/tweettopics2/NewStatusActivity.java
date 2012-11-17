@@ -270,6 +270,7 @@ public class NewStatusActivity extends BaseActivity {
 
         themeManager = new ThemeManager(this);
         themeManager.setDialogTheme();
+        themeManager.setColors();
 
         thisInstance = this;
 
@@ -377,6 +378,8 @@ public class NewStatusActivity extends BaseActivity {
         }
 
         mButtonsFoot = (LinearLayout) findViewById(R.id.buttons_foot);
+        mButtonsFoot.setBackgroundColor(themeManager.getColor("color_bottom_bar"));
+
         layoutActionBar = (RelativeLayout) findViewById(R.id.new_status_bar_action);
         mAutoCompleteDataFoot = (LinearLayout) findViewById(R.id.autocomplete_data_foot);
         mAutoCompleteFoot = (HorizontalScrollView) findViewById(R.id.autocomplete_foot);

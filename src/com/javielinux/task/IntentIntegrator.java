@@ -77,7 +77,7 @@ import android.net.Uri;
  */
 public final class IntentIntegrator {
 
-  public static final int REQUEST_CODE = 0x0ba7c0de; // get it?
+  public static final int REQUEST_CODE = 1101; // get it?
 
   public static final String DEFAULT_TITLE = "Install Barcode Scanner?";
   public static final String DEFAULT_MESSAGE =

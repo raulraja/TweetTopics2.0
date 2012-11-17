@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
 import com.javielinux.infos.InfoSubMenuTweet;
+import com.javielinux.preferences.InfoColorsApp;
 import com.javielinux.tweettopics2.R;
 import com.javielinux.widget.ServiceWidgetTweets4x2;
 
@@ -553,6 +554,11 @@ public class PreferenceUtils {
                 ent.delete();
             }
         }
+
+        if (version.equals("2.02")) {
+            new InfoColorsApp(cnt, "color_bottom_bar").restartColor(cnt);
+        }
+
     }
 
     public static boolean getStatusWorkAlarm(Context cnt) {

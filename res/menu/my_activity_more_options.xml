@@ -4,6 +4,8 @@
     <group android:id="@+id/popupmenu_more_options">
         <item android:id="@+id/popupmenu_more_options_size"
               android:title="@string/size"/>
+        <item android:id="@+id/popupmenu_more_options_theme"
+              android:title="@string/themes"/>
         <item android:id="@+id/popupmenu_more_options_preferences"
               android:title="@string/preferences"/>
         <item android:id="@+id/popupmenu_more_options_exit"

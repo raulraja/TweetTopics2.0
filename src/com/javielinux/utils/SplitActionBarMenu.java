@@ -14,6 +14,7 @@ import com.javielinux.fragments.BaseListFragment;
 import com.javielinux.infos.InfoSubMenuTweet;
 import com.javielinux.infos.InfoTweet;
 import com.javielinux.tweettopics2.R;
+import com.javielinux.tweettopics2.ThemeManager;
 import com.nineoldandroids.animation.Animator;
 import com.nineoldandroids.animation.AnimatorSet;
 import com.nineoldandroids.animation.ObjectAnimator;
@@ -79,6 +80,10 @@ public class SplitActionBarMenu {
                 hideSplitActionBarMenu();
             }
         });
+
+        ThemeManager themeManager = new ThemeManager(activity);
+        themeManager.setTheme();
+        scroll_view_layout.setBackgroundDrawable(ImageUtils.createBackgroundDrawable(activity, themeManager.getColor("color_top_bar"), false, 0));
 
         root.addView(splitActionBarMenu);
     }

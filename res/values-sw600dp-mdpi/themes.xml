@@ -38,8 +38,6 @@ por ejemplo el margin mínimo de los botones -->
 
         <item name="color_title_search_short">#FF333333</item>
 
-        <item name="bottom_bar_background">@drawable/bottom_bar_background</item>
-
         <item name="color_shadow_listview">#FFdddddd</item>
 
         <item name="bg_sidebar">@drawable/bg_sidebar</item>
@@ -82,6 +80,7 @@ por ejemplo el margin mínimo de los botones -->
         <item name="icon_content_add_trending">@drawable/icon_content_add_trending_dark</item>
         <item name="icon_content_edit">@drawable/icon_content_edit_dark</item>
         <item name="icon_content_favorite">@drawable/icon_content_favorite</item>
+        <item name="icon_action_more_options_sidebar">@drawable/icon_action_more_options</item>
         <item name="icon_action_more_options">@drawable/icon_action_more_options_dark</item>
         <item name="icon_content_delete">@drawable/icon_content_delete</item>
         <item name="icon_content_timeline">@drawable/icon_content_timeline</item>
@@ -132,8 +131,6 @@ por ejemplo el margin mínimo de los botones -->
 
 		<item name="color_title_search_short">#FF333333</item>
 
-		<item name="bottom_bar_background">@drawable/bottom_bar_background</item>
-
 		<item name="color_shadow_listview">#FFdddddd</item>
 
 		<item name="bg_sidebar">@drawable/bg_sidebar</item>
@@ -170,13 +167,14 @@ por ejemplo el margin mínimo de los botones -->
 
         <!-- Icons -->
 
-        <item name="icon_social_add_user">@drawable/icon_social_add_user</item>
-        <item name="icon_action_search">@drawable/icon_action_search</item>
-        <item name="icon_action_settings">@drawable/icon_action_settings</item>
-        <item name="icon_content_add_trending">@drawable/icon_content_add_trending</item>
-        <item name="icon_content_edit">@drawable/icon_content_edit</item>
+        <item name="icon_social_add_user">@drawable/icon_social_add_user_dark</item>
+        <item name="icon_action_search">@drawable/icon_action_search_dark</item>
+        <item name="icon_action_settings">@drawable/icon_action_settings_dark</item>
+        <item name="icon_content_add_trending">@drawable/icon_content_add_trending_dark</item>
+        <item name="icon_content_edit">@drawable/icon_content_edit_dark</item>
         <item name="icon_content_favorite">@drawable/icon_content_favorite</item>
-        <item name="icon_action_more_options">@drawable/icon_action_more_options</item>
+        <item name="icon_action_more_options_sidebar">@drawable/icon_action_more_options</item>
+        <item name="icon_action_more_options">@drawable/icon_action_more_options_dark</item>
         <item name="icon_content_delete">@drawable/icon_content_delete</item>
         <item name="icon_content_timeline">@drawable/icon_content_timeline</item>
         <item name="icon_content_mentions">@drawable/icon_content_mentions</item>
@@ -188,12 +186,12 @@ por ejemplo el margin mínimo de los botones -->
         <item name="icon_social_retweet">@drawable/icon_social_retweet</item>
         <item name="icon_action_web">@drawable/icon_action_web</item>
         <item name="icon_action_highlight">@drawable/icon_action_highlight</item>
-        <item name="icon_action_shorter">@drawable/icon_action_shorter</item>
-        <item name="icon_action_clock">@drawable/icon_action_clock</item>
-        <item name="icon_action_place">@drawable/icon_action_place</item>
-        <item name="icon_content_copy">@drawable/icon_content_copy_dark</item>
-        <item name="icon_content_save">@drawable/icon_content_save_dark</item>
-        <item name="icon_social_share">@drawable/icon_social_share_dark</item>
+        <item name="icon_action_shorter">@drawable/icon_action_shorter_dark</item>
+        <item name="icon_action_clock">@drawable/icon_action_clock_dark</item>
+        <item name="icon_action_place">@drawable/icon_action_place_dark</item>
+        <item name="icon_content_copy">@drawable/icon_content_copy</item>
+        <item name="icon_content_save">@drawable/icon_content_save</item>
+        <item name="icon_social_share">@drawable/icon_social_share</item>
 
 	</style>
 
@@ -211,7 +209,7 @@ por ejemplo el margin mínimo de los botones -->
         <item name="android:editTextStyle">@style/BaseEditText</item>
 
         <!-- Tabs indicator -->
-        <item name="vpiTabPageIndicatorStyle">@style/Widget.TabPageIndicator</item>
+        <item name="vpiTabPageIndicatorStyle">@style/Widget.TabPageIndicator.Dark</item>
 
         <item name="color_tweet_usename">#ffffffff</item>
         <item name="color_tweet_source">#ffbfbfbf</item>
@@ -233,8 +231,6 @@ por ejemplo el margin mínimo de los botones -->
         <item name="color_title_search">#FFFFFFFF</item>
 
         <item name="color_title_search_short">#FFCCCCCC</item>
-
-        <item name="bottom_bar_background">@drawable/bottom_bar_background_dark</item>
 
         <item name="color_shadow_listview">#FF222222</item>
 
@@ -278,6 +274,7 @@ por ejemplo el margin mínimo de los botones -->
         <item name="icon_content_add_trending">@drawable/icon_content_add_trending_dark</item>
         <item name="icon_content_edit">@drawable/icon_content_edit_dark</item>
         <item name="icon_content_favorite">@drawable/icon_content_favorite_dark</item>
+        <item name="icon_action_more_options_sidebar">@drawable/icon_action_more_options_dark</item>
         <item name="icon_action_more_options">@drawable/icon_action_more_options_dark</item>
         <item name="icon_content_delete">@drawable/icon_content_delete_dark</item>
         <item name="icon_content_timeline">@drawable/icon_content_timeline_dark</item>
@@ -304,7 +301,7 @@ por ejemplo el margin mínimo de los botones -->
         <item name="android:editTextStyle">@style/BaseEditText</item>
 
         <!-- Tabs indicator -->
-        <item name="vpiTabPageIndicatorStyle">@style/Widget.TabPageIndicator</item>
+        <item name="vpiTabPageIndicatorStyle">@style/Widget.TabPageIndicator.Dark</item>
 
 		<item name="color_tweet_usename">#ffffffff</item>
 		<item name="color_tweet_source">#ffbfbfbf</item>
@@ -326,8 +323,6 @@ por ejemplo el margin mínimo de los botones -->
 		<item name="color_title_search">#FFFFFFFF</item>
 
 		<item name="color_title_search_short">#FFCCCCCC</item>
-
-		<item name="bottom_bar_background">@drawable/bottom_bar_background_dark</item>
 
 		<item name="color_shadow_listview">#FF222222</item>
 
@@ -371,6 +366,7 @@ por ejemplo el margin mínimo de los botones -->
         <item name="icon_content_add_trending">@drawable/icon_content_add_trending_dark</item>
         <item name="icon_content_edit">@drawable/icon_content_edit_dark</item>
         <item name="icon_content_favorite">@drawable/icon_content_favorite_dark</item>
+        <item name="icon_action_more_options_sidebar">@drawable/icon_action_more_options_dark</item>
         <item name="icon_action_more_options">@drawable/icon_action_more_options_dark</item>
         <item name="icon_content_delete">@drawable/icon_content_delete_dark</item>
         <item name="icon_content_timeline">@drawable/icon_content_timeline_dark</item>

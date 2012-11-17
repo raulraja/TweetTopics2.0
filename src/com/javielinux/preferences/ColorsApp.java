@@ -221,9 +221,9 @@ public class ColorsApp extends ListActivity implements ColorDialog.OnChangeColor
         	editor.putString("prf_theme", t.get("theme"));
     	}
     	
-    	if (t.containsKey("positions_links")) {
-        	editor.putString("prf_positions_links", t.get("positions_links"));
-    	}
+//    	if (t.containsKey("positions_links")) {
+//        	editor.putString("prf_positions_links", t.get("positions_links"));
+//    	}
     	
     	if (t.containsKey("use_gradient")) {
         	editor.putBoolean("prf_use_gradient", t.get("use_gradient").equals("1"));
@@ -350,7 +350,7 @@ public class ColorsApp extends ListActivity implements ColorDialog.OnChangeColor
     	SharedPreferences preferences = Utils.getPreference(cnt);
     	    	    	
     	theme += SEP_BLOCK+"theme"+SEP_VALUES+preferences.getString("prf_theme", "1");
-    	theme += SEP_BLOCK+"positions_links"+SEP_VALUES+preferences.getString("prf_positions_links", "1");
+//    	theme += SEP_BLOCK+"positions_links"+SEP_VALUES+preferences.getString("prf_positions_links", "1");
     	theme += SEP_BLOCK+"use_gradient"+SEP_VALUES + (preferences.getBoolean("prf_use_gradient", true)?"1":"0");
     	theme += SEP_BLOCK+"use_divider_tweet"+SEP_VALUES + (preferences.getBoolean("prf_use_divider_tweet", true)?"1":"0");
 
@@ -410,11 +410,17 @@ public class ColorsApp extends ListActivity implements ColorDialog.OnChangeColor
     	
     }
     
-    public static void exportTheme(Context cnt) {
-    	Intent newstatus = new Intent(cnt, NewStatusActivity.class);
-    	newstatus.putExtra("text", Utils.HASHTAG_SHARE_THEME + " " + URLExportTheme(cnt));
-    	newstatus.putExtra("type", NewStatusActivity.TYPE_NORMAL);
-    	cnt.startActivity(newstatus);
+    public static void exportTheme(final Context cnt) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                String url = URLExportTheme(cnt);
+                Intent newstatus = new Intent(cnt, NewStatusActivity.class);
+                newstatus.putExtra("text", Utils.HASHTAG_SHARE_THEME + " " + url);
+                newstatus.putExtra("type", NewStatusActivity.TYPE_NORMAL);
+                cnt.startActivity(newstatus);
+            }
+        }).start();
     }
     
     public static String URLExportTheme(Context cnt) {

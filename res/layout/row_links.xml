@@ -4,14 +4,12 @@
         android:layout_height="wrap_content"
         android:orientation="vertical" android:gravity="center" android:layout_width="wrap_content">
 
-    <ImageView android:id="@+id/row_links_icon" android:padding="5sp" android:adjustViewBounds="true"
-               android:layout_width="54dip" android:layout_height="54dip" android:src="@drawable/icon"
-               android:gravity="center_horizontal"></ImageView>
+    <ImageView android:id="@+id/row_links_icon" android:src="@drawable/icon"
+               android:gravity="center_horizontal" style="@style/PopupLinksImage"></ImageView>
 
-    <TextView style="@style/TextGridSearch" android:layout_height="wrap_content" android:text="Texto"
+    <TextView android:layout_height="wrap_content"
               android:id="@+id/row_links_title" android:layout_width="wrap_content"
-              android:paddingBottom="10dip" android:lines="1"
-              android:textSize="11sp"
-              android:gravity="center_horizontal"/>
+              style="@style/PopupLinksText"
+              />
 
 </LinearLayout>

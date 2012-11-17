@@ -105,7 +105,7 @@
                         style="@style/ButtonSidebar"
                         android:layout_weight="1"
                         android:text="@string/more"
-                        android:drawableTop="?icon_action_more_options"
+                        android:drawableTop="?icon_action_more_options_sidebar"
                         android:id="@+id/user_btn_more" android:layout_width="0px"
                         android:layout_height="wrap_content"></Button>
 

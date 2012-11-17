@@ -34,7 +34,6 @@
                   android:layout_alignParentBottom="true"
                   android:gravity="center_vertical"
                   android:layout_height="@dimen/footer_action_split_height"
-                  android:background="?attr/bottom_bar_background"
                   android:id="@id/buttons_foot"
             >
         <Button
