@@ -36,6 +36,8 @@ public class UserActivity extends BaseLayersActivity implements PopupLinks.Popup
 
     public static final String KEY_EXTRAS_USER = "user";
 
+    public static final int ACTIVITY_INCLUDE_IN_LIST = 0;
+
     private ViewPager pager;
     private UserFragmentAdapter fragmentAdapter;
     private TabPageIndicator indicator;
@@ -55,6 +57,16 @@ public class UserActivity extends BaseLayersActivity implements PopupLinks.Popup
     private RelativeLayout viewInfo;
     private PopupLinks popupLinks;
     private SplitActionBarMenu splitActionBarMenu;
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == UserActivity.ACTIVITY_INCLUDE_IN_LIST) {
+            UserActions.execByCode(UserActions.USER_ACTION_INCLUDED_LIST, UserActivity.this, data.getLongExtra("userActiveId", -1), infoUser, data.getIntExtra("userListId", -1));
+        }
+
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -222,7 +234,7 @@ public class UserActivity extends BaseLayersActivity implements PopupLinks.Popup
             arCode.add(UserActions.USER_ACTION_REPORT_SPAM);
 
             ar.add(getString(R.string.included_list));
-            arCode.add(UserActions.USER_ACTION_INCLUDED_LIST);
+            arCode.add(UserActions.USER_ACTION_INCLUDED_LIST_SELECTION);
 
             ar.add(getString(R.string.hide));
             arCode.add(UserActions.USER_ACTION_HIDE);

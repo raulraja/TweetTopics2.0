@@ -91,7 +91,7 @@ public class UserProfileAdapter extends BaseAdapter {
             public void onError(ErrorResponse error) {
 
             }
-        }, new ExecuteActionUserRequest(UserActions.USER_ACTION_CHANGE_RELATIONSHIP, friend, infoUser));
+        }, new ExecuteActionUserRequest(UserActions.USER_ACTION_CHANGE_RELATIONSHIP, friend, infoUser, -1, -1));
     }
 
     public void reload() {

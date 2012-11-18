@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/user_lists_parent"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout android:id="@+id/user_list_bar_action"
+                    android:layout_height="@dimen/actionbar_height"
+                    android:layout_width="fill_parent">
+
+        <ImageView android:id="@+id/user_list_bar_icon"
+                   android:layout_height="@dimen/actionbar_height"
+                   android:layout_width="@dimen/actionbar_height"
+                   android:padding="6dp"
+                   android:layout_marginRight="@dimen/default_separation"
+                   android:src="@drawable/icon"/>
+
+        <TextView android:id="@+id/user_list_bar_title"
+                  android:layout_height="wrap_content"
+                  android:layout_width="wrap_content"
+                  android:layout_centerVertical="true"
+                  android:layout_toRightOf="@id/user_list_bar_icon"
+                  android:text="@string/user_list"
+                />
+
+    </RelativeLayout>
+
+    <RelativeLayout android:id="@+id/user_info"
+        android:background="#60000000"
+        android:gravity="center_vertical"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:orientation="horizontal"
+        android:padding="5dp">
+
+        <FrameLayout android:id="@+id/user_icon_layout"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:layout_width="wrap_content">
+
+            <ImageView android:id="@+id/user_icon"
+                android:contentDescription="@string/user"
+                android:src="@drawable/avatar"
+                style="@style/TweetAvatar" />
+
+        </FrameLayout>
+
+        <LinearLayout
+            android:layout_centerVertical="true"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/user_icon_layout"
+            android:layout_width="wrap_content"
+            android:orientation="vertical">
+
+            <TextView android:id="@+id/user_fullname"
+                android:layout_height="wrap_content"
+                android:layout_width="fill_parent"
+                style="@style/MyActivityFullName"/>
+
+            <TextView android:id="@+id/user_name"
+                android:layout_height="wrap_content"
+                android:layout_width="fill_parent"
+                style="@style/MyActivityName"/>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <LinearLayout android:id="@+id/user_lists_view_no_lists"
+        android:gravity="center"
+        android:layout_height="fill_parent"
+        android:layout_width="fill_parent"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <TextView android:id="@+id/text_loading"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:text="@string/no_list" />
+
+    </LinearLayout>
+
+    <LinearLayout android:id="@+id/user_lists_view_loading"
+        android:gravity="center"
+        android:layout_height="fill_parent"
+        android:layout_width="fill_parent"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <ProgressBar
+            android:indeterminate="true"
+            android:layout_height="16sp"
+            android:layout_marginRight="6sp"
+            android:layout_width="16sp" />
+        <TextView android:id="@+id/text_loading"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:text="@string/loading" />
+
+    </LinearLayout>
+
+    <LinearLayout android:id="@+id/user_lists_view_no_internet"
+        android:gravity="center"
+        android:layout_height="fill_parent"
+        android:layout_width="fill_parent"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="15dp"
+            android:layout_width="wrap_content"
+            android:text="@string/error_general" />
+
+        <Button android:id="@+id/user_lists_view_no_internet"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:text="@string/retry"/>
+
+    </LinearLayout>
+
+    <GridView android:id="@+id/grid_userlist"
+        android:columnWidth="100dip"
+        android:gravity="center"
+        android:horizontalSpacing="5dip"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_width="fill_parent"
+        android:numColumns="auto_fit"
+        android:stretchMode="columnWidth">
+    </GridView>
+
+    <LinearLayout android:id="@+id/user_lists_load_more"
+        android:gravity="center"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <Button android:id="@+id/but_user_lists_load_more"
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:text="@string/load_more_footer"/>
+
+        <LinearLayout android:id="@+id/user_lists_load_more_view_loading"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:orientation="horizontal"
+            android:padding="8sp"
+            android:visibility="gone">
+
+            <ProgressBar
+                android:indeterminate="true"
+                android:layout_height="16sp"
+                android:layout_marginRight="6sp"
+                android:layout_width="16sp" />
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="@string/loading" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

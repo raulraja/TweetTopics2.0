@@ -28,6 +28,7 @@ public class UserActions {
     public static String USER_ACTION_CREATE_BLOCK = "create_block";
     public static String USER_ACTION_REPORT_SPAM = "report_spam";
     public static String USER_ACTION_INCLUDED_LIST = "included_list";
+    public static String USER_ACTION_INCLUDED_LIST_SELECTION = "included_list_selection";
     public static String USER_ACTION_HIDE = "hide";
     public static String USER_ACTION_CREATE_TOPIC = "create_topic";
     public static String USER_ACTION_SEND_DIRECT = "send_direct";
@@ -52,7 +53,7 @@ public class UserActions {
                 public void onError(ErrorResponse error) {
 
                 }
-            }, new ExecuteActionUserRequest(UserActions.USER_ACTION_CREATE_BLOCK, null, infoUsers));
+            }, new ExecuteActionUserRequest(UserActions.USER_ACTION_CREATE_BLOCK, null, infoUsers, -1, -1));
         } else if (code.equals(USER_ACTION_REPORT_SPAM)) {
             APITweetTopics.execute(activity, activity.getSupportLoaderManager(), new APIDelegate() {
                 @Override
@@ -63,18 +64,21 @@ public class UserActions {
                 public void onError(ErrorResponse error) {
 
                 }
-            }, new ExecuteActionUserRequest(UserActions.USER_ACTION_REPORT_SPAM, null, infoUsers));
+            }, new ExecuteActionUserRequest(UserActions.USER_ACTION_REPORT_SPAM, null, infoUsers, -1, -1));
+        } else if (code.equals(USER_ACTION_INCLUDED_LIST_SELECTION)) {
+            goToIncludeListSelection(activity);
         } else if (code.equals(USER_ACTION_INCLUDED_LIST)) {
             APITweetTopics.execute(activity, activity.getSupportLoaderManager(), new APIDelegate() {
                 @Override
                 public void onResults(BaseResponse result) {
+                    Utils.showMessage(activity, activity.getString(R.string.included_list_message));
                 }
 
                 @Override
                 public void onError(ErrorResponse error) {
-
+                    Utils.showMessage(activity, error.getMsgError());
                 }
-            }, new ExecuteActionUserRequest(UserActions.USER_ACTION_INCLUDED_LIST, null, infoUsers));
+            }, new ExecuteActionUserRequest(UserActions.USER_ACTION_INCLUDED_LIST, null, infoUsers, fromUser, ((Integer)extra).intValue()));
         } else if (code.equals(USER_ACTION_HIDE)) {
             goToHide(activity, infoUsers);
         } else if (code.equals(USER_ACTION_CREATE_TOPIC)) {
@@ -134,8 +138,20 @@ public class UserActions {
         }
     }
 
-    public static void goToIncludeList(Context context, InfoUsers infoUsers) {
-        // TODO include list
+    public static void goToIncludeListSelection(FragmentActivity activity) {
+        Intent intent = new Intent(activity, UserListsSelectorActivity.class);
+        activity.startActivityForResult(intent, UserActivity.ACTIVITY_INCLUDE_IN_LIST);
+    }
+
+    public static void goToIncludeList(Context context, long activeUser, InfoUsers infoUsers, int userListId) {
+        ConnectionManager.getInstance().open(context);
+        Twitter twitter = ConnectionManager.getInstance().getTwitter(activeUser);
+
+        try {
+            twitter.addUserListMember(userListId, infoUsers.getId());
+        } catch (TwitterException e) {
+            e.printStackTrace();
+        }
     }
 
     public static void goToCreateBlock(Context context, InfoUsers infoUsers) {

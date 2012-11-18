@@ -19,6 +19,7 @@
         <activity android:name="TweetActivity" android:theme="@style/Theme.Twitter.Translucent" android:hardwareAccelerated="true" />
         <activity android:name="UserActivity" android:theme="@style/Theme.Twitter.Translucent" android:hardwareAccelerated="true" />
         <activity android:name="UserListsActivity" />
+        <activity android:name="UserListsSelectorActivity" />
         <activity android:name="TrendsLocationActivity" />
 
         <activity android:name="MapSearch" />

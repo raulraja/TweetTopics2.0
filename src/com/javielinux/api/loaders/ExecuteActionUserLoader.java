@@ -35,7 +35,7 @@ public class ExecuteActionUserLoader extends AsynchronousLoader<BaseResponse> {
                 response.setInfoUsers(request.getInfoUsers());
                 return response;
             } else if (request.getAction().equals(UserActions.USER_ACTION_INCLUDED_LIST)) {
-                UserActions.goToIncludeList(context, request.getInfoUsers());
+                UserActions.goToIncludeList(context, request.getUserActiveId(), request.getInfoUsers(), request.getUserListId());
                 response.setInfoUsers(request.getInfoUsers());
                 return response;
             } else if (request.getAction().equals(UserActions.USER_ACTION_CHANGE_RELATIONSHIP)) {

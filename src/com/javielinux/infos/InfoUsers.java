@@ -32,6 +32,7 @@ public class InfoUsers {
     public static String SIZE_NORMAL = "normal";
     public static String SIZE_BIGGER = "bigger";
 
+    private long id = -1;
 	private String name = "";
 	private String fullname = "";
 	private String location = "";
@@ -52,6 +53,7 @@ public class InfoUsers {
 	}
 
     public InfoUsers(User user) {
+        setId(user.getId());
         setName(user.getScreenName());
         setFullname(user.getName());
         setCreated(user.getCreatedAt());
@@ -74,6 +76,15 @@ public class InfoUsers {
 
     public String getURLAvatar(String size) {
         return String.format("https://api.twitter.com/1/users/profile_image?screen_name=%s&size=%s", name, size);
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+
+    public long getId() {
+        return id;
     }
 
 	public void setName(String name) {

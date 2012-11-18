@@ -5,6 +5,7 @@
 
     <string name="buyKey">Buy key</string>
     <string name="buyKeyMessage">You can\'t do this action. If you need it, you can buy a key in Google Play and you\'ll get this and other features</string>
+    <string name="included_list_message">The user has been included in the list</string>
 
     <!-- v 2.0  -->
 
