@@ -521,7 +521,7 @@
     
     <style name="TextAlert">
         <item name="android:textSize">19sp</item>
-        <item name="android:textColor">?color_title_general</item>
+        <item name="android:textColor">?color_text_dialog</item>
     </style>
     
     <style name="DescAlert">

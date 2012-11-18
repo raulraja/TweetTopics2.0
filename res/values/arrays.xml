@@ -2,7 +2,7 @@
 <resources>
 
     <string-array name="popupmenu_list_users_more_options"><!-- 2.0 -->
-        <item>@string/update</item>
+        <item>@string/newList</item>
     </string-array>
 
     <string-array name="popupmenu_new_status_more_options"><!-- 2.0 -->

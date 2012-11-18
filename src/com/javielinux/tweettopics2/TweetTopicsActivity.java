@@ -364,7 +364,7 @@ public class TweetTopicsActivity extends BaseLayersActivity implements PopupLink
             PreferenceUtils.setApplicationAccessCount(this, access_count + 1);
         }
 
-        PreferenceUtils.showChangeLog(this);
+        PreferenceUtils.showChangeLog(this, true);
 
     }
 

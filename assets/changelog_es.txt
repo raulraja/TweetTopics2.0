@@ -1,3 +1,15 @@
+Version 2.02
+============
+
+- Corregidos problemas con los textos en el tema claro
+- Se pueden gestionar nuevos temas (guardar, cargar, scanear QR, etc)
+- Mejoras con las listas. Se pueden cargar todas las listas, incluir usuario, crear nuevas, etc
+- Corregido error para hacer zoom en imágenes en versión anteriores a 3.0
+- Se cierra la ventan al hacer un retweet
+- Corregidos errores generales
+
+Build number 3
+
 Version 2.01
 ============
 

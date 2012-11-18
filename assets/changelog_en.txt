@@ -1,3 +1,14 @@
+Version 2.02
+============
+
+- Fixed problems with text in Theme Light
+- Manager new themes (save, load, scann QR, etc)
+- Improvements in user's list. Include user, create new list, etc
+- Fixed problem image zoom in Android >3.0
+- Bug fixed
+
+Build number 3
+
 Version 2.01
 ============
 

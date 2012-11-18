@@ -1,7 +1,6 @@
 package com.javielinux.tweettopics2;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Shader;
@@ -17,11 +16,13 @@ import com.javielinux.adapters.RowUserListsAdapter;
 import com.javielinux.api.APIDelegate;
 import com.javielinux.api.APITweetTopics;
 import com.javielinux.api.loaders.GetUserListLoader;
+import com.javielinux.api.request.CreateUserListsRequest;
 import com.javielinux.api.request.GetUserListRequest;
 import com.javielinux.api.response.BaseResponse;
 import com.javielinux.api.response.ErrorResponse;
 import com.javielinux.api.response.GetUserListResponse;
 import com.javielinux.dialogs.AlertDialogFragment;
+import com.javielinux.dialogs.CreateListTwitterDialogFragment;
 import com.javielinux.preferences.Preferences;
 import com.javielinux.utils.DBUtils;
 import com.javielinux.utils.ImageUtils;
@@ -131,6 +132,7 @@ public class UserListsActivity extends BaseActivity implements APIDelegate<BaseR
         mLayoutBackgroundApp = (LinearLayout) this.findViewById(R.id.user_lists_parent);
         layoutActionBar = (RelativeLayout) findViewById(R.id.user_list_bar_action);
         titlePage = (TextView) this.findViewById(R.id.user_list_bar_title);
+        titlePage.setText(getString(R.string.user_list) + ": @" + screenName);
 
         refreshTheme();
 
@@ -164,14 +166,19 @@ public class UserListsActivity extends BaseActivity implements APIDelegate<BaseR
 
         });
 
-        findViewById(R.id.user_list_more_options).setOnClickListener(new View.OnClickListener() {
+        ImageView bOptions = (ImageView) findViewById(R.id.user_list_more_options);
+        if (user_id >= 0) {
+            bOptions.setOnClickListener(new View.OnClickListener() {
 
-            @Override
-            public void onClick(View v) {
-                showMenuOptions(v);
-            }
+                @Override
+                public void onClick(View v) {
+                    showMenuOptions(v);
+                }
 
-        });
+            });
+        } else {
+            bOptions.setVisibility(View.GONE);
+        }
 
         findViewById(R.id.user_list_bar_icon).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -216,20 +223,38 @@ public class UserListsActivity extends BaseActivity implements APIDelegate<BaseR
         reload();
     }
 
-    private void update() {
-        new AlertDialog.Builder(UserListsActivity.this)
-                .setIcon(android.R.drawable.ic_dialog_alert)
-                .setTitle(R.string.user_list)
-                .setMessage(R.string.user_list_update_message)
-                .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        showLoading();
-                        reload();
-                    }
-                })
-                .setNegativeButton(R.string.no, null)
-                .show();
+    private void showDialogNewList() {
+        CreateListTwitterDialogFragment frag = new CreateListTwitterDialogFragment(new CreateListTwitterDialogFragment.CreateListListener() {
+            @Override
+            public void onCreateList(String title, String description, boolean isPublic) {
+                createNewList(title, description, isPublic);
+            }
+        });
+        frag.show(getSupportFragmentManager(), "dialog");
+    }
+
+    private void createNewList(String title, String description, boolean isPublic) {
+        final ProgressDialog progressDialog = ProgressDialog.show(
+                this,
+                this.getResources().getString(R.string.loading),
+                this.getResources().getString(R.string.loading)
+        );
+        APITweetTopics.execute(UserListsActivity.this, getSupportLoaderManager(), new APIDelegate() {
+            @Override
+            public void onResults(BaseResponse result) {
+                progressDialog.dismiss();
+                type_id = GetUserListLoader.OWN_LISTS;
+                loadingMoreUserList = false;
+                reload();
+                Utils.showMessage(UserListsActivity.this, R.string.created_list_message);
+            }
+
+            @Override
+            public void onError(ErrorResponse error) {
+                progressDialog.dismiss();
+                Utils.showMessage(UserListsActivity.this, R.string.error_general);
+            }
+        }, new CreateUserListsRequest(user_id, title, description, isPublic));
     }
 
     private void showMenuOptions(View view) {
@@ -241,7 +266,7 @@ public class UserListsActivity extends BaseActivity implements APIDelegate<BaseR
                 @Override
                 public boolean onMenuItemClick(MenuItem item) {
                     if (item.getItemId() == R.id.popupmenu_list_user_update) {
-                        update();
+                        showDialogNewList();
                     }
                     return true;
                 }
@@ -271,7 +296,7 @@ public class UserListsActivity extends BaseActivity implements APIDelegate<BaseR
                 @Override
                 public void OnAlertItems(int which) {
                     if (which == 0) {
-                        update();
+                        showDialogNewList();
                     }
                 }
             });

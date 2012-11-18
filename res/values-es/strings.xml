@@ -1,6 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!-- v 2.02  -->
+
+    <string name="newList">Nueva lista</string>
+    <string name="title">Título</string>
+    <string name="isPublic">¿Es pública?</string>
+    <string name="included_list_message">El usuario ha sido incluido a la lista</string>
+    <string name="created_list_message">Lista creada correctamente</string>
+
+    <!-- v 2.01  -->
+
+    <string name="buyKey">Comprar key</string>
+    <string name="buyKeyMessage">No puedes hacer esto por ahora. Si te apetece puedes comprar la key de TweetTopics que activa esta y otras caraterísticas premium en la aplicación. Gracias ;-)</string>
+
     <!-- v 2.0  -->
 
     <string name="mentioned">Mención</string>

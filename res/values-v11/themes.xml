@@ -25,6 +25,8 @@
 		<item name="color_tweet_date">#ffaaaaaa</item>
 		<item name="color_tweet_text">#ff000000</item>
 		<item name="color_tweet_retweet">#ffaaaaaa</item>
+
+        <item name="color_text_dialog">#ff333333</item>
 		
 		<item name="color_title_general">#ff333333</item>
 		<item name="color_desc_general">#ff666666</item>
@@ -130,6 +132,8 @@
 		<item name="color_tweet_date">#ffbfbfbf</item>
 		<item name="color_tweet_text">#ffffffff</item>
 		<item name="color_tweet_retweet">#ffbfbfbf</item>
+
+        <item name="color_text_dialog">#ffeeeeee</item>
 		
 		<item name="color_title_general">#ffeeeeee</item>
 		<item name="color_desc_general">#ffcccccc</item>

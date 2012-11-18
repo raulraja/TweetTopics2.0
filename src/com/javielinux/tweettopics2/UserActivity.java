@@ -63,7 +63,12 @@ public class UserActivity extends BaseLayersActivity implements PopupLinks.Popup
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == UserActivity.ACTIVITY_INCLUDE_IN_LIST) {
-            UserActions.execByCode(UserActions.USER_ACTION_INCLUDED_LIST, UserActivity.this, data.getLongExtra("userActiveId", -1), infoUser, data.getIntExtra("userListId", -1));
+            if (data != null && data.getExtras().containsKey(UserListsSelectorActivity.KEY_ACTIVE_USER_ID)
+                    && data.getExtras().containsKey(UserListsSelectorActivity.KEY_LIST_ID)) {
+                UserActions.execByCode(UserActions.USER_ACTION_INCLUDED_LIST,
+                        UserActivity.this, data.getLongExtra(UserListsSelectorActivity.KEY_ACTIVE_USER_ID, -1),
+                        infoUser, data.getIntExtra(UserListsSelectorActivity.KEY_LIST_ID, -1));
+            }
         }
 
     }
@@ -140,7 +145,7 @@ public class UserActivity extends BaseLayersActivity implements PopupLinks.Popup
             }, new LoadUserRequest(username));
         }
 
-        ViewGroup root = (ViewGroup)findViewById(R.id.user_root);
+        ViewGroup root = (ViewGroup) findViewById(R.id.user_root);
 
         popupLinks = new PopupLinks(this);
         popupLinks.loadPopup(root);
@@ -200,7 +205,7 @@ public class UserActivity extends BaseLayersActivity implements PopupLinks.Popup
 
         @Override
         public void onClick(View view) {
-            if (infoUser.getUrl()!=null && !infoUser.getUrl().equals("")) {
+            if (infoUser.getUrl() != null && !infoUser.getUrl().equals("")) {
                 goToLink(infoUser.getUrl());
             } else {
                 Utils.showMessage(UserActivity.this, getString(R.string.user_no_web));
@@ -249,7 +254,7 @@ public class UserActivity extends BaseLayersActivity implements PopupLinks.Popup
             arCode.add(UserActions.USER_ACTION_MY_LISTS);
 
             CharSequence[] c = new CharSequence[ar.size()];
-            for (int i=0; i<ar.size(); i++) {
+            for (int i = 0; i < ar.size(); i++) {
                 c[i] = ar.get(i);
             }
 
@@ -296,7 +301,7 @@ public class UserActivity extends BaseLayersActivity implements PopupLinks.Popup
     public void goToLink(String url) {
         try {
             if (url.startsWith("www")) {
-                url = "http://"+url;
+                url = "http://" + url;
             }
             Uri uri = Uri.parse(url);
             Intent intent = new Intent(android.content.Intent.ACTION_VIEW, uri);

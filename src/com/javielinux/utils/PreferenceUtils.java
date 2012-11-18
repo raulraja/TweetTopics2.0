@@ -478,6 +478,10 @@ public class PreferenceUtils {
     }
 
     public static void showChangeLog(Context cnt) {
+        showChangeLog(cnt, false);
+    }
+
+    public static void showChangeLog(Context cnt, boolean checkTheme) {
         boolean showChangeLog = false;
         String version = cnt.getString(R.string.version);
         SharedPreferences prefs = cnt.getSharedPreferences(Utils.APPLICATION_PREFERENCES, Context.MODE_PRIVATE);
@@ -503,7 +507,7 @@ public class PreferenceUtils {
             }
 
             try {
-                AlertDialog builder = DialogUtils.PersonalDialogBuilder.create(cnt, cnt.getString(R.string.changelog), file);
+                AlertDialog builder = DialogUtils.PersonalDialogBuilder.create(cnt, cnt.getString(R.string.changelog), file, checkTheme);
                 builder.show();
             } catch (PackageManager.NameNotFoundException e) {
                 e.printStackTrace();

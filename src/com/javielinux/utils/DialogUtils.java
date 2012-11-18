@@ -8,9 +8,11 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.Build;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import com.javielinux.tweettopics2.R;
+import com.javielinux.tweettopics2.ThemeManager;
 
 import java.util.Locale;
 
@@ -19,7 +21,10 @@ public class DialogUtils {
 
     public static class PersonalDialogBuilder {
         public static AlertDialog create( Context context, String title, String file ) throws PackageManager.NameNotFoundException {
+            return create(context, title, file, false);
+        }
 
+        public static AlertDialog create( Context context, String title, String file, boolean checkTheme ) throws PackageManager.NameNotFoundException {
             String aboutTitle = String.format(title);
 
             String aboutText = Utils.getAsset(context, file);
@@ -32,7 +37,13 @@ public class DialogUtils {
 
             message.setPadding(5, 5, 5, 5);
             message.setText(aboutText);
-            message.setTextColor(Color.WHITE);
+
+            ThemeManager themeManager = new ThemeManager(context);
+            if (checkTheme && Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB && themeManager.getTheme() == ThemeManager.THEME_DEFAULT) {
+                message.setTextColor(Color.BLACK);
+            } else {
+                message.setTextColor(Color.WHITE);
+            }
 
             return new AlertDialog.Builder(context)
                     .setTitle(aboutTitle)

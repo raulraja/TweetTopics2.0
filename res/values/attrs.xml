@@ -17,6 +17,8 @@
     <attr name="color_tweet_text" format="color"/>
     <attr name="color_tweet_retweet" format="color"/>
 
+    <attr name="color_text_dialog" format="color"/>
+
     <attr name="color_title_general" format="color"/>
     <attr name="color_desc_general" format="color"/>
 

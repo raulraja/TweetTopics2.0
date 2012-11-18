@@ -30,6 +30,9 @@ import java.util.ArrayList;
 
 public class UserListsSelectorActivity extends BaseActivity implements APIDelegate<BaseResponse> {
 
+    public static String KEY_ACTIVE_USER_ID = "KEY_ACTIVE_USER_ID";
+    public static String KEY_LIST_ID = "KEY_LIST_ID";
+
     private RowUserListsAdapter userListsAdapter;
     private ArrayList<UserList> userListArrayList;
     private Entity userEntity;
@@ -168,10 +171,9 @@ public class UserListsSelectorActivity extends BaseActivity implements APIDelega
             @Override
             public void onItemClick(AdapterView<?> av, View v, int pos, long id) {
                 UserList userList = userListsAdapter.getItem(pos);
-
                 Intent intent = getIntent();
-                intent.putExtra("userActiveId", userEntity.getId());
-                intent.putExtra("userListId", userList.getId());
+                intent.putExtra(KEY_ACTIVE_USER_ID, userEntity.getId());
+                intent.putExtra(KEY_LIST_ID, userList.getId());
                 setResult(RESULT_OK, intent);
                 finish();
             }
