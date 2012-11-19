@@ -49,6 +49,7 @@ public class TweetTopicsActivity extends BaseLayersActivity implements PopupLink
     private static String KEY_SAVE_STATE_COLUMN_POS = "KEY_SAVE_STATE_COLUMN_POS";
 
     public static final String KEY_EXTRAS_GOTO_COLUMN_USER = "KEY_EXTRAS_GOTO_COLUMN_USER";
+    public static final String KEY_EXTRAS_GOTO_COLUMN_SEARCH = "KEY_EXTRAS_GOTO_COLUMN_SEARCH";
     public static final String KEY_EXTRAS_GOTO_COLUMN_TYPE = "KEY_EXTRAS_GOTO_COLUMN_TYPE";
     public static final String KEY_EXTRAS_GOTO_COLUMN_POSITION = "KEY_EXTRAS_GOTO_COLUMN_POSITION";
     public static final String KEY_EXTRAS_GOTO_TWEET_ID = "KEY_EXTRAS_GOTO_TWEET_ID";
@@ -137,6 +138,7 @@ public class TweetTopicsActivity extends BaseLayersActivity implements PopupLink
         long goToColumnPosition = -1;
         int goToColumnType = -1;
         long goToColumnUser = -1;
+        long goToColumnSearch = -1;
         long selectedTweetId = -1;
 
         Bundle extras = getIntent().getExtras();
@@ -150,13 +152,16 @@ public class TweetTopicsActivity extends BaseLayersActivity implements PopupLink
             if (extras.containsKey(KEY_EXTRAS_GOTO_COLUMN_USER)) {
                 goToColumnUser = extras.getLong(KEY_EXTRAS_GOTO_COLUMN_USER);
             }
+            if (extras.containsKey(KEY_EXTRAS_GOTO_COLUMN_SEARCH)) {
+                goToColumnSearch = extras.getLong(KEY_EXTRAS_GOTO_COLUMN_SEARCH);
+            }
             if (extras.containsKey(KEY_EXTRAS_GOTO_TWEET_ID)) {
                 selectedTweetId = extras.getLong(KEY_EXTRAS_GOTO_TWEET_ID);
             }
         }
 
         int positionFromSensor = -1;
-        if (savedInstanceState!=null && savedInstanceState.containsKey(KEY_SAVE_STATE_COLUMN_POS)) {
+        if (savedInstanceState != null && savedInstanceState.containsKey(KEY_SAVE_STATE_COLUMN_POS)) {
             positionFromSensor = savedInstanceState.getInt(KEY_SAVE_STATE_COLUMN_POS);
         }
 
@@ -289,21 +294,21 @@ public class TweetTopicsActivity extends BaseLayersActivity implements PopupLink
         imgBarAvatarGestureDetector = new GestureDetector(this, new GestureDetector.SimpleOnGestureListener() {
             @Override
             public void onLongPress(MotionEvent e) {
-                if (fragmentAdapter.instantiateItem(pager,pager.getCurrentItem()) instanceof BaseListFragment) {
-                    ((BaseListFragment)fragmentAdapter.instantiateItem(pager,pager.getCurrentItem())).goToTop();
+                if (fragmentAdapter.instantiateItem(pager, pager.getCurrentItem()) instanceof BaseListFragment) {
+                    ((BaseListFragment) fragmentAdapter.instantiateItem(pager, pager.getCurrentItem())).goToTop();
                 }
             }
 
             @Override
             public boolean onDoubleTap(MotionEvent e) {
-                if (fragmentAdapter.instantiateItem(pager,pager.getCurrentItem()) instanceof BaseListFragment) {
-                    ((BaseListFragment)fragmentAdapter.instantiateItem(pager,pager.getCurrentItem())).goToTop();
+                if (fragmentAdapter.instantiateItem(pager, pager.getCurrentItem()) instanceof BaseListFragment) {
+                    ((BaseListFragment) fragmentAdapter.instantiateItem(pager, pager.getCurrentItem())).goToTop();
                 }
                 return true;
             }
 
             @Override
-            public boolean onSingleTapConfirmed (MotionEvent e) {
+            public boolean onSingleTapConfirmed(MotionEvent e) {
                 if (pager.getCurrentItem() > 0) {
                     animateDragged();
                 }
@@ -330,16 +335,19 @@ public class TweetTopicsActivity extends BaseLayersActivity implements PopupLink
 
         refreshActionBarColumns();
 
-        if (goToColumnType >= 0 && goToColumnUser >= 0) {
-            if (goToColumnType == TweetTopicsUtils.COLUMN_TIMELINE
+        if (goToColumnType >= 0) {
+            if ((goToColumnType == TweetTopicsUtils.COLUMN_TIMELINE
                     || goToColumnType == TweetTopicsUtils.COLUMN_MENTIONS
-                    || goToColumnType == TweetTopicsUtils.COLUMN_DIRECT_MESSAGES) {
+                    || goToColumnType == TweetTopicsUtils.COLUMN_DIRECT_MESSAGES) && goToColumnUser >= 0) {
                 createUserColumn(goToColumnUser, goToColumnType);
+            }
+            if (goToColumnType == TweetTopicsUtils.COLUMN_SEARCH && goToColumnSearch > 0) {
+                clickSearch(new Entity("search", goToColumnSearch));
             }
         } else if (goToColumnType == TweetTopicsUtils.COLUMN_MY_ACTIVITY) {
         } else if (goToColumnPosition > 0) {
-            goToColumn((int)goToColumnPosition, false, selectedTweetId);
-        } else if (positionFromSensor>=0) {
+            goToColumn((int) goToColumnPosition, false, selectedTweetId);
+        } else if (positionFromSensor >= 0) {
             goToColumn(positionFromSensor, false, selectedTweetId);
         } else {
             int col = fragmentAdapter.getPositionColumnActive();
@@ -373,7 +381,8 @@ public class TweetTopicsActivity extends BaseLayersActivity implements PopupLink
         float x = 0;
         try {
             imgBarAvatar.getX();
-        } catch (NoSuchMethodError e) {}
+        } catch (NoSuchMethodError e) {
+        }
         view.layout(imgBarAvatar.getLeft(), imgBarAvatar.getTop(), imgBarAvatar.getRight(), imgBarAvatar.getBottom());
         AnimationSet animSet = new AnimationSet(true);
         ScaleAnimation scale = new ScaleAnimation(.667f, 1, .667f, 1, imgBarAvatar.getHeight() * 3 / 4, imgBarAvatar.getWidth() * 3 / 4);
@@ -397,7 +406,7 @@ public class TweetTopicsActivity extends BaseLayersActivity implements PopupLink
         IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
         if (scanResult != null) {
             String result = scanResult.getContents();
-            if (result!=null) {
+            if (result != null) {
                 if (result.startsWith("tweettopics%%qr")) {
                     importSearch(result);
                 }
@@ -529,8 +538,8 @@ public class TweetTopicsActivity extends BaseLayersActivity implements PopupLink
                     refreshColumns();
                 }
                 pager.setCurrentItem(position, false);
-                if (fragmentAdapter.instantiateItem(pager,pager.getCurrentItem()) instanceof BaseListFragment) {
-                    ((BaseListFragment)fragmentAdapter.instantiateItem(pager,pager.getCurrentItem())).selected_tweet_id = selectedTweetId;
+                if (fragmentAdapter.instantiateItem(pager, pager.getCurrentItem()) instanceof BaseListFragment) {
+                    ((BaseListFragment) fragmentAdapter.instantiateItem(pager, pager.getCurrentItem())).selected_tweet_id = selectedTweetId;
                 }
             }
         }, 100);
@@ -640,7 +649,7 @@ public class TweetTopicsActivity extends BaseLayersActivity implements PopupLink
         try {
             deleted_column = DataFramework.getInstance().getEntityList("columns", "", "position asc").get(position - 1);
         } catch (IndexOutOfBoundsException e) {
-        } catch (Exception e ) {
+        } catch (Exception e) {
         }
 
 
@@ -743,7 +752,7 @@ public class TweetTopicsActivity extends BaseLayersActivity implements PopupLink
         for (int i = 0; i < fragmentAdapter.getFragmentList().size(); i++) {
 
             Button button = new Button(this);
-            button.setPadding(0, (int)getResources().getDimension(R.dimen.default_padding), 0, 0);
+            button.setPadding(0, (int) getResources().getDimension(R.dimen.default_padding), 0, 0);
             button.setTextSize(getResources().getDimension(R.dimen.text_size_horizontal_buttons));
             button.setCompoundDrawablePadding(2);
             button.setTextColor(themeManager.getColor("color_button_bar_title_column"));
@@ -849,12 +858,12 @@ public class TweetTopicsActivity extends BaseLayersActivity implements PopupLink
         if (columns.size() > 0) {
 
             Entity beforeColumn = null;
-            for (int i = startPosition; i<=endPosition; i++) {
+            for (int i = startPosition; i <= endPosition; i++) {
                 Entity currentColumn = null;
                 try {
                     currentColumn = columns.get(i - 1);
                 } catch (IndexOutOfBoundsException e) {
-                } catch (Exception e ) {
+                } catch (Exception e) {
                 }
                 if (currentColumn != null && beforeColumn != null) {
                     int beforePositionDB = beforeColumn.getInt("position");
@@ -868,7 +877,7 @@ public class TweetTopicsActivity extends BaseLayersActivity implements PopupLink
                 try {
                     beforeColumn = columns.get(i - 1);
                 } catch (IndexOutOfBoundsException e) {
-                } catch (Exception e ) {
+                } catch (Exception e) {
                 }
             }
 
@@ -925,8 +934,8 @@ public class TweetTopicsActivity extends BaseLayersActivity implements PopupLink
 
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
 
-            RelativeLayout.LayoutParams lpPager = (RelativeLayout.LayoutParams)pager.getLayoutParams();
-            lpPager.setMargins(0,lpPager.topMargin+movePager,0,0);
+            RelativeLayout.LayoutParams lpPager = (RelativeLayout.LayoutParams) pager.getLayoutParams();
+            lpPager.setMargins(0, lpPager.topMargin + movePager, 0, 0);
             pager.requestLayout();
 
             layoutBackgroundBar.setVisibility(View.GONE);
@@ -952,8 +961,8 @@ public class TweetTopicsActivity extends BaseLayersActivity implements PopupLink
 
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
 
-            RelativeLayout.LayoutParams lpPager = (RelativeLayout.LayoutParams)pager.getLayoutParams();
-            lpPager.setMargins(0,lpPager.topMargin-movePager,0,0);
+            RelativeLayout.LayoutParams lpPager = (RelativeLayout.LayoutParams) pager.getLayoutParams();
+            lpPager.setMargins(0, lpPager.topMargin - movePager, 0, 0);
             pager.requestLayout();
 
             layoutBackgroundBar.setVisibility(View.VISIBLE);
