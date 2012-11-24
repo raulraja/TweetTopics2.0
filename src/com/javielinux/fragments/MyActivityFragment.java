@@ -48,7 +48,6 @@ public class MyActivityFragment extends Fragment {
 
     public static final int ACTIVITY_NEW_TWITTER_USER = 0;
     public static final int ACTIVITY_EDIT_TWITTER_USER = 1;
-    public static final int ACTIVITY_SHOW_USER_LISTS = 2;
 
     private MyActivityAdapter adapter;
 
@@ -122,21 +121,7 @@ public class MyActivityFragment extends Fragment {
                     }
                 }
                 break;
-            case ACTIVITY_SHOW_USER_LISTS:
-                if (resultCode == Activity.RESULT_OK) {
-                    final int position = intent.getIntExtra("position", 0);
 
-                    Handler myHandler = new Handler();
-                    myHandler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            ((TweetTopicsActivity)getActivity()).getFragmentPagerAdapter().refreshColumnList();
-                            ((TweetTopicsActivity)getActivity()).refreshActionBarColumns();
-                            ((TweetTopicsActivity)getActivity()).getViewPager().setCurrentItem(position, false);
-                        }
-                    }, 100);
-                }
-                break;
         }
     }
 
@@ -707,9 +692,7 @@ public class MyActivityFragment extends Fragment {
 
     public void showUserLists() {
         if (idUser > 0) {
-            Intent userLists = new Intent(getActivity(), UserListsActivity.class);
-            userLists.putExtra(DataFramework.KEY_ID, idUser);
-            startActivityForResult(userLists, ACTIVITY_SHOW_USER_LISTS);
+            ((TweetTopicsActivity)getActivity()).createUserList(idUser);
         }
     }
 

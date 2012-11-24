@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!-- v 2.03 -->
+
+    <string name="columnsSelected">%1$s seleccionada(s)</string>
+    <string name="removeColumnsMessage">Selecciona columnas a eliminar</string>
+    <string name="sortColumnsMessage">Haz un long-press para arrastrar la columna donde quieras</string>
+    <string name="addColumnUser">Añadir columna de %1$s</string>
+    <string name="addTrendingTopic">Añadir columna Trending Topics</string>
+    <string name="addSavedTweet">Añadir columna de tweet guardados</string>
+    <string name="sortColumns">Ordenar columnas</string>
+    <string name="removeColumns">Eliminar columnas</string>
+
     <!-- v 2.02  -->
 
     <string name="newList">Nueva lista</string>

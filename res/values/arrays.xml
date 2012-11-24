@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string-array name="popupmenu_user_columns"><!-- 2.0.3 -->
+        <item>@string/timeline</item>
+        <item>@string/mentions</item>
+        <item>@string/direct_messages</item>
+        <item>@string/loading_title_lists</item>
+    </string-array>
+
+
     <string-array name="popupmenu_list_users_more_options"><!-- 2.0 -->
         <item>@string/newList</item>
     </string-array>

@@ -13,24 +13,59 @@
         <LinearLayout android:id="@+id/tweettopics_bar_columns_container"
                       android:layout_height="wrap_content"
                       android:layout_width="fill_parent"
+                      android:orientation="horizontal"
+                      android:gravity="center_vertical"
                       android:visibility="gone"
                 >
 
-            <com.javielinux.components.DraggableHorizontalView android:id="@+id/tweettopics_bar_columns"
-                                                               android:layout_height="@dimen/actionbar_columns_height"
-                                                               android:layout_width="fill_parent"
-                    >
+            <ImageView android:layout_height="wrap_content"
+                       android:layout_width="wrap_content"
+                       android:id="@+id/tweettopics_bar_my_activity"
+                       android:background="@drawable/button_transparent_background"
+                       android:padding="@dimen/default_separation"
+                       android:src="?icon_tweettopics"/>
 
-            </com.javielinux.components.DraggableHorizontalView>
-            <LinearLayout
-                    android:gravity="center"
+            <ImageView
+                    android:background="@drawable/action_bar_divider"
                     android:layout_height="wrap_content"
-                    android:layout_width="fill_parent">
-                <ImageView
-                        android:layout_height="wrap_content"
-                        android:layout_width="wrap_content"
-                        android:src="@drawable/arrow_up"/>
-            </LinearLayout>
+                    android:layout_width="wrap_content"/>
+
+            <HorizontalScrollView android:layout_height="wrap_content"
+                                  android:layout_width="0px"
+                                  android:layout_weight="1"
+                                  android:id="@+id/tweettopics_bar_horizontal_scroll"
+                                  android:scrollbars="none">
+
+                <LinearLayout android:id="@+id/tweettopics_bar_columns"
+                              android:layout_height="@dimen/actionbar_columns_height"
+                              android:gravity="center_vertical"
+                              android:layout_width="fill_parent"
+                        >
+                </LinearLayout>
+
+            </HorizontalScrollView>
+
+            <ImageView
+                    android:background="@drawable/action_bar_divider"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"/>
+
+            <ImageView android:layout_height="wrap_content"
+                       android:layout_width="wrap_content"
+                       android:id="@+id/tweettopics_bar_options"
+                       android:background="@drawable/button_transparent_background"
+                       android:padding="@dimen/default_separation"
+                       android:src="?icon_action_more_options"/>
+
+            <!--<LinearLayout-->
+            <!--android:gravity="center"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_width="fill_parent">-->
+            <!--<ImageView-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:src="@drawable/arrow_up"/>-->
+            <!--</LinearLayout>-->
 
         </LinearLayout>
 
@@ -47,7 +82,7 @@
             <ImageView android:id="@+id/tweettopics_bar_avatar_bg"
                        android:layout_height="@dimen/actionbar_height"
                        android:layout_width="@dimen/actionbar_height"
-                       />
+                    />
 
             <ImageView android:id="@+id/tweettopics_bar_avatar"
                        android:layout_height="@dimen/actionbar_height"
@@ -56,14 +91,14 @@
                        android:src="@drawable/icon"/>
 
             <TextView android:id="@+id/tweettopics_bar_counter"
-                       android:layout_height="wrap_content"
-                       android:layout_width="wrap_content"
-                       style="@style/CounterActionBar"
-                       android:layout_marginLeft="6dp"
-                       android:layout_centerVertical="true"
-                       android:gravity="center"
-                       android:text="0"
-                       />
+                      android:layout_height="wrap_content"
+                      android:layout_width="wrap_content"
+                      style="@style/CounterActionBar"
+                      android:layout_marginLeft="6dp"
+                      android:layout_centerVertical="true"
+                      android:gravity="center"
+                      android:text="0"
+                    />
 
             <ImageView android:id="@+id/tweettopics_bar_new_status"
                        android:layout_height="@dimen/actionbar_height"
@@ -109,10 +144,10 @@
             <Button android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
                     android:gravity="center"
-                    android:drawableTop="@drawable/icon_content_delete_dark"
+                    android:drawableTop="@drawable/icon_action_settings_dark"
                     style="@style/ButtonOptions"
-                    android:text="@string/delete"
-                    android:id="@+id/tweettopics_ll_options_columns_btn_delete"/>
+                    android:text="@string/edit"
+                    android:id="@+id/tweettopics_ll_options_columns_btn_edit"/>
 
         </LinearLayout>
 

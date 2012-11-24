@@ -9,7 +9,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
-import android.graphics.*;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
@@ -19,16 +21,14 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.*;
 import android.view.animation.AnimationSet;
 import android.view.animation.ScaleAnimation;
 import android.widget.*;
 import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
-import com.javielinux.components.DraggableHorizontalView;
-import com.javielinux.components.OnRearrangeListener;
 import com.javielinux.dialogs.AlertDialogFragment;
+import com.javielinux.dialogs.EditColumnDialogFragment;
 import com.javielinux.fragmentadapter.TweetTopicsFragmentAdapter;
 import com.javielinux.fragments.BaseListFragment;
 import com.javielinux.infos.InfoTweet;
@@ -42,7 +42,8 @@ import com.nineoldandroids.animation.ObjectAnimator;
 import com.viewpagerindicator.TitlePageIndicator;
 
 import java.util.ArrayList;
-import java.util.Random;
+import java.util.List;
+import java.util.concurrent.Callable;
 
 public class TweetTopicsActivity extends BaseLayersActivity implements PopupLinks.PopupLinksListener, SplitActionBarMenu.SplitActionBarMenuListener {
 
@@ -58,6 +59,7 @@ public class TweetTopicsActivity extends BaseLayersActivity implements PopupLink
     public static final int ACTIVITY_NEWSTATUS = 1;
     public static final int ACTIVITY_TRENDS_LOCATION = 2;
     public static final int ACTIVITY_EDIT_SEARCH = 3;
+    public static final int ACTIVITY_SHOW_USER_LISTS = 4;
 
     private ViewPager pager;
     private TweetTopicsFragmentAdapter fragmentAdapter;
@@ -67,8 +69,9 @@ public class TweetTopicsActivity extends BaseLayersActivity implements PopupLink
 
     private RelativeLayout layoutBackgroundBar;
 
+    private HorizontalScrollView horizontalScrollViewColumns;
     private LinearLayout layoutBackgroundColumnsBarContainer;
-    private DraggableHorizontalView layoutBackgroundColumnsBar;
+    private LinearLayout layoutBackgroundColumnsBar;
     private boolean isShowColumnsItems = false;
 
     private ImageView imgBarAvatar;
@@ -79,7 +82,7 @@ public class TweetTopicsActivity extends BaseLayersActivity implements PopupLink
     private LinearLayout layoutOptionsColumns;
     private LinearLayout layoutMainOptionsColumns;
     private Button btnOptionsColumnsMain;
-    private Button btnOptionsColumnsDelete;
+    private Button btnOptionsColumnsEdit;
 
     private int widthScreen;
     private int heightScreen;
@@ -212,6 +215,20 @@ public class TweetTopicsActivity extends BaseLayersActivity implements PopupLink
             }
         });
 
+        findViewById(R.id.tweettopics_bar_my_activity).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showActionBarIndicatorAndMovePager(0);
+            }
+        });
+
+        findViewById(R.id.tweettopics_bar_options).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showMenuColumnsOptions(view);
+            }
+        });
+
         layoutOptionsColumns = (LinearLayout) findViewById(R.id.tweettopics_ll_options_columns);
         layoutMainOptionsColumns = (LinearLayout) findViewById(R.id.tweettopics_ll_main_options_columns);
         layoutMainOptionsColumns.setOnClickListener(new View.OnClickListener() {
@@ -229,12 +246,19 @@ public class TweetTopicsActivity extends BaseLayersActivity implements PopupLink
                 hideOptionsColumns();
             }
         });
-        btnOptionsColumnsDelete = (Button) findViewById(R.id.tweettopics_ll_options_columns_btn_delete);
-        btnOptionsColumnsDelete.setOnClickListener(new View.OnClickListener() {
+        btnOptionsColumnsEdit = (Button) findViewById(R.id.tweettopics_ll_options_columns_btn_edit);
+        btnOptionsColumnsEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 int pos = Integer.valueOf(view.getTag().toString());
-                showDialogDeleteColumn(pos);
+                EditColumnDialogFragment frag = new EditColumnDialogFragment(fragmentAdapter.getFragmentList().get(pos), new Callable() {
+                    @Override
+                    public Object call() throws Exception {
+                        refreshActionBarColumns();
+                        return null;
+                    }
+                });
+                frag.show(getSupportFragmentManager(), "dialog");
                 hideOptionsColumns();
             }
         });
@@ -252,33 +276,35 @@ public class TweetTopicsActivity extends BaseLayersActivity implements PopupLink
 
         layoutBackgroundBar = (RelativeLayout) findViewById(R.id.tweettopics_bar_background);
 
+        horizontalScrollViewColumns  = (HorizontalScrollView) findViewById(R.id.tweettopics_bar_horizontal_scroll);
+
         layoutBackgroundColumnsBarContainer = (LinearLayout) findViewById(R.id.tweettopics_bar_columns_container);
 
-        layoutBackgroundColumnsBar = (DraggableHorizontalView) findViewById(R.id.tweettopics_bar_columns);
-        layoutBackgroundColumnsBar.setCols(4);
-
-        layoutBackgroundColumnsBar.setOnRearrangeListener(new OnRearrangeListener() {
-            public void onRearrange(int oldIndex, int newIndex) {
-                reorganizeColumns(oldIndex, newIndex);
-            }
-
-            @Override
-            public void onStartDrag(int x, int index) {
-                showOptionsColumns(x, index, true);
-            }
-
-            @Override
-            public void onMoveDragged(int index) {
-                hideOptionsColumns();
-            }
-
-        });
-        layoutBackgroundColumnsBar.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
-                showActionBarIndicatorAndMovePager(position);
-            }
-        });
+        layoutBackgroundColumnsBar = (LinearLayout) findViewById(R.id.tweettopics_bar_columns);
+//        layoutBackgroundColumnsBar.setCols(4);
+//
+//        layoutBackgroundColumnsBar.setOnRearrangeListener(new OnRearrangeListener() {
+//            public void onRearrange(int oldIndex, int newIndex) {
+//                reorganizeColumns(oldIndex, newIndex);
+//            }
+//
+//            @Override
+//            public void onStartDrag(int x, int index) {
+//                showOptionsColumns(x, index, true);
+//            }
+//
+//            @Override
+//            public void onMoveDragged(int index) {
+//                hideOptionsColumns();
+//            }
+//
+//        });
+//        layoutBackgroundColumnsBar.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
+//                showActionBarIndicatorAndMovePager(position);
+//            }
+//        });
 
         imgBarAvatar = (ImageView) findViewById(R.id.tweettopics_bar_avatar);
         imgBarAvatarBg = (ImageView) findViewById(R.id.tweettopics_bar_avatar_bg);
@@ -361,7 +387,6 @@ public class TweetTopicsActivity extends BaseLayersActivity implements PopupLink
         if (access_count <= 20) {
             if (access_count == 20) {
                 try {
-                    // TODO Cambiar este diálogo y ponerlo bien
                     AlertDialog dialog = DialogUtils.RateAppDialogBuilder.create(this);
                     dialog.show();
                 } catch (PackageManager.NameNotFoundException e) {
@@ -376,11 +401,150 @@ public class TweetTopicsActivity extends BaseLayersActivity implements PopupLink
 
     }
 
+    private void showMenuColumnsOptions(View view) {
+        final List<String> list = new ArrayList<String>();
+        final List<Long> types = new ArrayList<Long>();
+
+        ArrayList<Entity> userEntityList = DataFramework.getInstance().getEntityList("users", "service is null or service = \"twitter.com\"");
+        for (Entity user : userEntityList) {
+            list.add(getString(R.string.addColumnUser, user.getString("name")));
+            types.add(user.getId());
+        }
+        list.add(getString(R.string.addTrendingTopic));
+        types.add(1001L);
+        list.add(getString(R.string.addSavedTweet));
+        types.add(1002L);
+        list.add(getString(R.string.sortColumns));
+        types.add(1003L);
+        list.add(getString(R.string.removeColumns));
+        types.add(1004L);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            PopupMenu popupMenu = new PopupMenu(this, view);
+            int count = 0;
+            for (String item : list) {
+                popupMenu.getMenu().add(Menu.NONE, count, Menu.NONE, item);
+                count++;
+            }
+            popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+
+                @Override
+                public boolean onMenuItemClick(MenuItem item) {
+                    long id = types.get(item.getItemId());
+                    String title = list.get(item.getItemId());
+                    switch ((int) id) {
+                        case 1001:
+                            newTrending();
+                            break;
+                        case 1002:
+                            createSavedTweetColumn();
+                            break;
+                        case 1003:
+                            goToSortColumns();
+                            break;
+                        case 1004:
+                            goToRemoveColumns();
+                            break;
+                        default:
+                            showActionBarIndicatorAndMovePager(-1);
+                            showDialogAddColumnUser(title, id);
+                            break;
+                    }
+                    return true;
+                }
+            });
+            popupMenu.show();
+        } else {
+            AlertDialogFragment frag = new AlertDialogFragment();
+            Bundle args = new Bundle();
+            args.putInt(AlertDialogFragment.KEY_ALERT_TITLE, R.string.actions);
+            args.putBoolean(AlertDialogFragment.KEY_ALERT_HAS_POSITIVE_BUTTON, false);
+            args.putBoolean(AlertDialogFragment.KEY_ALERT_CANCELABLE, false);
+            args.putStringArrayList(AlertDialogFragment.KEY_ALERT_ARRAY_STRING_ITEMS, (ArrayList<String>) list);
+            frag.setArguments(args);
+            frag.setAlertButtonListener(new AlertDialogFragment.AlertButtonListener() {
+                @Override
+                public void OnAlertButtonOk() {
+                }
+
+                @Override
+                public void OnAlertButtonCancel() {
+                }
+
+                @Override
+                public void OnAlertButtonNeutral() {
+                }
+
+                @Override
+                public void OnAlertItems(int which) {
+                    long id = types.get(which);
+                    String title = list.get(which);
+                    switch ((int) id) {
+                        case 1001:
+                            newTrending();
+                            break;
+                        case 1002:
+                            createSavedTweetColumn();
+                            break;
+                        case 1003:
+                            goToSortColumns();
+                            break;
+                        case 1004:
+                            goToRemoveColumns();
+                            break;
+                        default:
+                            showActionBarIndicatorAndMovePager(-1);
+                            showDialogAddColumnUser(title, id);
+                            break;
+                    }
+                }
+            });
+            frag.show(getSupportFragmentManager(), "dialog");
+        }
+    }
+
+    private void showDialogAddColumnUser(String title, final long userId) {
+        AlertDialogFragment frag = new AlertDialogFragment();
+        Bundle args = new Bundle();
+        args.putString(AlertDialogFragment.KEY_ALERT_TITLE_TEXT, title);
+        args.putBoolean(AlertDialogFragment.KEY_ALERT_HAS_POSITIVE_BUTTON, false);
+        args.putBoolean(AlertDialogFragment.KEY_ALERT_CANCELABLE, false);
+        args.putInt(AlertDialogFragment.KEY_ALERT_ARRAY_ITEMS, R.array.popupmenu_user_columns);
+        frag.setArguments(args);
+        frag.setAlertButtonListener(new AlertDialogFragment.AlertButtonListener() {
+            @Override
+            public void OnAlertButtonOk() {
+            }
+
+            @Override
+            public void OnAlertButtonCancel() {
+            }
+
+            @Override
+            public void OnAlertButtonNeutral() {
+            }
+
+            @Override
+            public void OnAlertItems(int which) {
+                if (which == 0) {
+                    createUserColumn(userId, TweetTopicsUtils.COLUMN_TIMELINE);
+                } else if (which == 1) {
+                    createUserColumn(userId, TweetTopicsUtils.COLUMN_MENTIONS);
+                } else if (which == 2) {
+                    createUserColumn(userId, TweetTopicsUtils.COLUMN_DIRECT_MESSAGES);
+                } else if (which == 3) {
+                    createUserList(userId);
+                }
+            }
+        });
+        frag.show(getSupportFragmentManager(), "dialog");
+    }
+
     protected void animateDragged() {
         View view = imgBarAvatar;
         float x = 0;
         try {
-            imgBarAvatar.getX();
+            x = imgBarAvatar.getX();
         } catch (NoSuchMethodError e) {
         }
         view.layout(imgBarAvatar.getLeft(), imgBarAvatar.getTop(), imgBarAvatar.getRight(), imgBarAvatar.getBottom());
@@ -459,6 +623,21 @@ public class TweetTopicsActivity extends BaseLayersActivity implements PopupLink
                     }
                 }
 
+                break;
+            case ACTIVITY_SHOW_USER_LISTS:
+                if (resultCode == Activity.RESULT_OK && data != null) {
+                    final int position = data.getIntExtra("position", 0);
+
+                    Handler myHandler = new Handler();
+                    myHandler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            getFragmentPagerAdapter().refreshColumnList();
+                            refreshActionBarColumns();
+                            getViewPager().setCurrentItem(position, false);
+                        }
+                    }, 100);
+                }
                 break;
         }
 
@@ -585,6 +764,12 @@ public class TweetTopicsActivity extends BaseLayersActivity implements PopupLink
         }
     }
 
+    public void createUserList(long idUser) {
+        Intent userLists = new Intent(this, UserListsActivity.class);
+        userLists.putExtra(DataFramework.KEY_ID, idUser);
+        startActivityForResult(userLists, ACTIVITY_SHOW_USER_LISTS);
+    }
+
     public void createUserColumn(long userId, int typeId) {
 
         ArrayList<Entity> created_column_list = DataFramework.getInstance().getEntityList("columns", "user_id=" + userId + " AND type_id = " + typeId);
@@ -695,6 +880,16 @@ public class TweetTopicsActivity extends BaseLayersActivity implements PopupLink
         startActivityForResult(newsearch, ACTIVITY_NEWEDITSEARCH);
     }
 
+    public void goToSortColumns() {
+        Intent sortIntent = new Intent(TweetTopicsActivity.this, SortColumnsActivity.class);
+        startActivity(sortIntent);
+    }
+
+    public void goToRemoveColumns() {
+        Intent removeIntent = new Intent(TweetTopicsActivity.this, RemoveColumnsActivity.class);
+        startActivity(removeIntent);
+    }
+
     public void newTrending() {
         Intent trendslocation_intent = new Intent(this, TrendsLocationActivity.class);
         startActivityForResult(trendslocation_intent, TweetTopicsActivity.ACTIVITY_TRENDS_LOCATION);
@@ -728,49 +923,57 @@ public class TweetTopicsActivity extends BaseLayersActivity implements PopupLink
         }
     }
 
-    private Bitmap getThumb(String s) {
-        Bitmap bmp = Bitmap.createBitmap(150, 150, Bitmap.Config.RGB_565);
-        Canvas canvas = new Canvas(bmp);
-        Paint paint = new Paint();
-        Random random = new Random();
-        paint.setColor(Color.rgb(random.nextInt(128), random.nextInt(128), random.nextInt(128)));
-        paint.setTextSize(24);
-        paint.setFlags(Paint.ANTI_ALIAS_FLAG);
-        canvas.drawRect(new Rect(0, 0, 150, 150), paint);
-        paint.setColor(Color.WHITE);
-        paint.setTextAlign(Paint.Align.CENTER);
-        canvas.drawText(s, 75, 75, paint);
-
-        return bmp;
-    }
+//    private Bitmap getThumb(String s) {
+//        Bitmap bmp = Bitmap.createBitmap(150, 150, Bitmap.Config.RGB_565);
+//        Canvas canvas = new Canvas(bmp);
+//        Paint paint = new Paint();
+//        Random random = new Random();
+//        paint.setColor(Color.rgb(random.nextInt(128), random.nextInt(128), random.nextInt(128)));
+//        paint.setTextSize(24);
+//        paint.setFlags(Paint.ANTI_ALIAS_FLAG);
+//        canvas.drawRect(new Rect(0, 0, 150, 150), paint);
+//        paint.setColor(Color.WHITE);
+//        paint.setTextAlign(Paint.Align.CENTER);
+//        canvas.drawText(s, 75, 75, paint);
+//
+//        return bmp;
+//    }
 
 
     public void refreshActionBarColumns() {
 
+        int currentPosition = pager.getCurrentItem();
+
         layoutBackgroundColumnsBar.removeAllViews();
 
-        for (int i = 0; i < fragmentAdapter.getFragmentList().size(); i++) {
+        int padding = (int) getResources().getDimension(R.dimen.default_padding);
+        //int sizeButton = (int) getResources().getDimension(R.dimen.actionbar_columns_height);
 
-            Button button = new Button(this);
-            button.setPadding(0, (int) getResources().getDimension(R.dimen.default_padding), 0, 0);
-            button.setTextSize(getResources().getDimension(R.dimen.text_size_horizontal_buttons));
-            button.setCompoundDrawablePadding(2);
-            button.setTextColor(themeManager.getColor("color_button_bar_title_column"));
+        for (int i = 1; i < fragmentAdapter.getFragmentList().size(); i++) {
 
-            Bitmap bmp = fragmentAdapter.getButtonBigActionBar(i);
-
-            if (bmp == null) {
-                bmp = BitmapFactory.decodeResource(getResources(), R.drawable.icon_dolphin);
-            }
-
-            bmp = ImageUtils.getBitmap(bmp, (int) getResources().getDimension(R.dimen.icon_columns_height));
-            button.setCompoundDrawablesWithIntrinsicBounds(null, new BitmapDrawable(getResources(), bmp), null, null);
-            button.setText(fragmentAdapter.getPageTitle(i));
-            button.setBackgroundColor(Color.TRANSPARENT);
-            button.setClickable(false);
-
-            layoutBackgroundColumnsBar.addView(button);
-
+            ImageView view = new ImageView(this);
+            view.setPadding(padding, padding, padding, padding);
+            view.setImageBitmap(ColumnsUtils.getButtonWithTitle(this, fragmentAdapter.getFragmentList().get(i), true, currentPosition == i ? Color.GREEN : Color.BLACK));
+            view.setTag(i);
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (layoutMainOptionsColumns.getVisibility() != View.VISIBLE) {
+                        showActionBarIndicatorAndMovePager((Integer) view.getTag());
+                    }
+                }
+            });
+            view.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    int pos = (Integer)view.getTag();
+                    int[] loc = new int[2];
+                    view.getLocationOnScreen(loc);
+                    showOptionsColumns(loc[0], pos, true);
+                    return false;
+                }
+            });
+            layoutBackgroundColumnsBar.addView(view);
         }
     }
 
@@ -851,82 +1054,14 @@ public class TweetTopicsActivity extends BaseLayersActivity implements PopupLink
         }
     }
 
-    private void reorganizeColumns(final int startPosition, final int endPosition) {
-
-        ArrayList<Entity> columns = DataFramework.getInstance().getEntityList("columns", "", "position asc");
-
-        if (columns.size() > 0) {
-
-            Entity beforeColumn = null;
-            for (int i = startPosition; i <= endPosition; i++) {
-                Entity currentColumn = null;
-                try {
-                    currentColumn = columns.get(i - 1);
-                } catch (IndexOutOfBoundsException e) {
-                } catch (Exception e) {
-                }
-                if (currentColumn != null && beforeColumn != null) {
-                    int beforePositionDB = beforeColumn.getInt("position");
-                    int currentPositionDB = currentColumn.getInt("position");
-                    beforeColumn.setValue("position", currentPositionDB);
-                    beforeColumn.save();
-                    currentColumn.setValue("position", beforePositionDB);
-                    currentColumn.save();
-                }
-                columns = DataFramework.getInstance().getEntityList("columns", "", "position asc");
-                try {
-                    beforeColumn = columns.get(i - 1);
-                } catch (IndexOutOfBoundsException e) {
-                } catch (Exception e) {
-                }
-            }
-
-            Handler myHandler = new Handler();
-            myHandler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    Log.d("TweetTopics2.0", "Reorganizando las columnas");
-                    fragmentAdapter.refreshColumnList();
-                }
-            }, 100);
-
-        }
-    }
-
-//    private void reorganizeColumns(final int starting_position, final int ending_position) {
-//
-//        ArrayList<Entity> moved_column = DataFramework.getInstance().getEntityList("columns", "position=" + starting_position);
-//
-//        if (moved_column.size() > 0) {
-//            if (starting_position > ending_position) {
-//                DataFramework.getInstance().getDB().execSQL("UPDATE columns SET position=position+1 WHERE position BETWEEN " + ending_position + " AND " + (starting_position - 1));
-//            } else if (starting_position < ending_position) {
-//                DataFramework.getInstance().getDB().execSQL("UPDATE columns SET position=position-1 WHERE position BETWEEN " + (starting_position + 1) + " AND " + ending_position);
-//            }
-//
-//            boolean result = false;
-//
-//            moved_column.get(0).setValue("position", ending_position);
-//            result = moved_column.get(0).save();
-//
-//            if (result) {
-//                Handler myHandler = new Handler();
-//                myHandler.postDelayed(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        Log.d("TweetTopics2.0", "Eliminando las columnas");
-//                        fragmentAdapter.refreshColumnList();
-//                    }
-//                }, 100);
-//            }
-//        }
-//    }
-
     public void showActionBarColumns() {
         refreshActionBarColumns();
         isShowColumnsItems = true;
 
-        layoutBackgroundColumnsBar.scrollToView(pager.getCurrentItem());
+        // TODO mover a la posición donde está la columna
+//        layoutBackgroundColumnsBar.scrollToView(pager.getCurrentItem());
+//        horizontalScrollViewColumns.scrollTo(150, 0);
+//        horizontalScrollViewColumns.computeScroll();
 
         layoutBackgroundColumnsBarContainer.setVisibility(View.VISIBLE);
 
@@ -1036,7 +1171,7 @@ public class TweetTopicsActivity extends BaseLayersActivity implements PopupLink
         layoutMainOptionsColumns.setVisibility(View.VISIBLE);
 
         btnOptionsColumnsMain.setTag(index);
-        btnOptionsColumnsDelete.setTag(index);
+        btnOptionsColumnsEdit.setTag(index);
 
         ObjectAnimator translationX = ObjectAnimator.ofFloat(layoutOptionsColumns, "translationX", xCenterView - x, 0f);
         translationX.setDuration(150);
@@ -1087,38 +1222,4 @@ public class TweetTopicsActivity extends BaseLayersActivity implements PopupLink
         return layoutMainOptionsColumns.getVisibility() == View.VISIBLE;
     }
 
-    /*
-        DIALOGS
-     */
-
-
-    private void showDialogDeleteColumn(final int position) {
-
-        AlertDialogFragment frag = new AlertDialogFragment();
-        Bundle args = new Bundle();
-        args.putInt(AlertDialogFragment.KEY_ALERT_TITLE, R.string.delete);
-        args.putInt(AlertDialogFragment.KEY_ALERT_MESSAGE, R.string.column_delete);
-        args.putBoolean(AlertDialogFragment.KEY_ALERT_HAS_NEGATIVE_BUTTON, true);
-        frag.setArguments(args);
-        frag.setAlertButtonListener(new AlertDialogFragment.AlertButtonListener() {
-            @Override
-            public void OnAlertButtonOk() {
-                if (deleteColumn(position))
-                    Toast.makeText(TweetTopicsActivity.this, R.string.column_delete_ok, Toast.LENGTH_LONG).show();
-            }
-
-            @Override
-            public void OnAlertButtonCancel() {
-            }
-
-            @Override
-            public void OnAlertButtonNeutral() {
-            }
-
-            @Override
-            public void OnAlertItems(int which) {
-            }
-        });
-        frag.show(getSupportFragmentManager(), "dialog");
-    }
 }

@@ -240,8 +240,7 @@ public class EntityTweetUser extends Entity {
 
 				} else if (tweet_type == TweetTopicsUtils.TWEET_TYPE_MENTIONS) {
 					
-					int page = 1;
-					ResponseList<twitter4j.Status> statuses = twitter.getMentions(new Paging(page, mLastIdNotification));
+					ResponseList<twitter4j.Status> statuses = twitter.getMentions(new Paging(mLastIdNotification));
 					
 		            while (statuses.size()>0) {
 		            	if (statii==null) {
@@ -249,14 +248,13 @@ public class EntityTweetUser extends Entity {
 		            	} else {
 		            		statii.addAll(statuses);
 		            	}
-		            	page++;
-		            	statuses = twitter.getMentions(new Paging(page, mLastIdNotification));
+                        mLastIdNotification = statuses.get(0).getId();
+		            	statuses = twitter.getMentions(new Paging(mLastIdNotification));
 		            }
 					
 				} else if (tweet_type == TweetTopicsUtils.TWEET_TYPE_DIRECTMESSAGES) {
 					
-					int page = 1;
-					ResponseList<twitter4j.DirectMessage> directses = twitter.getDirectMessages(new Paging(page, mLastIdNotification));
+					ResponseList<twitter4j.DirectMessage> directses = twitter.getDirectMessages(new Paging(mLastIdNotification));
 					
 		            while (directses.size()>0) {
 		            	if (directs==null) {
@@ -264,8 +262,8 @@ public class EntityTweetUser extends Entity {
 		            	} else {
 		            		directs.addAll(directses);
 		            	}
-		            	page++;
-		            	directses = twitter.getDirectMessages(new Paging(page, mLastIdNotification));
+                        mLastIdNotification = directses.get(0).getId();
+		            	directses = twitter.getDirectMessages(new Paging(mLastIdNotification));
 		            }
 					
 				} else if (tweet_type == TweetTopicsUtils.TWEET_TYPE_SENT_DIRECTMESSAGES) {

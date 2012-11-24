@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                style="@style/ContainerDialog"
+                android:background="?attr/color_background_solid"
+        >
+    <LinearLayout android:padding="20dp"
+                  android:layout_above="@+id/remove_columns_ll_message"
+                  android:layout_height="fill_parent"
+                  android:layout_width="fill_parent">
+        <GridView android:id="@+id/remove_columns_gv_grid"
+                  android:layout_height="fill_parent"
+                  android:layout_width="fill_parent"
+                  android:numColumns="4"
+                  android:columnWidth="85dp"
+                  />
+    </LinearLayout>
+
+    <LinearLayout android:padding="@dimen/default_padding"
+                  android:id="@id/remove_columns_ll_message"
+                  android:layout_alignParentBottom="true"
+                  android:orientation="horizontal"
+                  android:background="?attr/color_background_text_info_background"
+                  android:layout_height="wrap_content"
+                  android:layout_width="fill_parent">
+
+        <TextView android:layout_height="wrap_content"
+                  android:layout_width="0px"
+                  android:layout_weight="1"
+                  android:text="@string/removeColumnsMessage"
+                  style="@style/FooterText"
+                  android:id="@+id/remove_columns_txt_message"
+                />
+
+        <Button android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:id="@+id/remove_columns_b_delete"
+                android:text="@string/delete"/>
+
+    </LinearLayout>
+
+</RelativeLayout>

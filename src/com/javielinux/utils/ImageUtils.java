@@ -233,6 +233,10 @@ public class ImageUtils {
                 paintFill.setShader(new LinearGradient(0, 0, 0, 22, 0xffb72121, 0xffe82f2f, Shader.TileMode.CLAMP));
             }
 
+            if (color == Color.BLACK) {
+                paintFill.setShader(new LinearGradient(0, 0, 0, 22, 0xff111111, 0xff222222, Shader.TileMode.CLAMP));
+            }
+
             Paint paintStroke = new Paint();
             paintStroke.setAntiAlias(true);
             paintStroke.setColor(Color.WHITE);

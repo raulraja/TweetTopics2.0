@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!-- v 2.03 -->
+
+    <string name="columnsSelected">%1$s selected(s)</string>
+    <string name="removeColumnsMessage">Select column for remove</string>
+    <string name="sortColumnsMessage">Long press for drag&amp;drop your column</string>
+    <string name="addColumnUser">Add %1$s\'s column</string>
+    <string name="addTrendingTopic">Add Trending Topics column</string>
+    <string name="addSavedTweet">Add Saved Tweet column</string>
+    <string name="sortColumns">Sort columns</string>
+    <string name="removeColumns">Remove columns</string>
+
     <!-- v 2.02  -->
 
     <string name="newList">New List</string>

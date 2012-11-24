@@ -43,6 +43,9 @@
     <dimen name="text_size_description_default">13sp</dimen>
     <dimen name="size_number_circle_default">11px</dimen> <!-- No usar de forma general -->
 
+    <!-- Columns -->
+    <dimen name="text_size_text_columns">9px</dimen>
+
     <!-- Popup -->
     <dimen name="text_size_text_popup">12sp</dimen>
     <dimen name="text_size_image_popup">52dp</dimen>
@@ -51,7 +54,7 @@
     <dimen name="text_size_tweet_sidebar">15sp</dimen>
 
     <!-- Horizontal slide buttons -->
-    <dimen name="size_number_circle_horizontal_buttons">14px</dimen> <!-- No usar de forma general -->
+    <dimen name="size_number_circle_horizontal_buttons">13px</dimen> <!-- No usar de forma general -->
     <dimen name="text_size_horizontal_buttons">11px</dimen> <!-- No usar de forma general -->
 
     <!-- Tweet -->

@@ -14,7 +14,7 @@ public class OnBootReceiver extends BroadcastReceiver {
 	public void onReceive(Context context, Intent intent) {
 		Log.d(Utils.TAG_ALARM, "Cargando alarma de TweetTopics al arrancar el telefono");
         PreferenceUtils.saveStatusWorkAlarm(context, false);
-		OnAlarmReceiver.callAlarm(context, 1, 1);
+		OnAlarmReceiver.callAlarm(context);
 
       	OnAlarmReceiverTweetProgrammed.callNextAlarm(context);
                 

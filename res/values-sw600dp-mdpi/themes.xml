@@ -76,6 +76,7 @@ por ejemplo el margin mínimo de los botones -->
 
         <!-- Icons -->
 
+        <item name="icon_tweettopics">@drawable/icon_tweettopics_dark</item>
         <item name="icon_social_add_user">@drawable/icon_social_add_user_dark</item>
         <item name="icon_action_search">@drawable/icon_action_search_dark</item>
         <item name="icon_action_settings">@drawable/icon_action_settings_dark</item>
@@ -171,6 +172,7 @@ por ejemplo el margin mínimo de los botones -->
 
         <!-- Icons -->
 
+        <item name="icon_tweettopics">@drawable/icon_tweettopics_dark</item>
         <item name="icon_social_add_user">@drawable/icon_social_add_user_dark</item>
         <item name="icon_action_search">@drawable/icon_action_search_dark</item>
         <item name="icon_action_settings">@drawable/icon_action_settings_dark</item>
@@ -274,6 +276,7 @@ por ejemplo el margin mínimo de los botones -->
 
         <!-- Icons -->
 
+        <item name="icon_tweettopics">@drawable/icon_tweettopics_dark</item>
         <item name="icon_social_add_user">@drawable/icon_social_add_user_dark</item>
         <item name="icon_action_search">@drawable/icon_action_search_dark</item>
         <item name="icon_action_settings">@drawable/icon_action_settings_dark</item>
@@ -368,6 +371,7 @@ por ejemplo el margin mínimo de los botones -->
 
         <!-- Icons -->
 
+        <item name="icon_tweettopics">@drawable/icon_tweettopics_dark</item>
         <item name="icon_social_add_user">@drawable/icon_social_add_user_dark</item>
         <item name="icon_action_search">@drawable/icon_action_search_dark</item>
         <item name="icon_action_settings">@drawable/icon_action_settings_dark</item>

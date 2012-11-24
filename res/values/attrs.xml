@@ -58,6 +58,7 @@
     <attr name="icon_action_search" format="string"/>
     <attr name="icon_action_settings" format="string"/>
     <attr name="icon_content_add_trending" format="string"/>
+    <attr name="icon_tweettopics" format="string"/>
     <attr name="icon_content_edit" format="string"/>
     <attr name="icon_content_favorite" format="string"/>
     <attr name="icon_action_more_options_sidebar" format="string"/>

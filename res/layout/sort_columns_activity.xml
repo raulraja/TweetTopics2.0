@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                style="@style/ContainerDialog"
+                android:background="?attr/color_background_solid"
+        >
+    <LinearLayout android:padding="20dp"
+                  android:layout_above="@+id/sort_columns_txt_message"
+                  android:layout_height="fill_parent"
+                  android:layout_width="fill_parent">
+        <com.javielinux.components.DraggableGridView android:id="@+id/sort_columns_dgv_grid"
+                                                     android:layout_height="fill_parent"
+                                                     android:layout_width="fill_parent"
+                                                     android:layout_alignParentTop="true"
+                                                     android:layout_alignParentLeft="true"/>
+    </LinearLayout>
+
+    <TextView android:layout_height="wrap_content"
+              android:layout_width="fill_parent"
+              android:gravity="center"
+              android:padding="@dimen/default_padding"
+              android:text="@string/sortColumnsMessage"
+              android:background="?attr/color_background_text_info_background"
+              style="@style/FooterTextSmall"
+              android:layout_alignParentBottom="true"
+              android:id="@id/sort_columns_txt_message"
+            />
+
+</RelativeLayout>
