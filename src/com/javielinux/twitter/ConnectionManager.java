@@ -52,6 +52,8 @@ public class ConnectionManager {
 	private String oAuthAccessToken;
 	private String oAuthAccessTokenSecret;
 
+    private List<Entity> users = new ArrayList<Entity>();
+
 	private ConnectionManager() {};
 
 	public static ConnectionManager getInstance() {
@@ -60,6 +62,22 @@ public class ConnectionManager {
 		}
 		return instance;
 	}
+
+    public void loadUsers() {
+        users = DataFramework.getInstance().getEntityList("users");
+    }
+
+    public Entity getUserById(long id) {
+        if (users.size() == 0) {
+            loadUsers();
+        }
+        for (Entity user : users) {
+            if (user.getId() == id) {
+                return user;
+            }
+        }
+        return null;
+    }
 	
 	public static void destroyInstance() {
 		instance = null;
@@ -86,7 +104,6 @@ public class ConnectionManager {
 
     public void loadFromDB() {
 
-        ArrayList<Entity> users = DataFramework.getInstance().getEntityList("users");
         for (Entity user: users) {
             if (!twitters.containsKey(user.getId())) {
                 twitters.put(user.getId(), loadUser(user.getId()));
@@ -229,6 +246,8 @@ public class ConnectionManager {
 
 			ent.save();
 
+            loadUsers();
+
 			try {
 				User user = twitter.showUser(ent.getInt("user_id"));
 
@@ -261,7 +280,7 @@ public class ConnectionManager {
         Twitter twitter = null;
 
 
-        Entity ent = new Entity("users", id);
+        Entity ent = getUserById(id);
         
         if (ent!=null) {
         	

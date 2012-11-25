@@ -1,3 +1,14 @@
+Version 2.03
+============
+
+- Nueva forma de reorganizar y eliminar columnas
+- Crea una columna automáticamente al mostrar un hashtag
+- Corrige problemas de consumo y batería al reiniciar el teléfono
+- Corrige problemas al recibir mensajes directos
+- Corrige problemas generales
+
+Build number 4
+
 Version 2.02
 ============
 

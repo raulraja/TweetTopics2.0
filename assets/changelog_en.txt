@@ -1,3 +1,14 @@
+Version 2.03
+============
+
+- New way that reorganize and remove columns
+- Create hashtag's column automatically when is clicked
+- Fixes error of battery when reboot phone
+- Fixes error while receiving direct messages
+- Bug fixed
+
+Build number 4
+
 Version 2.02
 ============
 

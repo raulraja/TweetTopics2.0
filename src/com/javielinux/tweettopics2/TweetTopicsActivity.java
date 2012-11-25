@@ -35,6 +35,7 @@ import com.javielinux.infos.InfoTweet;
 import com.javielinux.notifications.OnAlarmReceiver;
 import com.javielinux.task.IntentIntegrator;
 import com.javielinux.task.IntentResult;
+import com.javielinux.twitter.ConnectionManager;
 import com.javielinux.utils.*;
 import com.nineoldandroids.animation.Animator;
 import com.nineoldandroids.animation.AnimatorSet;
@@ -103,6 +104,9 @@ public class TweetTopicsActivity extends BaseLayersActivity implements PopupLink
         super.onCreate(savedInstanceState);
 
         CacheData.getInstance().fillHide();
+
+        ConnectionManager.getInstance().open(this);
+        ConnectionManager.getInstance().loadUsers();
 
         OnAlarmReceiver.callAlarm(this);
 
