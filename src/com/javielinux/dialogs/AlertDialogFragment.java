@@ -105,7 +105,13 @@ public class AlertDialogFragment extends DialogFragment {
             });
         }
         if (arrayItemString != null) {
-            alert.setItems((CharSequence[]) arrayItemString.toArray(), new DialogInterface.OnClickListener() {
+            CharSequence[] charSequences = new CharSequence[arrayItemString.size()];
+            int count = 0;
+            for (String item : arrayItemString) {
+                charSequences[count] = item;
+                count++;
+            }
+            alert.setItems(charSequences, new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int which) {
                     if (alertButtonListener != null) alertButtonListener.OnAlertItems(which);
                 }

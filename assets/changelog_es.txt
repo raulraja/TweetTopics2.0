@@ -1,3 +1,10 @@
+Version 2.04
+============
+
+- Corrige problema con android < a 3.0 en los cambios de la 2.03 (gracias a @sergiodesevilla)
+
+Build number 5
+
 Version 2.03
 ============
 

@@ -1,3 +1,10 @@
+Version 2.04
+============
+
+- Fixed bug on android <3.0 in 2.03 version (thanks @sergiodesevilla)
+
+Build number 5
+
 Version 2.03
 ============
 

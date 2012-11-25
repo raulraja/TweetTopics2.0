@@ -339,10 +339,7 @@ public class TweetTopicsActivity extends BaseLayersActivity implements PopupLink
 
             @Override
             public boolean onSingleTapConfirmed(MotionEvent e) {
-                if (pager.getCurrentItem() > 0) {
-                    animateDragged();
-                }
-
+                animateDragged();
                 return true;
             }
 
@@ -551,6 +548,13 @@ public class TweetTopicsActivity extends BaseLayersActivity implements PopupLink
             x = imgBarAvatar.getX();
         } catch (NoSuchMethodError e) {
         }
+
+        if (pager.getCurrentItem() == 0) {
+            btnOptionsColumnsEdit.setVisibility(View.GONE);
+        } else {
+            btnOptionsColumnsEdit.setVisibility(View.VISIBLE);
+        }
+
         view.layout(imgBarAvatar.getLeft(), imgBarAvatar.getTop(), imgBarAvatar.getRight(), imgBarAvatar.getBottom());
         AnimationSet animSet = new AnimationSet(true);
         ScaleAnimation scale = new ScaleAnimation(.667f, 1, .667f, 1, imgBarAvatar.getHeight() * 3 / 4, imgBarAvatar.getWidth() * 3 / 4);
