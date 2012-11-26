@@ -509,16 +509,7 @@ public class NewStatusActivity extends BaseActivity {
 
             @Override
             public void onClick(View v) {
-
-                String text = mText.getText().toString();
-                int count = LinksUtils.pullLinksHTTP(text).size() - mImages.size();
-                if (count > 0) {
-                    mText.setText(LinksUtils.shortLinks(NewStatusActivity.this, text, mImages));
-                    Utils.showShortMessage(NewStatusActivity.this, count + " " + NewStatusActivity.this.getString(R.string.txt_shorter_n));
-                } else {
-                    Utils.showShortMessage(NewStatusActivity.this, NewStatusActivity.this.getString(R.string.txt_shorter_0));
-                }
-
+                 shortUrls();
             }
 
         });
@@ -576,6 +567,28 @@ public class NewStatusActivity extends BaseActivity {
 
         if (mType == TYPE_DIRECT_MESSAGE) onItemClickDMComplete(mDMUsername, false);
 
+    }
+
+    private void shortUrls() {
+        final String text = mText.getText().toString();
+        int count = LinksUtils.pullLinksHTTP(text).size() - mImages.size();
+        if (count > 0) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    final String newText = LinksUtils.shortLinks(NewStatusActivity.this, text, mImages);
+                    NewStatusActivity.this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            mText.setText(newText);
+                        }
+                    });
+                }
+            }).start();
+            Utils.showShortMessage(NewStatusActivity.this, count + " " + NewStatusActivity.this.getString(R.string.txt_shorter_n));
+        } else {
+            Utils.showShortMessage(NewStatusActivity.this, NewStatusActivity.this.getString(R.string.txt_shorter_0));
+        }
     }
 
     private void showMenuOptions(View view) {

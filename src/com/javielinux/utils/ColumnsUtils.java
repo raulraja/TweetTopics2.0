@@ -51,13 +51,23 @@ public class ColumnsUtils {
         int padding = (int) context.getResources().getDimension(R.dimen.default_separation);
 
         int sizeText = (int) context.getResources().getDimension(R.dimen.text_size_text_columns);
-        int width = bitmap.getWidth() + (padding * 2);
-        int height = bitmap.getHeight() + 22;
+
+        int size = (int) context.getResources().getDimension(R.dimen.size_avatar_xlarge);
+
+        int width = size + (padding * 2);
+        int height = size + 22;
+
+        if (bitmap != null) {
+            width = bitmap.getWidth() + (padding * 2);
+            height = bitmap.getHeight() + 22;
+        }
 
         Bitmap text = ImageUtils.getBitmapInBubble(context, title, bgColorTitle, Utils.TYPE_RECTANGLE, sizeText, -1);
         Bitmap newBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(newBitmap);
-        canvas.drawBitmap(bitmap, padding, 0, paint);
+        if (bitmap!=null) {
+            canvas.drawBitmap(bitmap, padding, 0, paint);
+        }
         canvas.drawBitmap(text, (width / 2) - (text.getWidth() / 2), height - text.getHeight(), paint);
         bitmap = newBitmap;
         return bitmap;

@@ -1,3 +1,11 @@
+Version 2.05
+============
+
+- Corrige problema de cierre inesperado al arrancar la aplicación en algunos móviles
+- Corrige el problema para acortar urls con bit.ly y karmacracy
+
+Build number 6
+
 Version 2.04
 ============
 
