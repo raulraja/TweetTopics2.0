@@ -12,11 +12,11 @@ public class WidgetTweets4x2 extends AppWidgetProvider {
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
 
-    	for (int i=0; i<appWidgetIds.length; i++) {
-    		Intent intent = new Intent(context, ServiceWidgetTweets4x2.class);
-    		intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetIds[i]);
-    		context.startService(intent);
-    	}
+//    	for (int i=0; i<appWidgetIds.length; i++) {
+//    		Intent intent = new Intent(context, ServiceWidgetTweets4x2.class);
+//    		intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetIds[i]);
+//    		context.startService(intent);
+//    	}
     }
 
 	@Override

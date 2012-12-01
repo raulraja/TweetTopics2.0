@@ -429,7 +429,7 @@ public class MyActivityFragment extends Fragment {
 
     public void saveForUseForSearches() {
         if (idUser > 0) {
-            String sqlUpdate = "DELETE FROM users WHERE use_for_searches=" + 0;
+            String sqlUpdate = "UPDATE users SET use_for_searches=" + 0;
             DataFramework.getInstance().getDB().execSQL(sqlUpdate);
             Entity user = new Entity("users", idUser);
             user.setValue("use_for_searches", 1);

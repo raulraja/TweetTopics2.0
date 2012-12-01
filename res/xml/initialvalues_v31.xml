@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<values>
+
+    <row table="type_columns" id="3" action="update">
+        <field name="show_in_widget" value="0" />
+    </row>
+
+    <row table="type_columns" id="7" action="update">
+        <field name="show_in_widget" value="0" />
+    </row>
+
+    <row table="type_columns" id="8" action="update">
+        <field name="show_in_widget" value="0" />
+    </row>
+
+    <row table="type_columns" id="9" action="update">
+        <field name="show_in_widget" value="0" />
+    </row>
+
+    <row table="type_columns" id="12" action="update">
+        <field name="show_in_widget" value="0" />
+    </row>
+
+    <row table="type_columns" id="13" action="update">
+        <field name="show_in_widget" value="0" />
+    </row>
+
+
+</values>
