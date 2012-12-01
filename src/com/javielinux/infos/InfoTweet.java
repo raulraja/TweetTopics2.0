@@ -8,7 +8,6 @@ import com.javielinux.utils.LinksUtils;
 import com.javielinux.utils.Utils;
 import com.javielinux.utils.Utils.URLContent;
 import twitter4j.Status;
-import twitter4j.Tweet;
 import twitter4j.User;
 
 import java.util.ArrayList;
@@ -63,45 +62,45 @@ public class InfoTweet implements Parcelable {
     private String bestLink = "";
     private int linksCount = 0;
 	
-	public InfoTweet(Tweet tweet) {
-        urls = new ArrayList<URLContent>();
-//        if (tweet.getURLEntities()!=null) {
-//            for (URLEntity urlEntity : tweet.getURLEntities()) {
-//                URLContent urlContent = new URLContent();
-//                urlContent.normal = urlEntity.getURL().toString();
-//                urlContent.display = urlEntity.getDisplayURL();
-//                urlContent.expanded = urlEntity.getExpandedURL().toString();
-//            }
-//        }
-//        if (tweet.getMediaEntities()!=null) {
-//            for (MediaEntity mediaEntity : tweet.getMediaEntities()) {
-//                URLContent urlContent = new URLContent();
-//                urlContent.normal = mediaEntity.getURL().toString();
-//                urlContent.display = mediaEntity.getDisplayURL();
-//                urlContent.expanded = mediaEntity.getExpandedURL().toString();
-//                urlContent.linkMediaThumb = mediaEntity.getMediaURL().toString() + ":thumb";
-//                urlContent.linkMediaLarge = mediaEntity.getMediaURL().toString() + ":medium";
-//            }
-//        }
-		mTypeFrom = FROM_TWEETS;
-		id = tweet.getId();
-		urlAvatar = tweet.getProfileImageUrl();
-		userId = tweet.getFromUserId();
-		text = tweet.getText();
-		username = tweet.getFromUser();
-		fullname = tweet.getFromUser();
-		source = tweet.getSource();
-		toUsername = tweet.getToUser();
-		toUserId = tweet.getToUserId();
-		createAt = tweet.getCreatedAt();
-		if (tweet.getGeoLocation()!=null) {
-			latitude = tweet.getGeoLocation().getLatitude();
-			longitude = tweet.getGeoLocation().getLongitude();
-		}
-		
-		urlTweet = START_URL_TWITTER + username.toLowerCase() + "/status/" + id;
-        calculateLinks();
-	}
+//	public InfoTweet(Tweet tweet) {
+//        urls = new ArrayList<URLContent>();
+////        if (tweet.getURLEntities()!=null) {
+////            for (URLEntity urlEntity : tweet.getURLEntities()) {
+////                URLContent urlContent = new URLContent();
+////                urlContent.normal = urlEntity.getURL().toString();
+////                urlContent.display = urlEntity.getDisplayURL();
+////                urlContent.expanded = urlEntity.getExpandedURL().toString();
+////            }
+////        }
+////        if (tweet.getMediaEntities()!=null) {
+////            for (MediaEntity mediaEntity : tweet.getMediaEntities()) {
+////                URLContent urlContent = new URLContent();
+////                urlContent.normal = mediaEntity.getURL().toString();
+////                urlContent.display = mediaEntity.getDisplayURL();
+////                urlContent.expanded = mediaEntity.getExpandedURL().toString();
+////                urlContent.linkMediaThumb = mediaEntity.getMediaURL().toString() + ":thumb";
+////                urlContent.linkMediaLarge = mediaEntity.getMediaURL().toString() + ":medium";
+////            }
+////        }
+//		mTypeFrom = FROM_TWEETS;
+//		id = tweet.getId();
+//		urlAvatar = tweet.getProfileImageUrl();
+//		userId = tweet.getFromUserId();
+//		text = tweet.getText();
+//		username = tweet.getFromUser();
+//		fullname = tweet.getFromUser();
+//		source = tweet.getSource();
+//		toUsername = tweet.getToUser();
+//		toUserId = tweet.getToUserId();
+//		createAt = tweet.getCreatedAt();
+//		if (tweet.getGeoLocation()!=null) {
+//			latitude = tweet.getGeoLocation().getLatitude();
+//			longitude = tweet.getGeoLocation().getLongitude();
+//		}
+//
+//		urlTweet = START_URL_TWITTER + username.toLowerCase() + "/status/" + id;
+//        calculateLinks();
+//	}
 	
 	public InfoTweet(Status status) {
         urls = new ArrayList<URLContent>();

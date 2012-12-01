@@ -39,11 +39,11 @@ public class UserListsLoader extends AsynchronousLoader<BaseResponse> {
             response.addUser = request.getAddUser();
 
             if (request.getAction() == SHOW_TWEETS) {
-                    response.setUserList(ConnectionManager.getInstance().getAnonymousTwitter().getAllUserLists(request.getUser()));
+                    response.setUserList(ConnectionManager.getInstance().getUserForSearchesTwitter().getUserLists(request.getUser()));
             } else if (request.getAction() == SHOW_TWEETS_FOLLOWINGLIST) {
-                    response.setUserList(ConnectionManager.getInstance().getAnonymousTwitter().getUserListMemberships(request.getUser(), -1));
+                    response.setUserList(ConnectionManager.getInstance().getUserForSearchesTwitter().getUserListMemberships(request.getUser(), -1));
             } else {
-                ResponseList<UserList> responseList = ConnectionManager.getInstance().getAnonymousTwitter().getAllUserLists(request.getUser());
+                ResponseList<UserList> responseList = ConnectionManager.getInstance().getUserForSearchesTwitter().getUserLists(request.getUser());
                 ArrayList<UserList> deleteList = new ArrayList<UserList>();
 
                 for (UserList ul : responseList) {

@@ -37,12 +37,12 @@ public class GetUserFriendshipMembersLoader extends AsynchronousLoader<BaseRespo
 
              if (request.getType()==FOLLOWERS) {
                 long cursor = -1;
-                IDs followers_ids_response = ConnectionManager.getInstance().getAnonymousTwitter().getFollowersIDs(request.getUser(), cursor);
+                IDs followers_ids_response = ConnectionManager.getInstance().getUserForSearchesTwitter().getFollowersIDs(request.getUser(), cursor);
 
                 response.setFriendshipMembersIds(followers_ids_response.getIDs());
 			} else if (request.getType()==FRIENDS) {
                 long cursor = -1;
-                IDs friends_ids_response = ConnectionManager.getInstance().getAnonymousTwitter().getFriendsIDs(request.getUser(), cursor);
+                IDs friends_ids_response = ConnectionManager.getInstance().getUserForSearchesTwitter().getFriendsIDs(request.getUser(), cursor);
 
                 response.setFriendshipMembersIds(friends_ids_response.getIDs());
             }

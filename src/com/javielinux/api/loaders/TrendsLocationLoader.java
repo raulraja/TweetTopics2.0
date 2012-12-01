@@ -22,7 +22,7 @@ public class TrendsLocationLoader extends AsynchronousLoader<BaseResponse> {
 
             ConnectionManager.getInstance().open(getContext());
 
-            response.setLocationList(ConnectionManager.getInstance().getAnonymousTwitter().getAvailableTrends());
+            response.setLocationList(ConnectionManager.getInstance().getUserForSearchesTwitter().getAvailableTrends());
             return response;
         } catch (TwitterException e) {
             e.printStackTrace();

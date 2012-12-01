@@ -147,8 +147,7 @@
       <item>Favorites</item>
       <item>Retweets by user</item>
       <item>Retweets by others</item>
-      <item>Followers</item>
-      <item>Followings</item>
+      <item>Use for searches</item>
   </string-array>
   <string-array name="actions_samples_search">
     <item>Android: General</item>

@@ -30,7 +30,7 @@ public class LoadUserLoader extends AsynchronousLoader<BaseResponse> {
 
 			ConnectionManager.getInstance().open(getContext());
 
-			User user_data = ConnectionManager.getInstance().getAnonymousTwitter().showUser(request.getUser());
+			User user_data = ConnectionManager.getInstance().getUserForSearchesTwitter().showUser(request.getUser());
 
             InfoUsers infoUsers = new InfoUsers(user_data);
 

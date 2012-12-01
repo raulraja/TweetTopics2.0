@@ -11,6 +11,7 @@ import twitter4j.Trend;
 import twitter4j.TwitterException;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class TrendsLoader extends AsynchronousLoader<BaseResponse> {
 
@@ -28,13 +29,9 @@ public class TrendsLoader extends AsynchronousLoader<BaseResponse> {
             ConnectionManager.getInstance().open(getContext());
 
             TrendsResponse response = new TrendsResponse();
-            Trend[] trends_list = ConnectionManager.getInstance().getAnonymousTwitter().getLocationTrends(location_id).getTrends();
-            ArrayList<Trend> trends_arraylist = new ArrayList<Trend>();
+            Trend[] trends_list = ConnectionManager.getInstance().getUserForSearchesTwitter().getPlaceTrends(location_id).getTrends();
 
-            for (int i = 0; i < trends_list.length; i++)
-                trends_arraylist.add(trends_list[i]);
-
-            response.setTrends(new ArrayList<Trend>(trends_arraylist));
+            response.setTrends(new ArrayList<Trend>(Arrays.asList(trends_list)));
             return response;
         } catch (TwitterException e) {
             e.printStackTrace();

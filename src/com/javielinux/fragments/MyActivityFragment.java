@@ -427,6 +427,16 @@ public class MyActivityFragment extends Fragment {
         }
     }
 
+    public void saveForUseForSearches() {
+        if (idUser > 0) {
+            String sqlUpdate = "DELETE FROM users WHERE use_for_searches=" + 0;
+            DataFramework.getInstance().getDB().execSQL(sqlUpdate);
+            Entity user = new Entity("users", idUser);
+            user.setValue("use_for_searches", 1);
+            user.save();
+        }
+    }
+
     public void showUser() {
         if (getActivity() instanceof BaseLayersActivity) {
             Bundle bundle = new Bundle();
@@ -494,16 +504,6 @@ public class MyActivityFragment extends Fragment {
     public void createUserFavoritesColumn() {
         if (idUser > 0)
             createUserColumn(idUser, TweetTopicsUtils.COLUMN_FAVORITES);
-    }
-
-    public void createUserFollowersColumn() {
-        if (idUser > 0)
-            createUserColumn(idUser, TweetTopicsUtils.COLUMN_FOLLOWERS);
-    }
-
-    public void createUserFollowingsColumn() {
-        if (idUser > 0)
-            createUserColumn(idUser, TweetTopicsUtils.COLUMN_FOLLOWINGS);
     }
 
     public void createUserRetweetByUserColumn() {
@@ -679,9 +679,7 @@ public class MyActivityFragment extends Fragment {
                 } else if (which == 8) {
                     createUserRetweetByOtherColumn();
                 } else if (which == 9) {
-                    createUserFollowersColumn();
-                } else if (which == 10) {
-                    createUserFollowingsColumn();
+                    saveForUseForSearches();
                 }
 
             }

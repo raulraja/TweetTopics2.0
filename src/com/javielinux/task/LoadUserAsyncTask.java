@@ -30,7 +30,7 @@ public class LoadUserAsyncTask extends AsyncTask<String, Void, InfoUsers> {
 
 			ConnectionManager.getInstance().open(mContext);
 			
-			User u = ConnectionManager.getInstance().getAnonymousTwitter().showUser(args[0]);
+			User u = ConnectionManager.getInstance().getUserForSearchesTwitter().showUser(args[0]);
 
 			return new InfoUsers(u);
 		} catch (TwitterException e1) {

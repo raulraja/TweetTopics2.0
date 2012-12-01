@@ -15,7 +15,6 @@
         <item>80</item>
         <item>100</item>
         <item>150</item>
-        <item>Tots</item>
     </string-array>
     <string-array name="entries_prf_max_download_values">
         <!-- 1.71 -->
@@ -23,7 +22,6 @@
         <item>80</item>
         <item>100</item>
         <item>150</item>
-        <item>0</item>
     </string-array>
     <string-array name="actions_users_facebook">
         <!-- 1.63 -->
@@ -248,8 +246,7 @@
         <item>Favorits</item>
         <item>Retuits per l\'usuari</item>
         <item>Retuits per altres</item>
-        <item>Seguidors</item>
-        <item>Seguits</item>
+        <item>Use for searches</item>
     </string-array>
     <string-array name="actions_samples_search">
         <item>Android: General</item>

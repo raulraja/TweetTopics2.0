@@ -109,7 +109,7 @@ public class EntitySearch extends Entity {
 	
 	public InfoSaveTweets saveTweets(Context cnt, boolean saveNotifications, long since_id) {
         ConnectionManager.getInstance().open(cnt);
-        Twitter twitter = ConnectionManager.getInstance().getAnonymousTwitter();
+        Twitter twitter = ConnectionManager.getInstance().getUserForSearchesTwitter();
 		InfoSaveTweets out = new InfoSaveTweets();
 		try {
 			int nResult = DataFramework.getInstance().getEntityListCount("tweets", "favorite=0 and search_id="+getId());
@@ -119,7 +119,7 @@ public class EntitySearch extends Entity {
                 query.setSinceId(since_id);
 
 			QueryResult result = twitter.search(query);
-			ArrayList<Tweet> tweets = (ArrayList<Tweet>)result.getTweets();
+			ArrayList<Status> tweets = (ArrayList<Status>)result.getTweets();
 			
 			if (tweets.size()>0) {
 				
@@ -154,32 +154,28 @@ public class EntitySearch extends Entity {
 							+ "','" + tweets.get(i).getSource()	+ "','"+tweets.get(i).getToUser()
 							+"','"+tweets.get(i).getToUserId()+"','"+String.valueOf(tweets.get(i).getCreatedAt().getTime())
 							+ "',0);\n";*/
-					
+                    User u = tweets.get(i).getUser();
 					ContentValues args = new ContentValues();
 					args.put(DataFramework.KEY_ID, "" + fisrtId);
 					args.put("search_id", "" + getId());
-					args.put("url_avatar", tweets.get(i).getProfileImageUrl());
-					args.put("username", tweets.get(i).getFromUser());
-					args.put("fullname", tweets.get(i).getFromUser());
-					args.put("user_id", "" + tweets.get(i).getFromUserId());
+                    if (u.getProfileImageURL()!=null) {
+                        args.put("url_avatar", u.getProfileImageURL().toString());
+                    } else {
+                        args.put("url_avatar", "");
+                    }
+                    args.put("username", u.getScreenName());
+                    args.put("fullname", u.getName());
+                    args.put("user_id", "" + u.getId());
 					args.put("tweet_id", Utils.fillZeros("" + tweets.get(i).getId()));
 					args.put("text", tweets.get(i).getText());
 					args.put("source", tweets.get(i).getSource());
-					args.put("to_username", tweets.get(i).getToUser());
-					args.put("to_user_id", "" + tweets.get(i).getToUserId());
+                    args.put("to_username", tweets.get(i).getInReplyToScreenName());
+                    args.put("to_user_id", "" + tweets.get(i).getInReplyToUserId());
 					args.put("date", String.valueOf(tweets.get(i).getCreatedAt().getTime()));
-					if (tweets.get(i).getLocation()!=null) {
-						try {
-							GeoQuery gq = new GeoQuery(tweets.get(i).getLocation());
-							if (gq.getLocation()!=null) {
-								args.put("latitude", gq.getLocation().getLatitude());
-								args.put("longitude", gq.getLocation().getLongitude());
-							}
-						} catch(Exception e) {
-							e.printStackTrace();
-						}
-						
-					}
+                    if (tweets.get(i).getGeoLocation()!=null) {
+                        args.put("latitude", tweets.get(i).getGeoLocation().getLatitude());
+                        args.put("longitude", tweets.get(i).getGeoLocation().getLongitude());
+                    }
 					args.put("favorite", "0");
 					
 					DataFramework.getInstance().getDB().insert("tweets", null, args);
@@ -284,8 +280,11 @@ public class EntitySearch extends Entity {
 		
 		PreferenceManager.setDefaultValues(cnt, R.xml.preferences, false);
 		SharedPreferences preference = PreferenceManager.getDefaultSharedPreferences(cnt);
-		
-		query.setRpp(Integer.parseInt(preference.getString("prf_n_max_download", "60")));
+
+        int count = Integer.parseInt(preference.getString("prf_n_max_download", "60"));
+        if (count <= 0) count = 60;
+
+		query.setCount(count);
 
         String lang = "";
         if (!this.getString("lang").equals("")) lang = this.getString("lang");

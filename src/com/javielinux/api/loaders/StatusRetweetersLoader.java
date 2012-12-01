@@ -7,10 +7,9 @@ import com.javielinux.api.response.BaseResponse;
 import com.javielinux.api.response.ErrorResponse;
 import com.javielinux.api.response.StatusRetweetersResponse;
 import com.javielinux.twitter.ConnectionManager;
-import twitter4j.Paging;
 import twitter4j.ResponseList;
+import twitter4j.Status;
 import twitter4j.TwitterException;
-import twitter4j.User;
 
 public class StatusRetweetersLoader extends AsynchronousLoader<BaseResponse> {
 
@@ -26,11 +25,12 @@ public class StatusRetweetersLoader extends AsynchronousLoader<BaseResponse> {
     public BaseResponse loadInBackground() {
 
 		try {
+            // TODO retweet
 			ConnectionManager.getInstance().open(getContext());
-            ResponseList<User> retweeters_list = ConnectionManager.getInstance().getTwitter(request.getUserId()).getRetweetedBy(request.getId(), new Paging(1, 100));
+            ResponseList<Status> retweeters_list = ConnectionManager.getInstance().getTwitter(request.getUserId()).getRetweets(request.getId());
 
             StatusRetweetersResponse response = new StatusRetweetersResponse();
-            response.setUserList(retweeters_list);
+            //response.setUserList(retweeters_list);
             return response;
 		} catch (TwitterException e) {
 			e.printStackTrace();

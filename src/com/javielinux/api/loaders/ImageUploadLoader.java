@@ -93,7 +93,7 @@ public class ImageUploadLoader extends AsynchronousLoader<BaseResponse> {
                 confBuild.setMediaProviderAPIKey("57438faa-51e4-43a5-9e15-0c63b6f73950");
             }
 
-            confBuild.setMediaProvider(mp.getName());
+            confBuild.setMediaProvider(mp.name());
             Configuration config = confBuild.build();
 
             ImageUpload upload = new ImageUploadFactory(config).getInstance(mp);

@@ -386,7 +386,7 @@ public class Utils {
             ConnectionManager.getInstance().open(cnt);
 
             try {
-                TwitterAPIConfiguration api = ConnectionManager.getInstance().getAnonymousTwitter().getAPIConfiguration();
+                TwitterAPIConfiguration api = ConnectionManager.getInstance().getUserForSearchesTwitter().getAPIConfiguration();
                 PreferenceUtils.setShortURLLength(cnt, api.getShortURLLength());
                 PreferenceUtils.setShortURLLengthHttps(cnt, api.getShortURLLengthHttps());
             } catch (TwitterException e1) {

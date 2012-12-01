@@ -37,9 +37,9 @@ public class GetUserListLoader extends AsynchronousLoader<BaseResponse> {
                     ResponseList<UserList> userLists;
 
                     if (request.getUserId() < 0) {
-                        userLists = ConnectionManager.getInstance().getAnonymousTwitter().getAllUserLists(request.getScreenName());
+                        userLists = ConnectionManager.getInstance().getUserForSearchesTwitter().getUserLists(request.getScreenName());
                     } else {
-                        userLists = ConnectionManager.getInstance().getTwitter(request.getUserId()).getAllUserLists(request.getScreenName());
+                        userLists = ConnectionManager.getInstance().getTwitter(request.getUserId()).getUserLists(request.getScreenName());
                     }
 
                     for (UserList userList : userLists) {
@@ -50,7 +50,7 @@ public class GetUserListLoader extends AsynchronousLoader<BaseResponse> {
                     PagableResponseList<UserList> userListMemberships;
 
                     if (request.getUserId() < 0) {
-                        userListMemberships = ConnectionManager.getInstance().getAnonymousTwitter().getUserListMemberships(request.getScreenName(), request.getCursor());
+                        userListMemberships = ConnectionManager.getInstance().getUserForSearchesTwitter().getUserListMemberships(request.getScreenName(), request.getCursor());
                     } else {
                         userListMemberships = ConnectionManager.getInstance().getTwitter(request.getUserId()).getUserListMemberships(request.getScreenName(), request.getCursor());
                     }

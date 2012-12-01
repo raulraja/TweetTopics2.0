@@ -60,7 +60,7 @@ public class AlarmOneNotificationAsyncTask extends AsyncTask<Void, Void, Void> {
 		mType = type;
 
         ConnectionManager.getInstance().open(mContext);
-        twitter = ConnectionManager.getInstance().getAnonymousTwitter();
+        twitter = ConnectionManager.getInstance().getUserForSearchesTwitter();
     			
     	PreferenceManager.setDefaultValues(mContext, R.xml.preferences, false);
     	mPreferences = PreferenceManager.getDefaultSharedPreferences(mContext);

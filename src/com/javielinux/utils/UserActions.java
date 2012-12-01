@@ -158,7 +158,14 @@ public class UserActions {
         ConnectionManager.getInstance().open(context);
         Twitter twitter = ConnectionManager.getInstance().getTwitter(DBUtils.getIdFromUserName(infoUsers.getName()));
         try {
-            if (twitter.existsBlock(infoUsers.getName())) {
+            boolean isBlock = false;
+            for (long id : twitter.getBlocksIDs().getIDs()) {
+               if (id == infoUsers.getId()) {
+                   isBlock = true;
+                   break;
+               }
+            }
+            if (true) {
                 twitter.destroyBlock(infoUsers.getName());
                 Utils.showMessage(context, context.getString(R.string.user_unlock));
             } else {

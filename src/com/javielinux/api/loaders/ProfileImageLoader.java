@@ -19,6 +19,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.URL;
 
 public class ProfileImageLoader extends AsynchronousLoader<BaseResponse> {
 
@@ -44,7 +45,7 @@ public class ProfileImageLoader extends AsynchronousLoader<BaseResponse> {
                 ConnectionManager.getInstance().open(getContext());
                 Entity ent = new Entity("users", request.getUserId());
                 User user = ConnectionManager.getInstance().getTwitter(request.getUserId()).showUser(ent.getInt("user_id"));
-                Bitmap avatar = BitmapFactory.decodeStream(new Utils.FlushedInputStream(user.getProfileImageURL().openStream()));
+                Bitmap avatar = BitmapFactory.decodeStream(new Utils.FlushedInputStream(new URL(user.getProfileImageURL()).openStream()));
 				String file = ImageUtils.getFileAvatar(request.getUserId());
 
 				FileOutputStream out = new FileOutputStream(file);

@@ -226,7 +226,7 @@ public class ServiceWidgetTweets4x2 extends Service {
 
     	ConnectionManager.getInstance().open(this);
     	
-        twitter = ConnectionManager.getInstance().getAnonymousTwitter();
+        twitter = ConnectionManager.getInstance().getUserForSearchesTwitter();
     	
     	try {
         	DataFramework.getInstance().open(this, Utils.packageName);
@@ -548,7 +548,7 @@ public class ServiceWidgetTweets4x2 extends Service {
                     try {
                         EntitySearch entitySearch = new EntitySearch(column.getLong("search_id"));
                         QueryResult result = twitter.search(entitySearch.getQuery(context));
-                        ArrayList<Tweet> tweets = (ArrayList<Tweet>)result.getTweets();
+                        ArrayList<Status> tweets = (ArrayList<Status>)result.getTweets();
 
                         for (int i=0; i<tweets.size(); i++) {
                             mTweets.add(new InfoTweet(tweets.get(i)));
@@ -560,6 +560,7 @@ public class ServiceWidgetTweets4x2 extends Service {
                     }
                     break;
                 case TweetTopicsUtils.COLUMN_RETWEETS_BY_OTHERS:
+                    // TODO retweet
                     try {
                         ResponseList<Status> statii = ConnectionManager.getInstance().getTwitter(column.getEntity("user_id").getId()).getRetweetsOfMe();
 
@@ -573,17 +574,18 @@ public class ServiceWidgetTweets4x2 extends Service {
                     }
                     break;
                 case TweetTopicsUtils.COLUMN_RETWEETS_BY_YOU:
-                    try {
-                        ResponseList<Status> statii = ConnectionManager.getInstance().getTwitter(column.getEntity("user_id").getId()).getRetweetedByMe();
-
-                        for (int i=0; i<statii.size(); i++) {
-                            mTweets.add(new InfoTweet(statii.get(i)));
-                        }
-                    } catch (TwitterException e) {
-                        e.printStackTrace();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+                    // TODO retweet
+//                    try {
+//                        ResponseList<Status> statii = ConnectionManager.getInstance().getTwitter(column.getEntity("user_id").getId()).getRetweetedByMe();
+//
+//                        for (int i=0; i<statii.size(); i++) {
+//                            mTweets.add(new InfoTweet(statii.get(i)));
+//                        }
+//                    } catch (TwitterException e) {
+//                        e.printStackTrace();
+//                    } catch (Exception e) {
+//                        e.printStackTrace();
+//                    }
                     break;
                 case TweetTopicsUtils.COLUMN_FAVORITES:
                     try {

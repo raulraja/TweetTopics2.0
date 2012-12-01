@@ -21,6 +21,7 @@ import twitter4j.conf.ConfigurationBuilder;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -41,7 +42,7 @@ public class ConnectionManager {
 
 	private final String CALLBACKURL = "t4joauth://main";
 
-    private Twitter anonymousTwitter;
+    private Twitter userForSearchesTwitter;
 
 	private HashMap<Long, Twitter> twitters = new HashMap<Long, Twitter>();
 
@@ -95,11 +96,11 @@ public class ConnectionManager {
 		return twitters.get(id);
 	}
 
-    public Twitter getAnonymousTwitter() {
-        if (anonymousTwitter==null) {
-            anonymousTwitter = new TwitterFactory().getInstance();
+    public Twitter getUserForSearchesTwitter() {
+        if (userForSearchesTwitter ==null) {
+            loadUserForSearches();
         }
-        return anonymousTwitter;
+        return userForSearchesTwitter;
     }
 
     public void loadFromDB() {
@@ -115,6 +116,27 @@ public class ConnectionManager {
     public void forceLoadFromDB() {
         twitters.clear();
         loadFromDB();
+    }
+
+    private void loadUserForSearches() {
+
+        try {
+            DataFramework.getInstance().open(context, Utils.packageName);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        Entity user = DataFramework.getInstance().getTopEntity("users", "use_for_searches = 1", "");
+
+        if (user == null) {
+            user = DataFramework.getInstance().getTopEntity("users", "service is null or service = \"twitter.com\"", "");
+            user.setValue("use_for_searches", 1);
+            user.save();
+        }
+
+        userForSearchesTwitter = loadUser(user.getId());
+
+        DataFramework.getInstance().close();
     }
 
     /*
@@ -251,7 +273,7 @@ public class ConnectionManager {
 			try {
 				User user = twitter.showUser(ent.getInt("user_id"));
 
-				Bitmap avatar = BitmapFactory.decodeStream(new Utils.FlushedInputStream(user.getProfileImageURL().openStream()));
+				Bitmap avatar = BitmapFactory.decodeStream(new Utils.FlushedInputStream(new URL(user.getProfileImageURL()).openStream()));
 
 				if (avatar!=null) {
 					String file = ImageUtils.getFileAvatar(ent.getId());

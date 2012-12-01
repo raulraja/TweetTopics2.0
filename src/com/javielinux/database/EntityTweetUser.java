@@ -193,6 +193,7 @@ public class EntityTweetUser extends Entity {
             SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
 
             int maxDownloadTweet = Integer.parseInt(pref.getString("prf_n_max_download", "60"));
+            if (maxDownloadTweet<=0) maxDownloadTweet = 60;
 			
 			ResponseList<twitter4j.Status> statii = null;
 			ResponseList<twitter4j.DirectMessage> directs = null;
@@ -200,87 +201,39 @@ public class EntityTweetUser extends Entity {
 			if (mLastIdNotification>0) {
 				if (tweet_type == TweetTopicsUtils.TWEET_TYPE_TIMELINE) {
 
-                    if (maxDownloadTweet <= 0) { // se descargan todos los tweets
+                    Paging p = new Paging(1, maxDownloadTweet);
+                    p.setSinceId(mLastIdNotification);
 
-                        Paging p = new Paging(1, 60);
+                    try {
+                        statii = twitter.getHomeTimeline(p);
+                    } catch (OutOfMemoryError e) {
+                        e.printStackTrace();
+                    }
+
+                    if (statii!=null && statii.size()>=maxDownloadTweet-10) {
+                        p = new Paging(1, 10);
                         p.setSinceId(mLastIdNotification);
-
-                        try {
-                            statii = twitter.getHomeTimeline(p);
-                        } catch (OutOfMemoryError e) {
-                            e.printStackTrace();
-                        }
-
-                        while (statii.size()%60>=50 || statii.size()%60==0) {
-                            p = new Paging(1, 60);
-                            p.setSinceId(mLastIdNotification);
-                            p.setMaxId(statii.get(statii.size()-1).getId());
-                            statii.addAll(twitter.getHomeTimeline(p));
-                        }
-
-                    } else {
-                        Paging p = new Paging(1, maxDownloadTweet);
-                        p.setSinceId(mLastIdNotification);
-
-                        try {
-                            statii = twitter.getHomeTimeline(p);
-                        } catch (OutOfMemoryError e) {
-                            e.printStackTrace();
-                        }
-
-                        if (statii.size()>=maxDownloadTweet-10) {
-                            p = new Paging(1, 10);
-                            p.setSinceId(mLastIdNotification);
-                            p.setMaxId(statii.get(statii.size()-1).getId());
-                            if (twitter.getHomeTimeline().size()>0) {
-                                breakTimeline = true;
-                            }
+                        p.setMaxId(statii.get(statii.size()-1).getId());
+                        if (twitter.getHomeTimeline().size()>0) {
+                            breakTimeline = true;
                         }
                     }
 
 				} else if (tweet_type == TweetTopicsUtils.TWEET_TYPE_MENTIONS) {
-					
-					ResponseList<twitter4j.Status> statuses = twitter.getMentions(new Paging(mLastIdNotification));
-					
-		            while (statuses.size()>0) {
-		            	if (statii==null) {
-		            		statii = statuses;
-		            	} else {
-		            		statii.addAll(statuses);
-		            	}
-                        mLastIdNotification = statuses.get(0).getId();
-		            	statuses = twitter.getMentions(new Paging(mLastIdNotification));
-		            }
-					
+                    Paging p = new Paging();
+                    p.setCount(100);
+                    p.setSinceId(mLastIdNotification);
+                    statii = twitter.getMentionsTimeline(p);
 				} else if (tweet_type == TweetTopicsUtils.TWEET_TYPE_DIRECTMESSAGES) {
-					
-					ResponseList<twitter4j.DirectMessage> directses = twitter.getDirectMessages(new Paging(mLastIdNotification));
-					
-		            while (directses.size()>0) {
-		            	if (directs==null) {
-		            		directs = directses;
-		            	} else {
-		            		directs.addAll(directses);
-		            	}
-                        mLastIdNotification = directses.get(0).getId();
-		            	directses = twitter.getDirectMessages(new Paging(mLastIdNotification));
-		            }
-					
+                    Paging p = new Paging();
+                    p.setCount(100);
+                    p.setSinceId(mLastIdNotification);
+                    directs = twitter.getDirectMessages(p);
 				} else if (tweet_type == TweetTopicsUtils.TWEET_TYPE_SENT_DIRECTMESSAGES) {
-					
-					int page = 1;
-					ResponseList<twitter4j.DirectMessage> directses = twitter.getSentDirectMessages(new Paging(page, mLastIdNotification));
-					
-		            while (directses.size()>0) {
-		            	if (directs==null) {
-		            		directs = directses;
-		            	} else {
-		            		directs.addAll(directses);
-		            	}
-		            	page++;
-		            	directses = twitter.getSentDirectMessages(new Paging(page, mLastIdNotification));
-		            }
-
+                    Paging p = new Paging();
+                    p.setCount(100);
+                    p.setSinceId(mLastIdNotification);
+                    directs = twitter.getSentDirectMessages(p);
 				}
 			} else {
 				try {
@@ -288,7 +241,7 @@ public class EntityTweetUser extends Entity {
 					if (tweet_type == TweetTopicsUtils.TWEET_TYPE_TIMELINE) {
 						statii = twitter.getHomeTimeline(new Paging(1, 40));
 					} else if (tweet_type == TweetTopicsUtils.TWEET_TYPE_MENTIONS) {
-						statii = twitter.getMentions(new Paging(1, 40));
+						statii = twitter.getMentionsTimeline(new Paging(1, 40));
 					} else if (tweet_type == TweetTopicsUtils.TWEET_TYPE_DIRECTMESSAGES) {
 						directs = twitter.getDirectMessages();
 					} else if (tweet_type == TweetTopicsUtils.TWEET_TYPE_SENT_DIRECTMESSAGES) {

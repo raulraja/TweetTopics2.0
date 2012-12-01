@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 
-<database name="tweet_db" version="29">
+<database name="tweet_db" version="30">
   
   <table name="search" to-string="%name%">
     <field name="name" obligatory="true" type="text" size="128"/>
@@ -53,7 +53,7 @@
     <field name="name" obligatory="true" type="text" size="128"/>
     <field name="fullname" obligatory="true" type="text" size="128" new-in-version="25"/>
 	<field name="user_id" obligatory="true" type="int"/>
-	<field name="active" obligatory="true" type="int" default="0" />
+	<field name="active" obligatory="true" type="int" default="0" deprecated="true" />
     <field name="auth_key" obligatory="true" type="text" size="128"/>
 	<field name="auth_secret_key" obligatory="true" type="text" size="128"/>
 	<field name="last_timeline_id" type="text" size="128" default="0" new-in-version="3" />
@@ -61,7 +61,8 @@
 	<field name="last_direct_id" type="text" size="128" default="0" new-in-version="3" />
 	<field name="last_sent_direct_id" type="text" size="128" default="0" new-in-version="3" />
 	<field name="no_save_timeline" obligatory="true" type="int" default="0" new-in-version="4" />
-	
+    <field name="use_for_searches" obligatory="true" type="int" default="0" new-in-version="30" />
+
 	<field name="uid_facebook" obligatory="true" type="text" size="128" new-in-version="18" />
 	<field name="expires_facebook" obligatory="true" type="text" size="128" new-in-version="18"/>
 	<field name="token_facebook" obligatory="true" type="text" size="128" new-in-version="18"/>

@@ -2,16 +2,15 @@ package com.javielinux.api.loaders;
 
 import android.content.Context;
 import com.javielinux.api.AsynchronousLoader;
-import com.javielinux.api.request.SearchRequest;
 import com.javielinux.api.request.UserMentionsRequest;
 import com.javielinux.api.response.BaseResponse;
 import com.javielinux.api.response.ErrorResponse;
-import com.javielinux.api.response.SearchResponse;
 import com.javielinux.api.response.UserMentionsResponse;
-import com.javielinux.database.EntitySearch;
 import com.javielinux.infos.InfoTweet;
 import com.javielinux.twitter.ConnectionManager;
-import twitter4j.*;
+import twitter4j.Query;
+import twitter4j.QueryResult;
+import twitter4j.Status;
 
 import java.util.ArrayList;
 
@@ -36,10 +35,10 @@ public class UserMentionsLoader extends AsynchronousLoader<BaseResponse> {
 
             String query_text = " to:" + this.request.getInfoUsers().getName();
             Query query = new Query(query_text);
-            QueryResult result = ConnectionManager.getInstance().getAnonymousTwitter().search(query);
+            QueryResult result = ConnectionManager.getInstance().getUserForSearchesTwitter().search(query);
 
-            ArrayList<Tweet> tweets = (ArrayList<Tweet>)result.getTweets();
-            for (Tweet tweet : tweets) {
+            ArrayList<Status> tweets = (ArrayList<Status>)result.getTweets();
+            for (Status tweet : tweets) {
                 infoTweets.add(new InfoTweet(tweet));
             }
 

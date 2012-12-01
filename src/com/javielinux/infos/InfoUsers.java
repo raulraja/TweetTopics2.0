@@ -213,7 +213,7 @@ public class InfoUsers {
             try {
                 //Entity ent = DataFramework.getInstance().getTopEntity("users", "name = '"+getName()+"'", "");
                 ConnectionManager.getInstance().open(context);
-                Twitter twitter = ConnectionManager.getInstance().getAnonymousTwitter();
+                Twitter twitter = ConnectionManager.getInstance().getUserForSearchesTwitter();
                 Relationship relationship = twitter.showFriendship(getName(), name);
                 friend.friend = relationship.isSourceFollowingTarget();
                 friend.follower = relationship.isSourceFollowedByTarget();
