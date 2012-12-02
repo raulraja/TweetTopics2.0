@@ -121,7 +121,7 @@ public class TrendingTopicsFragment extends BaseListFragment implements APIDeleg
             init(savedInstanceState.getLong(KEY_SAVE_STATE_COLUMN_ID));
         }
         trendingTopicsAdapter = new TrendingTopicsAdapter(getActivity(), trends_location_list);
-        trendsAdapter = new TweetsAdapter(getActivity(), getLoaderManager(), trends_list, "", (int) column_entity.getId());
+        trendsAdapter = new TweetsAdapter(getActivity(), getLoaderManager(), trends_list, -1, "", (int) column_entity.getId());
     }
 
     @Override

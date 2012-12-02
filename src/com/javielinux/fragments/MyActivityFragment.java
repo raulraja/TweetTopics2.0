@@ -202,7 +202,7 @@ public class MyActivityFragment extends Fragment {
                 @Override
                 public boolean onMenuItemClick(MenuItem item) {
                     if (item.getItemId() == R.id.popupmenu_more_actions_saved_tweet) {
-                        createSavedTweetColumn();
+                        openSavedTweetColumn();
                     } else if (item.getItemId() == R.id.popupmenu_more_actions_trending_topics) {
                         newTrending();
                     }
@@ -234,7 +234,7 @@ public class MyActivityFragment extends Fragment {
                 @Override
                 public void OnAlertItems(int which) {
                     if (which == 0) {
-                        createSavedTweetColumn();
+                        openSavedTweetColumn();
                     } else if (which == 1) {
                         newTrending();
                     }
@@ -493,27 +493,27 @@ public class MyActivityFragment extends Fragment {
         ((TweetTopicsActivity)getActivity()).newTrending();
     }
 
-    public void createSavedTweetColumn() {
-        ((TweetTopicsActivity)getActivity()).createSavedTweetColumn();
+    public void openSavedTweetColumn() {
+        ((TweetTopicsActivity)getActivity()).openSavedTweetColumn();
     }
 
-    public void createUserColumn(long userId, int typeId) {
-        ((TweetTopicsActivity)getActivity()).createUserColumn(userId, typeId);
+    public void openUserColumn(long userId, int typeId) {
+        ((TweetTopicsActivity)getActivity()).openUserColumn(userId, typeId);
     }
 
     public void createUserFavoritesColumn() {
         if (idUser > 0)
-            createUserColumn(idUser, TweetTopicsUtils.COLUMN_FAVORITES);
+            openUserColumn(idUser, TweetTopicsUtils.COLUMN_FAVORITES);
     }
 
     public void createUserRetweetByUserColumn() {
         if (idUser > 0)
-            createUserColumn(idUser, TweetTopicsUtils.COLUMN_RETWEETS_BY_YOU);
+            openUserColumn(idUser, TweetTopicsUtils.COLUMN_RETWEETS_BY_YOU);
     }
 
     public void createUserRetweetByOtherColumn() {
         if (idUser > 0)
-            createUserColumn(idUser, TweetTopicsUtils.COLUMN_RETWEETS_BY_OTHERS);
+            openUserColumn(idUser, TweetTopicsUtils.COLUMN_RETWEETS_BY_OTHERS);
     }
 
     public void newUserTwitter() {
@@ -1000,8 +1000,8 @@ public class MyActivityFragment extends Fragment {
         ((TweetTopicsActivity)getActivity()).editSearch(search);
     }
 
-    public void clickSearch(Entity search) {
-        ((TweetTopicsActivity)getActivity()).clickSearch(search);
+    public void openSearchColumn(Entity search) {
+        ((TweetTopicsActivity)getActivity()).openSearchColumn(search);
     }
 
     public void longClickSearch(final Entity search) {
@@ -1028,7 +1028,7 @@ public class MyActivityFragment extends Fragment {
             @Override
             public void OnAlertItems(int which) {
                 if (which == 0) {
-                    clickSearch(search);
+                    openSearchColumn(search);
                 } else if (which == 1) {
                     editSearch(search);
                 } else if (which == 2) {

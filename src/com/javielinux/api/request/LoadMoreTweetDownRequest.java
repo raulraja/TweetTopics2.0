@@ -4,15 +4,12 @@ public class LoadMoreTweetDownRequest implements BaseRequest {
 
     private long sinceId;
     private long maxId;
-    private int pos;
-    private int count;
     private long userId;
 
-    public LoadMoreTweetDownRequest(long userId, long sinceId, long maxId, int pos, int count) {
+    public LoadMoreTweetDownRequest(long userId, long sinceId, long maxId) {
+        this.userId = userId;
         this.sinceId = sinceId;
         this.maxId = maxId;
-        this.pos = pos;
-        this.count = count;
     }
 
 
@@ -30,22 +27,6 @@ public class LoadMoreTweetDownRequest implements BaseRequest {
 
     public void setMaxId(long maxId) {
         this.maxId = maxId;
-    }
-
-    public int getPos() {
-        return pos;
-    }
-
-    public void setPos(int pos) {
-        this.pos = pos;
-    }
-
-    public int getCount() {
-        return count;
-    }
-
-    public void setCount(int count) {
-        this.count = count;
     }
 
     public long getUserId() {

@@ -490,7 +490,7 @@
     <string name="about">О программе...</string>
     <string name="conversation">Беседа</string>
     <string name="no_server">Не удается связаться с сервером. Проверьте подключение и повторите попытку позже</string>
-    <string name="limit_server">Вы превысили лимит в 350 запросов каждый час в Twitter. Вы можете искать снова в </string>
+    <string name="limit_server">You have exceeded of limited number of calls to Twitter API. You can update again in %1$s minutes</string>
     <string name="use_geo">Использование геолокации</string>
     <string name="use_geo_gps">Получить GPS позиции</string>
     <string name="use_geo_map">Найти место на карте</string>

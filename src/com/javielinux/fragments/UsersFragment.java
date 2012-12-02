@@ -149,7 +149,7 @@ public class UsersFragment extends BaseListFragment implements APIDelegate<BaseR
         if (savedInstanceState!=null && savedInstanceState.containsKey(KEY_SAVE_STATE_COLUMN_ID)) {
             init(savedInstanceState.getLong(KEY_SAVE_STATE_COLUMN_ID));
         }
-        tweetsAdapter = new TweetsAdapter(getActivity(), getLoaderManager(), infoTweets, user_entity.getString("name"), (int)column_entity.getId());
+        tweetsAdapter = new TweetsAdapter(getActivity(), getLoaderManager(), infoTweets, user_entity.getId(), user_entity.getString("name"), (int)column_entity.getId());
     }
 
     @Override

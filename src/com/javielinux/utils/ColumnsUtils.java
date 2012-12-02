@@ -8,8 +8,11 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import com.android.dataframework.DataFramework;
 import com.android.dataframework.Entity;
 import com.javielinux.tweettopics2.R;
+
+import java.util.ArrayList;
 
 public class ColumnsUtils {
 
@@ -170,4 +173,59 @@ public class ColumnsUtils {
         return null;
     }
 
+    public static int nextPositionColumn() {
+        int pos = 0;
+        for (Entity column : DataFramework.getInstance().getEntityList("columns")) {
+            if (column.getInt("position") > pos) {
+                pos = column.getInt("position");
+            }
+        }
+        return pos + 1;
+    }
+
+    public static Entity widgetFirstColumn() {
+
+        for (Entity column : DataFramework.getInstance().getEntityList("columns","is_temporary=0","position asc")) {
+            if (column.getEntity("type_id").getInt("show_in_widget") == 1) {
+                return column;
+            }
+        }
+
+        return null;
+    }
+
+    public static ArrayList<Entity> widgetColumnList() {
+
+        ArrayList<Entity> column_list = new ArrayList<Entity>();
+
+        for (Entity column : DataFramework.getInstance().getEntityList("columns","is_temporary=0","position asc")) {
+            if (column.getEntity("type_id").getInt("show_in_widget") == 1) {
+                column_list.add(column);
+            }
+        }
+
+        return column_list;
+    }
+
+    public static int convertColumnInType(int column) {
+        int type = 0;
+        switch (column) {
+            case TweetTopicsUtils.COLUMN_TIMELINE:
+                type = TweetTopicsUtils.TWEET_TYPE_TIMELINE;
+            break;
+            case TweetTopicsUtils.COLUMN_MENTIONS:
+                type = TweetTopicsUtils.TWEET_TYPE_MENTIONS;
+            break;
+            case TweetTopicsUtils.COLUMN_DIRECT_MESSAGES:
+                type = TweetTopicsUtils.TWEET_TYPE_DIRECTMESSAGES;
+            break;
+            case TweetTopicsUtils.COLUMN_SENT_DIRECT_MESSAGES:
+                type = TweetTopicsUtils.TWEET_TYPE_SENT_DIRECTMESSAGES;
+                break;
+            case TweetTopicsUtils.COLUMN_FAVORITES:
+                type = TweetTopicsUtils.TWEET_TYPE_FAVORITES;
+                break;
+        }
+        return type;
+    }
 }

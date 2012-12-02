@@ -218,7 +218,7 @@ public class MyActivityAdapter extends BaseAdapter {
                 imgButtonTimeline.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        myActivityFragment.createUserColumn(Integer.valueOf(view.getTag().toString()), TweetTopicsUtils.COLUMN_TIMELINE);
+                        myActivityFragment.openUserColumn(Integer.valueOf(view.getTag().toString()), TweetTopicsUtils.COLUMN_TIMELINE);
                     }
                 });
 
@@ -239,7 +239,7 @@ public class MyActivityAdapter extends BaseAdapter {
                 imgButtonMentions.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        myActivityFragment.createUserColumn(Integer.valueOf(view.getTag().toString()), TweetTopicsUtils.COLUMN_MENTIONS);
+                        myActivityFragment.openUserColumn(Integer.valueOf(view.getTag().toString()), TweetTopicsUtils.COLUMN_MENTIONS);
                     }
                 });
 
@@ -258,7 +258,7 @@ public class MyActivityAdapter extends BaseAdapter {
                 imgButtonDMs.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        myActivityFragment.createUserColumn(Integer.valueOf(view.getTag().toString()), TweetTopicsUtils.COLUMN_DIRECT_MESSAGES);
+                        myActivityFragment.openUserColumn(Integer.valueOf(view.getTag().toString()), TweetTopicsUtils.COLUMN_DIRECT_MESSAGES);
                     }
                 });
 
@@ -299,7 +299,7 @@ public class MyActivityAdapter extends BaseAdapter {
         v.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                myActivityFragment.clickSearch((Entity) view.getTag());
+                myActivityFragment.openSearchColumn((Entity) view.getTag());
             }
         });
         v.setOnLongClickListener(new View.OnLongClickListener() {

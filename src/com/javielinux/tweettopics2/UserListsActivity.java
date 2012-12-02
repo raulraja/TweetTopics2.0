@@ -24,7 +24,7 @@ import com.javielinux.api.response.GetUserListResponse;
 import com.javielinux.dialogs.AlertDialogFragment;
 import com.javielinux.dialogs.CreateListTwitterDialogFragment;
 import com.javielinux.preferences.Preferences;
-import com.javielinux.utils.DBUtils;
+import com.javielinux.utils.ColumnsUtils;
 import com.javielinux.utils.ImageUtils;
 import com.javielinux.utils.TweetTopicsUtils;
 import com.javielinux.utils.Utils;
@@ -358,7 +358,7 @@ public class UserListsActivity extends BaseActivity implements APIDelegate<BaseR
         int position = 0;
 
         if (created_column_list.size() == 0) {
-            position = DBUtils.nextPositionColumn();
+            position = ColumnsUtils.nextPositionColumn();
 
             Entity type = new Entity("type_columns", (long) TweetTopicsUtils.COLUMN_LIST_USER);
             Entity user_list = new Entity("columns");

@@ -102,13 +102,37 @@ public class TwitterUserLoader extends AsynchronousLoader<BaseResponse> {
             response.setColumn(request.getColumn());
 
             if (request.getColumn() == TweetTopicsUtils.COLUMN_TIMELINE) {
-               response.setInfo(saveTimeline(response.getUserId()));
+                InfoSaveTweets infoSaveTweets = saveTimeline(response.getUserId());
+                if (infoSaveTweets.getError() == Utils.LIMIT_ERROR) {
+                    ErrorResponse errorResponse = new ErrorResponse();
+                    errorResponse.setTypeError(Utils.LIMIT_ERROR);
+                    errorResponse.setRateError(infoSaveTweets.getRate());
+                    return errorResponse;
+                } else {
+                    response.setInfo(infoSaveTweets);
+                }
             }
             if (request.getColumn() == TweetTopicsUtils.COLUMN_MENTIONS) {
-                response.setInfo(saveMentions(response.getUserId()));
+                InfoSaveTweets infoSaveTweets = saveMentions(response.getUserId());
+                if (infoSaveTweets.getError() == Utils.LIMIT_ERROR) {
+                    ErrorResponse errorResponse = new ErrorResponse();
+                    errorResponse.setTypeError(Utils.LIMIT_ERROR);
+                    errorResponse.setRateError(infoSaveTweets.getRate());
+                    return errorResponse;
+                } else {
+                    response.setInfo(infoSaveTweets);
+                }
             }
             if (request.getColumn() == TweetTopicsUtils.COLUMN_DIRECT_MESSAGES) {
-                response.setInfo(saveDirects(response.getUserId()));
+                InfoSaveTweets infoSaveTweets = saveDirects(response.getUserId());
+                if (infoSaveTweets.getError() == Utils.LIMIT_ERROR) {
+                    ErrorResponse errorResponse = new ErrorResponse();
+                    errorResponse.setTypeError(Utils.LIMIT_ERROR);
+                    errorResponse.setRateError(infoSaveTweets.getRate());
+                    return errorResponse;
+                } else {
+                    response.setInfo(infoSaveTweets);
+                }
             }
 
             return response;

@@ -55,7 +55,7 @@ public class TweetActions {
             showDialogRetweet(activity, fromUser, infoTweet);
         } else if (code.equals(TWEET_ACTION_LAST_READ)) {
             if (extra instanceof ListFragmentListener) {
-                ((ListFragmentListener) extra).onMarkPositionLastReadAsLastReadId(true);
+                ((ListFragmentListener) extra).onMarkPositionLastReadAsLastReadId(ListFragmentListener.FORCE_FIRST_VISIBLE);
             }
         } else if (code.equals(TWEET_ACTION_READ_AFTER)) {
             saveTweet(activity, infoTweet);
@@ -74,7 +74,22 @@ public class TweetActions {
         } else if (code.equals(TWEET_ACTION_DELETE_TWEET)) {
             //this.goToDeleteTweet(mTweetTopicsCore);
         } else if (code.equals(TWEET_ACTION_DELETE_UP_TWEET)) { // opción sólo para desarrollo
-            //this.goToDeleteTop(mTweetTopicsCore);
+            goToDeleteTop(activity, fromUser, infoTweet);
+        }
+    }
+
+    private static void goToDeleteTop(FragmentActivity activity, long fromUser, InfoTweet infoTweet) {
+        if (infoTweet.isTimeline()) {
+            Entity ent = new Entity("tweets_user", infoTweet.getIdDB());
+            String date = ent.getString("date");
+            String sqlDelete = "DELETE FROM tweets_user WHERE type_id= " + TweetTopicsUtils.TWEET_TYPE_TIMELINE + " and user_tt_id=" + fromUser + " AND date > '" + date + "'";
+            DataFramework.getInstance().getDB().execSQL(sqlDelete);
+        }
+        if (infoTweet.isMention()) {
+            Entity ent = new Entity("tweets_user", infoTweet.getIdDB());
+            String date = ent.getString("date");
+            String sqlDelete = "DELETE FROM tweets_user WHERE type_id= " + TweetTopicsUtils.TWEET_TYPE_MENTIONS + " and user_tt_id=" + fromUser + " AND date > '" + date + "'";
+            DataFramework.getInstance().getDB().execSQL(sqlDelete);
         }
     }
 

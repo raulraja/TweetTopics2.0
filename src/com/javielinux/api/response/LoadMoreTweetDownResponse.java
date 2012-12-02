@@ -1,17 +1,13 @@
 package com.javielinux.api.response;
 
 
+import com.javielinux.infos.InfoTweet;
+
+import java.util.List;
+
 public class LoadMoreTweetDownResponse implements BaseResponse {
     private boolean hasMoreTweets = false;
-    private int pos;
-
-    public int getPos() {
-        return pos;
-    }
-
-    public void setPos(int pos) {
-        this.pos = pos;
-    }
+    private List<InfoTweet> tweets;
 
     public boolean isHasMoreTweets() {
         return hasMoreTweets;
@@ -24,5 +20,13 @@ public class LoadMoreTweetDownResponse implements BaseResponse {
     @Override
     public boolean isError() {
         return false;
+    }
+
+    public List<InfoTweet> getTweets() {
+        return tweets;
+    }
+
+    public void setTweets(List<InfoTweet> tweets) {
+        this.tweets = tweets;
     }
 }

@@ -14,7 +14,7 @@ import com.android.dataframework.Entity;
 import com.javielinux.adapters.RowColumnWidgetAdapter;
 import com.javielinux.adapters.RowSearchWidgetAdapter;
 import com.javielinux.tweettopics2.R;
-import com.javielinux.utils.DBUtils;
+import com.javielinux.utils.ColumnsUtils;
 import com.javielinux.utils.Utils;
 
 import java.util.ArrayList;
@@ -59,7 +59,7 @@ public class WidgetTweetsConf4x2 extends Activity {
 		arType.add(ServiceWidgetTweets4x2.MENTIONS);    	
 		arType.add(ServiceWidgetTweets4x2.SEARCH);
 
-        final RowColumnWidgetAdapter adapter = new RowColumnWidgetAdapter(this, DBUtils.widgetColumnList());
+        final RowColumnWidgetAdapter adapter = new RowColumnWidgetAdapter(this, ColumnsUtils.widgetColumnList());
 
         AlertDialog builder = new AlertDialog.Builder(this)
                 .setCancelable(true)

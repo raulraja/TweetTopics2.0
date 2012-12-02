@@ -889,7 +889,7 @@
     <string name="about">About...</string>
     <string name="conversation">Conversation</string>
     <string name="no_server">Unable to contact server. Check the connection and try again later</string>
-    <string name="limit_server">You have exceeded the limit of 350 queries each hour in Twitter. You can search again in </string>
+    <string name="limit_server">You have exceeded of limited number of calls to Twitter API. You can update again in %1$s minutes</string>
     <string name="use_geo">Using geolocation</string>
     <string name="use_geo_gps">Get GPS position</string>
     <string name="use_geo_map">Find location on map</string>

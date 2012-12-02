@@ -1,5 +1,7 @@
 package com.javielinux.utils;
 
 public interface ListFragmentListener {
-    void onMarkPositionLastReadAsLastReadId(boolean force);
+    public static int SAVED_ON_LIST_VIEW = -1;
+    public static int FORCE_FIRST_VISIBLE = -2;
+    void onMarkPositionLastReadAsLastReadId(int position);
 }

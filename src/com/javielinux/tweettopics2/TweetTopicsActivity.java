@@ -366,10 +366,10 @@ public class TweetTopicsActivity extends BaseLayersActivity implements PopupLink
             if ((goToColumnType == TweetTopicsUtils.COLUMN_TIMELINE
                     || goToColumnType == TweetTopicsUtils.COLUMN_MENTIONS
                     || goToColumnType == TweetTopicsUtils.COLUMN_DIRECT_MESSAGES) && goToColumnUser >= 0) {
-                createUserColumn(goToColumnUser, goToColumnType);
+                openUserColumn(goToColumnUser, goToColumnType);
             }
             if (goToColumnType == TweetTopicsUtils.COLUMN_SEARCH && goToColumnSearch > 0) {
-                clickSearch(new Entity("search", goToColumnSearch));
+                openSearchColumn(new Entity("search", goToColumnSearch));
             }
         } else if (goToColumnType == TweetTopicsUtils.COLUMN_MY_ACTIVITY) {
         } else if (goToColumnPosition > 0) {
@@ -438,7 +438,7 @@ public class TweetTopicsActivity extends BaseLayersActivity implements PopupLink
                             newTrending();
                             break;
                         case 1002:
-                            createSavedTweetColumn();
+                            openSavedTweetColumn();
                             break;
                         case 1003:
                             goToSortColumns();
@@ -485,7 +485,7 @@ public class TweetTopicsActivity extends BaseLayersActivity implements PopupLink
                             newTrending();
                             break;
                         case 1002:
-                            createSavedTweetColumn();
+                            openSavedTweetColumn();
                             break;
                         case 1003:
                             goToSortColumns();
@@ -528,11 +528,11 @@ public class TweetTopicsActivity extends BaseLayersActivity implements PopupLink
             @Override
             public void OnAlertItems(int which) {
                 if (which == 0) {
-                    createUserColumn(userId, TweetTopicsUtils.COLUMN_TIMELINE);
+                    openUserColumn(userId, TweetTopicsUtils.COLUMN_TIMELINE);
                 } else if (which == 1) {
-                    createUserColumn(userId, TweetTopicsUtils.COLUMN_MENTIONS);
+                    openUserColumn(userId, TweetTopicsUtils.COLUMN_MENTIONS);
                 } else if (which == 2) {
-                    createUserColumn(userId, TweetTopicsUtils.COLUMN_DIRECT_MESSAGES);
+                    openUserColumn(userId, TweetTopicsUtils.COLUMN_DIRECT_MESSAGES);
                 } else if (which == 3) {
                     createUserList(userId);
                 }
@@ -597,7 +597,7 @@ public class TweetTopicsActivity extends BaseLayersActivity implements PopupLink
                     boolean create_column = data.getExtras().getBoolean("view", false);
 
                     if (create_column) {
-                        final int count = DBUtils.nextPositionColumn();
+                        final int count = ColumnsUtils.nextPositionColumn();
 
                         Entity type = new Entity("type_columns", (long) TweetTopicsUtils.COLUMN_SEARCH);
                         Entity search = new Entity("columns");
@@ -627,7 +627,7 @@ public class TweetTopicsActivity extends BaseLayersActivity implements PopupLink
 
                     if (view_column) {
                         Entity search_entity = new Entity("search", data.getLongExtra(DataFramework.KEY_ID, -1));
-                        clickSearch(search_entity);
+                        openSearchColumn(search_entity);
                     }
                 }
 
@@ -738,11 +738,11 @@ public class TweetTopicsActivity extends BaseLayersActivity implements PopupLink
     }
 
 
-    public void clickSearch(Entity clickSearch) {
+    public void openSearchColumn(Entity clickSearch) {
         final ArrayList<Entity> created_column_list = DataFramework.getInstance().getEntityList("columns", "search_id=" + clickSearch.getId());
 
         if (created_column_list.size() == 0) {
-            final int position = DBUtils.nextPositionColumn();
+            final int position = ColumnsUtils.nextPositionColumn();
 
             Entity type = new Entity("type_columns", (long) TweetTopicsUtils.COLUMN_SEARCH);
             Entity search = new Entity("columns");
@@ -778,14 +778,14 @@ public class TweetTopicsActivity extends BaseLayersActivity implements PopupLink
         startActivityForResult(userLists, ACTIVITY_SHOW_USER_LISTS);
     }
 
-    public void createUserColumn(long userId, int typeId) {
+    public void openUserColumn(long userId, int typeId) {
 
         ArrayList<Entity> created_column_list = DataFramework.getInstance().getEntityList("columns", "user_id=" + userId + " AND type_id = " + typeId);
 
         int position = 0;
 
         if (created_column_list.size() == 0) {
-            position = DBUtils.nextPositionColumn();
+            position = ColumnsUtils.nextPositionColumn();
 
             Entity user_list = new Entity("columns");
             user_list.setValue("type_id", typeId);
@@ -802,14 +802,14 @@ public class TweetTopicsActivity extends BaseLayersActivity implements PopupLink
 
     }
 
-    public void createSavedTweetColumn() {
+    public void openSavedTweetColumn() {
 
         ArrayList<Entity> created_column_list = DataFramework.getInstance().getEntityList("columns", "type_id = " + TweetTopicsUtils.COLUMN_SAVED_TWEETS);
 
         int position = 0;
 
         if (created_column_list.size() == 0) {
-            position = DBUtils.nextPositionColumn();
+            position = ColumnsUtils.nextPositionColumn();
 
             Entity user_list = new Entity("columns");
             user_list.setValue("type_id", TweetTopicsUtils.COLUMN_SAVED_TWEETS);

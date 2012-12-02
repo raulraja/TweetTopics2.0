@@ -756,10 +756,10 @@ public class LinksUtils {
                 InputStreamReader isr = new InputStreamReader(conn.getInputStream());    */
                 TagNode node = cleaner.clean(getURIContent(link));
 
-                Object[] objMeta = node.evaluateXPath("//meta[@property='og:image']");
+                Object[] objMeta = node.evaluateXPath("//img[@class='photo']");
                 if (objMeta.length > 0) {
                     TagNode info_node = (TagNode) objMeta[0];
-                    image = URLDecoder.decode(info_node.getAttributeByName("content").toString().trim());
+                    image = URLDecoder.decode(info_node.getAttributeByName("src").toString().trim());
                 }
             } catch (MalformedURLException e) {
                 e.printStackTrace();

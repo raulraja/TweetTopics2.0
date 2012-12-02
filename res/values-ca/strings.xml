@@ -582,7 +582,7 @@
   <string name="about">Pel que fa a...</string>
   <string name="conversation">Conversa</string>
   <string name="no_server">No s\'ha pogut contactar amb el servidor. Comproveu la connexió i intenteu-ho més tard</string>
-  <string name="limit_server">S\'ha superat el límit de 350 consultes cada hora de Twitter. Podreu tornar a fer cerques el </string>
+  <string name="limit_server">You have exceeded of limited number of calls to Twitter API. You can update again in %1$s minutes</string>
   <string name="use_geo">Usar geoposicionament</string>
   <string name="use_geo_gps">Obtén la posició GPS</string>
   <string name="use_geo_map">Busca ubicació en el mapa</string>

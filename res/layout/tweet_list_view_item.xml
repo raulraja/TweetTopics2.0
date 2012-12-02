@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                       android:layout_width="fill_parent"
-                       android:layout_height="fill_parent"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
         >
 
     <RelativeLayout
@@ -15,7 +15,7 @@
         <ImageView
                 android:id="@+id/user_avatar"
                 android:src="@drawable/avatar"
-                style="@style/TweetAvatar" />
+                style="@style/TweetAvatar"/>
 
 
         <LinearLayout android:layout_width="fill_parent"
@@ -28,33 +28,33 @@
                     android:id="@+id/tweet_user_name_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    style="@style/TweetTitle" />
+                    style="@style/TweetTitle"/>
             <TextView
                     android:id="@+id/tweet_source"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    style="@style/TweetSource" />
+                    style="@style/TweetSource"/>
             <TextView
                     android:id="@+id/tweet_date"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     style="@style/TweetDate"
-                    android:text="1h" />
+                    android:text="1h"/>
             <ImageView android:id="@+id/tag_conversation"
                        android:paddingTop="5dip"
                        android:paddingRight="5dip"
                        android:src="@drawable/tag_conversation"
                        android:layout_height="wrap_content"
                        android:visibility="gone"
-                       android:layout_width="wrap_content" />
+                       android:layout_width="wrap_content"/>
             <ImageView android:id="@+id/tag_map"
                        android:paddingTop="5dip"
                        android:paddingRight="5dip"
                        android:src="@drawable/tag_map"
                        android:layout_height="wrap_content"
                        android:visibility="gone"
-                       android:layout_width="wrap_content" />
+                       android:layout_width="wrap_content"/>
         </LinearLayout>
 
         <LinearLayout android:layout_width="fill_parent"
@@ -83,9 +83,9 @@
                     >
 
                 <ImageView android:layout_width="@dimen/size_image_tweet_width"
-                              android:layout_height="@dimen/size_image_tweet_height"
-                              android:scaleType="centerCrop"
-                              android:id="@+id/tweet_photo_img" />
+                           android:layout_height="@dimen/size_image_tweet_height"
+                           android:scaleType="centerCrop"
+                           android:id="@+id/tweet_photo_img"/>
 
             </LinearLayout>
 
@@ -122,7 +122,7 @@
                     android:id="@+id/retweet_avatar"
                     android:src="@drawable/avatar"
                     android:paddingRight="5dip"
-                    style="@style/RetweetAvatar" />
+                    style="@style/RetweetAvatar"/>
 
             <TextView
                     android:id="@+id/retweet_user"
@@ -134,4 +134,40 @@
         </LinearLayout>
 
     </RelativeLayout>
+
+    <com.javielinux.components.LoadMoreBreakListItem android:visibility="gone"
+                                                     android:layout_below="@id/lastread_layout"
+                                                     android:id="@+id/load_more_break"
+                                                     android:orientation="horizontal"
+                                                     android:layout_width="fill_parent"
+                                                     android:layout_height="wrap_content"
+            >
+        <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="45dip"
+                android:gravity="center"
+                android:id="@+id/layout_bg"
+                >
+            <ProgressBar
+                    android:id="@+id/load_more_progress"
+                    android:layout_width="16sp"
+                    android:layout_height="16sp"
+                    android:indeterminate="true"
+                    android:visibility="gone"
+                    />
+            <TextView
+                    android:id="@+id/load_more_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="fill_parent"
+                    style="@style/LoadMore"
+                    android:text="Load More..."
+                    android:layout_marginTop="12dip"
+                    android:layout_marginLeft="12dip"
+                    android:layout_marginRight="12dip"
+                    android:layout_marginBottom="12dip"
+                    />
+        </LinearLayout>
+    </com.javielinux.components.LoadMoreBreakListItem>
+
 </RelativeLayout>

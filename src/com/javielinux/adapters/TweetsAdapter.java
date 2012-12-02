@@ -1,5 +1,6 @@
 package com.javielinux.adapters;
 
+import android.app.ProgressDialog;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -7,6 +8,7 @@ import android.graphics.Shader;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.LoaderManager;
 import android.text.Html;
@@ -21,8 +23,11 @@ import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.javielinux.api.APIDelegate;
 import com.javielinux.api.APITweetTopics;
 import com.javielinux.api.request.LoadLinkRequest;
+import com.javielinux.api.request.LoadMoreTweetDownRequest;
 import com.javielinux.api.response.ErrorResponse;
 import com.javielinux.api.response.LoadLinkResponse;
+import com.javielinux.api.response.LoadMoreTweetDownResponse;
+import com.javielinux.components.LoadMoreBreakListItem;
 import com.javielinux.infos.InfoLink;
 import com.javielinux.infos.InfoTweet;
 import com.javielinux.tweettopics2.BaseLayersActivity;
@@ -53,12 +58,15 @@ public class TweetsAdapter extends ArrayAdapter<InfoTweet> {
         public TextView retweetUser;
         public TextView retweetText;
         public int typeBackground = -1;
+        public LoadMoreBreakListItem loadMoreBreakListItem;
     }
 
-    private static HashMap<String,Integer> hashColorUsers = new HashMap<String,Integer>();
-    private static HashMap<String,Integer> hashColorUsersPosition = new HashMap<String,Integer>();
+    private ProgressDialog progressDialog;
 
-    private static HashMap<String,Integer> hashThemeColors = new HashMap<String,Integer>();
+    private static HashMap<String, Integer> hashColorUsers = new HashMap<String, Integer>();
+    private static HashMap<String, Integer> hashColorUsersPosition = new HashMap<String, Integer>();
+
+    private static HashMap<String, Integer> hashThemeColors = new HashMap<String, Integer>();
 
     private boolean flinging = false;
 
@@ -72,6 +80,7 @@ public class TweetsAdapter extends ArrayAdapter<InfoTweet> {
 
     private LoaderManager loaderManager;
 
+    private long userId;
     private String usernameColumn;
     private int column;
 
@@ -83,15 +92,24 @@ public class TweetsAdapter extends ArrayAdapter<InfoTweet> {
 
     private SharedPreferences preference;
 
+    private Fragment fragment;
+
     public FragmentActivity getActivity() {
         return activity;
     }
 
+    public Fragment getFragment() {
+        return fragment;
+    }
+
+    public void setFragment(Fragment fragment) {
+        this.fragment = fragment;
+    }
 
     private void callLinksIfIsPossible(View view) {
 
         if (getActivity() instanceof PopupLinks.PopupLinksListener) {
-            ((PopupLinks.PopupLinksListener)getActivity()).onShowLinks(view, (InfoTweet)view.getTag());
+            ((PopupLinks.PopupLinksListener) getActivity()).onShowLinks(view, (InfoTweet) view.getTag());
         }
 
     }
@@ -113,11 +131,12 @@ public class TweetsAdapter extends ArrayAdapter<InfoTweet> {
     }
 
     private void loadLinks(int position) {
-        if (infoTweetArrayList.size()<=0) return;
+        if (infoTweetArrayList.size() <= 0) return;
         String linkForImage = "";
         try {
             linkForImage = infoTweetArrayList.get(position).getBestLink();
-        } catch (IndexOutOfBoundsException e) {}
+        } catch (IndexOutOfBoundsException e) {
+        }
 
         if (!linkForImage.equals("") && !linkForImage.startsWith("@") && !linkForImage.startsWith("#")) {
             if (!CacheData.getInstance().existCacheInfoLink(linkForImage)) {
@@ -139,39 +158,41 @@ public class TweetsAdapter extends ArrayAdapter<InfoTweet> {
                         }
                     }, new LoadLinkRequest(linkForImage, null));
 
-                } catch (RejectedExecutionException e) {}
+                } catch (RejectedExecutionException e) {
+                }
             }
         }
     }
 
     public void launchVisibleTask() {
 
-        if (parentListView!=null) {
+        if (parentListView != null) {
             int firstPosition = parentListView.getRefreshableView().getFirstVisiblePosition();
             int lastPosition = parentListView.getRefreshableView().getLastVisiblePosition();
 
-            for (int i=firstPosition; i<=lastPosition; i++) {
+            for (int i = firstPosition; i <= lastPosition; i++) {
                 loadLinks(i);
             }
         }
     }
 
-    public TweetsAdapter(FragmentActivity activity, LoaderManager loaderManager, ArrayList<InfoTweet> infoTweetArrayList, String usernameColumn, int column) {
+    public TweetsAdapter(FragmentActivity activity, LoaderManager loaderManager, ArrayList<InfoTweet> infoTweetArrayList, long userId, String usernameColumn, int column) {
         super(activity, android.R.layout.simple_list_item_1, infoTweetArrayList);
-        init(activity, loaderManager, infoTweetArrayList, usernameColumn, column);
+        init(activity, loaderManager, infoTweetArrayList, userId, usernameColumn, column);
     }
 
     public TweetsAdapter(FragmentActivity activity, LoaderManager loaderManager, ArrayList<InfoTweet> infoTweetArrayList) {
         super(activity, android.R.layout.simple_list_item_1, infoTweetArrayList);
-        init(activity, loaderManager, infoTweetArrayList, "", -1);
+        init(activity, loaderManager, infoTweetArrayList, -1, "", -1);
     }
 
-    private void init(FragmentActivity activity, LoaderManager loaderManager, ArrayList<InfoTweet> infoTweetArrayList, String usernameColumn, int column) {
+    private void init(FragmentActivity activity, LoaderManager loaderManager, ArrayList<InfoTweet> infoTweetArrayList, long userId, String usernameColumn, int column) {
         this.activity = activity;
         listAQuery = new AQuery(activity);
 
         Log.d(Utils.TAG, "Numero de elementos: " + infoTweetArrayList.size());
         this.infoTweetArrayList = infoTweetArrayList;
+        this.userId = userId;
         this.usernameColumn = usernameColumn;
         this.column = column;
 
@@ -204,69 +225,72 @@ public class TweetsAdapter extends ArrayAdapter<InfoTweet> {
 
         ViewHolder viewHolder = new ViewHolder();
 
-        viewHolder.avatarView = (ImageView)v.findViewById(R.id.user_avatar);
-        viewHolder.tagMap = (ImageView)v.findViewById(R.id.tag_map);
-        viewHolder.tagConversation = (ImageView)v.findViewById(R.id.tag_conversation);
-        viewHolder.screenName = (TextView)v.findViewById(R.id.tweet_user_name_text);
-        viewHolder.statusText = (TextView)v.findViewById(R.id.tweet_text);
-        viewHolder.dateText = (TextView)v.findViewById(R.id.tweet_date);
-        viewHolder.sourceText = (TextView)v.findViewById(R.id.tweet_source);
-        viewHolder.tweetPhotoImg = (ImageView)v.findViewById(R.id.tweet_photo_img);
-        viewHolder.tweetPhotoImgContainer = (LinearLayout)v.findViewById(R.id.tweet_photo_img_container);
-        viewHolder.lastReadLayout = (RelativeLayout)v.findViewById(R.id.lastread_layout);
-        viewHolder.retweetLayout = (LinearLayout)v.findViewById(R.id.retweet_layout);
-        viewHolder.retweetAvatar = (ImageView)v.findViewById(R.id.retweet_avatar);
-        viewHolder.retweetUser = (TextView)v.findViewById(R.id.retweet_user);
-        viewHolder.retweetText = (TextView)v.findViewById(R.id.retweet_text);
+        viewHolder.avatarView = (ImageView) v.findViewById(R.id.user_avatar);
+        viewHolder.tagMap = (ImageView) v.findViewById(R.id.tag_map);
+        viewHolder.tagConversation = (ImageView) v.findViewById(R.id.tag_conversation);
+        viewHolder.screenName = (TextView) v.findViewById(R.id.tweet_user_name_text);
+        viewHolder.statusText = (TextView) v.findViewById(R.id.tweet_text);
+        viewHolder.dateText = (TextView) v.findViewById(R.id.tweet_date);
+        viewHolder.sourceText = (TextView) v.findViewById(R.id.tweet_source);
+        viewHolder.tweetPhotoImg = (ImageView) v.findViewById(R.id.tweet_photo_img);
+        viewHolder.tweetPhotoImgContainer = (LinearLayout) v.findViewById(R.id.tweet_photo_img_container);
+        viewHolder.lastReadLayout = (RelativeLayout) v.findViewById(R.id.lastread_layout);
+        viewHolder.retweetLayout = (LinearLayout) v.findViewById(R.id.retweet_layout);
+        viewHolder.retweetAvatar = (ImageView) v.findViewById(R.id.retweet_avatar);
+        viewHolder.retweetUser = (TextView) v.findViewById(R.id.retweet_user);
+        viewHolder.retweetText = (TextView) v.findViewById(R.id.retweet_text);
+        viewHolder.loadMoreBreakListItem = (LoadMoreBreakListItem) v.findViewById(R.id.load_more_break);
 
         return viewHolder;
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
 
-        InfoTweet infoTweet = getItem(position) ;
-
+        InfoTweet infoTweet = getItem(position);
+        ViewHolder viewHolder = null;
         if (null == convertView) {
             convertView = activity.getLayoutInflater().inflate(R.layout.tweet_list_view_item, parent, false);
             //view = (RelativeLayout) View.inflate(getContext(), R.layout.tweet_list_view_item, null);
-            convertView.setTag(generateViewHolder(convertView));
+            viewHolder = generateViewHolder(convertView);
+            convertView.setTag(viewHolder);
             loadLinks(position);
+        } else {
+            viewHolder = (ViewHolder) convertView.getTag();
         }
 
-        ViewHolder viewHolder = (ViewHolder) convertView.getTag();
         int typeBackground = -1;
 
         if (selected_id == position) {
             typeBackground = 2;
             if (infoTweet.isRead()) typeBackground++;
-            if (viewHolder.typeBackground!=typeBackground) {
+            if (viewHolder.typeBackground != typeBackground) {
                 convertView.setBackgroundDrawable(ImageUtils.createGradientDrawableSelected(getContext(), infoTweet.isRead() ? 0 : color_line));
             }
-        } else if (column == TweetTopicsUtils.COLUMN_TIMELINE && infoTweet.getText().toLowerCase().contains("@"+usernameColumn.toLowerCase())) {
+        } else if (column == TweetTopicsUtils.COLUMN_TIMELINE && infoTweet.getText().toLowerCase().contains("@" + usernameColumn.toLowerCase())) {
             typeBackground = 4;
             if (infoTweet.isRead()) typeBackground++;
-            if (viewHolder.typeBackground!=typeBackground) {
+            if (viewHolder.typeBackground != typeBackground) {
                 convertView.setBackgroundDrawable(ImageUtils.createGradientDrawableMention(getContext(), infoTweet.isRead() ? 0 : color_line));
             }
-        } else if ((column == TweetTopicsUtils.COLUMN_MENTIONS || column == TweetTopicsUtils.COLUMN_TIMELINE) &&infoTweet.isFavorited()) {
+        } else if ((column == TweetTopicsUtils.COLUMN_MENTIONS || column == TweetTopicsUtils.COLUMN_TIMELINE) && infoTweet.isFavorited()) {
             typeBackground = 6;
             if (infoTweet.isRead()) typeBackground++;
-            if (viewHolder.typeBackground!=typeBackground) {
+            if (viewHolder.typeBackground != typeBackground) {
                 convertView.setBackgroundDrawable(ImageUtils.createGradientDrawableFavorite(getContext(), infoTweet.isRead() ? 0 : color_line));
             }
         } else {
 
             if (hashColorUsers.containsKey(infoTweet.getUsername())) {
-                typeBackground = 8 + (hashColorUsersPosition.get(infoTweet.getUsername())*2);
+                typeBackground = 8 + (hashColorUsersPosition.get(infoTweet.getUsername()) * 2);
                 if (infoTweet.isRead()) typeBackground++;
-                if (viewHolder.typeBackground!=typeBackground) {
+                if (viewHolder.typeBackground != typeBackground) {
                     convertView.setBackgroundDrawable(ImageUtils.createStateListDrawable(getContext(), hashColorUsers.get(infoTweet.getUsername()), infoTweet.isRead() ? 0 : color_line));
                 }
             } else {
                 typeBackground = 0;
                 if (infoTweet.isRead()) typeBackground++;
-                if (viewHolder.typeBackground!=typeBackground) {
+                if (viewHolder.typeBackground != typeBackground) {
                     convertView.setBackgroundDrawable(ImageUtils.createStateListDrawable(getContext(), hashThemeColors.get("list_background_row_color"), infoTweet.isRead() ? 0 : color_line));
                 }
             }
@@ -274,8 +298,31 @@ public class TweetsAdapter extends ArrayAdapter<InfoTweet> {
 
         viewHolder.typeBackground = typeBackground;
 
-
         AQuery aQuery = listAQuery.recycle(convertView);
+
+        // ponerla barra naranja
+        if (infoTweet.isMoreTweetDown()) {
+            viewHolder.loadMoreBreakListItem.setBackgroundDrawable(ImageUtils.createStateListDrawable(getContext(), themeManager.getColor("color_load_more_break")));
+            viewHolder.loadMoreBreakListItem.showText();
+            try {
+                final InfoTweet next = getItem(position+1);
+                if (next != null) {
+                    viewHolder.loadMoreBreakListItem.showText(Utils.diffDate(infoTweet.getDate(), next.getDate()));
+                    viewHolder.loadMoreBreakListItem.setTag(infoTweet);
+                    viewHolder.loadMoreBreakListItem.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            loadMoreBreakTweets((InfoTweet)view.getTag(), next, position);
+                        }
+                    });
+                }
+            } catch (RuntimeException e) {
+            } catch (Exception e) {
+            }
+            viewHolder.loadMoreBreakListItem.setVisibility(View.VISIBLE);
+        } else {
+            viewHolder.loadMoreBreakListItem.setVisibility(View.GONE);
+        }
 
         String html = "";
 
@@ -296,7 +343,7 @@ public class TweetsAdapter extends ArrayAdapter<InfoTweet> {
 
 
         if (infoTweet.isLastRead()) {
-            BitmapDrawable bmp = (BitmapDrawable)getContext().getResources().getDrawable(R.drawable.readafter_tile);
+            BitmapDrawable bmp = (BitmapDrawable) getContext().getResources().getDrawable(R.drawable.readafter_tile);
             bmp.setTileModeXY(Shader.TileMode.REPEAT, Shader.TileMode.REPEAT);
             viewHolder.lastReadLayout.setBackgroundDrawable(bmp);
         } else {
@@ -340,7 +387,7 @@ public class TweetsAdapter extends ArrayAdapter<InfoTweet> {
             data = infoTweet.getFullname();
         }
         aQuery.id(viewHolder.sourceText).text(data);
-        viewHolder.sourceText.setTextSize(PreferenceUtils.getSizeTitles(getContext())-1);
+        viewHolder.sourceText.setTextSize(PreferenceUtils.getSizeTitles(getContext()) - 1);
 
         if (infoTweet.isRetweet()) {
             viewHolder.retweetLayout.setVisibility(View.VISIBLE);
@@ -366,7 +413,7 @@ public class TweetsAdapter extends ArrayAdapter<InfoTweet> {
         viewHolder.screenName.setTextSize(PreferenceUtils.getSizeTitles(getContext()));
 
         aQuery.id(viewHolder.dateText).text(infoTweet.getTime(getContext()));
-        viewHolder.dateText.setTextSize(PreferenceUtils.getSizeTitles(getContext())-4);
+        viewHolder.dateText.setTextSize(PreferenceUtils.getSizeTitles(getContext()) - 4);
 
         String mUrlAvatar = infoTweet.getUrlAvatar();
         String mRetweetUrlAvatar = infoTweet.getUrlAvatarRetweet();
@@ -376,14 +423,14 @@ public class TweetsAdapter extends ArrayAdapter<InfoTweet> {
         if (isRetweet) {
 
             Bitmap retweetAvatar = aQuery.getCachedImage(mUrlAvatar);
-            if (retweetAvatar!=null) {
+            if (retweetAvatar != null) {
                 aQuery.id(viewHolder.retweetAvatar).image(retweetAvatar);
             } else {
                 aQuery.id(viewHolder.retweetAvatar).image(mUrlAvatar, true, true, 0, R.drawable.avatar_small);
             }
 
             Bitmap avatar = aQuery.getCachedImage(mRetweetUrlAvatar);
-            if (avatar!=null) {
+            if (avatar != null) {
                 aQuery.id(viewHolder.avatarView).image(avatar);
             } else {
                 aQuery.id(viewHolder.avatarView).image(mRetweetUrlAvatar, true, true, 0, R.drawable.avatar, aQuery.getCachedImage(R.drawable.avatar), 0);
@@ -394,7 +441,7 @@ public class TweetsAdapter extends ArrayAdapter<InfoTweet> {
         } else {
 
             Bitmap avatar = aQuery.getCachedImage(mUrlAvatar);
-            if (avatar!=null) {
+            if (avatar != null) {
                 aQuery.id(viewHolder.avatarView).image(avatar);
             } else {
                 aQuery.id(viewHolder.avatarView).image(mUrlAvatar, true, true, 0, R.drawable.avatar, aQuery.getCachedImage(R.drawable.avatar), 0);
@@ -411,7 +458,7 @@ public class TweetsAdapter extends ArrayAdapter<InfoTweet> {
                 if (getActivity() instanceof BaseLayersActivity) {
                     Bundle bundle = new Bundle();
                     bundle.putString(UserActivity.KEY_EXTRAS_USER, v.getTag().toString());
-                    ((BaseLayersActivity)getActivity()).startAnimationActivity(UserActivity.class, bundle);
+                    ((BaseLayersActivity) getActivity()).startAnimationActivity(UserActivity.class, bundle);
                 }
             }
 
@@ -437,7 +484,7 @@ public class TweetsAdapter extends ArrayAdapter<InfoTweet> {
 
             viewHolder.tweetPhotoImgContainer.setVisibility(View.VISIBLE);
 
-            if (infoTweet.getLinksCount()>1) {
+            if (infoTweet.getLinksCount() > 1) {
                 viewHolder.tweetPhotoImgContainer.setBackgroundResource(R.drawable.container_image_multiple);
             } else {
                 viewHolder.tweetPhotoImgContainer.setBackgroundResource(R.drawable.container_image_simple);
@@ -451,7 +498,7 @@ public class TweetsAdapter extends ArrayAdapter<InfoTweet> {
 
             int typeResource = getTypeResource(linkForImage);
 
-            if (infoLink!=null) {
+            if (infoLink != null) {
 
                 String thumb = infoLink.getLinkImageThumb();
 
@@ -459,7 +506,7 @@ public class TweetsAdapter extends ArrayAdapter<InfoTweet> {
                     aQuery.id(viewHolder.tweetPhotoImg).image(typeResource);
                 } else {
                     Bitmap image = aQuery.getCachedImage(infoLink.getLinkImageThumb());
-                    if (image!=null) {
+                    if (image != null) {
                         aQuery.id(viewHolder.tweetPhotoImg).image(image);
                     } else {
                         aQuery.id(viewHolder.tweetPhotoImg).image(infoLink.getLinkImageThumb(), true, true, 0, typeResource, aQuery.getCachedImage(typeResource), 0);
@@ -476,6 +523,44 @@ public class TweetsAdapter extends ArrayAdapter<InfoTweet> {
 
     }
 
+    private void loadMoreBreakTweets(final InfoTweet current, InfoTweet next, final int position) {
+        progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setTitle(R.string.loading);
+        progressDialog.setMessage(getContext().getString(R.string.loading));
+        progressDialog.setCancelable(false);
+        progressDialog.show();
+        APITweetTopics.execute(activity, loaderManager, new APIDelegate<LoadMoreTweetDownResponse>() {
+            @Override
+            public void onResults(LoadMoreTweetDownResponse result) {
+                progressDialog.dismiss();
+                current.setMoreTweetDown(false);
+                Entity currentEntity = new Entity("tweets_user", current.getIdDB());
+                currentEntity.setValue("has_more_tweets_down", 0);
+                currentEntity.save();
+                for (int i = result.getTweets().size()-1; i>=0; i--) {
+                    InfoTweet infoTweet = result.getTweets().get(i);
+                    infoTweet.setRead(false);
+                    if (result.isHasMoreTweets() && i>=result.getTweets().size()-1) {
+                        infoTweet.setMoreTweetDown(true);
+                    }
+                    infoTweetArrayList.add(position + 1, infoTweet);
+                }
+                notifyDataSetChanged();
+                if (fragment != null && fragment instanceof ListFragmentListener) {
+                    ((ListFragmentListener)fragment).onMarkPositionLastReadAsLastReadId(position+result.getTweets().size()-1);
+                }
+                if (parentListView != null) {
+                    parentListView.getRefreshableView().setSelection(position+result.getTweets().size()-1);
+                }
+            }
+
+            @Override
+            public void onError(ErrorResponse error) {
+                progressDialog.dismiss();
+            }
+        }, new LoadMoreTweetDownRequest(userId, next.getId(), current.getId()));
+    }
+
     private int getTypeResource(String linkForImage) {
         int res = 0;
         if (LinksUtils.isLinkImage(linkForImage)) {
@@ -488,7 +573,7 @@ public class TweetsAdapter extends ArrayAdapter<InfoTweet> {
             if (linkForImage.startsWith("@")) {
                 res = R.drawable.icon_tweet_user;
             } else if (linkForImage.startsWith("#")) {
-                res = R.drawable.icon_tweet_hashtag ;
+                res = R.drawable.icon_tweet_hashtag;
             } else {
                 res = R.drawable.icon_tweet_link;
             }

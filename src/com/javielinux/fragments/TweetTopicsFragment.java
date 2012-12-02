@@ -141,7 +141,7 @@ public class TweetTopicsFragment extends BaseListFragment implements APIDelegate
         this.flinging = flinging;
         tweetsAdapter.setFlinging(flinging);
         if (!flinging) {
-            onMarkPositionLastReadAsLastReadId(false);
+            onMarkPositionLastReadAsLastReadId(ListFragmentListener.SAVED_ON_LIST_VIEW);
         }
     }
 
@@ -189,7 +189,8 @@ public class TweetTopicsFragment extends BaseListFragment implements APIDelegate
         if (savedInstanceState!=null && savedInstanceState.containsKey(KEY_SAVE_STATE_COLUMN_ID)) {
             init(savedInstanceState.getLong(KEY_SAVE_STATE_COLUMN_ID));
         }
-        tweetsAdapter = new TweetsAdapter(getActivity(), getLoaderManager(), infoTweets, user_entity.getString("name"), (int) column_entity.getId());
+        tweetsAdapter = new TweetsAdapter(getActivity(), getLoaderManager(), infoTweets, user_entity.getId(), user_entity.getString("name"), (int) column_entity.getId());
+        tweetsAdapter.setFragment(this);
     }
 
     @Override
@@ -242,7 +243,7 @@ public class TweetTopicsFragment extends BaseListFragment implements APIDelegate
             public void onScroll(AbsListView arg0, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
                 if (positionLastRead > firstVisibleItem) {
                     positionLastRead = firstVisibleItem;
-                    if (firstVisibleItem == 0) onMarkPositionLastReadAsLastReadId(false);
+                    if (firstVisibleItem == 0) onMarkPositionLastReadAsLastReadId(ListFragmentListener.SAVED_ON_LIST_VIEW);
                 }
             }
 
@@ -385,9 +386,18 @@ public class TweetTopicsFragment extends BaseListFragment implements APIDelegate
 
     @Override
     public void onError(ErrorResponse error) {
-        error.getError().printStackTrace();
         listView.onRefreshComplete();
-        showNoInternet();
+        if (error.getTypeError() == Utils.LIMIT_ERROR) {
+            int seconds = error.getRateError().getSecondsUntilReset();
+            int minutes = 1;
+            if (seconds>60) {
+               minutes = seconds/60;
+            }
+            Utils.showMessage(getActivity(), getString(R.string.limit_server, minutes));
+        } else {
+            error.getError().printStackTrace();
+            showNoInternet();
+        }
     }
 
     private void sendBroadcastUpdateTweets() {
@@ -396,10 +406,15 @@ public class TweetTopicsFragment extends BaseListFragment implements APIDelegate
     }
 
     @Override
-    public void onMarkPositionLastReadAsLastReadId(boolean force) {
-        if ( (tweetsAdapter != null && force) || (tweetsAdapter != null && tweetsAdapter.getLastReadPosition() > positionLastRead)) {
-            if (force) {
-                positionLastRead = listView.getRefreshableView().getFirstVisiblePosition()+1;
+    public void onMarkPositionLastReadAsLastReadId(int position) {
+        if ( (tweetsAdapter != null && (position != ListFragmentListener.SAVED_ON_LIST_VIEW) )
+                || (tweetsAdapter != null && tweetsAdapter.getLastReadPosition() > positionLastRead)) {
+            if (position == ListFragmentListener.FORCE_FIRST_VISIBLE) {
+                positionLastRead = listView.getRefreshableView().getFirstVisiblePosition();
+            } else {
+                if (position != ListFragmentListener.SAVED_ON_LIST_VIEW) {
+                    positionLastRead = position;
+                }
             }
             new Thread(new Runnable() {
                 @Override

@@ -35,7 +35,7 @@ public class HashTagDialogFragment extends DialogFragment {
                             ent.setValue("words_and", hashtag);
                             ent.save();
                             if (getActivity() instanceof TweetTopicsActivity) {
-                                ((TweetTopicsActivity) getActivity()).clickSearch(ent);
+                                ((TweetTopicsActivity) getActivity()).openSearchColumn(ent);
                             } else {
                                 Intent i = new Intent(getActivity(), TweetTopicsActivity.class);
                                 i.setAction(Intent.ACTION_VIEW);

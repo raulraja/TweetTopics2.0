@@ -769,7 +769,7 @@
     <string name="about">&#220;ber...</string>
     <string name="conversation">Konversation</string>
     <string name="no_server">Konnte den Server nicht erreichen. Bitte pr&#252;fe Deine Verbindung und versuche es sp&#228;ter nochmals.</string>
-    <string name="limit_server">Du hast das Twitter-Limit von 350 Suchl&#228;ufen pro Stunde erreicht. Den n&#228;chsten Suchlauf kannst Du starten in </string>
+    <string name="limit_server">You have exceeded of limited number of calls to Twitter API. You can update  again in %1$s minutes</string>
     <string name="use_geo">Geolokation verwenden</string>
     <string name="use_geo_gps">Ermittele GPS-Position</string>
     <string name="use_geo_map">Ermittele Standort auf Karte</string>

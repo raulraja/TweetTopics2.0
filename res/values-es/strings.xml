@@ -886,7 +886,7 @@
     <string name="about">Acerca de...</string>
     <string name="conversation">Conversación</string>
     <string name="no_server">No se ha podido contactar con el servidor. Compruebe la conexión e inténtelo más tarde</string>
-    <string name="limit_server">Se ha superado el límite de 350 consultas cada hora de Twitter. Podrá volver a realizar búsquedas el </string>
+    <string name="limit_server">Ohh!! Ha superado el límite de llamadas a la API de Twitter. Podrá volver a actualizar en %1$s minutos</string>
     <string name="use_geo">Usar geoposicionamiento</string>
     <string name="use_geo_gps">Obtener la posición GPS</string>
     <string name="use_geo_map">Buscar ubicación en el mapa</string>

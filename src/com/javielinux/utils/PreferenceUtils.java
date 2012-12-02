@@ -563,6 +563,16 @@ public class PreferenceUtils {
             new InfoColorsApp(cnt, "color_bottom_bar").restartColor(cnt);
         }
 
+        if (version.equals("2.06")) {
+            ArrayList<Entity> listColumns = DataFramework.getInstance().getEntityList("columns");
+            int count = 1;
+            for (Entity entity : listColumns) {
+                entity.setValue("position", count);
+                entity.save();
+                count++;
+            }
+        }
+
     }
 
     public static boolean getStatusWorkAlarm(Context cnt) {

@@ -12,7 +12,6 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.IBinder;
 import android.text.Html;
 import android.util.Log;
@@ -80,7 +79,7 @@ public class ServiceWidgetTweets4x2 extends Service {
                         column = new Entity("columns", column_id);
 
                         if (column == null) {
-                            column = DBUtils.widgetFirstColumn();
+                            column = ColumnsUtils.widgetFirstColumn();
                             column_id = column.getId();
                         }
 
@@ -264,7 +263,6 @@ public class ServiceWidgetTweets4x2 extends Service {
 	    			mCurrentSearch = -1;
 	    		}
     			update(this);
-    			handler.postDelayed(runnable, UPDATE_WIDGET);
     			getManager().updateAppWidget(getWidget(), getRemoteView(this));
     			
 	    	} else {
@@ -324,88 +322,7 @@ public class ServiceWidgetTweets4x2 extends Service {
                 } else {
                     mRemoteView.setViewVisibility(R.id.tag_conversation, View.GONE);
                 }
-                /*
-				ArrayList<String> links = LinksUtils.pullLinksHTTP(mTweets.get(mCurrentTweet).getText());
 
-                String linkForImage = mTweets.get(mCurrentTweet).getBestLink();
-
-                if (links.size() == 0) {
-                    mRemoteView.setViewVisibility(R.id.tweet_photo_img_container, View.GONE);
-                    mRemoteView.setViewVisibility(R.id.tweet_photo_multi_img_container, View.GONE);
-                } else {
-                    int tweet_photo_id = -1;
-                    if (links.size() == 1) {
-                        tweet_photo_id = R.id.tweet_photo_img;
-                        mRemoteView.setViewVisibility(R.id.tweet_photo_img, View.VISIBLE);
-                        mRemoteView.setViewVisibility(R.id.tweet_photo_img_container, View.VISIBLE);
-                        mRemoteView.setViewVisibility(R.id.tweet_photo_multi_img, View.GONE);
-                        mRemoteView.setViewVisibility(R.id.tweet_photo_multi_img_container, View.GONE);
-
-                        Intent defineIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(links.get(0)));
-                        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, defineIntent, 0);
-                        mRemoteView.setOnClickPendingIntent(R.id.tweet_photo_img, pendingIntent);
-                    } else {
-                        tweet_photo_id = R.id.tweet_photo_multi_img;
-                        mRemoteView.setViewVisibility(R.id.tweet_photo_img, View.GONE);
-                        mRemoteView.setViewVisibility(R.id.tweet_photo_img_container, View.GONE);
-                        mRemoteView.setViewVisibility(R.id.tweet_photo_multi_img, View.VISIBLE);
-                        mRemoteView.setViewVisibility(R.id.tweet_photo_multi_img_container, View.VISIBLE);
-
-                        Intent configureIntent = new Intent(context, WidgetTweetsLinks4x2.class);
-                        configureIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
-                        configureIntent.putExtra(GlobalsWidget.WIDGET_LINKS, links);
-                        PendingIntent configurePendingIntent = PendingIntent.getActivity(context, 0, configureIntent, 0);
-                        mRemoteView.setOnClickPendingIntent(R.id.tweet_photo_multi_img, configurePendingIntent);
-                    }
-
-                    InfoLink infoLink = null;
-
-                    if (CacheData.existCacheInfoLink(linkForImage)) {
-                        infoLink = CacheData.getCacheInfoLink(linkForImage);
-                    }
-
-                    int typeResource = getTypeResource(linkForImage);
-                    AQuery aQuery = new AQuery(context);
-
-                    if (infoLink!=null) {
-
-                        String thumb = infoLink.getLinkImageThumb();
-
-                        if (thumb.equals("")) {
-                            mRemoteView.setImageViewResource(tweet_photo_id,typeResource);
-                        } else {
-                            Bitmap image = aQuery.getCachedImage(infoLink.getLinkImageThumb());
-
-                            if (image!=null) {
-                                mRemoteView.setImageViewBitmap(tweet_photo_id,image);
-                            } else {
-                                aQuery.id(tweet_photo_id).image(infoLink.getLinkImageThumb(), true, true, 0, typeResource, aQuery.getCachedImage(typeResource), 0);
-                            }
-                        }
-
-                    } else { // si no tenemos InfoLink en cache
-                        mRemoteView.setImageViewResource(tweet_photo_id,typeResource);
-                    }
-                }
-                */
-				/*for (int i=0; i<5; i++) {
-					int id = 0;
-					if (i==0) id = R.id.widget_link_1;
-					else if (i==1) id = R.id.widget_link_2;
-					else if (i==2) id = R.id.widget_link_3;
-					else if (i==3) id = R.id.widget_link_4;
-					else if (i==4) id = R.id.widget_link_5;
-					if (id>0) {
-						if (i<links.size()) {
-							mRemoteView.setViewVisibility(id, View.VISIBLE);
-							Intent defineIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(links.get(i)));
-			    	        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, defineIntent, 0);
-			    	        mRemoteView.setOnClickPendingIntent(id, pendingIntent);
-						} else {
-							mRemoteView.setViewVisibility(id, View.GONE);
-						}
-					}
-				}*/
 				
 				if (null != latestLoadTask) {
 					latestLoadTask.cancel(true);
@@ -477,14 +394,14 @@ public class ServiceWidgetTweets4x2 extends Service {
 
             } catch (IndexOutOfBoundsException e) {
                 e.printStackTrace();
-                column = DBUtils.widgetFirstColumn();
+                column = ColumnsUtils.widgetFirstColumn();
                 if (column != null) {
                     PreferenceUtils.setWidgetColumn(context, column.getId());
                     mRemoteView.setTextViewText(R.id.w_tweet_text, "Error");
                 }
 			} catch (Exception e) {
 				e.printStackTrace();
-                column = DBUtils.widgetFirstColumn();
+                column = ColumnsUtils.widgetFirstColumn();
                 if (column != null) {
                     PreferenceUtils.setWidgetColumn(context, column.getId());
 				    mRemoteView.setTextViewText(R.id.w_tweet_text, "Error");
@@ -525,7 +442,7 @@ public class ServiceWidgetTweets4x2 extends Service {
             switch (column.getInt("type_id")) {
                 case TweetTopicsUtils.COLUMN_TIMELINE:
                     //loadUser(columns.get(0).getEntity("user_id").getId());
-                    tweetList.addAll(DataFramework.getInstance().getEntityList("tweets_user", "type_id=" + TweetTopicsUtils.TWEET_TYPE_TIMELINE + " and user_tt_id=" + column.getEntity("user_id").getId(), "date desc"));
+                    tweetList.addAll(DataFramework.getInstance().getEntityList("tweets_user", "type_id=" + TweetTopicsUtils.TWEET_TYPE_TIMELINE + " and user_tt_id=" + column.getEntity("user_id").getId(), "date desc", "0,10"));
 
                     for (int i=0; i<tweetList.size();i++) {
                         mTweets.add(new InfoTweet(tweetList.get(i)));
@@ -533,7 +450,7 @@ public class ServiceWidgetTweets4x2 extends Service {
                     break;
                 case TweetTopicsUtils.COLUMN_MENTIONS:
                     //loadUser(columns.get(0).getEntity("user_id").getId());
-                    tweetList.addAll(DataFramework.getInstance().getEntityList("tweets_user", "type_id=" + TweetTopicsUtils.TWEET_TYPE_MENTIONS + " and user_tt_id=" + column.getEntity("user_id").getId(), "date desc"));
+                    tweetList.addAll(DataFramework.getInstance().getEntityList("tweets_user", "type_id=" + TweetTopicsUtils.TWEET_TYPE_MENTIONS + " and user_tt_id=" + column.getEntity("user_id").getId(), "date desc", "0,10"));
 
                     for (int i=0; i<tweetList.size();i++) {
                         mTweets.add(new InfoTweet(tweetList.get(i)));
@@ -541,7 +458,7 @@ public class ServiceWidgetTweets4x2 extends Service {
                     break;
                 case TweetTopicsUtils.COLUMN_DIRECT_MESSAGES:
                     //loadUser(columns.get(0).getEntity("user_id").getId());
-                    tweetList.addAll(DataFramework.getInstance().getEntityList("tweets_user", "type_id=" + TweetTopicsUtils.TWEET_TYPE_DIRECTMESSAGES + " and user_tt_id=" + column.getEntity("user_id").getId(), "date desc"));
+                    tweetList.addAll(DataFramework.getInstance().getEntityList("tweets_user", "type_id=" + TweetTopicsUtils.TWEET_TYPE_DIRECTMESSAGES + " and user_tt_id=" + column.getEntity("user_id").getId(), "date desc", "0,10"));
 
                     for (int i=0; i<tweetList.size();i++) {
                         mTweets.add(new InfoTweet(tweetList.get(i)));
@@ -553,7 +470,7 @@ public class ServiceWidgetTweets4x2 extends Service {
                         QueryResult result = twitter.search(entitySearch.getQuery(context));
                         ArrayList<Status> tweets = (ArrayList<Status>)result.getTweets();
 
-                        for (int i=0; i<tweets.size(); i++) {
+                        for (int i=0; i<10; i++) {
                             mTweets.add(new InfoTweet(tweets.get(i)));
                         }
                     } catch (TwitterException e) {
@@ -672,7 +589,7 @@ public class ServiceWidgetTweets4x2 extends Service {
                         Entity user_list_entity = new Entity("user_lists", Long.parseLong(column.getValue("userlist_id").toString()));
 
                         ResponseList<twitter4j.Status> statii = ConnectionManager.getInstance().getTwitter(user_list_entity.getLong("user_id")).getUserListStatuses(user_list_entity.getInt("userlist_id"), new Paging(1));
-                        for (int i=0; i<statii.size(); i++) {
+                        for (int i=0; i<10; i++) {
                             mTweets.add(new InfoTweet(statii.get(i)));
                         }
                     } catch (TwitterException e) {
@@ -721,17 +638,10 @@ public class ServiceWidgetTweets4x2 extends Service {
                 i.putExtra(Utils.KEY_EXTRAS_INFO, bundle);
 				context.startActivity(i);
 	    	}
-	    	
-	    	refreshHandler();    	
 	    	getManager().updateAppWidget(getWidget(), getRemoteView(context));
     	} else {
         	Log.d(Utils.TAG_WIDGET, "Botones bloqueados");
     	}
-    }
-    
-    private void refreshHandler() {
-    	handler.removeCallbacks(runnable);
-    	handler.postDelayed(runnable, UPDATE_WIDGET);
     }
 
 	public void loadUser(long id) {
@@ -753,23 +663,6 @@ public class ServiceWidgetTweets4x2 extends Service {
 			mCurrentTweet = 0;
 		}
     }
-    
-    private Handler handler = new Handler();
-
-    private Runnable runnable = new Runnable() {
-
-    	public void run() {
-
-    		try {
-    			next();
-    			getManager().updateAppWidget(getWidget(), getRemoteView(lastContext));
-    			refreshHandler();
-    		} catch (Exception e) {
-    			e.printStackTrace();
-    		}
-    	}
-
-    };
 
 	@Override
 	public IBinder onBind(Intent intent) {

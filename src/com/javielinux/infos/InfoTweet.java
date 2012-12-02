@@ -5,6 +5,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import com.android.dataframework.Entity;
 import com.javielinux.utils.LinksUtils;
+import com.javielinux.utils.TweetTopicsUtils;
 import com.javielinux.utils.Utils;
 import com.javielinux.utils.Utils.URLContent;
 import twitter4j.Status;
@@ -44,6 +45,8 @@ public class InfoTweet implements Parcelable {
 	private double latitude = 0;
 	private double longitude = 0;
 	private boolean favorited = false;
+
+    private boolean moreTweetDown = false;
 
     private int typeTweet = -1;
 	
@@ -145,6 +148,7 @@ public class InfoTweet implements Parcelable {
 			toReplyId = entity.getLong("reply_tweet_id");
 			favorited = entity.getInt("is_favorite")==1?true:false;
             typeTweet = entity.getInt("type_id");
+            moreTweetDown = (entity.getInt("has_more_tweets_down") == 1);
 		}
 		idDB = entity.getId();
 		id = entity.getLong("tweet_id");
@@ -259,6 +263,10 @@ public class InfoTweet implements Parcelable {
 	public String getUsername() {
 		return username;
 	}
+
+    public void setUsername(String name) {
+        username = name;
+    }
 
 	public String getText() {
 		return text;
@@ -443,11 +451,15 @@ public class InfoTweet implements Parcelable {
     }
 
     public boolean isDm() {
-        return (typeTweet ==3 || typeTweet ==4);
+        return (typeTweet == TweetTopicsUtils.TWEET_TYPE_DIRECTMESSAGES || typeTweet ==TweetTopicsUtils.TWEET_TYPE_SENT_DIRECTMESSAGES);
     }
 
     public boolean isTimeline() {
-        return (typeTweet ==1);
+        return (typeTweet == TweetTopicsUtils.TWEET_TYPE_TIMELINE);
+    }
+
+    public boolean isMention() {
+        return (typeTweet == TweetTopicsUtils.TWEET_TYPE_MENTIONS);
     }
 
     public boolean isSavedTweet() {
@@ -573,4 +585,11 @@ public class InfoTweet implements Parcelable {
 
     }
 
+    public boolean isMoreTweetDown() {
+        return moreTweetDown;
+    }
+
+    public void setMoreTweetDown(boolean moreTweetDown) {
+        this.moreTweetDown = moreTweetDown;
+    }
 }

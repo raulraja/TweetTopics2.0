@@ -18,7 +18,7 @@ import com.javielinux.api.request.TrendsLocationRequest;
 import com.javielinux.api.response.BaseResponse;
 import com.javielinux.api.response.ErrorResponse;
 import com.javielinux.api.response.TrendsLocationResponse;
-import com.javielinux.utils.DBUtils;
+import com.javielinux.utils.ColumnsUtils;
 import com.javielinux.utils.TweetTopicsUtils;
 import com.javielinux.utils.Utils;
 import twitter4j.Location;
@@ -99,7 +99,7 @@ public class TrendsLocationActivity extends BaseActivity implements APIDelegate<
         int position = 0;
 
         if (created_column_list.size() == 0) {
-            position = DBUtils.nextPositionColumn();
+            position = ColumnsUtils.nextPositionColumn();
 
             Entity type = new Entity("type_columns", (long) TweetTopicsUtils.COLUMN_TRENDING_TOPIC);
             Entity user_list = new Entity("columns");
