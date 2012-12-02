@@ -68,7 +68,7 @@ public class ColumnsUtils {
         Bitmap text = ImageUtils.getBitmapInBubble(context, title, bgColorTitle, Utils.TYPE_RECTANGLE, sizeText, -1);
         Bitmap newBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(newBitmap);
-        if (bitmap!=null) {
+        if (bitmap != null) {
             canvas.drawBitmap(bitmap, padding, 0, paint);
         }
         canvas.drawBitmap(text, (width / 2) - (text.getWidth() / 2), height - text.getHeight(), paint);
@@ -91,15 +91,17 @@ public class ColumnsUtils {
                         tweets_count = DBUtils.getUnreadTweetsUser(column_type, entity.getEntity("user_id").getId());
                     }
                     bitmap = ImageUtils.getBitmapAvatar(entity.getEntity("user_id").getId(), size);
-                    if (tweets_count > 0) {
+                    if (tweets_count > 0 && bitmap != null) {
                         Paint paint = new Paint();
                         paint.setAntiAlias(true);
                         Bitmap number = ImageUtils.getBitmapNumber(context, tweets_count, Color.RED, Utils.TYPE_RECTANGLE, sizeNumber, size / 2);
-                        Bitmap newBitmap = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), Bitmap.Config.ARGB_8888);
-                        Canvas canvas = new Canvas(newBitmap);
-                        canvas.drawBitmap(bitmap, 0, 0, paint);
-                        canvas.drawBitmap(number, bitmap.getWidth() - number.getWidth(), 0, paint);
-                        bitmap = newBitmap;
+                        if (number != null) {
+                            Bitmap newBitmap = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), Bitmap.Config.ARGB_8888);
+                            Canvas canvas = new Canvas(newBitmap);
+                            canvas.drawBitmap(bitmap, 0, 0, paint);
+                            canvas.drawBitmap(number, bitmap.getWidth() - number.getWidth(), 0, paint);
+                            bitmap = newBitmap;
+                        }
                     }
                     break;
                 case TweetTopicsUtils.COLUMN_SENT_DIRECT_MESSAGES:
@@ -117,23 +119,29 @@ public class ColumnsUtils {
                     Drawable drawable = Utils.getDrawable(context, searchEntity.getString("icon_big"));
                     if (drawable == null) drawable = context.getResources().getDrawable(R.drawable.letter_az);
                     bitmap = ((BitmapDrawable) drawable).getBitmap();
-                    bitmap = Bitmap.createScaledBitmap(bitmap, size, size, true);
-                    if (tweets_count > 0) {
+                    if (bitmap != null) {
+                        bitmap = Bitmap.createScaledBitmap(bitmap, size, size, true);
+                    }
+                    if (tweets_count > 0 && bitmap != null) {
                         Paint paint = new Paint();
                         paint.setAntiAlias(true);
                         Bitmap number = ImageUtils.getBitmapNumber(context, tweets_count, Color.RED, Utils.TYPE_RECTANGLE, sizeNumber, size / 2);
-                        Bitmap newBitmap = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), Bitmap.Config.ARGB_8888);
-                        Canvas canvas = new Canvas(newBitmap);
-                        canvas.drawBitmap(bitmap, 0, 0, paint);
-                        canvas.drawBitmap(number, bitmap.getWidth() - number.getWidth(), 0, paint);
-                        bitmap = newBitmap;
+                        if (number != null) {
+                            Bitmap newBitmap = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), Bitmap.Config.ARGB_8888);
+                            Canvas canvas = new Canvas(newBitmap);
+                            canvas.drawBitmap(bitmap, 0, 0, paint);
+                            canvas.drawBitmap(number, bitmap.getWidth() - number.getWidth(), 0, paint);
+                            bitmap = newBitmap;
+                        }
                     }
 
                     break;
                 default:
                     Drawable drawableIcon = context.getResources().getDrawable(R.drawable.icon);
                     bitmap = ((BitmapDrawable) drawableIcon).getBitmap();
-                    bitmap = Bitmap.createScaledBitmap(bitmap, size, size, true);
+                    if (bitmap != null) {
+                        bitmap = Bitmap.createScaledBitmap(bitmap, size, size, true);
+                    }
                     break;
             }
 
@@ -185,7 +193,7 @@ public class ColumnsUtils {
 
     public static Entity widgetFirstColumn() {
 
-        for (Entity column : DataFramework.getInstance().getEntityList("columns","is_temporary=0","position asc")) {
+        for (Entity column : DataFramework.getInstance().getEntityList("columns", "is_temporary=0", "position asc")) {
             if (column.getEntity("type_id").getInt("show_in_widget") == 1) {
                 return column;
             }
@@ -198,7 +206,7 @@ public class ColumnsUtils {
 
         ArrayList<Entity> column_list = new ArrayList<Entity>();
 
-        for (Entity column : DataFramework.getInstance().getEntityList("columns","is_temporary=0","position asc")) {
+        for (Entity column : DataFramework.getInstance().getEntityList("columns", "is_temporary=0", "position asc")) {
             if (column.getEntity("type_id").getInt("show_in_widget") == 1) {
                 column_list.add(column);
             }
@@ -212,13 +220,13 @@ public class ColumnsUtils {
         switch (column) {
             case TweetTopicsUtils.COLUMN_TIMELINE:
                 type = TweetTopicsUtils.TWEET_TYPE_TIMELINE;
-            break;
+                break;
             case TweetTopicsUtils.COLUMN_MENTIONS:
                 type = TweetTopicsUtils.TWEET_TYPE_MENTIONS;
-            break;
+                break;
             case TweetTopicsUtils.COLUMN_DIRECT_MESSAGES:
                 type = TweetTopicsUtils.TWEET_TYPE_DIRECTMESSAGES;
-            break;
+                break;
             case TweetTopicsUtils.COLUMN_SENT_DIRECT_MESSAGES:
                 type = TweetTopicsUtils.TWEET_TYPE_SENT_DIRECTMESSAGES;
                 break;

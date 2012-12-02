@@ -1,3 +1,14 @@
+Version 2.06
+============
+
+- Muestra barra para cargar tweets dentro del Timeline si hay muchos para descargar
+- Corrige problemas consumo de datos
+- Corrige problemas al ver fotografías de Instagram
+- Muestra el tiempo que queda para poder actualizar al consumir llamadas a la API de Twitter
+- Corrige otros bugs
+
+Build number 7
+
 Version 2.05
 ============
 

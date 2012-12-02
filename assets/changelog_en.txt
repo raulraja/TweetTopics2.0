@@ -1,3 +1,13 @@
+Version 2.06
+============
+
+- Show bar for load tweets inside Timeline when there is a lot of tweet for download
+- Fixes bug for data consume
+- Fixes error display Instagram images
+- Bug fixed
+
+Build number 7
+
 Version 2.05
 ============
 
