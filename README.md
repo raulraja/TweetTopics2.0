@@ -6,6 +6,16 @@ TweetTopics2.0
 TweetTopics is a Open Source Twitter Client for Android. This application was born 2 year ago 
 as a Twitter client skilled to advanced searches in this social network.
 
+This application is made for Javier Pérez Pacheco (@javielinux) and Francisco Díaz Rodríguez (@francisco_dr)
+
+The icon was created for Juan Antonia Urbano (@sike27)
+
+Thanks for translators:
+
+- German @jac_zi
+- Catalán @Eduard_Font
+- Russian @smart_se 
+
 # Dependencies
 
 TweetTopics depends on the following libraries.
@@ -16,7 +26,11 @@ TweetTopics depends on the following libraries.
 - Pull to refresh
 - ViewPagerIndicator
 - AQuery
-- 
+- NineOldAndroid
+- HTMLCleaner
+- Microsoft Translator
+- Flurry 
+- Google AdMob
 
 # License
 
