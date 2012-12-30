@@ -1,12 +1,12 @@
-package com.javielinux.components;
-
 /**
  * Created by IntelliJ IDEA.
  * User: AnderWeb
  * Date: 25/03/11
  * Time: 14:35
- * To change this template use File | Settings | File Templates.
  */
+
+
+package com.javielinux.components;
 
 import android.content.Context;
 import android.graphics.Bitmap;

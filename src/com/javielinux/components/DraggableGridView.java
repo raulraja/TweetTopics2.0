@@ -1,7 +1,6 @@
-//TO DO:
-//
-// - improve timer performance (especially on Eee Pad)
-// - improve child rearranging
+/**
+ * https://github.com/thquinn/DraggableGridView
+ */
 
 package com.javielinux.components;
 

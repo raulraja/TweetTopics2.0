@@ -1,14 +1,15 @@
-//TO DO:
-//
-// - improve timer performance (especially on Eee Pad)
-// - improve child rearranging
-
+/**
+ * https://github.com/thquinn/DraggableGridView
+ *
+ * Changed by Javier Pérez Pacheco
+ *
+ */
 package com.javielinux.components;
 
-import android.R;
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.*;
+import android.graphics.Color;
+import android.graphics.Point;
 import android.os.Handler;
 import android.os.SystemClock;
 import android.util.AttributeSet;
@@ -18,7 +19,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.*;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.Button;
 import android.widget.ImageView;
 
 import java.util.ArrayList;

@@ -1,3 +1,7 @@
+/**
+ * https://github.com/thquinn/DraggableGridView
+ */
+
 package com.javielinux.components;
 
 public interface OnRearrangeListener {

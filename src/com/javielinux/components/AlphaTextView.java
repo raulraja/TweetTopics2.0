@@ -1,3 +1,7 @@
+/**
+ * http://stackoverflow.com/questions/2838757/how-to-set-opacity-alpha-for-view-in-android
+ */
+
 package com.javielinux.components;
 
 import android.content.Context;

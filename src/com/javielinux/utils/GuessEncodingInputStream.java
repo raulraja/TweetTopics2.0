@@ -1,3 +1,8 @@
+/**
+ * http://www.ignaciogs.es/?p=156
+ * Changed by Ignacio Gonzalez
+ */
+
 package com.javielinux.utils;
 
 import java.io.FilterInputStream;
