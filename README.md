@@ -3,34 +3,41 @@ TweetTopics2.0
 
 # Introduction
 
-TweetTopics is a Open Source Twitter Client for Android. This application was born 2 year ago 
-as a Twitter client skilled to advanced searches in this social network.
+TweetTopics is an Open Source Twitter Client for Android. The application was born 2 year ago 
+as a Twitter client focused on adavanced twitter searches.
 
-This application is made for Javier Pérez Pacheco (@javielinux) and Francisco Díaz Rodríguez (@francisco_dr)
+# Main contributors 
 
-The icon was created for Juan Antonia Urbano (@sike27)
+Developers
 
-Thanks for translators:
+- Javier Pérez Pacheco [@javielinux](http://twitter.com/@javielinux)
+- Francisco Díaz Rodríguez [@francisco_dr](http://twitter.com/@francisco_dr)
 
-- German @jac_zi
-- Catalán @Eduard_Font
-- Russian @smart_se 
+Icon
+
+- Juan Antonia Urbano [@sike27](http://twitter.com/@sike27)
+
+Translators
+
+- German [@jac_zi](http://twitter.com/@jac_zi)
+- Catalán [@Eduard_Font](http://twitter.com/@Eduard_Font)
+- Russian [@smart_se](http://twitter.com/@smart_se) 
 
 # Dependencies
 
 TweetTopics depends on the following libraries.
 
-- Twitter4j
-- Android DataFramework
-- Facebook 2.0
-- Pull to refresh
-- ViewPagerIndicator
-- AQuery
-- NineOldAndroid
-- HTMLCleaner
-- Microsoft Translator
-- Flurry 
-- Google AdMob
+- [Twitter4j](http://twitter4j.org/)
+- [Android DataFramework](https://github.com/javipacheco/Android-DataFramework)
+- [Facebook 2.0](https://github.com/facebook/facebook-android-sdk)
+- [Pull to refresh](https://github.com/chrisbanes/Android-PullToRefresh)
+- [ViewPagerIndicator](https://github.com/JakeWharton/Android-ViewPagerIndicator)
+- [AQuery](https://github.com/androidquery/androidquery)
+- [NineOldAndroids](http://nineoldandroids.com/)
+- [HTMLCleaner](http://htmlcleaner.sourceforge.net/)
+- [Microsoft Translator](http://www.microsofttranslator.com/dev/)
+- [Flurry](http://www.flurry.com/) 
+- [Google AdMob](http://www.google.com/ads/admob/)
 
 # License
 
